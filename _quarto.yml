@@ -1,23 +1,35 @@
 project:
   type: book
+  output-dir: docs
 
 book:
   title: "kenai-river-wqx-report-v2"
-  author: "Jane Doe"
+  author: "Kenai Watershed Forum"
   date: "1/4/2023"
   chapters:
     - index.qmd
     - intro.qmd
     - summary.qmd
     - references.qmd
+  repo-url: https://github.com/Kenai-Watershed-Forum/kenai-river-wqx-report-v2.git
+  search:
+    location: sidebar
+    type: textbox
+  downloads: [docx]
 
 bibliography: references.bib
 
 format:
   html:
     theme: cosmo
-  pdf:
-    documentclass: scrreprt
+  #pdf:
+  #  documentclass: scrreprt
+  docx:
+    toc: true
+    toc-depth: 2
+    toc-title: Table of contents
+    number-sections: true
+    highlight-style: github
 
 editor: visual
 
