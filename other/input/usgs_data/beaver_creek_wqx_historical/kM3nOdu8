@@ -1,0 +1,82 @@
+#
+# File created on 2022-10-17 15:03:35 EDT
+#
+# U.S. Geological Survey
+# 
+# This file contains selected water-quality data for stations in the National Water Information 
+# System water-quality database.  Explanation of codes found in this file are followed by
+# the retrieved data.
+#
+# The data you have secured from the USGS NWISWeb database may include data that have 
+# not received Director's approval and as such are provisional and subject to revision. 
+# The data are released on the condition that neither the USGS nor the United States 
+# Government may be held liable for any damages resulting from its authorized or 
+# unauthorized use.
+#
+# To view additional data-quality attributes, output the results using these options:  
+# one result per row, expanded attributes.  Additional precautions are at:
+# https://help.waterdata.usgs.gov/tutorials/water-quality-data/help-using-the-water-quality-data-retrieval-system#Data_retrievals_precautions
+#
+# This file includes the following fields:
+#  agency_cd     - Agency Code
+#  site_no       - USGS site number
+#  parm_cd       - Parameter Code
+#  count_nu      - Total number of samples for this parameter
+#  begin_dt      - Date of first sample for this parameter
+#  end_dt        - Date of last sample for this parameter
+#  parameter_nm  - Full parameter name
+#
+# Data for the following sites are included:
+#  USGS 15266500 BEAVER C NR KENAI AK
+#
+agency_cd	site_no	parm_cd	count_nu	begin_dt	end_dt	parameter_nm
+5s	15s	5s	5n	10d	10d	30s
+USGS	15266500	00010	31	1952-03-08	1989-05-15	Temperature, water, degrees Celsius
+USGS	15266500	00025	10	1952-03-08	1989-05-15	Barometric pressure, millimeters of mercury
+USGS	15266500	00049	21	1952-03-08	1989-05-15	Surface area, square miles
+USGS	15266500	00061	31	1952-03-08	1989-05-15	Discharge, instantaneous, cubic feet per second
+USGS	15266500	00065	2	1952-03-08	1989-05-15	Gage height, feet
+USGS	15266500	00080	21	1952-03-08	1989-05-15	Color, water, filtered, platinum cobalt units
+USGS	15266500	00095	33	1952-03-08	1989-05-15	Specific conductance, water, unfiltered, microsiemens per centimeter at 25 degrees Celsius
+USGS	15266500	00191	30	1952-03-08	1989-05-15	Hydrogen ion, water, unfiltered, calculated, milligrams per liter
+USGS	15266500	00300	8	1952-03-08	1989-05-15	Dissolved oxygen, water, unfiltered, milligrams per liter
+USGS	15266500	00301	8	1952-03-08	1989-05-15	Dissolved oxygen, water, unfiltered, percent of saturation
+USGS	15266500	00400	30	1952-03-08	1989-05-15	pH, water, unfiltered, field, standard units
+USGS	15266500	00405	30	1952-03-08	1989-05-15	Carbon dioxide, water, unfiltered, milligrams per liter
+USGS	15266500	00410	29	1952-03-08	1989-05-15	Acid neutralizing capacity, water, unfiltered, fixed endpoint (pH 4.5) titration, field, milligrams per liter as calcium carbonate
+USGS	15266500	00440	30	1952-03-08	1989-05-15	Bicarbonate, water, unfiltered, fixed endpoint (pH 4.5) titration, field, milligrams per liter
+USGS	15266500	00445	29	1952-03-08	1989-05-15	Carbonate, water, unfiltered, fixed endpoint (pH 8.3) titration, field, milligrams per liter
+USGS	15266500	00608	1	1952-03-08	1989-05-15	Ammonia (NH3 + NH4+), water, filtered, milligrams per liter as nitrogen
+USGS	15266500	00618	21	1952-03-08	1989-05-15	Nitrate, water, filtered, milligrams per liter as nitrogen
+USGS	15266500	00650	1	1952-03-08	1989-05-15	Phosphate, water, unfiltered, milligrams per liter as PO4
+USGS	15266500	00660	1	1952-03-08	1989-05-15	Orthophosphate, water, filtered, milligrams per liter as PO4
+USGS	15266500	00900	21	1952-03-08	1989-05-15	Hardness, water, milligrams per liter as calcium carbonate
+USGS	15266500	00902	21	1952-03-08	1989-05-15	Noncarbonate hardness, water, unfiltered, field, milligrams per liter as calcium carbonate
+USGS	15266500	00915	21	1952-03-08	1989-05-15	Calcium, water, filtered, milligrams per liter
+USGS	15266500	00925	21	1952-03-08	1989-05-15	Magnesium, water, filtered, milligrams per liter
+USGS	15266500	00930	20	1952-03-08	1989-05-15	Sodium, water, filtered, milligrams per liter
+USGS	15266500	00931	20	1952-03-08	1989-05-15	Sodium adsorption ratio (SAR), water, number
+USGS	15266500	00932	20	1952-03-08	1989-05-15	Sodium fraction of cations, water, percent in equivalents of major cations
+USGS	15266500	00933	1	1952-03-08	1989-05-15	Sodium plus potassium, water, filtered, milligrams per liter as sodium
+USGS	15266500	00935	20	1952-03-08	1989-05-15	Potassium, water, filtered, milligrams per liter
+USGS	15266500	00940	21	1952-03-08	1989-05-15	Chloride, water, filtered, milligrams per liter
+USGS	15266500	00945	21	1952-03-08	1989-05-15	Sulfate, water, filtered, milligrams per liter
+USGS	15266500	00950	21	1952-03-08	1989-05-15	Fluoride, water, filtered, milligrams per liter
+USGS	15266500	00955	21	1952-03-08	1989-05-15	Silica, water, filtered, milligrams per liter as SiO2
+USGS	15266500	01045	1	1952-03-08	1989-05-15	Iron, water, unfiltered, recoverable, micrograms per liter
+USGS	15266500	01046	1	1952-03-08	1989-05-15	Iron, water, filtered, micrograms per liter
+USGS	15266500	01055	1	1952-03-08	1989-05-15	Manganese, water, unfiltered, recoverable, micrograms per liter
+USGS	15266500	01056	1	1952-03-08	1989-05-15	Manganese, water, filtered, micrograms per liter
+USGS	15266500	30207	2	1952-03-08	1989-05-15	Gage height, above datum, meters
+USGS	15266500	30209	31	1952-03-08	1989-05-15	Discharge, instantaneous, cubic meters per second
+USGS	15266500	70300	1	1952-03-08	1989-05-15	Dissolved solids dried at 180 degrees Celsius, water, filtered, milligrams per liter
+USGS	15266500	70301	21	1952-03-08	1989-05-15	Dissolved solids, water, filtered, sum of constituents, milligrams per liter
+USGS	15266500	70302	20	1952-03-08	1989-05-15	Dissolved solids, water, short tons per day
+USGS	15266500	70303	21	1952-03-08	1989-05-15	Dissolved solids, water, filtered, short tons per acre-foot
+USGS	15266500	71846	1	1952-03-08	1989-05-15	Ammonia (NH3 + NH4+), water, filtered, milligrams per liter as NH4
+USGS	15266500	71851	21	1952-03-08	1989-05-15	Nitrate, water, filtered, milligrams per liter as nitrate
+USGS	15266500	71883	11	1952-03-08	1989-05-15	Manganese, water, unfiltered, micrograms per liter
+USGS	15266500	71885	20	1952-03-08	1989-05-15	Iron, water, unfiltered, micrograms per liter
+USGS	15266500	72000	5	1952-03-08	1989-05-15	Altitude of land surface, feet
+USGS	15266500	80154	1	1952-03-08	1989-05-15	Suspended sediment concentration, milligrams per liter
+USGS	15266500	80155	1	1952-03-08	1989-05-15	Suspended sediment discharge, short tons per day
