@@ -81,6 +81,20 @@
     "href": "appendix_a.html#introduction",
     "title": "Appendix A — Appendix: Data Review and Uplift",
     "section": "A.1 Introduction",
-    "text": "A.1 Introduction"
+    "text": "A.1 Introduction\nPrior to analysis and interpretation of water quality data, we will ensure that all data that meets QA/QC standards outlined in the current project Quality Assurance Project Plan (QAPP) is accessible in the appropriate repository.\nWater quality data from this project is ultimately destined for the EPA Water Quality Exchange (EPA WQX), formerly EPA STORET. The process of transferring these data to the higher-level EPA repository is referred to as data “uplift.”\nSection B10 of the 2020 QAPP describes data management details and responsible parties for each step of the data pipeline from observation to repository. The 2021 data preparation and review process is published here as an appendix as an example of the process applied annually to each year’s data.\n\nA.1.1 2021 Water Quality Data\nIn this appendix we will collate laboratory data from several sources into a single spreadsheet document with a consistent format. The format consists of a spreadsheet template provided by the Alaska Department of Environmental Conservation (ADEC), referred to here as the AQWMS Template:\n\n\n\nAttaching package: 'xfun'\n\n\nThe following objects are masked from 'package:base':\n\n    attr, isFALSE\n\n\nDownload the AQWMS Water Quality Data Spreadsheet Template"
+  },
+  {
+    "objectID": "appendix_a.html",
+    "href": "appendix_a.html",
+    "title": "Appendix A — Quarto Computations",
+    "section": "",
+    "text": "B Appendix: Data Review and Uplift"
+  },
+  {
+    "objectID": "appendix_a.html#introduction-1",
+    "href": "appendix_a.html#introduction-1",
+    "title": "Appendix A — Appendix: Data Review and Uplift",
+    "section": "A.2 Introduction",
+    "text": "A.2 Introduction\nPrior to analysis and interpretation of water quality data, we will ensure that all data that meets QA/QC standards outlined in the current project Quality Assurance Project Plan (QAPP) is accessible in the appropriate repository.\nWater quality data from this project is ultimately destined for the EPA Water Quality Exchange (EPA WQX), formerly EPA STORET. The process of transferring these data to the higher-level EPA repository is referred to as data “uplift.”\nSection B10 of the 2020 QAPP describes data management details and responsible parties for each step of the data pipeline from observation to repository. The 2021 data preparation and review process is published here as an appendix as an example of the process applied annually to each year’s data.\n\nA.2.1 2021 Water Quality Data\nIn this appendix we will collate laboratory data from several sources into a single spreadsheet document with a consistent format. The format consists of a spreadsheet template provided by the Alaska Department of Environmental Conservation (ADEC), referred to here as the AQWMS Template:\n\n\n\nAttaching package: 'xfun'\n\n\nThe following objects are masked from 'package:base':\n\n    attr, isFALSE\n\n\nDownload the AQWMS Water Quality Data Spreadsheet Template"
   }
 ]

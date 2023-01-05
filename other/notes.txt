@@ -1,0 +1,18 @@
+# for unclear reasons,  DUP status is incorrectly assigned to the following:
+# KR RM 22 SOC 2021-05-11 200.7
+# KR RM 1.5 2021-07-27 200.7
+# KR RM 23 2021-05-11 200.7
+# KR RM 70 2021-07-27 200.7
+
+# likely explanation -- als ran these as LAB duplicates ... was this even requested or part of the qapp????? yeesh.
+# steps:
+# 1.) ensure data is transferred from EDD to final export (currently is not, eg. average = "NA", rpd is blank)
+# 2.) assign these data as LAB replicates. wtf.
+
+----> not sure if the above is incorporated in flwo yet 3/29/2022
+
+
+in sgs, FIELD dups are labeled "PS" (project sample) is sample_type
+in als, LAB dups are labeled "DUP1" in sample_type
+
+so::: if its a FIELD dup then this info in conatined in sample name only, noty in 

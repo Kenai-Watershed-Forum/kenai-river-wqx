@@ -1,0 +1,27 @@
+"monitoring_location_id","activity_start_date","result_analytical_method_id","activity_type","n_planned","n_actual"
+"KR RM 0 NNC",2021-05-11,"4500-NO3(F)","Quality Control Field Replicate Msr/Obs",1,1
+"KR RM 0 NNC",2021-05-11,"4500-P-E","Quality Control Field Replicate Msr/Obs",1,1
+"KR RM 0 NNC",2021-05-11,"200.7","Quality Control Field Replicate Msr/Obs",1,1
+"KR RM 0 NNC",2021-05-11,"200.8","Quality Control Field Replicate Msr/Obs",1,1
+"KR RM 0 NNC",2021-05-11,"2540-D","Quality Control Field Replicate Msr/Obs",1,1
+"KR RM 0 NNC",2021-05-11,"9222D","Quality Control Field Replicate Msr/Obs",1,1
+"KR RM 31",2021-05-11,"4500-NO3(F)","Quality Control Field Replicate Msr/Obs",1,1
+"KR RM 31",2021-05-11,"4500-P-E","Quality Control Field Replicate Msr/Obs",1,1
+"KR RM 31",2021-05-11,"200.7","Quality Control Field Replicate Msr/Obs",1,NA
+"KR RM 31",2021-05-11,"2540-D","Quality Control Field Replicate Msr/Obs",1,1
+"KR RM 31",2021-05-11,"9222D","Quality Control Field Replicate Msr/Obs",1,1
+"KR RM 0 NNC",2021-07-27,"4500-NO3(F)","Quality Control Field Replicate Msr/Obs",1,1
+"KR RM 0 NNC",2021-07-27,"4500-P-E","Quality Control Field Replicate Msr/Obs",1,1
+"KR RM 0 NNC",2021-07-27,"200.7","Quality Control Field Replicate Msr/Obs",1,1
+"KR RM 0 NNC",2021-07-27,"200.8","Quality Control Field Replicate Msr/Obs",1,1
+"KR RM 0 NNC",2021-07-27,"2540-D","Quality Control Field Replicate Msr/Obs",1,1
+"KR RM 0 NNC",2021-07-27,"9222D","Quality Control Field Replicate Msr/Obs",1,1
+"KR RM 1.5",2021-07-27,"8260D","Quality Control Sample-Trip Blank",1,1
+"KR RM 6.5",2021-07-27,"8260D","Quality Control Sample-Trip Blank",1,1
+"KR RM 31",2021-07-27,"4500-NO3(F)","Quality Control Field Replicate Msr/Obs",1,1
+"KR RM 31",2021-07-27,"4500-P-E","Quality Control Field Replicate Msr/Obs",1,1
+"KR RM 31",2021-07-27,"200.7","Quality Control Field Replicate Msr/Obs",1,1
+"KR RM 31",2021-07-27,"2540-D","Quality Control Field Replicate Msr/Obs",1,1
+"KR RM 31",2021-07-27,"9222D","Quality Control Field Replicate Msr/Obs",1,1
+"KR RM 40",2021-07-27,"8260D","Quality Control Sample-Trip Blank",1,1
+"KR RM 43",2021-07-27,"8260D","Quality Control Sample-Trip Blank",1,1
