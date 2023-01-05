@@ -3,9 +3,9 @@ project:
   output-dir: docs
 
 book:
-  title: "kenai-river-wqx-report-v2"
+  title: "Kenai River Baseline Water Quality Assessment [DRAFT]"
   author: "Kenai Watershed Forum"
-  date: "1/4/2023"
+  date: "1/5/2023"
   chapters:
     - index.qmd
     - acknowledgements.qmd
@@ -14,6 +14,9 @@ book:
     - acronyms.qmd
     - intro.qmd
     - study_area.qmd
+    - methods.qmd
+    - results.qmd
+    - data_qa_qc.qmd
     - summary.qmd
     - references.qmd
   appendices:
