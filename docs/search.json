@@ -11,12 +11,12 @@
     "href": "intro.html",
     "title": "1  Introduction",
     "section": "",
-    "text": "This is a book created from markdown and executable code.\nSee Knuth (1984) for additional discussion of literate programming.\n\n1 + 1\n\n[1] 2\n\n\n\n\n\n\nKnuth, Donald E. 1984. “Literate Programming.” Comput. J. 27 (2): 97–111. https://doi.org/10.1093/comjnl/27.2.97."
+    "text": "Introduction/project history"
   },
   {
     "objectID": "summary.html",
     "href": "summary.html",
-    "title": "2  Summary",
+    "title": "3  Summary",
     "section": "",
     "text": "In summary, this book has no content whatsoever.\n\n1 + 1\n\n[1] 2"
   },
@@ -26,5 +26,61 @@
     "title": "References",
     "section": "",
     "text": "Knuth, Donald E. 1984. “Literate Programming.” Comput.\nJ. 27 (2): 97–111. https://doi.org/10.1093/comjnl/27.2.97."
+  },
+  {
+    "objectID": "acknowledgements.html",
+    "href": "acknowledgements.html",
+    "title": "Acknowledgements",
+    "section": "",
+    "text": "Acknowledgements here"
+  },
+  {
+    "objectID": "acronyms.html",
+    "href": "acronyms.html",
+    "title": "Acronyms",
+    "section": "",
+    "text": "Acronyms here"
+  },
+  {
+    "objectID": "abstract.html",
+    "href": "abstract.html",
+    "title": "Abstract",
+    "section": "",
+    "text": "Abstract here"
+  },
+  {
+    "objectID": "units.html",
+    "href": "units.html",
+    "title": "Units",
+    "section": "",
+    "text": "Units here"
+  },
+  {
+    "objectID": "study_area.html#description",
+    "href": "study_area.html#description",
+    "title": "2  Study Area",
+    "section": "2.1 Description",
+    "text": "2.1 Description"
+  },
+  {
+    "objectID": "study_area.html#figuresmaps",
+    "href": "study_area.html#figuresmaps",
+    "title": "2  Study Area",
+    "section": "2.2 Figures/maps",
+    "text": "2.2 Figures/maps"
+  },
+  {
+    "objectID": "study_area.html#sampling-sites-descriptionsphotos",
+    "href": "study_area.html#sampling-sites-descriptionsphotos",
+    "title": "2  Study Area",
+    "section": "2.3 Sampling sites descriptions/photos",
+    "text": "2.3 Sampling sites descriptions/photos\n\n2.3.1 Tributary Sites\n\n\n2.3.2 Main Stem Sites"
+  },
+  {
+    "objectID": "appendix_a.html#introduction",
+    "href": "appendix_a.html#introduction",
+    "title": "Appendix A — Appendix: Data Review and Uplift",
+    "section": "A.1 Introduction",
+    "text": "A.1 Introduction"
   }
 ]
