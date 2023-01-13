@@ -3,9 +3,9 @@ project:
   output-dir: docs
 
 book:
-  title: "Kenai River Baseline Water Quality Assessment [DRAFT]"
-  author: "Kenai Watershed Forum"
-  date: "1/5/2023"
+  title: "Water Quality Assessment of the Kenai River Watershed from 2000 to 2023 [DRAFT]"
+  author: "Benjamin Meyer, Kenai Watershed Forum"
+  date: "1/11/2023"
   chapters:
     - index.qmd
     - acknowledgements.qmd

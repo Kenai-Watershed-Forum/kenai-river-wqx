@@ -1,3 +1,14 @@
 # Methods
 
-Methods here
+We collected water samples at 13 locations along the Kenai River mainstem and from eight tributaries near their confluence points (see Figure XXX). These locations selected by a team of 
+
+chosen by dozens of participants in order to accurately represent the Kenai River Watershed’s ambient water quality conditions (Ashton, 1998) [UPDATE THIS REF]. Sampling occurred in the spring and the summer each year beginning in summer 2000.
+
+After a half‐day training session, staff from governmental and non‐governmental agencies dispersed between 7:00 AM - 9:00 AM to sampling locations in teams of two or more to collect samples. All samples were collected on the same day, and the timing of the sampling coincided with an outgoing tide, near low tide, to reduce the potential of collecting saline water from Cook Inlet. Typically, the individual collecting the sample waded into the water until the water level was around two feet deep, and the sample was collected while facing upstream. If the individual collected the sample using a boat, the samples were collected from the bow while the boat faced upstream. The bottles were placed approximately one foot below the surface to collect the water samples and then preserved for transportation to the laboratory. Beginning in spring 2002, two duplicate samples were collected for quality control. These procedures follow the protocols established in a Quality Assurance Project Plan that was originally approved by the ADEC in 2001 and later revised and approved by ADEC again in 2013. [UPDATE APPROVALS AND REFER TO CURRENT FIELD METHODS/QAPP IN APPENDIX].
+
+We used the R programming language in Posit software for all analyses, and generated this report using Quarto publishing software. The report is available both as a downloadable PDF and as an online report at [WEB ADDRESS].
+
+In instances where data was reported as not detected the half of the MDL or MRL [ACRONYMS] was used to estimate the values and run the analysis. The MRL was used because during the early years of the project, the lab only provided this information and not the MDL.
+
+\newpage
+
