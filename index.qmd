@@ -1,11 +1,14 @@
 # Preface {.unnumbered}
 
-This document is the online version of the Water Quality Assessment of the Kenai River Watershed. The report can also be downloaded as an Microsoft Word document by clicking on the 'W' symbol in the upper left corner. All project files are hosted in a public GitHub repository, which is accessible by clicking the GitHub symbol in the upper left corner.
+This document is the online version of the Water Quality Assessment of the Kenai River Watershed, 2000 - 2023.
+
+The report can also be downloaded as an Microsoft Word document by clicking on the 'W' symbol in the upper left corner. All project files are hosted in a public GitHub repository, which is accessible by clicking the GitHub symbol in the upper left corner.
+
+<br>
 
 ```{r echo = F}
 knitr::include_graphics("other/documents/images/kenai_lake.jpg")
 ```
-
 
 ```{r echo = F}
 knitr::include_graphics("other/documents/images/KWF_logo.jpg")

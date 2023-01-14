@@ -6,6 +6,8 @@ The water quality data focuses on metals, nutrients, hydrocarbons, fecal colifor
 
 The results are displayed in graphs with associated written analyses and tables. The graphs display the median and variance for each parameter at a specific location, and these graphs are separated depending on whether the data was collected in the spring or in the summer. In some cases, parameters were present in levels that could not be detected by current laboratory analysis, and when this occurred with over 80% of the samples, scatter plots have been displayed omitting the unknown low levels. 
 
+[previous reports published in 2007 and 2016]
+
 [Text from 2016 report: A trend analysis was conducted for the following parameters: Lead, Zinc and BTEX; based on the nature of the data, a polynomial line was used because it is the best way to capture and represent the fluctuations in the data.]
 
 Complete data tables can be found in Appendix XXX and XXX, which are organized by parameter and site location, respectively.

@@ -6,11 +6,23 @@ Located in southcentral Alaska, the Kenai River is part of the Cook Inlet Basin 
 
 ## Figures/maps
 
+```{r echo = F}
+knitr::include_graphics("other/documents/images/kenai_watershed_map.jpg")
+```
+
+<br>
+
+```{r echo = F}
+knitr::include_graphics("other/documents/images/kenai_river_map_bw.png")
+
+# might need to rotate this 90 degrees?
+```
+
+
 ## Sampling sites descriptions/photos
 
 ### Tributary Sites
 
 ### Main Stem Sites
-
 
 \newpage

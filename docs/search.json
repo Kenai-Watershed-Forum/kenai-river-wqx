@@ -1,10 +1,24 @@
 [
   {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "Water Quality Assessment of the Kenai River Watershed from 2000 to 2023 [DRAFT]",
-    "section": "",
-    "text": "Preface\nThis document is the online version of the Water Quality Assessment of the Kenai River Watershed. The report can also be downloaded as an Microsoft Word document by clicking on the ‘W’ symbol in the upper left corner. All project files are hosted in a public GitHub repository, which is accessible by clicking the GitHub symbol in the upper left corner."
+    "objectID": "study_area.html#description",
+    "href": "study_area.html#description",
+    "title": "2  Study Area",
+    "section": "2.1 Description",
+    "text": "2.1 Description\nLocated in southcentral Alaska, the Kenai River is part of the Cook Inlet Basin and is linked to the surrounding communities through sport and commercial fishing, tourism, recreation, and the propagation of fish and wildlife (see Figure 1). Five species of Pacific salmon flourish in the Kenai River Watershed, comprising 30% of the commercial Chinook harvest and 40% of the commercial sockeye harvest (Glass, 1999). Surface runoff, groundwater composition, natural minerals, aquatic plants and animals, and human activities can affect water quality in this area (Glass, 1999). Potential sources of pollution from humans include gasoline powered boat engines, agriculture, mining, street runoff, and perforated septic tanks."
+  },
+  {
+    "objectID": "study_area.html#figuresmaps",
+    "href": "study_area.html#figuresmaps",
+    "title": "2  Study Area",
+    "section": "2.2 Figures/maps",
+    "text": "2.2 Figures/maps"
+  },
+  {
+    "objectID": "study_area.html#sampling-sites-descriptionsphotos",
+    "href": "study_area.html#sampling-sites-descriptionsphotos",
+    "title": "2  Study Area",
+    "section": "2.3 Sampling sites descriptions/photos",
+    "text": "2.3 Sampling sites descriptions/photos\n\n2.3.1 Tributary Sites\n\n\n2.3.2 Main Stem Sites"
   },
   {
     "objectID": "acknowledgements.html",
@@ -39,28 +53,7 @@
     "href": "intro.html",
     "title": "1  Introduction",
     "section": "",
-    "text": "This report summarizes water quality data collected between summer 2000 and summer 2023 from 22 sampling locations in the Kenai River mainstem and its tributaries. Local, state, federal, and tribal government entities, as well as several local area non‐profits formed a cooperative partnership so that sampling teams from various agencies were able to collect water samples twice per year, once in the spring and once in the summer, and this effort continues beyond the publication of this report. The locations of the sampling sites are identified with maps, GPS coordinates, and photographs. Trends in the data are highlighted, and the results are compared to the Alaska and federal water quality standards for freshwater aquatic life.\nThe water quality data focuses on metals, nutrients, hydrocarbons, fecal coliform bacteria, and various field parameters. Arsenic, cadmium, chromium, copper, lead, and zinc are the dissolved metals that have been analyzed, and calcium, iron, and magnesium were reported as total metals. Additionally, the report focuses on the nutrients nitrate and phosphorus. Specifically, the hydrocarbons that were collected and analyzed include diesel range organics, gasoline range organics, residual range organics, benzene, toluene, ethylbenzene, m,p-xylene, and o-xylene. Fecal coliform bacteria, pH, specific conductance, total suspended solids, turbidity, and water temperature are the remaining parameters that have been included in the analysis.\nThe results are displayed in graphs with associated written analyses and tables. The graphs display the median and variance for each parameter at a specific location, and these graphs are separated depending on whether the data was collected in the spring or in the summer. In some cases, parameters were present in levels that could not be detected by current laboratory analysis, and when this occurred with over 80% of the samples, scatter plots have been displayed omitting the unknown low levels.\n[Text from 2016 report: A trend analysis was conducted for the following parameters: Lead, Zinc and BTEX; based on the nature of the data, a polynomial line was used because it is the best way to capture and represent the fluctuations in the data.]\nComplete data tables can be found in Appendix XXX and XXX, which are organized by parameter and site location, respectively."
-  },
-  {
-    "objectID": "study_area.html#description",
-    "href": "study_area.html#description",
-    "title": "2  Study Area",
-    "section": "2.1 Description",
-    "text": "2.1 Description\nLocated in southcentral Alaska, the Kenai River is part of the Cook Inlet Basin and is linked to the surrounding communities through sport and commercial fishing, tourism, recreation, and the propagation of fish and wildlife (see Figure 1). Five species of Pacific salmon flourish in the Kenai River Watershed, comprising 30% of the commercial Chinook harvest and 40% of the commercial sockeye harvest (Glass, 1999). Surface runoff, groundwater composition, natural minerals, aquatic plants and animals, and human activities can affect water quality in this area (Glass, 1999). Potential sources of pollution from humans include gasoline powered boat engines, agriculture, mining, street runoff, and perforated septic tanks."
-  },
-  {
-    "objectID": "study_area.html#figuresmaps",
-    "href": "study_area.html#figuresmaps",
-    "title": "2  Study Area",
-    "section": "2.2 Figures/maps",
-    "text": "2.2 Figures/maps"
-  },
-  {
-    "objectID": "study_area.html#sampling-sites-descriptionsphotos",
-    "href": "study_area.html#sampling-sites-descriptionsphotos",
-    "title": "2  Study Area",
-    "section": "2.3 Sampling sites descriptions/photos",
-    "text": "2.3 Sampling sites descriptions/photos\n\n2.3.1 Tributary Sites\n\n\n2.3.2 Main Stem Sites"
+    "text": "This report summarizes water quality data collected between summer 2000 and summer 2023 from 22 sampling locations in the Kenai River mainstem and its tributaries. Local, state, federal, and tribal government entities, as well as several local area non‐profits formed a cooperative partnership so that sampling teams from various agencies were able to collect water samples twice per year, once in the spring and once in the summer, and this effort continues beyond the publication of this report. The locations of the sampling sites are identified with maps, GPS coordinates, and photographs. Trends in the data are highlighted, and the results are compared to the Alaska and federal water quality standards for freshwater aquatic life.\nThe water quality data focuses on metals, nutrients, hydrocarbons, fecal coliform bacteria, and various field parameters. Arsenic, cadmium, chromium, copper, lead, and zinc are the dissolved metals that have been analyzed, and calcium, iron, and magnesium were reported as total metals. Additionally, the report focuses on the nutrients nitrate and phosphorus. Specifically, the hydrocarbons that were collected and analyzed include diesel range organics, gasoline range organics, residual range organics, benzene, toluene, ethylbenzene, m,p-xylene, and o-xylene. Fecal coliform bacteria, pH, specific conductance, total suspended solids, turbidity, and water temperature are the remaining parameters that have been included in the analysis.\nThe results are displayed in graphs with associated written analyses and tables. The graphs display the median and variance for each parameter at a specific location, and these graphs are separated depending on whether the data was collected in the spring or in the summer. In some cases, parameters were present in levels that could not be detected by current laboratory analysis, and when this occurred with over 80% of the samples, scatter plots have been displayed omitting the unknown low levels.\n[previous reports published in 2007 and 2016]\n[Text from 2016 report: A trend analysis was conducted for the following parameters: Lead, Zinc and BTEX; based on the nature of the data, a polynomial line was used because it is the best way to capture and represent the fluctuations in the data.]\nComplete data tables can be found in Appendix XXX and XXX, which are organized by parameter and site location, respectively."
   },
   {
     "objectID": "methods.html",
