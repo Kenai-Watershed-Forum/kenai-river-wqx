@@ -15,4 +15,4 @@
 in sgs, FIELD dups are labeled "PS" (project sample) is sample_type
 in als, LAB dups are labeled "DUP1" in sample_type
 
-so::: if its a FIELD dup then this info in conatined in sample name only, noty in 
+so::: if its a FIELD dup then this info in conatined in sample name only, not in
