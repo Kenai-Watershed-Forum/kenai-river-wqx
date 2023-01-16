@@ -4,7 +4,7 @@
     "href": "study_area.html#description",
     "title": "2  Study Area",
     "section": "2.1 Description",
-    "text": "2.1 Description\nLocated in southcentral Alaska, the Kenai River is part of the Cook Inlet Basin and is linked to the surrounding communities through sport and commercial fishing, tourism, recreation, and the propagation of fish and wildlife (see Figure 1). Five species of Pacific salmon flourish in the Kenai River Watershed, comprising 30% of the commercial Chinook harvest and 40% of the commercial sockeye harvest (Glass, 1999). Surface runoff, groundwater composition, natural minerals, aquatic plants and animals, and human activities can affect water quality in this area (Glass, 1999). Potential sources of pollution from humans include gasoline powered boat engines, agriculture, mining, street runoff, and perforated septic tanks."
+    "text": "2.1 Description\nLocated in southcentral Alaska, the Kenai River is part of the Cook Inlet Basin and is linked to the surrounding communities through sport and commercial fishing, tourism, recreation, and the propagation of fish and wildlife (see Figure 1). Five species of Pacific salmon flourish in the Kenai River Watershed, comprising 30% of the commercial Chinook harvest and 40% of the commercial sockeye harvest (Glass, 1999). Surface runoff, groundwater composition, natural minerals, aquatic plants and animals, and human activities can affect water quality in this area (Glass, 1999). Potential sources of pollution from humans include gasoline powered boat engines, agriculture, mining, street runoff, and perforated septic tanks.\n[Update descriptions and references to more current]"
   },
   {
     "objectID": "study_area.html#figuresmaps",
@@ -103,5 +103,12 @@
     "title": "Appendix B — Appendix: Sample Event Timing",
     "section": "B.3 Time of Day",
     "text": "B.3 Time of Day\n\n\nShow the code\n# dot plot\nkrbwqm_dates %>%\n  ggplot(aes(year,time_max_tide)) +\n  geom_point() +\n  facet_grid(.~season) +\n  ggtitle(\"Kenai River Baseline Water Quality Sampling Times\\nHigh Tides\")\n\n\n\n\n\nShow the code\nkrbwqm_dates %>%\n  ggplot(aes(year,time_min_tide)) +\n  geom_point() +\n  facet_grid(.~season) +\n  ggtitle(\"Kenai River Baseline Water Quality Sampling Times\\nLow Tides\")\n\n\n\n\n\nShow the code\n# calculate spring and summer average days\nkrbwqm_dates %>%\n  distinct(julian_day,season,year) %>%\n  group_by(season) %>%\n  summarise(avg_date = format(as.Date(round(mean(julian_day)), origin = as.Date(\"2024-01-01\")), \"%m-%d\"),\n            stdev = round(sd(julian_day)),\n            n_years = n(),\n            min_year = min(year),\n            max_year = max(year))\n\n\n# A tibble: 2 × 6\n  season avg_date stdev n_years min_year max_year\n  <chr>  <chr>    <dbl>   <int>    <dbl>    <dbl>\n1 spring 04-27        7      21     2001     2022\n2 summer 07-25        4      23     2000     2022"
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Water Quality Assessment of the Kenai River Watershed from 2000 to 2023 [DRAFT]",
+    "section": "",
+    "text": "Preface\nThis document is the online version of the Water Quality Assessment of the Kenai River Watershed, 2000 - 2023.\nThe report can also be downloaded as an Microsoft Word document by clicking on the ‘W’ symbol in the upper left corner. All project files are hosted in a public GitHub repository, which is accessible by clicking the GitHub symbol in the upper left corner."
   }
 ]
