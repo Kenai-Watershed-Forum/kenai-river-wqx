@@ -45,3 +45,6 @@ format:
 
 editor: visual
 
+margin-header: |
+  ![](other/documents/images/KWF_logo.jpg)
+

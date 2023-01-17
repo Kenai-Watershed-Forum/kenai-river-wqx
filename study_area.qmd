@@ -24,7 +24,9 @@ knitr::include_graphics("other/documents/images/kenai_river_map_bw.png")
 ## Sampling sites descriptions/photos
 
 ### Tributary Sites
+This section will include a brief description of each of the main stem field sampling sites, along with coordinates and a photo.
 
 ### Main Stem Sites
+This section will include a brief description of each of the tributary field sampling sites, along with coordinates and a photo.
 
 \newpage

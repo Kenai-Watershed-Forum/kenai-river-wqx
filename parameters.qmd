@@ -1,0 +1,53 @@
+# Water Quality Parameters
+
+## Interpreting Box Plots
+Each of the following graphs display the sampling results for a specific parameter, like arsenic. Within these graphs, a box and extending lines represent the results reported at each sampling site. A horizontal line within the box corresponds to the median of the data. The box contains 50% of the data and the vertical lines display the minimum and maximum values. Any data points that fall outside of the acceptable range are outliers and are portrayed as small circles.
+
+```{r echo = F, fig.cap = "Diagram of the components of a box plot."}
+
+knitr::include_graphics("other/documents/images/boxplots.jpg")
+
+```
+
+```{r echo = F}
+
+# steps
+## intake all existing WQX data with EGReT (?)
+## recreate 2000 - 2014 figures
+### get csv of adec drinking water standards
+
+```
+
+
+```{r echo = F}
+
+
+library(dataRetrieval)
+# Choptank River near Greensboro, MD
+siteNumber <- "01491000"
+ChoptankInfo <- readNWISsite(siteNumber)
+parameterCd <- "00060"
+
+# Raw daily data:
+rawDailyData <- readNWISdv(
+  siteNumber, parameterCd,
+  "1980-01-01", "2010-01-01"
+)
+
+# Sample data Nitrate:
+parameterCd <- "00618"
+qwData <- readNWISqw(
+  siteNumber, parameterCd,
+  "1980-01-01", "2010-01-01"
+)
+
+pCode <- readNWISpCode(parameterCd)
+
+
+
+```
+
+
+
+
+\newpage
