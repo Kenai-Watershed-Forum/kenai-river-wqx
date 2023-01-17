@@ -7,6 +7,8 @@ The report can also be downloaded as an Microsoft Word document by clicking on t
 <br>
 
 ```{r echo = F}
+library(knitr)
+
 knitr::include_graphics("other/documents/images/kenai_lake.jpg")
 ```
 
