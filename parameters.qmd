@@ -24,7 +24,8 @@ knitr::include_graphics("other/documents/images/boxplots.jpg")
 
 library(dataRetrieval)
 # Choptank River near Greensboro, MD
-siteNumber <- "01491000"
+siteNumber <- "15246000"
+               
 ChoptankInfo <- readNWISsite(siteNumber)
 parameterCd <- "00060"
 
@@ -42,6 +43,10 @@ qwData <- readNWISqw(
 )
 
 pCode <- readNWISpCode(parameterCd)
+
+# determine site IDs
+# determine parameter IDs
+10000173
 
 
 
