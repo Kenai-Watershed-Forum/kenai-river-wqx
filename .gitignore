@@ -3,4 +3,8 @@
 .RData
 .Ruserdata
 /.quarto/
+<<<<<<< HEAD
 other/input/WQX_downloads/downloads
+=======
+other/input/WQX_downloads
+>>>>>>> d996006e9e909f6d8518c88ed2f2f1d446a5e0d9
