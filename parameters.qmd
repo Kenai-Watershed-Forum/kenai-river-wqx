@@ -21,11 +21,12 @@ knitr::include_graphics("other/documents/images/boxplots.jpg")
 
 ```{r echo = F}
 
+# readNWIS won't read the site IDs I try so far ....
 
 library(dataRetrieval)
 # Choptank River near Greensboro, MD
-siteNumber <- "15246000"
-               
+siteNumber <- "10000022"
+
 ChoptankInfo <- readNWISsite(siteNumber)
 parameterCd <- "00060"
 

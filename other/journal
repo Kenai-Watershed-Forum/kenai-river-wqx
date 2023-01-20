@@ -42,5 +42,10 @@ Sent QAPP revisions to Katherine Brown at EPA.
 
 Next priority: get 2021 data at least functional -- even if not fully ready to upload to EPA WQX -- so that we can make some basic charts and graphs as in previous report example (Guerron Orejuela 2016)
 
-Get csv/list of MonitoringLocationID numbers; feed this into dataRetrieval vignette.
+mini-steps:
+- Get csv/list of MonitoringLocationID numbers; feed this into dataRetrieval vignette.
+- Modify data flow figure to update to ADEC expectations
+
+1/17/2023
+-
 
