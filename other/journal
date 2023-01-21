@@ -47,5 +47,8 @@ mini-steps:
 - Modify data flow figure to update to ADEC expectations
 
 1/17/2023
--
+
+1/20/2023
+- Edited text in main report, updating refs from 2016 pub
+- Decided that fo the moment, the dataRetrieval package may not be fully cooperative for our needs. Very large dataset, easier to keep as a csv downloaded from EPA WQX, kept on local drive and not GitHub vis using .gitignore file
 

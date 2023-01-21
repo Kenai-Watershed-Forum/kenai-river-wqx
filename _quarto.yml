@@ -5,7 +5,7 @@ project:
 book:
   title: "Water Quality Assessment of the Kenai River Watershed from 2000 to 2023 [DRAFT]"
   author: "Benjamin Meyer, Kenai Watershed Forum"
-  date: "1/11/2023"
+  date: "1/20/2023"
   chapters:
     - index.qmd
     - acknowledgements.qmd
@@ -15,7 +15,7 @@ book:
     - intro.qmd
     - study_area.qmd
     - methods.qmd
-    - results.qmd
+    - parameters.qmd
     - data_qa_qc.qmd
     - summary.qmd
     - references.qmd
