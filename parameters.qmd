@@ -8,9 +8,9 @@ Each of the following graphs display the sampling results for a specific paramet
 
 <br>
 
-```{r echo = F}
+```{r echo = F, message = F}
 
-## intializations
+## initialization
 # clear environment
 rm(list=ls())
 
