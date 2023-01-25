@@ -10,6 +10,7 @@ format:
     code-tools: true
     code-summary: "Show the code"
 ---
+<<<<<<< HEAD
 
 
 ::: {.content-visible when-format="html"}
@@ -17,6 +18,15 @@ format:
 
 This document is the online version of the Water Quality Assessment of the Kenai River Watershed, 2000 - 2023. It is an update to historical reports published by Kenai WAtershed Forum summarising available data to date for this project [@mccard2007; @guerronorejuela2016].
 
+=======
+
+
+::: {.content-visible when-format="html"}
+
+
+This document is the online version of the Water Quality Assessment of the Kenai River Watershed, 2000 - 2023. It is an update to historical reports  summarising available data to date for this project [@mccard2007; @guerronorejuela2016].
+
+>>>>>>> a3463f68df24706f4d59977b75b56204ee413bdf
 To see a ten-minute presentation introducing this project and it's history, watch the following YouTube video below:
 
 {{< video https://youtu.be/znROWo6MfAg >}}
