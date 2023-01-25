@@ -11,37 +11,35 @@ format:
 
 # Appendix: Data Review and Uplift
 
+```{r echo = F, message = F}
+
+# notes 1/24/2023
+# Current plan: 
+# 1.) follow DEC data prep / evaluation steps per QAPP
+# 2.) format data to match WQX web template, as seen on youtube at https://www.youtube.com/watch?v=elsHENWlU5w
+
+```
+
 ## Introduction
 
-Prior to analysis and interpretation of water quality data, we will ensure that all data that meets QA/QC standards outlined in the current project [Quality Assurance Project Plan (QAPP)](https://paperpile.com/app/p/7703451b-460d-00b4-82a0-1086ea2554c3) is accessible in the appropriate repository.
+Prior to publishing analysis and interpretation of water quality data, we will ensure that all data that meets QA/QC standards outlined in the current project [Quality Assurance Project Plan (QAPP)](https://paperpile.com/app/p/7703451b-460d-00b4-82a0-1086ea2554c3) and is accessible in the appropriate repository.
 
-Water quality data from this project is ultimately destined for the EPA Water Quality Exchange (EPA WQX), formerly EPA STORET. The process of transferring these data to the higher-level EPA repository is referred to as data "uplift."
+Water quality data from this project is ultimately destined for the Environmental Protection Agency's Water Quality Exchange (EPA WQX), formerly EPA STORET. The process of transferring these data to the higher-level EPA repository is referred to as data "uplift."
 
 Section B10 of the 2020 QAPP describes data management details and responsible parties for each step of the data pipeline from observation to repository. The 2021 data preparation and review process is published here as an appendix as an example of the process applied annually to each year's data.
-
-```{r appendix a packages, echo = F, message = F}
-# load packages
-
-library("xfun")
-```
 
 
 ### 2021 Water Quality Data
 
-In this appendix we will collate laboratory data from several sources into a single spreadsheet document with a consistent format. The format consists of a spreadsheet template provided by the Alaska Department of Environmental Conservation (ADEC), referred to here as the AQWMS Template:
+In this appendix we will collate 2021 laboratory data from several sources into a single spreadsheet document with a consistent format. The desired end format is a spreadsheet template provided by the EPA Water Quality Exchange. These template files are available to download at <https://www.epa.gov/waterdata/water-quality-exchange-web-template-files>.
 
-```{r, echo = F}
+Once the data is collated, it will be evaluated according to a Quality Assurance Checklist provided by the Alaska Department of Environmental Conservation Soldotna office. Field observations that do not meet the standards described in the evaluation checklist will not be uplifted.
 
-#| warning: false
-#| message: false
+Data uplifted to the EPA WQX is evaluated biannually by the Alaska Department of Environmental Conservation (ADEC) in their [Integrated Water Quality Monitoring and Assessment Report](https://dec.alaska.gov/water/water-quality/integrated-report/)[^appendix_a-1].
+
+[^appendix_a-1]: https://dec.alaska.gov/water/water-quality/integrated-report/
 
 
-xfun::embed_file('other/input/AQWMS/AWQMS_KWF_Baseline_2021.xlsx', text = "Download the AQWMS Water Quality Data Spreadsheet Template")
-```
-
-<br>
-
-AWQMS is an acronym for "Ambient Water Quality Management System," the service used by ADEC to manage and prepare data for potential uplift to the EPA WQX.
 
 #### 2021 Water Quality Data AQWMS Formatting
 
@@ -59,7 +57,9 @@ The code scripts below assemble water quality data from the three analytical lab
 
 ##### 2021 Metals/Nutrients Lab Results (SGS Labs)
 
-```{r, echo = F}
+```{r, echo = F, message = F}
+library("xfun")
+
 xfun::embed_file('other/input/2021_wqx_data/spring_2021_wqx_data/SGS/spring_2021_sgs_batch_info.csv', text = "Download Original Spring 2021 Metals/Nutrients Lab Results from SGS")
 
 ```
@@ -71,8 +71,10 @@ xfun::embed_file('other/input/2021_wqx_data/summer_2021_wqx_data/SGS/summer_2021
 
 \**Note: the chain of custody documents for SGS Laboratories are integrated into the above downloadable PDF files.*
 
-<br>
 
+\newpage
+
+<br>
 
 ```{r, 2021 AQWMS formatting for SGS, echo = F, message = F}
 
@@ -105,7 +107,6 @@ spring21_sample_date <- "5/11/2021"
 # Summer 2021 Sampling Date
 summer21_sample_date <-"7/27/2021"
 ```
-
 
 ```{r message = FALSE, echo = F, include = F}
 
@@ -427,9 +428,6 @@ rm(analysis_code_matching_table,aqwms_analytical_methods,epa_analysis_codes)
 
 ```
 
-
-
-
 ```{r message = FALSE, echo = F, include = F}
 
 #| warning: false
@@ -469,10 +467,7 @@ rm(sgs21_als21_qaqc_dat)
 
 ```
 
-
 <br>
-
-
 
 ##### 2021 Fecal Coliform Lab Results (Soldotna Wastewater Treatment Plant (SWWTP)/Taurianen Engineering)
 
@@ -773,7 +768,6 @@ xfun::embed_file('other/input/2021_wqx_data/spring_2021_wqx_data/SWWTP/SWWTP_Spr
 xfun::embed_file('other/input/2021_wqx_data/summer_2021_wqx_data/SWWTP/TSS_CoC_SWWTP_Summer2021.pdf', text = "Download Summer 2021 Total Suspended Solids Chain of Custody")
 ```
 
-
 <br>
 
 ```{r include = F}
@@ -920,7 +914,6 @@ dat <- bind_rows(dat,swwtp_tss21)
 rm(swwtp_spring21,swwtp_tss_sitenames,swwtp_tss21)
 
 ```
-
 
 ```{r include = F}
 
@@ -1139,8 +1132,6 @@ write.csv(dat,"other/output/aqwms_formatted_results/2021_kwf_baseline_results_aq
 
 ```
 
-
-
 <br>
 
 ### 2021 Provisional Results, Prior to Data Review
@@ -1159,7 +1150,6 @@ xfun::embed_file('other/output/aqwms_formatted_results/2021_kwf_baseline_results
 
 ------------------------------------------------------------------------
 
-
 ### 2021 Data Evaluation
 
 Prior to submission to ADEC, all water quality data must be checked against a series of standard questions in order to evaluate how quality assurance / quality check (QA/QC) processes are instituted. The draft Data Evaluation Checklist Template (available for download below) outlines these questions:
@@ -1176,11 +1166,7 @@ xfun::embed_file('other/documents/AQWMS_documents/Data_Evaluation_Checklist_Temp
 
 <details>
 
-<summary>
-
-*Show/Hide Code used to Evaluate Overall Project Success*
-
-</summary>
+<summary>*Show/Hide Code used to Evaluate Overall Project Success*</summary>
 
 ```{r, echo = F, message = F}
 
@@ -1557,22 +1543,21 @@ write.csv(holdtime_dat,"other/output/field_qa_qc_data/holding_time_calcs.csv", r
 
 <br>
 
-1.  [**Did the project follow the QAPP?**]{.ul} *Yes*. [**Were there any deviations from the sampling plan?**]{.ul} *Yes. Refer to Individual Answers Below.*
+1.  [**Did the project follow the QAPP?**]{.underline} *Yes*. [**Were there any deviations from the sampling plan?**]{.underline} *Yes. Refer to Individual Answers Below.*
 
 <br>
 
-2.  [**Was the data collected representative of environmental conditions?**]{.ul} *Yes*. Notes: Study design is intended to create two single-day snapshots, one in spring and another in summer, across a wide geographical area of the Kenai River watershed.
+2.  [**Was the data collected representative of environmental conditions?**]{.underline} *Yes*. Notes: Study design is intended to create two single-day snapshots, one in spring and another in summer, across a wide geographical area of the Kenai River watershed.
 
 <br>
 
-3.  [**Are site names, dates, and times correct and as expected?**]{.ul} *Yes, after post-season correction documented in this report.* Notes: In 2021 Kenai Watershed Forum used pre-printed labels on all sample bottles, reducing opportunity for field and lab transcription errors. Remaining site name transcription errors were corrected in post-season data review.
+3.  [**Are site names, dates, and times correct and as expected?**]{.underline} *Yes, after post-season correction documented in this report.* Notes: In 2021 Kenai Watershed Forum used pre-printed labels on all sample bottles, reducing opportunity for field and lab transcription errors. Remaining site name transcription errors were corrected in post-season data review.
 
 <br>
 
-4.  [**Is the dataset complete and did you receive the expected number of results?**]{.ul} *TBD*. Notes: we acquired the expected number of results in 2021 sampling events. All sites described in the QAPP were visited twice in 2021, and all water sample collections were successfully conducted. However most intrinsic water quality parameters mentioned in the current QAPP were not collected in 2021.
+4.  [**Is the dataset complete and did you receive the expected number of results?**]{.underline} *TBD*. Notes: we acquired the expected number of results in 2021 sampling events. All sites described in the QAPP were visited twice in 2021, and all water sample collections were successfully conducted. However most intrinsic water quality parameters mentioned in the current QAPP were not collected in 2021.
 
 Data evaluation is currently in progress. The values in the downloadable table below are current as of `r Sys.Date()`. The numerator values of "Samples Submitted to ADEC" and "Usable Samples" are not yet finalized and will depend on feedback received from DEC as part of this pre-database review process.
-
 
     -   Completeness Measure A = (Results Collected) / (Results Submitted to ADEC) \*100%
 
@@ -1607,11 +1592,9 @@ xfun::embed_file("other/output/field_qa_qc_data/planned_actual_analyses_2021.csv
 
 ```
 
-
-
 <br>
 
-5.  [**Were field duplicates, blanks, and/or other QC samples collected as planned?**]{.ul} *Yes, with one exception, see below*
+5.  [**Were field duplicates, blanks, and/or other QC samples collected as planned?**]{.underline} *Yes, with one exception, see below*
 
 ```{r planned-qaqc, echo = F, messages = F, warnings = F}
 
@@ -1621,7 +1604,6 @@ write.csv(planned_actual_blanks_dups_2021,"other/output/field_qa_qc_data/planned
 xfun::embed_file("other/output/field_qa_qc_data/planned_actual_blanks_dups_2021.csv", text = "Download Summary Table of Planned vs. Actual Trip Blank and Field Duplicate Samples for 2021")
 
 ```
-
 
 From the above downloadable table, "Planned vs. Actual Trip Blank and Field Duplicate Samples for 2021," we observe that data from one field duplicate sample is missing. The missing sample is for the 200.7 (total metals) analyses on 2021-05-11 at RM 31 (Morgan's Landing). This error occurred due to a transcription error on the chain of custody form, and the lab did not process a total metals analysis for this site/event.
 
@@ -1644,7 +1626,7 @@ From the above downloadable table, "Planned vs. Actual Trip Blank and Field Dupl
 
 <br>
 
-6.  [**Are the duplicate sample(s) RPD within range described in QAPP?**]{.ul} *Varies by Parameter, see downloadable summary table below*
+6.  [**Are the duplicate sample(s) RPD within range described in QAPP?**]{.underline} *Varies by Parameter, see downloadable summary table below*
 
 -   RPD (Relative Percent Difference) = ((A - B)\*100) / ((A + B) / 2)
 
@@ -1665,8 +1647,7 @@ xfun::embed_file("other/output/field_qa_qc_data/rpd_calcs_2021.xlsx", text = "Do
 
 ```
 
-The above table indicates that **two** RPD values were outside of acceptable QA/QC ranges (>20% RPD). An inquiry has been emailed to ADEC on `r Sys.Date()` on how best to apply this criteria, and how it will affect the extent of the finalized dataset.
-
+The above table indicates that **two** RPD values were outside of acceptable QA/QC ranges (\>20% RPD). An inquiry has been emailed to ADEC on `r Sys.Date()` on how best to apply this criteria, and how it will affect the extent of the finalized dataset.
 
 ##### In-situ Field Data and Instruments
 
@@ -1714,11 +1695,7 @@ xfun::embed_file("other/output/field_qa_qc_data/holding_time_calcs.csv", text = 
 
 <details>
 
-<summary>
-
-*Show/Hide Code used to Evaluate Lab Duplicates, Matrix Spikes, and Blanks*
-
-</summary>
+<summary>*Show/Hide Code used to Evaluate Lab Duplicates, Matrix Spikes, and Blanks*</summary>
 
 ```{r}
 # calculate qa/qc discrepancies as detailed in PDF reports check qapp for guidance, or check w/ qa officer...
@@ -1766,9 +1743,9 @@ xfun::embed_file("other/output/lab_qaqc_data/matrix_spike_recovery_fails.csv", t
 
 No additional lab QA/QC anomalies for any other parameters were noted by any laboratories contracted in 2021, including lab duplicates and lab blanks. Additional details are available upon request at [hydrology\@kenaiwatershed.org](mailto:hydrology@kenaiwatershed.org){.email}.
 
-
 ###### Total vs Dissolved Metals
-We will verify that the quantity of total metals is less than that of dissolved metals... [in progress]
+
+We will verify that the quantity of total metals is less than that of dissolved metals... \[in progress\]
 
 ```{r, echo = F}
 
@@ -1787,7 +1764,6 @@ z <- dat %>%
 
 # note mg vs ug
 ```
-
 
 21. Is any laboratory data rejected and why? ***Yes, see question 6 on Relative Percent Difference values***.
 
@@ -1861,3 +1837,4 @@ z <- dat %>%
 
 ```
 
+\newpage
