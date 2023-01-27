@@ -1,6 +1,19 @@
-Note: I am currently in the process of transferring content FROM the document, "DRAFT_QAPP_KenaiRiverWatershed_Baseline_20220824.docx," TO the document "qapp_draft_4.1.docx."
+10/11/2022 Benjamin Meyer
+
+Note: I am currently in the process of transferring content FROM the document, "DRAFT_QAPP_KenaiRiverWatershed_Baseline_202XXXXX.docx," TO the document "qapp_draft_4.1.docx."
 
 The original QAPP I inherited was in PDF form. When converted to MS word, formatting was a mess and had no hyperlinks. The hyperlinks are needed
 for keeping track of appendices, figures, tables, references, etc.
 
-Benjamin Meyer 10/11/2022
+
+1/25/2023
+
+The QAPP document was approved the R10 EPA office. The approval memo from Katherine Brown and Raymond Wu is in the "memos" folder of this directory.
+The next step is have it approved by ADEC collaborators.
+
+1/26/2023
+
+The document "DRAFT_QAPP_KenaiRiverWatershed_Baseline_20230125" has edits from/back/forth the EPA office. Meanwhile, the doc "qapp_draft_v4.1" is the correctly formatted doc, that I had been working on
+in Fall 2022. The auto-merge process of these two documents ("qapp_draft_v4.2") produced a lot of weird errors. May have to re-assemble manually instead page by page.
+
+Made it as far as A8 in manually combining these two documents.

@@ -52,3 +52,6 @@ mini-steps:
 - Edited text in main report, updating refs from 2016 pub
 - Decided that fo the moment, the dataRetrieval package may not be fully cooperative for our needs. Very large dataset, easier to keep as a csv downloaded from EPA WQX, kept on local drive and not GitHub vis using .gitignore file
 
+1/23/2023
+Working to reinitiate data submission project for 2021 observations. Re-orient for submission directly to EPA rather than though DEC, per request of Soldotna DEC office.
+
