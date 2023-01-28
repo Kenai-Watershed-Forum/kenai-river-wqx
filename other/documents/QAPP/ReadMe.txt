@@ -17,3 +17,11 @@ The document "DRAFT_QAPP_KenaiRiverWatershed_Baseline_20230125" has edits from/b
 in Fall 2022. The auto-merge process of these two documents ("qapp_draft_v4.2") produced a lot of weird errors. May have to re-assemble manually instead page by page.
 
 Made it as far as A8 in manually combining these two documents.
+
+1/27/2023
+Completed process of combining draft documents. Next steps:
+- Fill in missing notes/comments
+- Compare to WHADA document from DEC
+- Add reference to EPA QAPP development guidance
+- Send back to EPA and on to DEC
+- read through thourughly and make list of tasks- annual, biannual, 5-year
