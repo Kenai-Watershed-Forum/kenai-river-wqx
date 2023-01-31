@@ -25,3 +25,14 @@ Completed process of combining draft documents. Next steps:
 - Add reference to EPA QAPP development guidance
 - Send back to EPA and on to DEC
 - read through thourughly and make list of tasks- annual, biannual, 5-year
+
+1/30/2023
+- In the process of cross-linking/hyperlinking tables to keep refs current. This is a painstaking task, but necessary in order to have the 
+ability to add/remove more tables and figures in the future.
+- Added table of annual/biannual responsibilities
+
+- currently working on TABLE hyperlinks
+- next: FIGURES
+- next - check that appendix names match content. finalize appendix order
+
+--> need to pencil out how best to rotate duplicate sites; implications
