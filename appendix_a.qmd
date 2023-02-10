@@ -26,16 +26,16 @@ Prior to publishing analysis and interpretation of water quality data, we will e
 
 Water quality data from this project is ultimately destined for the Environmental Protection Agency's Water Quality Exchange (EPA WQX), formerly EPA STORET. The process of transferring these data to the higher-level EPA repository is referred to as data "uplift."
 
-Section B10 of the 2020 QAPP describes data management details and responsible parties for each step of the data pipeline from observation to repository. The 2021 data preparation and review process is published here as an appendix as an example of the process applied annually to each year's data.
+The Quality Assurance Project Plan (QAPP) for this project describes data management details and responsible parties for each step of the data pipeline from observation to repository. The 2021 data preparation and review process is published here as an appendix as an example of the process applied annually to each year's data.
 
 
 ### 2021 Water Quality Data
 
 In this appendix we will collate 2021 laboratory data from several sources into a single spreadsheet document with a consistent format. The desired end format is a spreadsheet template provided by the EPA Water Quality Exchange. These template files are available to download at <https://www.epa.gov/waterdata/water-quality-exchange-web-template-files>.
 
-Once the data is collated, it will be evaluated according to a Quality Assurance Checklist provided by the Alaska Department of Environmental Conservation Soldotna office. Field observations that do not meet the standards described in the evaluation checklist will not be uplifted.
+Once the data is collated, it will be evaluated according to a Quality Assurance Checklist provided by the Alaska Department of Environmental Conservation Soldotna office. Field observations that do not meet the quality assurance standards described in the evaluation checklist will not be uplifted to the EPA WQx.
 
-Data uplifted to the EPA WQX is evaluated biannually by the Alaska Department of Environmental Conservation (ADEC) in their [Integrated Water Quality Monitoring and Assessment Report](https://dec.alaska.gov/water/water-quality/integrated-report/)[^appendix_a-1].
+Data that has been uplifted to the EPA WQX is evaluated biannually by the Alaska Department of Environmental Conservation (ADEC) in their [Integrated Water Quality Monitoring and Assessment Report](https://dec.alaska.gov/water/water-quality/integrated-report/)[^appendix_a-1].
 
 [^appendix_a-1]: https://dec.alaska.gov/water/water-quality/integrated-report/
 
@@ -428,6 +428,9 @@ rm(analysis_code_matching_table,aqwms_analytical_methods,epa_analysis_codes)
 
 ```
 
+modify code to retain all lab dat for later step? (incl surr, spikes, etc)
+
+
 ```{r message = FALSE, echo = F, include = F}
 
 #| warning: false
@@ -438,7 +441,8 @@ rm(analysis_code_matching_table,aqwms_analytical_methods,epa_analysis_codes)
 
 ########### Address Non-Detect values #########################
 
-# Non-detect values should be left blank. A non-detect does not necessarily mean there was a zero observation of an analyte in a sample, it could be just be present at a level lower than the method detection level (lower than what the lab equipment can detect). Instead of 0, we’ll leave it blank. The Practical Quantitation Limit (or Limit of Quantitation) is presented alongside the result. When DEC evaluates a waterbody, they’ll use ½ the PQL as a stand-in for a non-detect. See explanatory document at other/documents/references/SGS DL, LOD, LOQ Interpretation.pdf for more details.
+# Note on non-detect values
+# Non-detect values should be left blank. A non-detect does not necessarily mean there was a zero observation of an analyte in a sample, it could be just be present at a level lower than the method detection level (lower than what the lab equipment can detect). Instead of putting 0 in the results, we’ll leave it blank. The Practical Quantitation Limit (or Limit of Quantitation) is presented alongside the result in each row. When DEC evaluates a waterbody, they’ll use ½ the PQL as a stand-in for a non-detect. See explanatory document at "other/documents/references/SGS DL, LOD, LOQ Interpretation.pdf" for more details.
 
 # modify non-detect values from "0" to "NA" if resultflag = U or ND
 dat %<>%
@@ -448,9 +452,15 @@ dat %<>%
 
 
 ###### Segregate laboratory QA/QC data from field data ########
-# These data will be evaluated at a later step. See excel file "other/input/AQWMS/sample_type_abbreviations_manual_edit.xlsx" for sample_type naming schema
+
+# These lab-only data will be evaluated at a later step. See excel file "other/input/AQWMS/sample_type_abbreviations_manual_edit.xlsx" for sample_type naming schema.
+
+# within this data evaluation, we will create two dataframes. One containing the full output of both lab QA data and field data, and the other containing field data only.
+
 sgs21_als21_qaqc_dat <- dat %>%
+  
     # retain only results not from field sampling program (project samples and trip blanks)
+  
     # also filter out hydrocarbon surrogate results ("surr"). Surrogate standards are compounds spiked into all samples, blanks, Laboratory Control Samples, and matrix spikes to monitor the efficacy of sample extraction, chromatographic, and calibration systems. They do not represent environmental observations.
    filter(!sample_type %in% c("PS","SMPL","TB") | 
             grepl("(surr)",analyte))
@@ -458,7 +468,7 @@ sgs21_als21_qaqc_dat <- dat %>%
 write.csv(sgs21_als21_qaqc_dat, "other/output/lab_qaqc_data/2021_lab_qaqc_data/sgs21_als21_qaqc_dat.csv")
 
 
-# retain only non-field sample results for AQWMS export
+# for this dataframe, retain only non-field sample results for AQWMS export
 dat %<>%
   filter(sample_type %in% c("PS","SMPL","TB")) %>%
   filter(!grepl("(surr)",analyte))
@@ -594,9 +604,9 @@ swwtp_spring21 %<>%
 
 ########### Address Non-Detect values #########################
 
-# Non-detect values should be left blank. A non-detect does not necessarily mean there was a zero observation of an analyte in a sample, it could be just be present at a level lower than the method detection level (lower than what the lab equipment can detect). Instead of 0, we’ll leave it blank. The Practical Quantitation Limit (or Limit of Quantitation) is presented alongside the result. When DEC evaluates a waterbody, they’ll use ½ the PQL as a stand-in for a non-detect. See explanatory document at other/documents/references/SGS DL, LOD, LOQ Interpretation.pdf for more details.
+# Non-detect values should be left blank. A non-detect does not necessarily mean there was a zero observation of an analyte in a sample, it could be just be present at a level lower than the method detection level (lower than what the lab equipment can detect). Instead of 0, we’ll leave it blank. The Practical Quantitation Limit (or Limit of Quantitation) is presented alongside the result. When DEC evaluates a waterbody, they’ll use ½ the PQL as a stand-in for a non-detect. See explanatory document at "other/documents/references/SGS DL, LOD, LOQ Interpretation.pdf" for more details.
 
-# Assign resultflag column. Use "=" if result > 1 and "U" if result < 1. See pg 17 of 2020 QAPP at "other/documents/QAPP/QAPP-2020-KenaiRiverWatershed_ZnCu.pdf"
+# Assign a resultflag column. Use "=" if result > 1.0 cfu and "U" if result < 1.0 cfu. See pg 20 of 2023 QAPP at "other/documents/QAPP/qapp_draft_v4.2.pdf"
 
 swwtp_spring21 %<>%
   mutate(resultflag = case_when(
@@ -750,7 +760,7 @@ rm(taur_summer21,taur_summer21_sites,taur_summer21_qaqc_dat,swwtp_spring21_qaqc_
 
 <br>
 
-##### 2021 Total Dissolved Solids Lab Results (Soldotna Wastewater Treatment Plant (SWWTP))
+##### 2021 Total Suspended Solids Lab Results (Soldotna Wastewater Treatment Plant (SWWTP))
 
 ```{r, echo = F}
 xfun::embed_file('other/input/2021_wqx_data/spring_2021_wqx_data/SWWTP/KRWF TSS MONITORING 05-11-21.xlsx', text = "Download Original Spring 2021 Total Suspended Solids Results from SWWTP.xlsx")
@@ -795,8 +805,7 @@ swwtp_tss21 <- bind_rows(swwtp_tss_spring21,swwtp_tss_summer21) %>%
 rm(swwtp_tss_spring21,swwtp_tss_summer21)
 
 # prepare and format to match larger dataset
-
- # miscellaneous
+## miscellaneous steps
 
 swwtp_tss21 %<>%
   select(-qc1,-data_entry,-x8) %>%
@@ -878,7 +887,7 @@ swwtp_tss21 <- left_join(swwtp_tss21,swwtp_tss_sitenames)  %>%
 
 # Non-detect values should be left blank. A non-detect does not necessarily mean there was a zero observation of an analyte in a sample, it could be just be present at a level lower than the method detection level (lower than what the lab equipment can detect). Instead of 0, we’ll leave it blank. The Practical Quantitation Limit (or Limit of Quantitation) is presented alongside the result. When DEC evaluates a waterbody, they’ll use ½ the PQL as a stand-in for a non-detect. See explanatory document at other/documents/references/SGS DL, LOD, LOQ Interpretation.pdf for more details.
 
-# Assign resultflag column. Use "=" if result > 1 and "U" if result < 1. See pg 17 of 2020 QAPP at "other/documents/QAPP/QAPP-2020-KenaiRiverWatershed_ZnCu.pdf"
+# Assign resultflag column. Use "=" if result > 1 and "U" if result < 1. See pg 20 of 2023 QAPP at "other/documents/QAPP/qapp_draft_v4.2.pdf"
 swwtp_tss21 %<>%
   mutate(resultflag = case_when(
     result < 1 & result > 0.31 ~ "J",
@@ -893,17 +902,24 @@ swwtp_tss21 %<>%
 
 # in future scripts need to ensure that non-detect "0" results (resultflag = "U") are shown as "NA" rather than zero.
 
+###### In this next step is where we would normally export lab QA/QC sample data as a seperate csv. However, I have discovered that at least for 2021-2022 this lab QA data was not reported by SWWTP for Total Suspended Solids
+
+######## The SWWTP TSS SOP at "other\documents\references". The SOP does not describe the the kind of QA we need for baseline, as described in our QAPP
+
+####### The QAPP specifies the need for the following QA measurements for TSS: lab blank, lab duplicate sample, external QC check sample. These QA results were not reported in 2021 and 2022, likely not produced either. Check previous years
+
+####### The SWWTP SOP for TSS specifies the following for QA practices: "Every year the Soldotna WWTP must participate in the DMR QA as part of our NPDES permit.  Part of the DMR QA test set is the TSS PE sample.  This test must be performed and we must pass the sample to be able to report data for the year." Further details on the DMR QA test at https://www.epa.gov/compliance/discharge-monitoring-report-quality-assurance-study-program
+
+####### Bottom line: need to report this gap in planned QA practices, and re-instate for 2023 !!!
+
+####### Update code here for 2023 and/or other previous years 2014-2020
 
 
-######## 3/21/2022 --> no qa/qc results from SWWTP TSS on record yet. contact by email to see whats available. looking for lab duplicate and/or external qc check standard (pg 34 of QAPP)
-
-# no response as of 3/29/22. need to call to ensure practice/records are in place by spring 2022
 
 # segregate lab results from field results, and write lab qa/qc results to external csv
 #swwtp_tss21_qaqc_dat <- swwtp_tss21 %>%
 #  filter(sample_type %in% c("MB","LCS"))
 #write.csv(swwtp_tss21_qaqc_dat, "other/output/lab_qaqc_data/2021_lab_qaqc_data/swwtp_tss21_qaqc_dat.csv", row.names = F)
-
 
 #rm(swwtp_tss21_qaqc_dat)
 
@@ -911,9 +927,11 @@ swwtp_tss21 %<>%
 # join TSS data with overall dataset
 dat <- bind_rows(dat,swwtp_tss21)
 
-rm(swwtp_spring21,swwtp_tss_sitenames,swwtp_tss21)
+rm(swwtp_tss_spring21,swwtp_tss_sitenames,swwtp_tss21)
 
 ```
+
+
 
 ```{r include = F}
 
@@ -949,7 +967,7 @@ dat <- left_join(dat,result_sample_fraction)
 
 ################ d.) assign "result detection condition"##############
 
-## read in manually assigned join table
+## read in manually assigned join table for "result detection condition"
 result_detection_condition <- read_excel("other/input/AQWMS/AQWMS_template_matching_table.xlsx", sheet = "result_detection_condition") %>%
   clean_names() %>%
   filter(!is.na(resultflag))
@@ -957,7 +975,7 @@ result_detection_condition <- read_excel("other/input/AQWMS/AQWMS_template_match
 ## join to table
 ## z <- dat %>% left_join(dat,result_detection_condition, by = "resultflag")
 
-## the attempt at left_join above is exhibiting nonsensical result for unclear reason. For now, define programmatically:
+## the attempt at left_join above is exhibiting nonsensical result for unclear reason. For now, define programmatically instead:
 
 dat %<>%
   mutate(result_detection_condition = case_when(
@@ -992,7 +1010,7 @@ rm(site_coords, result_sample_fraction, result_detection_condition, chemical_pre
 
 ############ g.) assign "Statistical Base Code" column ##############
 
-# this value is not applicable to most results here, usually left blank. will assign "count": to fecal coliform
+# this value is not applicable to most results here, usually left blank. will assign "count": to fecal coliform though
 
 dat %<>%
   mutate(stat_base_code = case_when(
@@ -1002,9 +1020,9 @@ dat %<>%
 
 ########### f.) "Activity ID" code shortening ######################
 
-# The Activity ID column consists of concatenating the columns (`Monitoring Location ID`,"-",collect_date,"-",analyte,"-", sample_condition). This field is permitted to be no longer than 55 characters. With full names of analytes included, the entries sometimes exceed 55 characters. 
+# The Activity ID column consists of concatenating several columns (`Monitoring Location ID`,"-",collect_date,"-",analyte,"-", sample_condition). This field is permitted to be no longer than 55 characters. With full names of analytes included, the entries sometimes exceed 55 characters. 
 
-# To address this, we will do two things: 
+# To address this issue, we will do two things: 
 ## a.) use analyte abbreviations: for single elements, we will use their periodic table abbreviation. TBD for other analytes.
 ## b.) use abbreviations for sample_condition (designations of field blank or field dup)
 
@@ -1022,6 +1040,12 @@ dat %<>%
 ```
 
 ```{r include = F}
+
+# WORKING HERE 2/10/2023
+
+
+
+
 ## b.) sample_condition abbreviations
 dat %<>%
   mutate(sample_condition_abbrv = case_when(
