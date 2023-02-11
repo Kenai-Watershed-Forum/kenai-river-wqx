@@ -1039,24 +1039,43 @@ dat %<>%
   left_join(analyte_abbrev)
 ```
 
+
+
 ```{r include = F}
 
-# WORKING HERE 2/10/2023
-
-
-
+# WORKING HERE 2/10/2023, see notes below
 
 ## b.) sample_condition abbreviations
-dat %<>%
+
+
+z <- dat %<>%
   mutate(sample_condition_abbrv = case_when(
     sample_condition == "Field Duplicate" ~ "DUP",
-    sample_condition == "Trip Blank" ~ "Blank"))
+    sample_condition == "Trip Blank" ~ "Blank")) %>%
+  select(sample,collect_date,sample_type,sample_condition,sample_condition_abbrv,analyte,lab_name,result)
+
+# write temporary inspection file
+write.csv(z, "other/input/AQWMS/temp.csv")
 
 
 
 ########################## TO DO
 
-# note 5/18/2022 -- some samples from 5/11/2021 no name creek have "PS" fro sample type but have "Field Duplicate" for sample_condition. need to fix. 
+# note 5/18/2022 -- some samples from 5/11/2021 no name creek have "PS" for sample type but have "Field Duplicate" for sample_condition. need to fix. 
+
+# also need to disambiguate "PS" from "SMPL" (the latter is the ALS lab designation)
+# exploring around line 474 to diagnose
+# seeing some inconsistency in sample_name formats too (with _)?
+# a few FC results have no sample name (possibly these are method blanks)
+# a few TSS results have only partial sample names
+
+# steps to rectify:
+## 1.) re-examine ALL of the manual-edit csv matching tables to diagnose site-name inconsistencies; see if the issue arises from the original joins or at some later step
+### Check FC
+### Check TSS
+### 2.) rename SMPL Ca/Mg results as PS in line 1045. (Do so here rather than later on so as not to interfere with other previous global edits/mutates that may refer to "SMPL")
+
+
 
 ```
 
