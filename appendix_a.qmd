@@ -1048,14 +1048,16 @@ dat %<>%
 ## b.) sample_condition abbreviations
 
 
-z <- dat %<>%
+dat %<>%
   mutate(sample_condition_abbrv = case_when(
     sample_condition == "Field Duplicate" ~ "DUP",
-    sample_condition == "Trip Blank" ~ "Blank")) %>%
-  select(sample,collect_date,sample_type,sample_condition,sample_condition_abbrv,analyte,lab_name,result)
+    sample_condition == "Trip Blank" ~ "Blank")) 
+
+# temporarily reduce DF width to visually examine  errors described below
+#%>% select(sample,collect_date,sample_type,sample_condition,sample_condition_abbrv,analyte,lab_name,result)
 
 # write temporary inspection file
-write.csv(z, "other/input/AQWMS/temp.csv")
+#write.csv(z, "other/input/AQWMS/temp.csv")
 
 
 
@@ -1079,7 +1081,7 @@ write.csv(z, "other/input/AQWMS/temp.csv")
 
 ```
 
-```{r include = F}
+```{r include = F, eval = F}
 
 ############ g.) prepare final format ###############################
 
@@ -1202,6 +1204,12 @@ xfun::embed_file('other/documents/AQWMS_documents/Data_Evaluation_Checklist_Temp
 
 # check emails from sarah to see if this still the most current one
 ```
+
+```{r}
+# stop here as of 2/13/23; will not knit beyond!
+knitr::knit_exit()
+```
+
 
 #### Pre-Database
 
