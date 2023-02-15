@@ -538,6 +538,7 @@ swwtp_spring21 %<>%
 swwtp_spring21_site_matching <- read_excel("other/input/AQWMS/swwtp_site_names_matching_table_manual_edit.xlsx") 
 
 # join
+# 2/14/23 - working here - modify join table to contain "sample" column w/ format RM_0_No_Name_Creek
 swwtp_spring21 %<>%  
   full_join(swwtp_spring21_site_matching) %>%
   select(-sample_location_rm)
@@ -601,6 +602,13 @@ swwtp_spring21 %<>%
     lab_sample == "30" ~ paste("Lab analysis volume = 0.5 mL, result = TNTC"),
     TRUE ~ note))
 
+# add info on 
+
+
+  # rename columns
+  #rename(sample = sample_location,
+  #       collect_time = time_sampled)
+
 
 ########### Address Non-Detect values #########################
 
@@ -637,6 +645,13 @@ dat <- bind_rows(dat,swwtp_spring21) %>%
 rm(swwtp_spring21)
 
 
+## BUG ID here - no content in "sample" column for FC samples after join
+## solution: rename sample column after lab name mutate
+```
+
+
+
+```{r}
 
 ########################### Part B: Taurianen FC Data Read In (Summer 2021) ##############################################
 
@@ -757,6 +772,9 @@ dat <- bind_rows(dat,taur_summer21)
 rm(taur_summer21,taur_summer21_sites,taur_summer21_qaqc_dat,swwtp_spring21_qaqc_dat)
 
 ```
+
+
+
 
 <br>
 
@@ -932,6 +950,8 @@ rm(swwtp_tss_spring21,swwtp_tss_sitenames,swwtp_tss21)
 ```
 
 
+# 2/14/23 go back to FC section and see if sample name is already bad up there
+
 
 ```{r include = F}
 
@@ -1063,13 +1083,20 @@ dat %<>%
 
 ########################## TO DO
 
+#### working here 2/14/23
+
 # note 5/18/2022 -- some samples from 5/11/2021 no name creek have "PS" for sample type but have "Field Duplicate" for sample_condition. need to fix. 
 
 # also need to disambiguate "PS" from "SMPL" (the latter is the ALS lab designation)
 # exploring around line 474 to diagnose
+# 
+## "sample" column
 # seeing some inconsistency in sample_name formats too (with _)?
 # a few FC results have no sample name (possibly these are method blanks)
 # a few TSS results have only partial sample names
+# Rm10.1_Kenai_River has lowercase
+# some NNC project sample names have a trailing _
+# --> may not be necesary to include in final format .... do we even need to correct this column?
 
 # steps to rectify:
 ## 1.) re-examine ALL of the manual-edit csv matching tables to diagnose site-name inconsistencies; see if the issue arises from the original joins or at some later step
