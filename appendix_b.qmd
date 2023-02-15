@@ -15,8 +15,6 @@ format:
 
 Sample event timing for spring and summer events must be chosen with care each year. Sample date occurs on Tuesdays traditionally, and dates must be chosen such that the tide is incoming early in the morning.
 
-
-
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, warning = F, message = F)
 
@@ -32,7 +30,9 @@ library(writexl)
 library(hms)
 library(plotly)
 library(DT)
-library(xlsx)
+#library(xlsx)
+library(readxl)
+library(openxlsx)
 library(leaflet)
 library(DT)
 library(ggpubr)
@@ -66,16 +66,15 @@ points_theme <- theme(axis.title = element_text(size = 14, face = "bold"),
 
 <br>
 
-
 <br>
 
 ##### Notes on data sourcing
 
 Data is sourced from the following queries at <https://waterqualitydata.us> on Feb 24, 2021:
 
-CSV download for [sample]{.ul} data: <https://www.waterqualitydata.us/portal/#bBox=-151.322501%2C60.274310%2C-149.216144%2C60.738915&mimeType=csv&dataProfile=narrowResult>
+CSV download for [sample]{.underline} data: <https://www.waterqualitydata.us/portal/#bBox=-151.322501%2C60.274310%2C-149.216144%2C60.738915&mimeType=csv&dataProfile=narrowResult>
 
-CSV download for [site]{.ul} data: <https://www.waterqualitydata.us/portal/#countrycode=US&statecode=US%3A02&countycode=US%3A02%3A122&bBox=-151.322501%2C60.274310%2C-149.216144%2C60.738915&mimeType=csv>
+CSV download for [site]{.underline} data: <https://www.waterqualitydata.us/portal/#countrycode=US&statecode=US%3A02&countycode=US%3A02%3A122&bBox=-151.322501%2C60.274310%2C-149.216144%2C60.738915&mimeType=csv>
 
 Note: these CSV files are excluded from the GitHub repository because they are too large to sync. To reproduce the analysis, download and save these files locally instead. (See the ReadMe file at data/WQX_downloads in the repository).
 
@@ -106,6 +105,7 @@ krbwqm_dates <- read_excel("other/input/sample_dates_tides.xlsx") %>%
 ```
 
 ## Dates
+
 ```{r}
 
 # dot plot
@@ -159,13 +159,9 @@ krbwqm_dates %>%
   
 ```
 
-
-
 ```{r echo = F}
 knitr::knit_exit()
 ```
-
-
 
 ```{r, echo = F, cache = TRUE, eval = F}
 # read in tide records; slow, time consuming (~5 min)
@@ -192,8 +188,6 @@ knitr::knit_exit()
 
 ```
 
-
-
 delete below here??
 
 <br>
@@ -213,7 +207,7 @@ datatable(t)
 
 <br>
 
-[**It appears that data after spring 2013 is not in the EPA database.**]{.ul} (Confirmed w/ ADEC in spring 2021).
+[**It appears that data after spring 2013 is not in the EPA database.**]{.underline} (Confirmed w/ ADEC in spring 2021).
 
 Temporary solution - use data compiled from PDFs on the KWF local server.
 
@@ -406,5 +400,3 @@ tbl <- dat %>%
 write.csv(tbl,"data/sampling_sites/2000_2014_sitenames.csv", row.names = F)
 
 ```
-
-

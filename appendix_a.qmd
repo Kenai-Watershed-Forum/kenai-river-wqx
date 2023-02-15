@@ -28,7 +28,6 @@ Water quality data from this project is ultimately destined for the Environmenta
 
 The Quality Assurance Project Plan (QAPP) for this project describes data management details and responsible parties for each step of the data pipeline from observation to repository. The 2021 data preparation and review process is published here as an appendix as an example of the process applied annually to each year's data.
 
-
 ### 2021 Water Quality Data
 
 In this appendix we will collate 2021 laboratory data from several sources into a single spreadsheet document with a consistent format. The desired end format is a spreadsheet template provided by the EPA Water Quality Exchange. These template files are available to download at <https://www.epa.gov/waterdata/water-quality-exchange-web-template-files>.
@@ -38,8 +37,6 @@ Once the data is collated, it will be evaluated according to a Quality Assurance
 Data that has been uplifted to the EPA WQX is evaluated biannually by the Alaska Department of Environmental Conservation (ADEC) in their [Integrated Water Quality Monitoring and Assessment Report](https://dec.alaska.gov/water/water-quality/integrated-report/)[^appendix_a-1].
 
 [^appendix_a-1]: https://dec.alaska.gov/water/water-quality/integrated-report/
-
-
 
 #### 2021 Water Quality Data AQWMS Formatting
 
@@ -70,7 +67,6 @@ xfun::embed_file('other/input/2021_wqx_data/summer_2021_wqx_data/SGS/summer_2021
 ```
 
 \**Note: the chain of custody documents for SGS Laboratories are integrated into the above downloadable PDF files.*
-
 
 \newpage
 
@@ -430,7 +426,6 @@ rm(analysis_code_matching_table,aqwms_analytical_methods,epa_analysis_codes)
 
 modify code to retain all lab dat for later step? (incl surr, spikes, etc)
 
-
 ```{r message = FALSE, echo = F, include = F}
 
 #| warning: false
@@ -649,8 +644,6 @@ rm(swwtp_spring21)
 ## solution: rename sample column after lab name mutate
 ```
 
-
-
 ```{r}
 
 ########################### Part B: Taurianen FC Data Read In (Summer 2021) ##############################################
@@ -772,9 +765,6 @@ dat <- bind_rows(dat,taur_summer21)
 rm(taur_summer21,taur_summer21_sites,taur_summer21_qaqc_dat,swwtp_spring21_qaqc_dat)
 
 ```
-
-
-
 
 <br>
 
@@ -949,9 +939,7 @@ rm(swwtp_tss_spring21,swwtp_tss_sitenames,swwtp_tss21)
 
 ```
 
-
 # 2/14/23 go back to FC section and see if sample name is already bad up there
-
 
 ```{r include = F}
 
@@ -1059,8 +1047,6 @@ dat %<>%
   left_join(analyte_abbrev)
 ```
 
-
-
 ```{r include = F}
 
 # WORKING HERE 2/10/2023, see notes below
@@ -1073,37 +1059,31 @@ dat %<>%
     sample_condition == "Field Duplicate" ~ "DUP",
     sample_condition == "Trip Blank" ~ "Blank")) 
 
-# temporarily reduce DF width to visually examine  errors described below
+# temporarily reduce DF width to visually examine  errors described below; see "temp" file in AQWMS folder
 #%>% select(sample,collect_date,sample_type,sample_condition,sample_condition_abbrv,analyte,lab_name,result)
 
 # write temporary inspection file
 #write.csv(z, "other/input/AQWMS/temp.csv")
 
 
-
 ########################## TO DO
 
 #### working here 2/14/23
 
-# note 5/18/2022 -- some samples from 5/11/2021 no name creek have "PS" for sample type but have "Field Duplicate" for sample_condition. need to fix. 
+# issues to resolve:
+# some samples from 5/11/2021 no name creek have "PS" for sample type but have "Field Duplicate" for sample_condition. need to fix. 
+# also need to disambiguate "PS" from "SMPL" (the latter is the ALS lab designation) (exploring around line 474 to diagnose)
 
-# also need to disambiguate "PS" from "SMPL" (the latter is the ALS lab designation)
-# exploring around line 474 to diagnose
-# 
-## "sample" column
-# seeing some inconsistency in sample_name formats too (with _)?
+## Note: at this stage there are lots of format issues with conventions in the "sample" column, but this is not retained in the final data export so it is not an issues. For reference, these issues include:
+# inconsistency in sample_name formats too (with _)?
 # a few FC results have no sample name (possibly these are method blanks)
 # a few TSS results have only partial sample names
 # Rm10.1_Kenai_River has lowercase
-# some NNC project sample names have a trailing _
-# --> may not be necesary to include in final format .... do we even need to correct this column?
+# some No Name Creek project sample names have a trailing _
 
 # steps to rectify:
-## 1.) re-examine ALL of the manual-edit csv matching tables to diagnose site-name inconsistencies; see if the issue arises from the original joins or at some later step
-### Check FC
-### Check TSS
-### 2.) rename SMPL Ca/Mg results as PS in line 1045. (Do so here rather than later on so as not to interfere with other previous global edits/mutates that may refer to "SMPL")
-
+### 1.) rename SMPL Ca/Mg results as PS in line 1045. (Do so here rather than later on so as not to interfere with other previous global edits/mutates that may refer to "SMPL")
+### 2.) 
 
 
 ```
@@ -1236,7 +1216,6 @@ xfun::embed_file('other/documents/AQWMS_documents/Data_Evaluation_Checklist_Temp
 # stop here as of 2/13/23; will not knit beyond!
 knitr::knit_exit()
 ```
-
 
 #### Pre-Database
 

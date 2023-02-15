@@ -1,10 +1,10 @@
 # Water Quality Parameters Results
 
 ## Interpreting Box Plots
+
 Each of the following graphs display the sampling results for a specific parameter, such as arsenic. Within these graphs, a box and extending lines represent the results reported at each sampling site. A horizontal line within the box corresponds to the median of the data. The box contains 50% of the data and the vertical lines display the minimum and maximum values. Any data points that fall outside of the acceptable range are outliers and are portrayed as small circles (@fig-boxplot1).
 
 ![Components of a box plot](other/documents/images/boxplots.jpg){#fig-boxplot1}
-
 
 <br>
 
@@ -23,7 +23,9 @@ library(writexl)
 library(hms)
 library(plotly)
 library(DT)
-library(xlsx)
+#library(xlsx)
+library(readxl)
+library(openxlsx)
 library(leaflet)
 library(DT)
 library(ggpubr)
@@ -79,12 +81,6 @@ points_theme <- theme(axis.title = element_text(size = 14, face = "bold"),
 
 ```
 
-
-
-
-
-
-
 ```{r echo = F}
 
 # steps
@@ -93,7 +89,6 @@ points_theme <- theme(axis.title = element_text(size = 14, face = "bold"),
 ### get csv of adec drinking water standards
 
 ```
-
 
 ```{r echo = F}
 
@@ -128,8 +123,5 @@ pCode <- readNWISpCode(parameterCd)
 
 
 ```
-
-
-
 
 \newpage
