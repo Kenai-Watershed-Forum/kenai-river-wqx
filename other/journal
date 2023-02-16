@@ -72,3 +72,4 @@ Plan for next steps:
 2.) complete 2021 data uplift
 3.) complete uplift for other missing years
 
+* Spent an hour today diagnosing an odd error. When running this repo on my personal PC, the "acknowledgements.html" file is being rendered outside the "docs" folder, resulting in a "this file already exists" error/ Delet this file, and the rwender works fine for both html and docx.

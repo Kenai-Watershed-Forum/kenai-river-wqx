@@ -1,5 +1,18 @@
 # Water Quality Parameters Results
 
+---
+execute:
+  echo: false
+date: "`r Sys.Date()`"
+format:
+  html:
+    code-fold: true
+    code-tools: true
+    code-summary: "Show the code"
+---
+
+
+
 ## Interpreting Box Plots
 
 Each of the following graphs display the sampling results for a specific parameter, such as arsenic. Within these graphs, a box and extending lines represent the results reported at each sampling site. A horizontal line within the box corresponds to the median of the data. The box contains 50% of the data and the vertical lines display the minimum and maximum values. Any data points that fall outside of the acceptable range are outliers and are portrayed as small circles (@fig-boxplot1).
@@ -31,6 +44,8 @@ library(DT)
 library(ggpubr)
 library(plotrix)
 library(remotes)
+library(magrittr)
+library(janitor)
 install_github("USGS-R/EGRET")
 
 select <- dplyr::select
@@ -69,28 +84,15 @@ points_theme <- theme(axis.title = element_text(size = 14, face = "bold"),
 
 # Note: these CSV files are excluded from the GitHub repository because they are too large to sync. To reproduce the analysis, download and save these files locally instead. (See the ReadMe file at data/WQX_downloads in the repository).
 
-# Using these same queries in the future will download the most current csv files that may have received additional data in the interim.
+# Using these same queries in the future will download the most current csv files that may have received additional data in the interim since the last time this script was run.
 
-# We initially attempted to perform the task described above with the dataRetrieval package, but were not successful.
-
-```
-
-```{r echo = F}
-
-# read in and prepare csv files downloaded from EPA WQX
+# We initially attempted to perform the task described above with the dataRetrieval package, but were not successful. See code chunk below.
 
 ```
 
-```{r echo = F}
+```{r echo = F, eval = F, warning=FALSE, results='hide',message=FALSE}
 
-# steps
-## intake all existing WQX data with EGReT (?)
-## recreate 2000 - 2014 figures
-### get csv of adec drinking water standards
-
-```
-
-```{r echo = F}
+# Note: in there future, I hope to automaticallyi retrieve the most current water quality data from the EPA WQX
 
 # readNWIS won't read the site IDs I try so far ....
 
@@ -121,7 +123,248 @@ pCode <- readNWISpCode(parameterCd)
 10000173
 
 
+```
+
+
+
+```{r echo = F}
+
+# steps
+## recreate 2000 - 2014 figures
+### get csv of adec drinking water standards
 
 ```
+
+```{r echo = F, warning=FALSE, results='hide',message=FALSE}
+
+# designate download date
+download_date <- "20230215"
+# import sample data
+dat <- read_csv("other/input/WQX_downloads/narrowresult/narrowresult.csv")
+
+# import site data
+site_dat <- read_csv("other/input/WQX_downloads/station/station.csv")
+
+# join site and sample data
+dat <- left_join(dat,site_dat) %>%
+  # remove empty columns
+  select_if(~!(all(is.na(.))))
+# in the future, use EGRET package (http://usgs-r.github.io/EGRET/articles/EGRET.htmlmaps) for automated database query.
+  
+
+# What organizations in the database contain the word "Kenai"?
+# filter if OrganizationFormalName has the term "Kenai"
+kenai_orgs <- dat %>%
+  select(OrganizationIdentifier,OrganizationFormalName) %>%
+  filter(grepl("Kenai",OrganizationFormalName)) %>%
+  distinct()
+
+
+# It appears that data after spring 2013 is not in the EPA database.**](Confirmed w/ ADEC in spring 2021; still true in Spring 2023).
+
+
+# What kind of sites are present in our data set?
+site_types <- data.frame(unique(dat$MonitoringLocationTypeName))
+
+
+# Retain surface water sites only. Exclude well sampling sites.
+# create and apply filter
+surface <- c("River/Stream","Lake","River/Stream Perennial","BEACH Program Site-Ocean","BEACH Program Site-River/Stream","Lake, Reservoir, Impoundment","Stream","Spring")
+dat %<>%
+  filter(MonitoringLocationTypeName %in% surface)
+
+
+# retain select subset of potentially useful columns for plotting data
+dat %<>%
+  select("OrganizationFormalName",
+"ActivityIdentifier",
+"ActivityStartDate" ,
+"ActivityStartTime/Time",
+"ActivityStartTime/TimeZoneCode" ,               
+"MonitoringLocationIdentifier"       ,           
+"CharacteristicName"                  ,          
+"ResultMeasureValue"       ,                     
+"ResultMeasure/MeasureUnitCode"      ,           
+"ResultStatusIdentifier"         ,               
+"ResultValueTypeName"         ,                  
+"ResultAnalyticalMethod/MethodIdentifier"       ,
+"ResultAnalyticalMethod/MethodIdentifierContext",
+"ResultAnalyticalMethod/MethodName"    ,         
+"MonitoringLocationName"          ,              
+ "MonitoringLocationTypeName"      ,              
+ "HUCEightDigitCode"         ,                    
+ "DrainageAreaMeasure/MeasureValue"        ,      
+ "DrainageAreaMeasure/MeasureUnitCode"      ,     
+ "LatitudeMeasure"          ,                     
+ "LongitudeMeasure"       ,                       
+ "SourceMapScaleNumeric"    ,                     
+ "HorizontalAccuracyMeasure/MeasureValue"        ,
+ "HorizontalAccuracyMeasure/MeasureUnitCode"     ,
+ "HorizontalCollectionMethodName"          ,      
+ "HorizontalCoordinateReferenceSystemDatumName"  ,
+ "VerticalMeasure/MeasureValue"       ,           
+ "VerticalMeasure/MeasureUnitCode"     ,          
+ "VerticalAccuracyMeasure/MeasureValue"       ,   
+ "VerticalAccuracyMeasure/MeasureUnitCode"      , 
+ "VerticalCollectionMethodName"         ,         
+ "VerticalCoordinateReferenceSystemDatumName")  
+
+# remove extraneous text from "Kenai Watershed Forum(Volunteer)*"
+dat %<>%
+  mutate(OrganizationFormalName = gsub("\\s*\\([^\\)]+\\)","",as.character(dat$OrganizationFormalName))) %>%
+  mutate(OrganizationFormalName = str_remove(OrganizationFormalName,"\\*"))
+
+# to do: adapt vignette for multiple sites:
+# https://github.com/USGS-R/EGRET
+# potentially also useful: https://waterdata.usgs.gov/nwis/inventory?search_criteria=lat_long_bounding_box&submitted_form=introduction
+
+# additional dataframe prep
+dat %<>%
+  transform(ActivityStartDate = date(ActivityStartDate)) %>%
+  
+  # remove missing observations
+  filter(!is.na(ResultMeasureValue))
+
+
+### Exploratory Data Analysis
+
+# How many years of data do we have, including from the waterqualitydata.us database AND the KWF local server?
+
+years_tbl <- dat %>%
+  filter(OrganizationFormalName == "Kenai Watershed Forum") %>%
+  summarise(min_date = min(ActivityStartDate),
+            max_date = max(ActivityStartDate))
+
+
+# How many data points total from water quality grab samples?
+
+exclude_parameters <- c("Temperature, air", "Temperature, water")
+total_obs <- dat %>%
+  filter(OrganizationFormalName == "Kenai Watershed Forum",
+         CharacteristicName %ni% exclude_parameters) %>%
+  distinct() %>%
+  count()
+
+
+# How many different kinds of substances have we measured ?
+total_parameters <- dat %>%
+  filter(OrganizationFormalName == "Kenai Watershed Forum") %>%
+  distinct(CharacteristicName) %>%
+  count()
+
+# What are the names of all of substances have we measured ?
+
+parameter_names <- dat %>%
+  filter(OrganizationFormalName == "Kenai Watershed Forum") %>%
+  distinct(CharacteristicName) 
+
+
+
+# Create and export table of site names
+site_tbl <- dat %>%
+  filter(OrganizationFormalName == "Kenai Watershed Forum",
+         CharacteristicName %ni% exclude_parameters) %>%
+  group_by(MonitoringLocationName,LatitudeMeasure,LongitudeMeasure) %>%
+  summarise(min_date = min(ActivityStartDate),
+            max_date = max(ActivityStartDate)) %>%
+  rename("latitude" = "LatitudeMeasure",
+         "longitude" = "LongitudeMeasure")
+# export csv
+write.csv(site_tbl,"other/output/field_qa_qc_data/2000_2014_sitenames.csv", row.names = F)
+
+# read back in manually edited table with info on maintsem/trib and river mile
+site_tbl <- read_csv("other/input/baseline_sites.csv") %>%
+  remove_empty() %>%
+  select(-latitude,-longitude)
+
+# Reduce overall dataset to Kenai Watershed Forum Baseline data only
+dat %<>% filter(OrganizationFormalName == "Kenai Watershed Forum") 
+```
+
+```{r echo = F}
+
+## Miscellaneous tasks
+
+### Additional site info
+
+# Join additional site info to overall dataset
+# join by coordinates
+# round coordinates on both dataframes to same number of decimals (5)
+# z <- dat %>%
+#  left_join(dat,site_tbl, by = c("MonitoringLocationIdentifier","MonitoringLocationName"))
+
+# 2/15/2023: having some trouble with this join for unknown reasons. 
+# So, instead, we can extract trib/mainstem info and river mile from the existing MonitoringLocationName column (KBL_t_00.0 = kenai baseline tributary mile 0)
+
+dat %<>%
+  separate_wider_delim(MonitoringLocationName, delim = "_", names = c("project","trib_mainstem","river_mile"), cols_remove = F)
+
+# transition column names to "easier" formats
+dat %<>% clean_names()
+
+write.csv(dat,"other/input/outliers/baseline_outliers.csv")
+
+
+### Designate samples as "spring" vs "summer" for each observation ("season")
+# choose a "boundary date" between spring and summer (see appendix "Sample Event Timing" for rationale)
+# boundary date selected is June 4 (julian day 155)
+boundary_date <- 155
+
+dat %<>%
+  mutate(julian_day = yday(activity_start_date)) %>%
+  mutate(season = case_when(
+    julian_day > 155 ~ "summer",
+    julian_day < 155 ~ "spring"
+  ))
+
+
+### Calculate temporal extent of time series by site/season/parameter
+
+```
+
+```{r echo = F}
+# exclude outliers with an inner_join function
+# see manually identified outliers at "other/input/outliers/baseline_outliers.xlsx"
+
+outliers <- read.xlsx("other/input/outliers/baseline_outliers.xlsx") %>%
+  select(activity_identifier,characteristic_name)
+
+dat <- anti_join(dat,outliers)
+
+```
+
+
+
+
+<br>
+
+### Arsenic
+
+```{r echo = F}
+
+# focus on creating this boxplot as a template before replicating for all other parameters
+# include adec reg limits
+
+# set parameter
+parameter <- "Arsenic"
+
+# set time extent
+
+
+
+# plot
+dat %>%
+  filter(characteristic_name == parameter,
+         trib_mainstem == "t") %>%
+  ggplot(aes(river_mile,result_measure_value)) +
+  facet_grid(.~season) +
+  geom_boxplot() +
+  ggtitle(paste(parameter,"2000-2014,","Kenai River Tributaries"))
+
+  
+
+```
+
+
 
 \newpage
