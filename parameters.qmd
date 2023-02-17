@@ -34,7 +34,6 @@ library(writexl)
 library(hms)
 library(plotly)
 library(DT)
-#library(xlsx)
 library(readxl)
 library(openxlsx)
 library(leaflet)
@@ -299,8 +298,6 @@ dat %<>% clean_names()
 write.csv(dat,"other/input/outliers/baseline_outliers.csv")
 
 
-
-
 # Join tributary names (e.g. Beaver Creek)
 
 
@@ -334,6 +331,15 @@ outliers <- read.xlsx("other/input/outliers/baseline_outliers.xlsx") %>%
 dat <- anti_join(dat,outliers)
 
 ```
+
+
+
+```{r echo = F, warning=FALSE, message=FALSE}
+# write data that will be used for graphing and analysis to external location so it can be sourced by other qmd docs
+write.csv(dat,"other/output/analysis_format/baseline_analysis_format.csv",row.names = F)
+
+```
+
 
 <br>
 
@@ -392,8 +398,6 @@ plot_grid(ms,tribs, align = 'v', ncol = 1)
 
 
 
-
-
 # Define table download function
 download_tbl <- function(param){
   
@@ -412,9 +416,9 @@ download_tbl <- function(param){
 
 ### Arsenic
 
-```{r echo = F, warning=FALSE, message=FALSE}
+```{r echo = F, warning=FALSE, message=FALSE, eval = F}
 # set parameter
-parameter <- "Arsenic"
+parameter <- "Magnesium"
 
 # plot 
 make_plot(param = parameter)
@@ -425,6 +429,11 @@ download_tbl(param = parameter)
 # consider making a new .qmd doc with the above code chunk for each parameter so as to be able to include full length text, and be able to "turn page" in html
 # may need to "source function" from seperate script each time
 
+
+
 ```
 
-\newpage
+
+
+
+

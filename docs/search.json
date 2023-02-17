@@ -72,14 +72,14 @@
   {
     "objectID": "parameters.html#interpreting-box-plots",
     "href": "parameters.html#interpreting-box-plots",
-    "title": "4  Water Quality Parameters Results",
-    "section": "4.1 Interpreting Box Plots",
-    "text": "4.1 Interpreting Box Plots\nEach of the following graphs display the sampling results for a specific parameter, such as arsenic. Within these graphs, a box and extending lines represent the results reported at each sampling site. A horizontal line within the box corresponds to the median of the data. The box contains 50% of the data and the vertical lines display the minimum and maximum values. Any data points that fall outside of the acceptable range are outliers and are portrayed as small circles (Figure 4.1).\n\n\n\nFigure 4.1: Components of a box plot\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n4.1.1 Arsenic\n\n\n\n\n\nDownload Arsenic Data.csv"
+    "title": "5  Water Quality Parameters Results",
+    "section": "5.1 Interpreting Box Plots",
+    "text": "5.1 Interpreting Box Plots\nEach of the following graphs display the sampling results for a specific parameter, such as arsenic. Within these graphs, a box and extending lines represent the results reported at each sampling site. A horizontal line within the box corresponds to the median of the data. The box contains 50% of the data and the vertical lines display the minimum and maximum values. Any data points that fall outside of the acceptable range are outliers and are portrayed as small circles (Figure 5.1).\n\n\n\nFigure 5.1: Components of a box plot\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n5.1.1 Arsenic\n\n\n\n\n\nDownload Magnesium Data.csv"
   },
   {
     "objectID": "summary.html",
     "href": "summary.html",
-    "title": "6  Summary",
+    "title": "8  Summary",
     "section": "",
     "text": "~2 page overall summary here."
   },
@@ -145,5 +145,19 @@
     "title": "4  Water Quality Parameters Results",
     "section": "12.2 Miscellaneous tasks",
     "text": "12.2 Miscellaneous tasks\n\n12.2.1 Additional site info"
+  },
+  {
+    "objectID": "arsenic.html",
+    "href": "arsenic.html",
+    "title": "6  Arsenic",
+    "section": "",
+    "text": "Download Arsenic Kenai River Baseline Data.csv"
+  },
+  {
+    "objectID": "benzene.html",
+    "href": "benzene.html",
+    "title": "7  Benzene",
+    "section": "",
+    "text": "Download Benzene Kenai River Baseline Data.csv"
   }
 ]

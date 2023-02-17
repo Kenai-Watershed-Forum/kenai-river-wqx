@@ -6,19 +6,27 @@ book:
   title: "Water Quality Assessment of the Kenai River Watershed from 2000 to 2023 [DRAFT]"
   author: "Benjamin Meyer, Kenai Watershed Forum"
   date: "1/20/2023"
+  page-navigation: true
   chapters:
     - index.qmd
     - acknowledgements.qmd
-    - abstract.qmd
-    - units.qmd
-    - acronyms.qmd
-    - intro.qmd
-    - study_area.qmd
-    - methods.qmd
-    - parameters.qmd
-    - data_qa_qc.qmd
-    - summary.qmd
-    - references.qmd
+    - part: "Introduction & Methods"
+      chapters:
+      - abstract.qmd
+      - units.qmd
+      - acronyms.qmd
+      - intro.qmd
+      - study_area.qmd
+      - methods.qmd
+    - part: "Results"
+      chapters:
+      - data_qa_qc.qmd
+      - parameters.qmd
+      - arsenic.qmd
+      - benzene.qmd
+      - summary.qmd
+      - references.qmd
+
   appendices:
     - appendix_a.qmd
     - appendix_b.qmd
@@ -47,4 +55,6 @@ editor: visual
 
 margin-header: |
   ![](other/documents/images/KWF_logo.jpg)
+
+
 
