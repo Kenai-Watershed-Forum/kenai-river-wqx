@@ -46,6 +46,8 @@ library(plotrix)
 library(remotes)
 library(magrittr)
 library(janitor)
+library(xfun)
+library(cowplot)
 install_github("USGS-R/EGRET")
 
 select <- dplyr::select
@@ -126,14 +128,6 @@ pCode <- readNWISpCode(parameterCd)
 ```
 
 
-
-```{r echo = F}
-
-# steps
-## recreate 2000 - 2014 figures
-### get csv of adec drinking water standards
-
-```
 
 ```{r echo = F, warning=FALSE, results='hide',message=FALSE}
 
@@ -245,6 +239,10 @@ total_obs <- dat %>%
   distinct() %>%
   count()
 
+# Remove air and water temperature observations
+dat %<>%
+  filter(CharacteristicName %ni% exclude_parameters) 
+
 
 # How many different kinds of substances have we measured ?
 total_parameters <- dat %>%
@@ -281,7 +279,8 @@ site_tbl <- read_csv("other/input/baseline_sites.csv") %>%
 dat %<>% filter(OrganizationFormalName == "Kenai Watershed Forum") 
 ```
 
-```{r echo = F}
+
+```{r echo = F, warning=FALSE, message=FALSE}
 
 ## Miscellaneous tasks
 
@@ -305,6 +304,13 @@ dat %<>% clean_names()
 write.csv(dat,"other/input/outliers/baseline_outliers.csv")
 
 
+
+
+# Join tributary names (e.g. Beaver Creek)
+
+
+#### Time formats ####
+
 ### Designate samples as "spring" vs "summer" for each observation ("season")
 # choose a "boundary date" between spring and summer (see appendix "Sample Event Timing" for rationale)
 # boundary date selected is June 4 (julian day 155)
@@ -313,16 +319,17 @@ boundary_date <- 155
 dat %<>%
   mutate(julian_day = yday(activity_start_date)) %>%
   mutate(season = case_when(
-    julian_day > 155 ~ "summer",
-    julian_day < 155 ~ "spring"
+    julian_day > 155 ~ "Summer",
+    julian_day < 155 ~ "Spring"
   ))
 
+# Add year column
 
-### Calculate temporal extent of time series by site/season/parameter
+
 
 ```
 
-```{r echo = F}
+```{r echo = F, warning=FALSE, message=FALSE}
 # exclude outliers with an inner_join function
 # see manually identified outliers at "other/input/outliers/baseline_outliers.xlsx"
 
@@ -338,30 +345,94 @@ dat <- anti_join(dat,outliers)
 
 <br>
 
+
+```{r echo = F,warning=FALSE, message=FALSE }
+
+# Define boxplot function
+
+make_plot <- function(param) {
+  
+  # create data table for parameter
+  paramter_dat <- paste0(parameter,"_dat") 
+  parameter_dat <- dat %>%
+    filter(characteristic_name == parameter)
+  
+  # get unit for parameter
+  unit <- unique(parameter_dat$result_measure_measure_unit_code)
+  
+  # set  min time extent 
+  min_year <- parameter_dat %>% 
+    mutate(year = year(activity_start_date)) %>%
+    summarise(min_year = min(year)) 
+  min_year <- as.character(min_year$min_year)
+  
+  
+  # set  max time extent 
+  max_year <- parameter_dat %>%
+    mutate(year = year(activity_start_date)) %>%
+    summarise(max_year = max(year)) 
+  max_year <- as.character(max_year$max_year)
+  
+  
+  # general plot 
+  p <- parameter_dat %>%
+    ggplot(aes(river_mile,result_measure_value)) +
+    facet_grid(.~season) +
+    geom_boxplot() +
+    ylab(unit) 
+  
+    # tribs
+tribs <- p %+% subset(parameter_dat, trib_mainstem %in% "t") +
+  ggtitle(paste(parameter,"in Kenai River Tributaries\n",min_year,"to",max_year))
+
+  # mainstem  
+ms <- p %+% subset(parameter_dat, trib_mainstem %in% "m") +
+  ggtitle(paste(parameter,"in Kenai River Mainstem\n",min_year,"to",max_year))
+
+# plot
+plot_grid(ms,tribs, align = 'v', ncol = 1)
+
+}
+
+# "to do" on boxplot function
+#  include adec reg limits as hlines
+# make plot taller
+# label tributaries with names on x axis
+
+
+
+
+
+# Define table download function
+download_tbl <- function(param){
+  
+  # create data table for parameter
+  paramter_dat <- paste0(parameter,"_dat") 
+  parameter_dat <- dat %>%
+    filter(characteristic_name == parameter)
+  
+  # write csv
+  dir <- paste0("other/output/parameter_downloads/",parameter," Data",".csv")
+  write.csv(parameter_dat, dir )
+  xfun::embed_file(dir)
+}
+
+```
+
+
 ### Arsenic
-
-```{r echo = F}
-
-# focus on creating this boxplot as a template before replicating for all other parameters
-# include adec reg limits
-
+```{r echo = F, warning=FALSE, message=FALSE}
 # set parameter
 parameter <- "Arsenic"
 
-# set time extent
+# plot 
+make_plot(param = parameter)
 
+# download table
+download_tbl(param = parameter)
 
-
-# plot
-dat %>%
-  filter(characteristic_name == parameter,
-         trib_mainstem == "t") %>%
-  ggplot(aes(river_mile,result_measure_value)) +
-  facet_grid(.~season) +
-  geom_boxplot() +
-  ggtitle(paste(parameter,"2000-2014,","Kenai River Tributaries"))
-
-  
+# consider making a new .qmd doc with the above code chunk for each parameter so as to be able to include full length text, and be able to "turn page" in html
+# may need to "source function" from seperate script each time
 
 ```
 
