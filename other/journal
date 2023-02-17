@@ -1,3 +1,6 @@
+
+
+
 1/5/2023
 
 I am manually copying all content from the previous Bookdown vesion of this publication to this new Quarto Book. Completed
@@ -73,3 +76,13 @@ Plan for next steps:
 3.) complete uplift for other missing years
 
 * Spent an hour today diagnosing an odd error. When running this repo on my personal PC, the "acknowledgements.html" file is being rendered outside the "docs" folder, resulting in a "this file already exists" error/ Delet this file, and the rwender works fine for both html and docx.
+
+
+2/17/2023
+Took a break from working on data uplift for a day or two to instead focus on data visualization. Organzinig and executing scripts for data uplifty continues to be a challenge.
+
+Created a function to generate a general boxplot figure and download associated data table, successfully
+created chapters for arsenic and benzene so far. Next big step with visualization and analysis is to incorporate regulatory limits.
+We will want to show reg limits as a horizontal line, and ideally also identify which observations exceed limits in the data tables. Start w/ updating/ adapting "toxicsbook.xls" from ADEC website, last updated 2010.
+
+To do: ee and resolve "notes.txt" file

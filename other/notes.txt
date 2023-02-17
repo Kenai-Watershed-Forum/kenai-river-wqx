@@ -1,3 +1,6 @@
+NOTE: terminal command to stage all commits:
+git add -A && git commit -m 'staging all files'
+
 # for unclear reasons,  DUP status is incorrectly assigned to the following:
 # KR RM 22 SOC 2021-05-11 200.7
 # KR RM 1.5 2021-07-27 200.7
@@ -10,7 +13,6 @@
 # 2.) assign these data as LAB replicates. wtf.
 
 ----> not sure if the above is incorporated in flwo yet 3/29/2022
-
 
 in sgs, FIELD dups are labeled "PS" (project sample) is sample_type
 in als, LAB dups are labeled "DUP1" in sample_type

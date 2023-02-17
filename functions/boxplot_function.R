@@ -50,7 +50,8 @@ make_boxplot <- function(param) {
     ggplot(aes(factor(river_mile),result_measure_value)) +
     facet_grid(.~season) +
     geom_boxplot() +
-    ylab(unit)
+    xlab("River Mile") +
+    ylab(paste0(parameter," (",unit,")"))
 
   # tribs
   tribs <- p %+% subset(parameter_dat, trib_mainstem %in% "t") +
@@ -62,7 +63,6 @@ make_boxplot <- function(param) {
 
   # plot
   plot_grid(ms,tribs, align = 'v', ncol = 1)
-
 }
 
 # "to do" on boxplot function

@@ -10,11 +10,12 @@ book:
   chapters:
     - index.qmd
     - acknowledgements.qmd
+    - abstract.qmd
+    - units.qmd
+    - acronyms.qmd
     - part: "Introduction & Methods"
       chapters:
-      - abstract.qmd
-      - units.qmd
-      - acronyms.qmd
+
       - intro.qmd
       - study_area.qmd
       - methods.qmd
