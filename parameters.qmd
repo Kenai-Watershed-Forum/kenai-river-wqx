@@ -11,8 +11,6 @@ format:
     code-summary: "Show the code"
 ---
 
-
-
 ## Interpreting Box Plots
 
 Each of the following graphs display the sampling results for a specific parameter, such as arsenic. Within these graphs, a box and extending lines represent the results reported at each sampling site. A horizontal line within the box corresponds to the median of the data. The box contains 50% of the data and the vertical lines display the minimum and maximum values. Any data points that fall outside of the acceptable range are outliers and are portrayed as small circles (@fig-boxplot1).
@@ -126,8 +124,6 @@ pCode <- readNWISpCode(parameterCd)
 
 
 ```
-
-
 
 ```{r echo = F, warning=FALSE, results='hide',message=FALSE}
 
@@ -279,7 +275,6 @@ site_tbl <- read_csv("other/input/baseline_sites.csv") %>%
 dat %<>% filter(OrganizationFormalName == "Kenai Watershed Forum") 
 ```
 
-
 ```{r echo = F, warning=FALSE, message=FALSE}
 
 ## Miscellaneous tasks
@@ -340,11 +335,7 @@ dat <- anti_join(dat,outliers)
 
 ```
 
-
-
-
 <br>
-
 
 ```{r echo = F,warning=FALSE, message=FALSE }
 
@@ -419,8 +410,8 @@ download_tbl <- function(param){
 
 ```
 
-
 ### Arsenic
+
 ```{r echo = F, warning=FALSE, message=FALSE}
 # set parameter
 parameter <- "Arsenic"
@@ -435,7 +426,5 @@ download_tbl(param = parameter)
 # may need to "source function" from seperate script each time
 
 ```
-
-
 
 \newpage
