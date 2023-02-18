@@ -22,9 +22,6 @@ dat <- read.csv("other/output/analysis_format/baseline_analysis_format.csv")
 # source boxplot function
 source("functions/boxplot_function.R")
 
-# plot results for boxplot when sourced from external script are bunk.
-
-
 # source table download function
 source("functions/table_download.R")
 
