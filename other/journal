@@ -92,4 +92,7 @@ To do: see and resolve "notes.txt" file
 Working at bottom of "parameters" script
 Began adapting toxicsbooks.xls downlaod from ADEC
 Plan: get functional example of applying hline and to boxplots, then return back to fiishing 2021 uplift
+<<<<<<< HEAD
 Issue: html render does not include new mods to boxplot function
+=======
+>>>>>>> d50e73df4941c8d37191ca80e662024eee49a550
