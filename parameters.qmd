@@ -124,7 +124,9 @@ pCode <- readNWISpCode(parameterCd)
 
 ```
 
-```{r echo = F, warning=FALSE, results='hide',message=FALSE}
+```{r echo = F, warning=FALSE, results='hide',message=FALSE, cache=TRUE}
+
+# prepare data to be used in boxplots
 
 # designate download date
 download_date <- "20230215"
@@ -216,6 +218,7 @@ dat %<>%
 
 
 ### Exploratory Data Analysis
+### Consider including these numbers in section intro
 
 # How many years of data do we have, including from the waterqualitydata.us database AND the KWF local server?
 
@@ -250,7 +253,6 @@ total_parameters <- dat %>%
 parameter_names <- dat %>%
   filter(OrganizationFormalName == "Kenai Watershed Forum") %>%
   distinct(CharacteristicName) 
-
 
 
 # Create and export table of site names
@@ -295,10 +297,32 @@ dat %<>%
 # transition column names to "easier" formats
 dat %<>% clean_names()
 
+# export csv to provide column format names for manually curated outlier xlsx file in the same folder
 write.csv(dat,"other/input/outliers/baseline_outliers.csv")
 
 
-# Join tributary names (e.g. Beaver Creek)
+# Create column of tributary names (e.g. Beaver Creek) to associate with tributary river miles
+# read in tribuary names
+trib_names <- read.csv("other/input/baseline_sites.csv") %>%
+  select(MonitoringLocationName, tributary_name, tributary_mainstem) %>%
+  filter(tributary_mainstem == "tributary") %>%
+  clean_names() %>%
+  select(-tributary_mainstem)
+
+# join trib names to overall table
+dat %<>% left_join(trib_names, by = "monitoring_location_name")
+
+# create general "site name" column. use tributary name if available, and river mile if not
+dat %<>%
+  transform(river_mile = as.character(as.numeric(river_mile))) %>%
+  mutate(site_name = case_when(
+    !is.na(tributary_name) ~ tributary_name,
+    is.na(tributary_name) ~ river_mile))
+
+```
+
+
+```{r}
 
 
 #### Time formats ####
@@ -338,6 +362,18 @@ dat <- anti_join(dat,outliers)
 ```{r echo = F, warning=FALSE, message=FALSE}
 # write fianlized data that will be used for graphing and analysis to external location so it can be sourced by other qmd docs
 write.csv(dat,"other/output/analysis_format/baseline_analysis_format.csv",row.names = F)
+
+# experimenting w/ making a boxplot that shows reg limits as hlines
+
+source("functions/boxplot_function.R")
+parameter <- "Copper"
+make_boxplot(param = parameter)
+
+
+# https://stackoverflow.com/questions/40350230/variable-hline-in-ggplot-with-facet
+# possibly a useful approach, but maybe simpler because in our example the lines don't need to vary by panel
+
+# working here 2/20/23
 
 ```
 

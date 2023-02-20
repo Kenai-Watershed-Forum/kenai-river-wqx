@@ -47,19 +47,21 @@ make_boxplot <- function(param) {
 
   # general plot
   p <- parameter_dat %>%
-    ggplot(aes(factor(river_mile),result_measure_value)) +
+    ggplot(aes(factor(site_name),result_measure_value)) +
     facet_grid(.~season) +
     geom_boxplot() +
-    xlab("River Mile") +
     ylab(paste0(parameter," (",unit,")"))
 
   # tribs
   tribs <- p %+% subset(parameter_dat, trib_mainstem %in% "t") +
-    ggtitle(paste(parameter,"in Kenai River Tributaries\n",min_year,"to",max_year))
+    ggtitle(paste(parameter,"in Kenai River Tributaries\n",min_year,"to",max_year)) +
+    xlab("Site") +
+    theme(axis.text.x = element_text(angle = 90))
 
   # mainstem
   ms <- p %+% subset(parameter_dat, trib_mainstem %in% "m") +
-    ggtitle(paste(parameter,"in Kenai River Mainstem\n",min_year,"to",max_year))
+    ggtitle(paste(parameter,"in Kenai River Mainstem\n",min_year,"to",max_year)) +
+    xlab("River Mile")
 
   # plot
   plot_grid(ms,tribs, align = 'v', ncol = 1)
@@ -68,7 +70,10 @@ make_boxplot <- function(param) {
 # "to do" on boxplot function
 #  include adec reg limits as hlines
 # make plot taller
-# label tributaries with names on x axis
+
+# make geom_point geometry different for exceedences
+# make plotly appear on html render, jpg on docx render
+
 
 
 
