@@ -1,7 +1,10 @@
 NOTE: terminal command to stage all commits:
 git add -A && git commit -m 'staging all files'
 
-# for unclear reasons,  DUP status is incorrectly assigned to the following:
+Terminal command to clear cache:
+quarto render --cache-refresh
+
+# for unclear reasons,  DUP status in 2021 data is incorrectly assigned to the following:
 # KR RM 22 SOC 2021-05-11 200.7
 # KR RM 1.5 2021-07-27 200.7
 # KR RM 23 2021-05-11 200.7

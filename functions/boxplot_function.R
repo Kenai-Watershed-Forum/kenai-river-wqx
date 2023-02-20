@@ -56,7 +56,7 @@ make_boxplot <- function(param) {
   tribs <- p %+% subset(parameter_dat, trib_mainstem %in% "t") +
     ggtitle(paste(parameter,"in Kenai River Tributaries\n",min_year,"to",max_year)) +
     xlab("Site") +
-    theme(axis.text.x = element_text(angle = 90))
+    theme(axis.text.x = element_text(angle = 120))
 
   # mainstem
   ms <- p %+% subset(parameter_dat, trib_mainstem %in% "m") +
@@ -73,6 +73,8 @@ make_boxplot <- function(param) {
 
 # make geom_point geometry different for exceedences
 # make plotly appear on html render, jpg on docx render
+
+# order tributaries sequenctially
 
 
 
