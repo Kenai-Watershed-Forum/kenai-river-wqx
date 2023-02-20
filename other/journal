@@ -81,8 +81,14 @@ Plan for next steps:
 2/17/2023
 Took a break from working on data uplift for a day or two to instead focus on data visualization. Organzinig and executing scripts for data uplifty continues to be a challenge.
 
-Created a function to generate a general boxplot figure and download associated data table, successfully
+- Created a function to generate a general boxplot figure and download associated data table, successfully
 created chapters for arsenic and benzene so far. Next big step with visualization and analysis is to incorporate regulatory limits.
-We will want to show reg limits as a horizontal line, and ideally also identify which observations exceed limits in the data tables. Start w/ updating/ adapting "toxicsbook.xls" from ADEC website, last updated 2010.
 
-To do: ee and resolve "notes.txt" file
+- Reg limits: We will want to show reg limits as a horizontal line, and ideally also identify which observations exceed limits in the data tables. Start w/ updating/ adapting "toxicsbook.xls" from ADEC website, last updated 2010.
+
+To do: see and resolve "notes.txt" file
+
+2/20/23
+Working at bottom of "parameters" script
+Began adapting toxicsbooks.xls downlaod from ADEC
+Plan: get functional example of applying hline and to boxplots, then return back to fiishing 2021 uplift
