@@ -1,9 +1,6 @@
-
-
-
 1/5/2023
 
-I am manually copying all content from the previous Bookdown vesion of this publication to this new Quarto Book. Completed
+I am manually copying all content from the previous Bookdown vesion of this publication to this new Quarto Book. Completed today
 
 Tasks:
  - Review and accept edits on EPA QAPP revisions, resubmit to EPA
@@ -95,5 +92,24 @@ Began adapting toxicsbooks.xls downlaod from ADEC
 Plan: get functional example of applying hline and to boxplots, then return back to fiishing 2021 uplift
 
 Issue: html render does not include new mods to boxplot function
+Solution: clear cache (see other/notes.txt)
+
+
+2/27/2023
+Rationale for how to plot data in context of regulatory limits:
+Make stand alone plot of regulatory limits for each parameter, jitter dodge style w/ facet wrap; maybe show in each stand alone parameter page
+1.) calculate where values exceed ALL reg limits, indicate in columns in download files
+2.) show only most conservative hline per parameter ... more than 3 types would be too much
+3.) do trial run for arsenic
+4.) start buy just doing hlines for drinking, stockwater, irrigation
+
+--> for all parameters that are hardness dependent, we won't be able to show a simple horizontal line. Show instead as differentiated point symbols by size & shape
+
+--> suggest performing hardness calculations in a seperate script, export table, then rejoin table to overall dat to ID which points are hardness-based excesses
+
+--> working on how to set up exccedance ID witin boxplot function
+Consider this post on multiple hlines: https://stackoverflow.com/questions/61896730/how-can-i-add-legend-to-multiple-hlines-in-ggplot2
+
+--> next session: return to complete QAPP, and complete 2021 data uplift
 
 

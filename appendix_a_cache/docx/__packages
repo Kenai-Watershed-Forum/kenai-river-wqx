@@ -8,11 +8,11 @@ purrr
 dplyr
 stringr
 forcats
+lubridate
 readxl
 openxlsx
 data.table
 magrittr
 janitor
 hms
-lubridate
 anytime

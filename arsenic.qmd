@@ -16,7 +16,7 @@ format:
 # set parameter
 parameter <- "Arsenic"
 
-# source formatted data
+# read in prepared data from local directory
 dat <- read.csv("other/output/analysis_format/baseline_analysis_format.csv")
 
 # source boxplot function

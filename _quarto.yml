@@ -25,6 +25,9 @@ book:
       - parameters.qmd
       - arsenic.qmd
       - benzene.qmd
+      - cadmium.qmd
+      - calcium.qmd
+      - chromium.qmd
       - summary.qmd
       - references.qmd
 
