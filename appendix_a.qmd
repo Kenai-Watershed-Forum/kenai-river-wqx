@@ -24,15 +24,15 @@ format:
 
 Prior to publishing analysis and interpretation of water quality data, we will ensure that all data that meets QA/QC standards outlined in the current project [Quality Assurance Project Plan (QAPP)](https://paperpile.com/app/p/7703451b-460d-00b4-82a0-1086ea2554c3) and is accessible in the appropriate repository.
 
-Water quality data from this project is ultimately destined for the Environmental Protection Agency's Water Quality Exchange (EPA WQX), formerly EPA STORET. The process of transferring these data to the higher-level EPA repository is referred to as data "uplift."
+Water quality data from this project is ultimately destined for the Environmental Protection Agency's Water Quality Exchange (EPA WQX). The process of transferring these data to the higher-level EPA repository is referred to as data "uplift."
 
 The Quality Assurance Project Plan (QAPP) for this project describes data management details and responsible parties for each step of the data pipeline from observation to repository. The 2021 data preparation and review process is published here as an appendix as an example of the process applied annually to each year's data.
 
 ### 2021 Water Quality Data
 
-In this appendix we will collate 2021 laboratory data from several sources into a single spreadsheet document with a consistent format. The desired end format is a spreadsheet template provided by the EPA Water Quality Exchange. These template files are available to download at <https://www.epa.gov/waterdata/water-quality-exchange-web-template-files>.
+In this appendix we will collate 2021 laboratory data from several sources into a single spreadsheet document with a consistent format. The desired end format is a spreadsheet template provided by the EPA Water Quality Exchange. These template files are available to download from the EPA at <https://www.epa.gov/waterdata/water-quality-exchange-web-template-files>.
 
-Once the data is collated, it will be evaluated according to a Quality Assurance Checklist provided by the Alaska Department of Environmental Conservation Soldotna office. Field observations that do not meet the quality assurance standards described in the evaluation checklist will not be uplifted to the EPA WQx.
+Once the data is collated, it will be evaluated according to a Quality Assurance Checklist provided by the Alaska Department of Environmental Conservation Soldotna office. Field observations that do not meet the quality assurance standards described in the evaluation checklist will be flagged and will not be uplifted to the EPA WQX.
 
 Data that has been uplifted to the EPA WQX is evaluated biannually by the Alaska Department of Environmental Conservation (ADEC) in their [Integrated Water Quality Monitoring and Assessment Report](https://dec.alaska.gov/water/water-quality/integrated-report/)[^appendix_a-1].
 
@@ -76,6 +76,7 @@ xfun::embed_file('other/input/2021_wqx_data/summer_2021_wqx_data/SGS/summer_2021
 
 #| warning: false
 #| message: false
+
 
 # clear environment
 rm(list=ls())
@@ -223,11 +224,10 @@ als21 <- bind_rows(spring_als21,summer_als21) %>%
             collect_time = as_hms(as.POSIXct(collect_time, format = "%H:%M")))
 
 
-
 # join SGS data with ALS data
 dat <- bind_rows(sgs21,als21)  
 
-
+# remove old dataframes
 rm(als21,sgs21,spring_als21,summer_als21)
 
 # export table of sample types
@@ -235,7 +235,6 @@ rm(als21,sgs21,spring_als21,summer_als21)
 ## assign sample type acronyms just like with sgs21 samples. see excel file for full definitions
 
 # --> make sure doesn't conflict with other sample_type designations in rest of document. use same acronyms
-
 
 ### export table of sample types, then manually translate their abbreviations
 sample_types <- dat %>%
@@ -250,28 +249,34 @@ write.xlsx(sample_types, "other/input/AQWMS/sample_type_abbreviations.xlsx")
 
 
 
-
 ############### Part C: Address spelling/format issues and inconsistent sample/site names ######################
 
 # Upon visual inspection of site names, we can see that the location names in the AQWMS template differ slightly from the place names in the SGS report (spelling and name inconsistencies).
 
 
-# 3/28/2022 - A note on addressing "Duplicate" designations. In QA/QC data review in March 2022 the following was clarified through trial and error: we must make a careful distinction between "Field Duplicates" and "Lab duplicates" when preparing this data. The sample names contain info about whether a result is from a "Field Duplicate," e.g., two field collections made at the same location/day/time. However the ALS lab also created "Lab Duplicates," which are not from the same sites as field duplicates, and designates these as "DUP1" in the "sample_type" column.
+# 3/28/2022 - A note on addressing "Duplicate" designations. 
+# In QA/QC data review in March 2022 the following was clarified through trial and error: we must make a careful distinction between "Field Duplicates" and "Lab duplicates" when preparing this data. The sample names contain info about whether a result is from a "Field Duplicate," e.g., two field collections made at the same location/day/time. However the ALS lab also created "Lab Duplicates," which are not from the same sites as field duplicates, and designates these as "DUP1" in the "sample_type" column.
 
 # See AQWMS Activity Type column assign distinctions
 
 # Decision - we will designate the field duplicates simply as a Field Duplicate
 
 
-# move info about duplicate sample and/or sample blank status into separate column, "sample_condition"
+# move info about duplicate sample and/or sample blank status into separate new column, "sample_condition"
 dat %<>%
   mutate(sample_condition = case_when(
     grepl("Method Blank",sample) ~ "Method Blank",
     grepl("Trip Blank",sample) ~ "Trip Blank",
     grepl("DUP",sample) ~ "Field Duplicate",
-    grepl("Dup",sample) ~ "Field Duplicate")) %>%
-  # remove "DUP" designation from sample column
-  mutate(sample = str_replace(sample, "DUP|Dup", "")) 
+    grepl("Dup",sample) ~ "Field Duplicate")) 
+# %>%
+  # remove "DUP" designation from "sample" column
+ # mutate(sample = str_replace(sample, "DUP|Dup", "")) 
+
+#z <- dat %>% 
+ # filter(sample_condition == "Field Duplicate") %>%
+ # select(sample, sample_condition)
+
 
   
 # remove from "sample" names the text containing the suffixes Diss/Dis (Dissolved metals sample) since we only  want location info in this column. (Solution for this step was found at https://stackoverflow.com/questions/29271549/replace-all-occurrences-of-a-string-in-a-data-frame)
@@ -288,10 +293,7 @@ dat %<>%
     sample == "RM0-No Name Creek  Diss" ~ "RM0-No Name Creek",
     TRUE ~ sample)) 
   
-# z <- dat %>%
-#  select(sample,sample_type,sample_condition)
-
-  
+# Sample name clean up
 # We need to remove white spaces, apostrophes, and dashes; because join functions such as "left_join" are often uncooperative with these types of string characters. We will need to use joins with site names in next steps.
   
 dat %<>%
@@ -338,7 +340,7 @@ dat %<>%
 
 ############## Part D: Prepare SGS/ALS Location/Site Names ##########################
 
-# NOTE: The SGS and ALS 2021 results have a variety of misspelling and typos. For 2022, we should provide labs with a csv file of site names that they can use
+# NOTE: The SGS and ALS 2021 sample name results have a variety of misspelling and typos. For 2022, we should provide labs with a csv file of site names that they can use
 
 # In preparation for a join to AQWMS table, we will manually generate a match table csv file that we can use 
 
@@ -347,7 +349,7 @@ sgs21_sitenames <- data.table(unique(dat$sample)) %>%
   arrange(V1)
   
 
-# generate list of unique site names from 2021 AQWMS template. these are the names we want in the final product
+# generate list of unique site names from 2021 AQWMS template. These are the names we want in the final product
 aqwms21_sitenames <- read_excel("other/input/AQWMS/AWQMS_KWF_Baseline_2021.xlsx", sheet = "Monitoring Locations") %>%
   select("Monitoring Location Name", "Monitoring Location ID") %>%
   distinct()
@@ -365,7 +367,7 @@ saveWorkbook(wb,site_match_table_path,overwrite = TRUE)
 
 # Using these two tables, we will manually create a new file titled "sgs_site_names_matching_table_manual_edit.xlsx" and manually match up the two disparate naming systems. 
 
-# Performed manually by B Meyer March 18, 2022.
+# Site name matching performed manually by B Meyer, March 18, 2022.
 
 # append "Monitoring Location Name" and "Monitoring Location ID" info from WQX to spring 2021 SGS data
 
@@ -380,14 +382,14 @@ dat %<>%
   left_join(sitenames21_match, by = "sample") %>%
   clean_names()
 
-# remove dfs
+# remove extraneous dataframes
 rm(sgs21_sitenames,aqwms21_sitenames,sitenames21_match)
 
 
 
 ######################## Part E: "Result Analytical Method Context" name rectification ######################
 
-# In the AQWMS template, the EPA names that will go in the column "Result Analytical Method ID" do not exactly match the names provided by the laboratory (SGS). After communicating with SGS and DEC on 2/8/2022, we are able to cross-walk between the two naming systems. These matches are documented in the excel file "analysis_code_matching_table.xlsx."
+# In the AQWMS template, the EPA names for chemical analyses that will go in the column "Result Analytical Method ID" do not exactly match the names provided by the laboratory (SGS). After communicating with SGS and ADEC on 2/8/2022, we are able to cross-walk between the two naming systems. These matches are documented in the excel file "analysis_code_matching_table.xlsx."
 
 # assign "Result Analytical Method ID" and "Result Analytical Method Context" to dataset using matching table
 
@@ -424,7 +426,7 @@ rm(analysis_code_matching_table,aqwms_analytical_methods,epa_analysis_codes)
 
 ```
 
-modify code to retain all lab dat for later step? (incl surr, spikes, etc)
+
 
 ```{r message = FALSE, echo = F, include = F}
 
@@ -437,7 +439,9 @@ modify code to retain all lab dat for later step? (incl surr, spikes, etc)
 ########### Address Non-Detect values #########################
 
 # Note on non-detect values
-# Non-detect values should be left blank. A non-detect does not necessarily mean there was a zero observation of an analyte in a sample, it could be just be present at a level lower than the method detection level (lower than what the lab equipment can detect). Instead of putting 0 in the results, we’ll leave it blank. The Practical Quantitation Limit (or Limit of Quantitation) is presented alongside the result in each row. When DEC evaluates a waterbody, they’ll use ½ the PQL as a stand-in for a non-detect. See explanatory document at "other/documents/references/SGS DL, LOD, LOQ Interpretation.pdf" for more details.
+# Non-detect values should be left blank. A non-detect does not necessarily mean there was a zero observation of an analyte in a sample, it could be just be present at a level lower than the method detection level (lower than what the lab equipment can detect). 
+# Instead of putting 0 in the results, we’ll leave it blank. The Practical Quantitation Limit (or Limit of Quantitation) is presented alongside the result in each row. When DEC evaluates a waterbody, they’ll use ½ the PQL as a stand-in for a non-detect. 
+# See explanatory document at "other/documents/references/SGS DL, LOD, LOQ Interpretation.pdf" for more details.
 
 # modify non-detect values from "0" to "NA" if resultflag = U or ND
 dat %<>%
@@ -448,9 +452,9 @@ dat %<>%
 
 ###### Segregate laboratory QA/QC data from field data ########
 
-# These lab-only data will be evaluated at a later step. See excel file "other/input/AQWMS/sample_type_abbreviations_manual_edit.xlsx" for sample_type naming schema.
+# These lab-only data will be evaluated at a later step of QA/QC evaluation. See excel file "other/input/AQWMS/sample_type_abbreviations_manual_edit.xlsx" for sample_type naming schema.
 
-# within this data evaluation, we will create two dataframes. One containing the full output of both lab QA data and field data, and the other containing field data only.
+# Within this data evaluation, we will create two dataframes. One containing the full output of both lab QA data and field data, and the other containing field data only.
 
 sgs21_als21_qaqc_dat <- dat %>%
   
@@ -473,6 +477,7 @@ rm(sgs21_als21_qaqc_dat)
 ```
 
 <br>
+
 
 ##### 2021 Fecal Coliform Lab Results (Soldotna Wastewater Treatment Plant (SWWTP)/Taurianen Engineering)
 
@@ -597,15 +602,9 @@ swwtp_spring21 %<>%
     lab_sample == "30" ~ paste("Lab analysis volume = 0.5 mL, result = TNTC"),
     TRUE ~ note))
 
-# add info on 
 
 
-  # rename columns
-  #rename(sample = sample_location,
-  #       collect_time = time_sampled)
-
-
-########### Address Non-Detect values #########################
+########### Address Non-Detect values in SWWTP Fecal Coliform Data #########################
 
 # Non-detect values should be left blank. A non-detect does not necessarily mean there was a zero observation of an analyte in a sample, it could be just be present at a level lower than the method detection level (lower than what the lab equipment can detect). Instead of 0, we’ll leave it blank. The Practical Quantitation Limit (or Limit of Quantitation) is presented alongside the result. When DEC evaluates a waterbody, they’ll use ½ the PQL as a stand-in for a non-detect. See explanatory document at "other/documents/references/SGS DL, LOD, LOQ Interpretation.pdf" for more details.
 
@@ -640,8 +639,8 @@ dat <- bind_rows(dat,swwtp_spring21) %>%
 rm(swwtp_spring21)
 
 
-## BUG ID here - no content in "sample" column for FC samples after join
-## solution: rename sample column after lab name mutate
+## NOTE - after this join, there is no content in the "sample" column for FC samples. This column does not exist
+## If we need this column to exist, do a table_join similar to what was done for the SGS and ALS data. May not need it though, since we have monitoring location name & monitoring location id columns already.
 ```
 
 ```{r}
@@ -749,7 +748,6 @@ taur_summer21 %<>%
   mutate(result1 = na_if(result,0)) %>%
   select(-result) %>%
   rename(result = result1)
-
 
 
 # segregate lab results from field results, and write lab qa/qc results to external csv
@@ -1212,10 +1210,6 @@ xfun::embed_file('other/documents/AQWMS_documents/Data_Evaluation_Checklist_Temp
 # check emails from sarah to see if this still the most current one
 ```
 
-```{r}
-# stop here as of 2/13/23; will not knit beyond!
-knitr::knit_exit()
-```
 
 #### Pre-Database
 

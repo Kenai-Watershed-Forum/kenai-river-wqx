@@ -32,6 +32,7 @@ trib_order <- c("No Name Creek",
 
 # Select mainstem Kenai River sites that are part of baseline monitoring
 # (Some data in EPA WQX is from other projects, esp for hydrocarbons)
+# to do
 
 # read in regulatory values
 reg_vals <- read_xlsx("other/input/regulatory_limits/master_reg_limits.xlsx", sheet = "regulatory_values") %>%
@@ -42,7 +43,7 @@ reg_vals <- read_xlsx("other/input/regulatory_limits/master_reg_limits.xlsx", sh
   pivot_wider(names_from = standard_type, values_from = reg_value) %>%
   rename(characteristic_name = parameter_baseline_name)
 
-# --> select whichever static limit is the lowest and show that one, distinguish by legend
+# --> to do: select whichever static limit is the lowest and show that one, distinguish what type of limit by legend
 
 # will need a step here to convert units to make reg value match parameter vals
 
@@ -61,7 +62,6 @@ make_boxplot <- function(param) {
     # join regulatory values
     left_join(reg_vals, by = "characteristic_name" )
 
-
   # get unit for parameter
   unit <- unique(parameter_dat$result_measure_measure_unit_code)
 
@@ -71,13 +71,11 @@ make_boxplot <- function(param) {
     summarise(min_year = min(year))
   min_year <- as.character(min_year$min_year)
 
-
   # set  max time extent
   max_year <- parameter_dat %>%
     mutate(year = year(activity_start_date)) %>%
     summarise(max_year = max(year))
   max_year <- as.character(max_year$max_year)
-
 
   # trib general plot
   p_trib <- parameter_dat %>%
@@ -99,7 +97,6 @@ make_boxplot <- function(param) {
     ylab(paste0(parameter," (",unit,")")) +
     xlab("River Mile") +
     geom_hline(yintercept = parameter_dat$drinking_water, color = "salmon", size = 1.1)
-
 
 
   # tribs
