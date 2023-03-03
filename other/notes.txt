@@ -26,10 +26,11 @@ in als, LAB dups are labeled "DUP1" in sample_type
 
 so::: if its a FIELD dup then this info in conatined in sample name only, not in a distinct column (--->From wwhich lab does this apply???)
 
-####WORKING  HERE
 
 
 2/28/23
 Distinguish between application in columns
 1.)"sample_condition" (Field Duplicate, Trip Blank, NA) vs.
 2.) "sample_type" (PS, TB, SMPL)
+
+3.) I think I have addressed this; will find out in export file
