@@ -1,3 +1,24 @@
 ---
 title: "KPB_land_ownership"
 ---
+
+
+```{r}
+# load pkgs
+library(tidyverse)
+library(janitor)
+
+# read in csv download from Kenai Peninsula Borough GeoHub on 3/10/2023
+dat <- read.csv("other/misc/KPB_Redacted_Parcels.csv") %>%
+  clean_names() %>%
+  filter(!is.na(acreage),
+         own_type_1 == "")
+
+# note: MOST owntype categorization is blank ... can't be sorted
+
+tbl <- dat %>%
+  group_by(own_type_1) %>%
+  summarise(tot_acr = sum(acreage))
+  
+```
+
