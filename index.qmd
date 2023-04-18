@@ -1,0 +1,49 @@
+# Preface {.unnumbered}
+
+---
+execute:
+  echo: false
+  freeze: true
+date: "`r Sys.Date()`"
+format:
+  html:
+    code-fold: true
+    code-tools: true
+    code-summary: "Show the code"
+---
+
+::: {.content-visible when-format="html"}
+This document is the online work-in-progress version of the Water Quality Assessment of the Kenai River Watershed, 2000 - 2023. When completed, it will be an update to historical reports summarising available data to date for this project [@mccard2007; @guerronorejuela2016].
+
+To see a ten-minute presentation introducing this project and it's history, watch the following YouTube video below:
+
+{{< video https://youtu.be/znROWo6MfAg >}}
+
+<br>
+
+This report can also be downloaded as an Microsoft Word document by clicking on the 'W' symbol in the upper left corner. When the report is complete, it will be available as a PDF. All project files and source code are hosted in a public GitHub repository, which is accessible by clicking the GitHub symbol in the upper left corner.
+
+***This online report is not optimized for use on mobile devices, and is best accessed on a desktop or laptop computer***
+
+<br>
+:::
+
+::: {.content-visible when-format="docx"}
+This document is a report on the project, "Water Quality Assessment of the Kenai River Watershed, 2000 - 2023." It is an update to historical reports summarising available data to date [@mccard2007; @guerronorejuela2016].
+
+This draft report is best accessed as an online interactive document at https://kenai-watershed-forum.github.io/kenai-river-wqx-report-v2/, where it can also be downloaded as an Microsoft Word document. All project files and source code are hosted in a public GitHub repository, also accessible at the above URL.
+:::
+
+```{r echo = F}
+library(knitr)
+
+knitr::include_graphics("other/documents/images/kenai_lake.jpg")
+```
+
+::: {.content-visible when-format="docx"}
+```{r echo = F}
+knitr::include_graphics("other/documents/images/KWF_logo.jpg")
+```
+:::
+
+\newpage
