@@ -1,0 +1,66 @@
+project:
+  type: book
+  output-dir: docs
+
+book:
+  title: "Water Quality Assessment of the Kenai River Watershed from 2000 to 2023 [DRAFT]"
+  author: "Benjamin Meyer, Kenai Watershed Forum"
+  date: "1/20/2023"
+  page-navigation: true
+  chapters:
+    - index.qmd
+    - acknowledgements.qmd
+    - abstract.qmd
+    - units.qmd
+    - acronyms.qmd
+    - part: "Introduction & Methods"
+      chapters:
+
+      - intro.qmd
+      - study_area.qmd
+      - methods.qmd
+    - part: "Results"
+      chapters:
+      - data_qa_qc.qmd
+      - parameters.qmd
+      - arsenic.qmd
+      - benzene.qmd
+      - cadmium.qmd
+      - calcium.qmd
+      - chromium.qmd
+      - summary.qmd
+      - references.qmd
+
+  appendices:
+    - appendix_a.qmd
+    - appendix_b.qmd
+
+  repo-url: https://github.com/Kenai-Watershed-Forum/kenai-river-wqx-report-v2.git
+  search:
+    location: sidebar
+    type: textbox
+  downloads: [docx]
+
+bibliography: references.bib
+
+format:
+  html:
+    theme: cosmo
+  #pdf:
+  #  documentclass: scrreprt
+  docx:
+    toc: true
+    toc-depth: 2
+    toc-title: Table of contents
+    number-sections: true
+    highlight-style: github
+
+editor: visual
+
+margin-header: |
+  ![](other/documents/images/KWF_logo.jpg)
+
+
+
+
+
