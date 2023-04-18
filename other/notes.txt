@@ -1,0 +1,37 @@
+NOTE: terminal command to stage all commits:
+git add -A && git commit -m 'staging all files'
+
+Terminal command to clear cache:
+quarto render --cache-refresh
+
+Command to exit render at downstream script point
+
+knitr::knit_exit()
+
+# for unclear reasons,  DUP status in 2021 data is incorrectly assigned to the following:
+# KR RM 22 SOC 2021-05-11 200.7
+# KR RM 1.5 2021-07-27 200.7
+# KR RM 23 2021-05-11 200.7
+# KR RM 70 2021-07-27 200.7
+
+# likely explanation -- als ran these as LAB duplicates ... was this even requested or part of the qapp????? yeesh.
+# steps:
+# 1.) ensure data is transferred from EDD to final export (currently is not, eg. average = "NA", rpd is blank)
+# 2.) assign these data as LAB replicates. wtf.
+
+----> not sure if the above is incorporated in flwo yet 3/29/2022
+
+Interpretation:
+in sgs, FIELD dups are labeled "PS" (project sample) is sample_type
+in als, LAB dups are labeled "DUP1" in sample_type
+
+so::: if its a FIELD dup then this info in conatined in sample name only, not in a distinct column (--->From wwhich lab does this apply???)
+
+
+
+2/28/23
+Distinguish between application in columns
+1.)"sample_condition" (Field Duplicate, Trip Blank, NA) vs.
+2.) "sample_type" (PS, TB, SMPL)
+
+3.) I think I have addressed this; will find out in export file

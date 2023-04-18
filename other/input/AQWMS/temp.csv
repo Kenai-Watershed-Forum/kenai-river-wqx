@@ -1,0 +1,844 @@
+,sample,collect_date,sample_type,sample_condition,sample_condition_abbrv,analyte,lab_name,result
+748,NA,5/11/2021,PS,NA,NA,Fecal Coliform,"Soldotna Wastewater Treatment Plant, Soldotna, Alaska",22
+749,NA,5/11/2021,PS,NA,NA,Fecal Coliform,"Soldotna Wastewater Treatment Plant, Soldotna, Alaska",131
+750,NA,5/11/2021,PS,Field Duplicate,DUP,Fecal Coliform,"Soldotna Wastewater Treatment Plant, Soldotna, Alaska",13
+751,NA,5/11/2021,PS,NA,NA,Fecal Coliform,"Soldotna Wastewater Treatment Plant, Soldotna, Alaska",5
+752,NA,5/11/2021,PS,NA,NA,Fecal Coliform,"Soldotna Wastewater Treatment Plant, Soldotna, Alaska",16
+753,NA,5/11/2021,PS,NA,NA,Fecal Coliform,"Soldotna Wastewater Treatment Plant, Soldotna, Alaska",3
+754,NA,5/11/2021,PS,NA,NA,Fecal Coliform,"Soldotna Wastewater Treatment Plant, Soldotna, Alaska",6
+755,NA,5/11/2021,PS,NA,NA,Fecal Coliform,"Soldotna Wastewater Treatment Plant, Soldotna, Alaska",9
+756,NA,5/11/2021,PS,NA,NA,Fecal Coliform,"Soldotna Wastewater Treatment Plant, Soldotna, Alaska",38
+757,NA,5/11/2021,PS,NA,NA,Fecal Coliform,"Soldotna Wastewater Treatment Plant, Soldotna, Alaska",8
+758,NA,5/11/2021,PS,NA,NA,Fecal Coliform,"Soldotna Wastewater Treatment Plant, Soldotna, Alaska",9
+759,NA,5/11/2021,PS,NA,NA,Fecal Coliform,"Soldotna Wastewater Treatment Plant, Soldotna, Alaska",2
+760,NA,5/11/2021,PS,NA,NA,Fecal Coliform,"Soldotna Wastewater Treatment Plant, Soldotna, Alaska",13
+761,NA,5/11/2021,PS,NA,NA,Fecal Coliform,"Soldotna Wastewater Treatment Plant, Soldotna, Alaska",21
+762,NA,5/11/2021,PS,NA,NA,Fecal Coliform,"Soldotna Wastewater Treatment Plant, Soldotna, Alaska",17
+763,NA,5/11/2021,PS,NA,NA,Fecal Coliform,"Soldotna Wastewater Treatment Plant, Soldotna, Alaska",7
+764,NA,5/11/2021,PS,NA,NA,Fecal Coliform,"Soldotna Wastewater Treatment Plant, Soldotna, Alaska",1
+765,NA,5/11/2021,PS,NA,NA,Fecal Coliform,"Soldotna Wastewater Treatment Plant, Soldotna, Alaska",2
+766,NA,5/11/2021,PS,NA,NA,Fecal Coliform,"Soldotna Wastewater Treatment Plant, Soldotna, Alaska",NA
+767,NA,5/11/2021,PS,NA,NA,Fecal Coliform,"Soldotna Wastewater Treatment Plant, Soldotna, Alaska",NA
+768,NA,5/11/2021,PS,NA,NA,Fecal Coliform,"Soldotna Wastewater Treatment Plant, Soldotna, Alaska",NA
+769,NA,5/11/2021,PS,NA,NA,Fecal Coliform,"Soldotna Wastewater Treatment Plant, Soldotna, Alaska",NA
+770,NA,5/11/2021,PS,NA,NA,Fecal Coliform,"Soldotna Wastewater Treatment Plant, Soldotna, Alaska",NA
+771,NA,5/11/2021,PS,Field Duplicate,DUP,Fecal Coliform,"Soldotna Wastewater Treatment Plant, Soldotna, Alaska",2
+796,RM_0,5/11/2021,PS,NA,NA,Total suspended solids,"Soldotna Wastewater Treatment Plant, Soldotna, Alaska",14.33333333
+797,RM_0,5/11/2021,PS,Field Duplicate,DUP,Total suspended solids,"Soldotna Wastewater Treatment Plant, Soldotna, Alaska",13.33333333
+820,RM_0,7/27/2021,PS,NA,NA,Total suspended solids,"Soldotna Wastewater Treatment Plant, Soldotna, Alaska",4
+821,RM_0,7/27/2021,PS,Field Duplicate,DUP,Total suspended solids,"Soldotna Wastewater Treatment Plant, Soldotna, Alaska",4.7
+187,RM_0_No_Name_Creek,7/27/2021,PS,NA,NA,Total Nitrate/Nitrite-N,"SGS North America, Anchorage, Alaska",NA
+188,RM_0_No_Name_Creek,7/27/2021,PS,NA,NA,Total Phosphorus,"SGS North America, Anchorage, Alaska",NA
+189,RM_0_No_Name_Creek,7/27/2021,PS,NA,NA,Aluminum,"SGS North America, Anchorage, Alaska",NA
+190,RM_0_No_Name_Creek,7/27/2021,PS,NA,NA,Antimony,"SGS North America, Anchorage, Alaska",NA
+191,RM_0_No_Name_Creek,7/27/2021,PS,NA,NA,Arsenic,"SGS North America, Anchorage, Alaska",NA
+192,RM_0_No_Name_Creek,7/27/2021,PS,NA,NA,Barium,"SGS North America, Anchorage, Alaska",11.9
+193,RM_0_No_Name_Creek,7/27/2021,PS,NA,NA,Beryllium,"SGS North America, Anchorage, Alaska",NA
+194,RM_0_No_Name_Creek,7/27/2021,PS,NA,NA,Cadmium,"SGS North America, Anchorage, Alaska",NA
+195,RM_0_No_Name_Creek,7/27/2021,PS,NA,NA,Calcium,"SGS North America, Anchorage, Alaska",16200
+196,RM_0_No_Name_Creek,7/27/2021,PS,NA,NA,Chromium,"SGS North America, Anchorage, Alaska",NA
+197,RM_0_No_Name_Creek,7/27/2021,PS,NA,NA,Cobalt,"SGS North America, Anchorage, Alaska",NA
+198,RM_0_No_Name_Creek,7/27/2021,PS,NA,NA,Copper,"SGS North America, Anchorage, Alaska",NA
+199,RM_0_No_Name_Creek,7/27/2021,PS,NA,NA,Iron,"SGS North America, Anchorage, Alaska",527
+200,RM_0_No_Name_Creek,7/27/2021,PS,NA,NA,Lead,"SGS North America, Anchorage, Alaska",NA
+201,RM_0_No_Name_Creek,7/27/2021,PS,NA,NA,Magnesium,"SGS North America, Anchorage, Alaska",7320
+202,RM_0_No_Name_Creek,7/27/2021,PS,NA,NA,Manganese,"SGS North America, Anchorage, Alaska",146
+203,RM_0_No_Name_Creek,7/27/2021,PS,NA,NA,Molybdenum,"SGS North America, Anchorage, Alaska",NA
+204,RM_0_No_Name_Creek,7/27/2021,PS,NA,NA,Nickel,"SGS North America, Anchorage, Alaska",NA
+205,RM_0_No_Name_Creek,7/27/2021,PS,NA,NA,Phosphorus,"SGS North America, Anchorage, Alaska",NA
+206,RM_0_No_Name_Creek,7/27/2021,PS,NA,NA,Potassium,"SGS North America, Anchorage, Alaska",3010
+207,RM_0_No_Name_Creek,7/27/2021,PS,NA,NA,Selenium,"SGS North America, Anchorage, Alaska",NA
+208,RM_0_No_Name_Creek,7/27/2021,PS,NA,NA,Silicon,"SGS North America, Anchorage, Alaska",9610
+209,RM_0_No_Name_Creek,7/27/2021,PS,NA,NA,Silver,"SGS North America, Anchorage, Alaska",NA
+210,RM_0_No_Name_Creek,7/27/2021,PS,NA,NA,Thallium,"SGS North America, Anchorage, Alaska",NA
+211,RM_0_No_Name_Creek,7/27/2021,PS,NA,NA,Tin,"SGS North America, Anchorage, Alaska",NA
+212,RM_0_No_Name_Creek,7/27/2021,PS,NA,NA,Titanium,"SGS North America, Anchorage, Alaska",NA
+213,RM_0_No_Name_Creek,7/27/2021,PS,NA,NA,Vanadium,"SGS North America, Anchorage, Alaska",NA
+214,RM_0_No_Name_Creek,7/27/2021,PS,NA,NA,Zinc,"SGS North America, Anchorage, Alaska",NA
+215,RM_0_No_Name_Creek,7/27/2021,PS,NA,NA,Sodium,"SGS North America, Anchorage, Alaska",42700
+243,RM_0_No_Name_Creek,7/27/2021,PS,Field Duplicate,DUP,Total Nitrate/Nitrite-N,"SGS North America, Anchorage, Alaska",NA
+244,RM_0_No_Name_Creek,7/27/2021,PS,Field Duplicate,DUP,Total Phosphorus,"SGS North America, Anchorage, Alaska",NA
+772,RM_0_No_Name_Creek,7/27/2021,PS,NA,NA,Fecal Coliform,"Taurianen Engineering and Testing, Soldotna, Alaska",40
+773,RM_0_No_Name_Creek,7/27/2021,PS,Field Duplicate,DUP,Fecal Coliform,"Taurianen Engineering and Testing, Soldotna, Alaska",45
+676,Rm_0_No_Name_Creek,7/27/2021,SMPL,NA,NA,"Calcium, Total","ALS Environmental, Kelso, Washington",13.8
+677,Rm_0_No_Name_Creek,7/27/2021,SMPL,NA,NA,"Iron, Total","ALS Environmental, Kelso, Washington",2.39
+678,Rm_0_No_Name_Creek,7/27/2021,SMPL,NA,NA,"Magnesium, Total","ALS Environmental, Kelso, Washington",7.23
+679,RM_0_No_Name_Creek,7/27/2021,SMPL,Field Duplicate,DUP,"Calcium, Total","ALS Environmental, Kelso, Washington",13.7
+680,RM_0_No_Name_Creek,7/27/2021,SMPL,Field Duplicate,DUP,"Iron, Total","ALS Environmental, Kelso, Washington",2.51
+681,RM_0_No_Name_Creek,7/27/2021,SMPL,Field Duplicate,DUP,"Magnesium, Total","ALS Environmental, Kelso, Washington",6.95
+216,RM_0_No_Name_Creek_,7/27/2021,PS,Field Duplicate,DUP,Aluminum,"SGS North America, Anchorage, Alaska",NA
+217,RM_0_No_Name_Creek_,7/27/2021,PS,Field Duplicate,DUP,Antimony,"SGS North America, Anchorage, Alaska",NA
+218,RM_0_No_Name_Creek_,7/27/2021,PS,Field Duplicate,DUP,Arsenic,"SGS North America, Anchorage, Alaska",NA
+219,RM_0_No_Name_Creek_,7/27/2021,PS,Field Duplicate,DUP,Barium,"SGS North America, Anchorage, Alaska",11.9
+220,RM_0_No_Name_Creek_,7/27/2021,PS,Field Duplicate,DUP,Beryllium,"SGS North America, Anchorage, Alaska",NA
+221,RM_0_No_Name_Creek_,7/27/2021,PS,Field Duplicate,DUP,Cadmium,"SGS North America, Anchorage, Alaska",NA
+222,RM_0_No_Name_Creek_,7/27/2021,PS,Field Duplicate,DUP,Calcium,"SGS North America, Anchorage, Alaska",16300
+223,RM_0_No_Name_Creek_,7/27/2021,PS,Field Duplicate,DUP,Chromium,"SGS North America, Anchorage, Alaska",NA
+224,RM_0_No_Name_Creek_,7/27/2021,PS,Field Duplicate,DUP,Cobalt,"SGS North America, Anchorage, Alaska",NA
+225,RM_0_No_Name_Creek_,7/27/2021,PS,Field Duplicate,DUP,Copper,"SGS North America, Anchorage, Alaska",NA
+226,RM_0_No_Name_Creek_,7/27/2021,PS,Field Duplicate,DUP,Iron,"SGS North America, Anchorage, Alaska",625
+227,RM_0_No_Name_Creek_,7/27/2021,PS,Field Duplicate,DUP,Lead,"SGS North America, Anchorage, Alaska",NA
+228,RM_0_No_Name_Creek_,7/27/2021,PS,Field Duplicate,DUP,Magnesium,"SGS North America, Anchorage, Alaska",6960
+229,RM_0_No_Name_Creek_,7/27/2021,PS,Field Duplicate,DUP,Manganese,"SGS North America, Anchorage, Alaska",149
+230,RM_0_No_Name_Creek_,7/27/2021,PS,Field Duplicate,DUP,Molybdenum,"SGS North America, Anchorage, Alaska",NA
+231,RM_0_No_Name_Creek_,7/27/2021,PS,Field Duplicate,DUP,Nickel,"SGS North America, Anchorage, Alaska",NA
+232,RM_0_No_Name_Creek_,7/27/2021,PS,Field Duplicate,DUP,Phosphorus,"SGS North America, Anchorage, Alaska",NA
+233,RM_0_No_Name_Creek_,7/27/2021,PS,Field Duplicate,DUP,Potassium,"SGS North America, Anchorage, Alaska",2910
+234,RM_0_No_Name_Creek_,7/27/2021,PS,Field Duplicate,DUP,Selenium,"SGS North America, Anchorage, Alaska",NA
+235,RM_0_No_Name_Creek_,7/27/2021,PS,Field Duplicate,DUP,Silicon,"SGS North America, Anchorage, Alaska",9740
+236,RM_0_No_Name_Creek_,7/27/2021,PS,Field Duplicate,DUP,Silver,"SGS North America, Anchorage, Alaska",NA
+237,RM_0_No_Name_Creek_,7/27/2021,PS,Field Duplicate,DUP,Thallium,"SGS North America, Anchorage, Alaska",NA
+238,RM_0_No_Name_Creek_,7/27/2021,PS,Field Duplicate,DUP,Tin,"SGS North America, Anchorage, Alaska",NA
+239,RM_0_No_Name_Creek_,7/27/2021,PS,Field Duplicate,DUP,Titanium,"SGS North America, Anchorage, Alaska",NA
+240,RM_0_No_Name_Creek_,7/27/2021,PS,Field Duplicate,DUP,Vanadium,"SGS North America, Anchorage, Alaska",NA
+241,RM_0_No_Name_Creek_,7/27/2021,PS,Field Duplicate,DUP,Zinc,"SGS North America, Anchorage, Alaska",12.3
+242,RM_0_No_Name_Creek_,7/27/2021,PS,Field Duplicate,DUP,Sodium,"SGS North America, Anchorage, Alaska",39500
+798,RM_1.5,5/11/2021,PS,NA,NA,Total suspended solids,"Soldotna Wastewater Treatment Plant, Soldotna, Alaska",551
+822,RM_1.5,7/27/2021,PS,NA,NA,Total suspended solids,"Soldotna Wastewater Treatment Plant, Soldotna, Alaska",105
+245,RM_1.5_Kenai_City_Dock,7/27/2021,PS,NA,NA,Total Nitrate/Nitrite-N,"SGS North America, Anchorage, Alaska",NA
+246,RM_1.5_Kenai_City_Dock,7/27/2021,PS,NA,NA,Total Phosphorus,"SGS North America, Anchorage, Alaska",0.0749
+247,RM_1.5_Kenai_City_Dock,7/27/2021,PS,NA,NA,Benzene,"SGS North America, Anchorage, Alaska",NA
+248,RM_1.5_Kenai_City_Dock,7/27/2021,PS,NA,NA,Ethylbenzene,"SGS North America, Anchorage, Alaska",NA
+249,RM_1.5_Kenai_City_Dock,7/27/2021,PS,NA,NA,o-Xylene,"SGS North America, Anchorage, Alaska",NA
+250,RM_1.5_Kenai_City_Dock,7/27/2021,PS,NA,NA,P & M -Xylene,"SGS North America, Anchorage, Alaska",NA
+251,RM_1.5_Kenai_City_Dock,7/27/2021,PS,NA,NA,Toluene,"SGS North America, Anchorage, Alaska",NA
+252,RM_1.5_Kenai_City_Dock,7/27/2021,PS,NA,NA,Xylenes (total),"SGS North America, Anchorage, Alaska",NA
+253,RM_1.5_Kenai_City_Dock,7/27/2021,PS,NA,NA,Aluminum,"SGS North America, Anchorage, Alaska",NA
+254,RM_1.5_Kenai_City_Dock,7/27/2021,PS,NA,NA,Antimony,"SGS North America, Anchorage, Alaska",NA
+255,RM_1.5_Kenai_City_Dock,7/27/2021,PS,NA,NA,Arsenic,"SGS North America, Anchorage, Alaska",NA
+256,RM_1.5_Kenai_City_Dock,7/27/2021,PS,NA,NA,Barium,"SGS North America, Anchorage, Alaska",9.57
+257,RM_1.5_Kenai_City_Dock,7/27/2021,PS,NA,NA,Beryllium,"SGS North America, Anchorage, Alaska",NA
+258,RM_1.5_Kenai_City_Dock,7/27/2021,PS,NA,NA,Cadmium,"SGS North America, Anchorage, Alaska",NA
+259,RM_1.5_Kenai_City_Dock,7/27/2021,PS,NA,NA,Chromium,"SGS North America, Anchorage, Alaska",NA
+260,RM_1.5_Kenai_City_Dock,7/27/2021,PS,NA,NA,Cobalt,"SGS North America, Anchorage, Alaska",NA
+261,RM_1.5_Kenai_City_Dock,7/27/2021,PS,NA,NA,Copper,"SGS North America, Anchorage, Alaska",1.73
+262,RM_1.5_Kenai_City_Dock,7/27/2021,PS,NA,NA,Iron,"SGS North America, Anchorage, Alaska",NA
+263,RM_1.5_Kenai_City_Dock,7/27/2021,PS,NA,NA,Lead,"SGS North America, Anchorage, Alaska",NA
+264,RM_1.5_Kenai_City_Dock,7/27/2021,PS,NA,NA,Manganese,"SGS North America, Anchorage, Alaska",8.34
+265,RM_1.5_Kenai_City_Dock,7/27/2021,PS,NA,NA,Molybdenum,"SGS North America, Anchorage, Alaska",NA
+266,RM_1.5_Kenai_City_Dock,7/27/2021,PS,NA,NA,Nickel,"SGS North America, Anchorage, Alaska",NA
+267,RM_1.5_Kenai_City_Dock,7/27/2021,PS,NA,NA,Phosphorus,"SGS North America, Anchorage, Alaska",NA
+268,RM_1.5_Kenai_City_Dock,7/27/2021,PS,NA,NA,Potassium,"SGS North America, Anchorage, Alaska",21200
+269,RM_1.5_Kenai_City_Dock,7/27/2021,PS,NA,NA,Selenium,"SGS North America, Anchorage, Alaska",NA
+270,RM_1.5_Kenai_City_Dock,7/27/2021,PS,NA,NA,Silicon,"SGS North America, Anchorage, Alaska",1540
+271,RM_1.5_Kenai_City_Dock,7/27/2021,PS,NA,NA,Silver,"SGS North America, Anchorage, Alaska",NA
+272,RM_1.5_Kenai_City_Dock,7/27/2021,PS,NA,NA,Thallium,"SGS North America, Anchorage, Alaska",NA
+273,RM_1.5_Kenai_City_Dock,7/27/2021,PS,NA,NA,Tin,"SGS North America, Anchorage, Alaska",NA
+274,RM_1.5_Kenai_City_Dock,7/27/2021,PS,NA,NA,Titanium,"SGS North America, Anchorage, Alaska",NA
+275,RM_1.5_Kenai_City_Dock,7/27/2021,PS,NA,NA,Vanadium,"SGS North America, Anchorage, Alaska",NA
+276,RM_1.5_Kenai_City_Dock,7/27/2021,PS,NA,NA,Zinc,"SGS North America, Anchorage, Alaska",NA
+277,RM_1.5_Kenai_City_Dock,7/27/2021,PS,NA,NA,Calcium,"SGS North America, Anchorage, Alaska",39100
+278,RM_1.5_Kenai_City_Dock,7/27/2021,PS,NA,NA,Magnesium,"SGS North America, Anchorage, Alaska",68600
+279,RM_1.5_Kenai_City_Dock,7/27/2021,PS,NA,NA,Sodium,"SGS North America, Anchorage, Alaska",595000
+774,RM_1.5_Kenai_City_Dock,7/27/2021,PS,NA,NA,Fecal Coliform,"Taurianen Engineering and Testing, Soldotna, Alaska",53
+682,RM_1.5_Kenai_City_Dock,7/27/2021,SMPL,NA,NA,"Calcium, Total","ALS Environmental, Kelso, Washington",33.7
+683,RM_1.5_Kenai_City_Dock,7/27/2021,SMPL,NA,NA,"Iron, Total","ALS Environmental, Kelso, Washington",3.24
+684,RM_1.5_Kenai_City_Dock,7/27/2021,SMPL,NA,NA,"Magnesium, Total","ALS Environmental, Kelso, Washington",66.9
+800,RM_10,5/11/2021,PS,NA,NA,Total suspended solids,"Soldotna Wastewater Treatment Plant, Soldotna, Alaska",27
+824,RM_10,7/27/2021,PS,NA,NA,Total suspended solids,"Soldotna Wastewater Treatment Plant, Soldotna, Alaska",4.3
+801,RM_10.1,5/11/2021,PS,NA,NA,Total suspended solids,"Soldotna Wastewater Treatment Plant, Soldotna, Alaska",14
+825,RM_10.1,7/27/2021,PS,NA,NA,Total suspended solids,"Soldotna Wastewater Treatment Plant, Soldotna, Alaska",16.7
+309,RM_10.1_Kenai_River,7/27/2021,PS,NA,NA,Total Nitrate/Nitrite-N,"SGS North America, Anchorage, Alaska",NA
+310,RM_10.1_Kenai_River,7/27/2021,PS,NA,NA,Total Phosphorus,"SGS North America, Anchorage, Alaska",NA
+311,RM_10.1_Kenai_River,7/27/2021,PS,NA,NA,Aluminum,"SGS North America, Anchorage, Alaska",NA
+312,RM_10.1_Kenai_River,7/27/2021,PS,NA,NA,Antimony,"SGS North America, Anchorage, Alaska",NA
+313,RM_10.1_Kenai_River,7/27/2021,PS,NA,NA,Arsenic,"SGS North America, Anchorage, Alaska",NA
+314,RM_10.1_Kenai_River,7/27/2021,PS,NA,NA,Barium,"SGS North America, Anchorage, Alaska",8.79
+315,RM_10.1_Kenai_River,7/27/2021,PS,NA,NA,Beryllium,"SGS North America, Anchorage, Alaska",NA
+316,RM_10.1_Kenai_River,7/27/2021,PS,NA,NA,Cadmium,"SGS North America, Anchorage, Alaska",NA
+317,RM_10.1_Kenai_River,7/27/2021,PS,NA,NA,Calcium,"SGS North America, Anchorage, Alaska",14000
+318,RM_10.1_Kenai_River,7/27/2021,PS,NA,NA,Chromium,"SGS North America, Anchorage, Alaska",NA
+319,RM_10.1_Kenai_River,7/27/2021,PS,NA,NA,Cobalt,"SGS North America, Anchorage, Alaska",NA
+320,RM_10.1_Kenai_River,7/27/2021,PS,NA,NA,Copper,"SGS North America, Anchorage, Alaska",NA
+321,RM_10.1_Kenai_River,7/27/2021,PS,NA,NA,Iron,"SGS North America, Anchorage, Alaska",NA
+322,RM_10.1_Kenai_River,7/27/2021,PS,NA,NA,Lead,"SGS North America, Anchorage, Alaska",NA
+323,RM_10.1_Kenai_River,7/27/2021,PS,NA,NA,Magnesium,"SGS North America, Anchorage, Alaska",988
+324,RM_10.1_Kenai_River,7/27/2021,PS,NA,NA,Manganese,"SGS North America, Anchorage, Alaska",2.11
+325,RM_10.1_Kenai_River,7/27/2021,PS,NA,NA,Molybdenum,"SGS North America, Anchorage, Alaska",NA
+326,RM_10.1_Kenai_River,7/27/2021,PS,NA,NA,Nickel,"SGS North America, Anchorage, Alaska",NA
+327,RM_10.1_Kenai_River,7/27/2021,PS,NA,NA,Phosphorus,"SGS North America, Anchorage, Alaska",NA
+328,RM_10.1_Kenai_River,7/27/2021,PS,NA,NA,Potassium,"SGS North America, Anchorage, Alaska",826
+329,RM_10.1_Kenai_River,7/27/2021,PS,NA,NA,Selenium,"SGS North America, Anchorage, Alaska",NA
+330,RM_10.1_Kenai_River,7/27/2021,PS,NA,NA,Silicon,"SGS North America, Anchorage, Alaska",1550
+331,RM_10.1_Kenai_River,7/27/2021,PS,NA,NA,Silver,"SGS North America, Anchorage, Alaska",NA
+332,RM_10.1_Kenai_River,7/27/2021,PS,NA,NA,Sodium,"SGS North America, Anchorage, Alaska",1420
+333,RM_10.1_Kenai_River,7/27/2021,PS,NA,NA,Thallium,"SGS North America, Anchorage, Alaska",NA
+334,RM_10.1_Kenai_River,7/27/2021,PS,NA,NA,Tin,"SGS North America, Anchorage, Alaska",NA
+335,RM_10.1_Kenai_River,7/27/2021,PS,NA,NA,Titanium,"SGS North America, Anchorage, Alaska",NA
+336,RM_10.1_Kenai_River,7/27/2021,PS,NA,NA,Vanadium,"SGS North America, Anchorage, Alaska",NA
+337,RM_10.1_Kenai_River,7/27/2021,PS,NA,NA,Zinc,"SGS North America, Anchorage, Alaska",10.6
+775,RM_10.1_Kenai_River,7/27/2021,PS,NA,NA,Fecal Coliform,"Taurianen Engineering and Testing, Soldotna, Alaska",NA
+691,RM_10.1_Kenai_River,7/27/2021,SMPL,NA,NA,"Calcium, Total","ALS Environmental, Kelso, Washington",11.8
+692,RM_10.1_Kenai_River,7/27/2021,SMPL,NA,NA,"Iron, Total","ALS Environmental, Kelso, Washington",0.37
+693,RM_10.1_Kenai_River,7/27/2021,SMPL,NA,NA,"Magnesium, Total","ALS Environmental, Kelso, Washington",1.1
+280,RM_10_Beaver_Creek,7/27/2021,PS,NA,NA,Total Nitrate/Nitrite-N,"SGS North America, Anchorage, Alaska",NA
+281,RM_10_Beaver_Creek,7/27/2021,PS,NA,NA,Total Phosphorus,"SGS North America, Anchorage, Alaska",0.0586
+282,RM_10_Beaver_Creek,7/27/2021,PS,NA,NA,Aluminum,"SGS North America, Anchorage, Alaska",NA
+283,RM_10_Beaver_Creek,7/27/2021,PS,NA,NA,Antimony,"SGS North America, Anchorage, Alaska",NA
+284,RM_10_Beaver_Creek,7/27/2021,PS,NA,NA,Arsenic,"SGS North America, Anchorage, Alaska",NA
+285,RM_10_Beaver_Creek,7/27/2021,PS,NA,NA,Barium,"SGS North America, Anchorage, Alaska",13
+286,RM_10_Beaver_Creek,7/27/2021,PS,NA,NA,Beryllium,"SGS North America, Anchorage, Alaska",NA
+287,RM_10_Beaver_Creek,7/27/2021,PS,NA,NA,Cadmium,"SGS North America, Anchorage, Alaska",NA
+288,RM_10_Beaver_Creek,7/27/2021,PS,NA,NA,Calcium,"SGS North America, Anchorage, Alaska",20100
+289,RM_10_Beaver_Creek,7/27/2021,PS,NA,NA,Chromium,"SGS North America, Anchorage, Alaska",NA
+290,RM_10_Beaver_Creek,7/27/2021,PS,NA,NA,Cobalt,"SGS North America, Anchorage, Alaska",NA
+291,RM_10_Beaver_Creek,7/27/2021,PS,NA,NA,Copper,"SGS North America, Anchorage, Alaska",NA
+292,RM_10_Beaver_Creek,7/27/2021,PS,NA,NA,Iron,"SGS North America, Anchorage, Alaska",1020
+293,RM_10_Beaver_Creek,7/27/2021,PS,NA,NA,Lead,"SGS North America, Anchorage, Alaska",NA
+294,RM_10_Beaver_Creek,7/27/2021,PS,NA,NA,Magnesium,"SGS North America, Anchorage, Alaska",3860
+295,RM_10_Beaver_Creek,7/27/2021,PS,NA,NA,Manganese,"SGS North America, Anchorage, Alaska",170
+296,RM_10_Beaver_Creek,7/27/2021,PS,NA,NA,Molybdenum,"SGS North America, Anchorage, Alaska",NA
+297,RM_10_Beaver_Creek,7/27/2021,PS,NA,NA,Nickel,"SGS North America, Anchorage, Alaska",NA
+298,RM_10_Beaver_Creek,7/27/2021,PS,NA,NA,Phosphorus,"SGS North America, Anchorage, Alaska",NA
+299,RM_10_Beaver_Creek,7/27/2021,PS,NA,NA,Potassium,"SGS North America, Anchorage, Alaska",1300
+300,RM_10_Beaver_Creek,7/27/2021,PS,NA,NA,Selenium,"SGS North America, Anchorage, Alaska",NA
+301,RM_10_Beaver_Creek,7/27/2021,PS,NA,NA,Silicon,"SGS North America, Anchorage, Alaska",10300
+302,RM_10_Beaver_Creek,7/27/2021,PS,NA,NA,Silver,"SGS North America, Anchorage, Alaska",NA
+303,RM_10_Beaver_Creek,7/27/2021,PS,NA,NA,Sodium,"SGS North America, Anchorage, Alaska",5090
+304,RM_10_Beaver_Creek,7/27/2021,PS,NA,NA,Thallium,"SGS North America, Anchorage, Alaska",NA
+305,RM_10_Beaver_Creek,7/27/2021,PS,NA,NA,Tin,"SGS North America, Anchorage, Alaska",NA
+306,RM_10_Beaver_Creek,7/27/2021,PS,NA,NA,Titanium,"SGS North America, Anchorage, Alaska",NA
+307,RM_10_Beaver_Creek,7/27/2021,PS,NA,NA,Vanadium,"SGS North America, Anchorage, Alaska",NA
+308,RM_10_Beaver_Creek,7/27/2021,PS,NA,NA,Zinc,"SGS North America, Anchorage, Alaska",39.2
+776,RM_10_Beaver_Creek,7/27/2021,PS,NA,NA,Fecal Coliform,"Taurianen Engineering and Testing, Soldotna, Alaska",56
+688,RM_10_Beaver_Creek,7/27/2021,SMPL,NA,NA,"Calcium, Total","ALS Environmental, Kelso, Washington",17.3
+689,RM_10_Beaver_Creek,7/27/2021,SMPL,NA,NA,"Iron, Total","ALS Environmental, Kelso, Washington",2.17
+690,RM_10_Beaver_Creek,7/27/2021,SMPL,NA,NA,"Magnesium, Total","ALS Environmental, Kelso, Washington",3.96
+802,RM_12.5,5/11/2021,PS,NA,NA,Total suspended solids,"Soldotna Wastewater Treatment Plant, Soldotna, Alaska",10
+826,RM_12.5,7/27/2021,PS,NA,NA,Total suspended solids,"Soldotna Wastewater Treatment Plant, Soldotna, Alaska",14.7
+338,RM_12.5_Pillars,7/27/2021,PS,NA,NA,Total Nitrate/Nitrite-N,"SGS North America, Anchorage, Alaska",NA
+339,RM_12.5_Pillars,7/27/2021,PS,NA,NA,Total Phosphorus,"SGS North America, Anchorage, Alaska",NA
+340,RM_12.5_Pillars,7/27/2021,PS,NA,NA,Aluminum,"SGS North America, Anchorage, Alaska",NA
+341,RM_12.5_Pillars,7/27/2021,PS,NA,NA,Antimony,"SGS North America, Anchorage, Alaska",NA
+342,RM_12.5_Pillars,7/27/2021,PS,NA,NA,Arsenic,"SGS North America, Anchorage, Alaska",NA
+343,RM_12.5_Pillars,7/27/2021,PS,NA,NA,Barium,"SGS North America, Anchorage, Alaska",8.36
+344,RM_12.5_Pillars,7/27/2021,PS,NA,NA,Beryllium,"SGS North America, Anchorage, Alaska",NA
+345,RM_12.5_Pillars,7/27/2021,PS,NA,NA,Cadmium,"SGS North America, Anchorage, Alaska",NA
+346,RM_12.5_Pillars,7/27/2021,PS,NA,NA,Calcium,"SGS North America, Anchorage, Alaska",13300
+347,RM_12.5_Pillars,7/27/2021,PS,NA,NA,Chromium,"SGS North America, Anchorage, Alaska",NA
+348,RM_12.5_Pillars,7/27/2021,PS,NA,NA,Cobalt,"SGS North America, Anchorage, Alaska",NA
+349,RM_12.5_Pillars,7/27/2021,PS,NA,NA,Copper,"SGS North America, Anchorage, Alaska",NA
+350,RM_12.5_Pillars,7/27/2021,PS,NA,NA,Iron,"SGS North America, Anchorage, Alaska",NA
+351,RM_12.5_Pillars,7/27/2021,PS,NA,NA,Lead,"SGS North America, Anchorage, Alaska",NA
+352,RM_12.5_Pillars,7/27/2021,PS,NA,NA,Magnesium,"SGS North America, Anchorage, Alaska",919
+353,RM_12.5_Pillars,7/27/2021,PS,NA,NA,Manganese,"SGS North America, Anchorage, Alaska",1.53
+354,RM_12.5_Pillars,7/27/2021,PS,NA,NA,Molybdenum,"SGS North America, Anchorage, Alaska",NA
+355,RM_12.5_Pillars,7/27/2021,PS,NA,NA,Nickel,"SGS North America, Anchorage, Alaska",NA
+356,RM_12.5_Pillars,7/27/2021,PS,NA,NA,Phosphorus,"SGS North America, Anchorage, Alaska",NA
+357,RM_12.5_Pillars,7/27/2021,PS,NA,NA,Potassium,"SGS North America, Anchorage, Alaska",781
+358,RM_12.5_Pillars,7/27/2021,PS,NA,NA,Selenium,"SGS North America, Anchorage, Alaska",NA
+359,RM_12.5_Pillars,7/27/2021,PS,NA,NA,Silicon,"SGS North America, Anchorage, Alaska",1460
+360,RM_12.5_Pillars,7/27/2021,PS,NA,NA,Silver,"SGS North America, Anchorage, Alaska",NA
+361,RM_12.5_Pillars,7/27/2021,PS,NA,NA,Sodium,"SGS North America, Anchorage, Alaska",1320
+362,RM_12.5_Pillars,7/27/2021,PS,NA,NA,Thallium,"SGS North America, Anchorage, Alaska",NA
+363,RM_12.5_Pillars,7/27/2021,PS,NA,NA,Tin,"SGS North America, Anchorage, Alaska",NA
+364,RM_12.5_Pillars,7/27/2021,PS,NA,NA,Titanium,"SGS North America, Anchorage, Alaska",NA
+365,RM_12.5_Pillars,7/27/2021,PS,NA,NA,Vanadium,"SGS North America, Anchorage, Alaska",NA
+366,RM_12.5_Pillars,7/27/2021,PS,NA,NA,Zinc,"SGS North America, Anchorage, Alaska",11.2
+777,RM_12.5_Pillars,7/27/2021,PS,NA,NA,Fecal Coliform,"Taurianen Engineering and Testing, Soldotna, Alaska",1
+694,RM_12.5_Pillars,7/27/2021,SMPL,NA,NA,"Calcium, Total","ALS Environmental, Kelso, Washington",11.8
+695,RM_12.5_Pillars,7/27/2021,SMPL,NA,NA,"Iron, Total","ALS Environmental, Kelso, Washington",0.356
+696,RM_12.5_Pillars,7/27/2021,SMPL,NA,NA,"Magnesium, Total","ALS Environmental, Kelso, Washington",1.08
+803,RM_18,5/11/2021,PS,NA,NA,Total suspended solids,"Soldotna Wastewater Treatment Plant, Soldotna, Alaska",14
+827,RM_18,7/27/2021,PS,NA,NA,Total suspended solids,"Soldotna Wastewater Treatment Plant, Soldotna, Alaska",12.7
+367,RM_18_Poachers_Cove,7/27/2021,PS,NA,NA,Total Nitrate/Nitrite-N,"SGS North America, Anchorage, Alaska",NA
+368,RM_18_Poachers_Cove,7/27/2021,PS,NA,NA,Total Phosphorus,"SGS North America, Anchorage, Alaska",NA
+369,RM_18_Poachers_Cove,7/27/2021,PS,NA,NA,Aluminum,"SGS North America, Anchorage, Alaska",NA
+370,RM_18_Poachers_Cove,7/27/2021,PS,NA,NA,Antimony,"SGS North America, Anchorage, Alaska",NA
+371,RM_18_Poachers_Cove,7/27/2021,PS,NA,NA,Arsenic,"SGS North America, Anchorage, Alaska",NA
+372,RM_18_Poachers_Cove,7/27/2021,PS,NA,NA,Barium,"SGS North America, Anchorage, Alaska",8.62
+373,RM_18_Poachers_Cove,7/27/2021,PS,NA,NA,Beryllium,"SGS North America, Anchorage, Alaska",NA
+374,RM_18_Poachers_Cove,7/27/2021,PS,NA,NA,Cadmium,"SGS North America, Anchorage, Alaska",NA
+375,RM_18_Poachers_Cove,7/27/2021,PS,NA,NA,Calcium,"SGS North America, Anchorage, Alaska",13900
+376,RM_18_Poachers_Cove,7/27/2021,PS,NA,NA,Chromium,"SGS North America, Anchorage, Alaska",NA
+377,RM_18_Poachers_Cove,7/27/2021,PS,NA,NA,Cobalt,"SGS North America, Anchorage, Alaska",NA
+378,RM_18_Poachers_Cove,7/27/2021,PS,NA,NA,Copper,"SGS North America, Anchorage, Alaska",NA
+379,RM_18_Poachers_Cove,7/27/2021,PS,NA,NA,Iron,"SGS North America, Anchorage, Alaska",NA
+380,RM_18_Poachers_Cove,7/27/2021,PS,NA,NA,Lead,"SGS North America, Anchorage, Alaska",NA
+381,RM_18_Poachers_Cove,7/27/2021,PS,NA,NA,Magnesium,"SGS North America, Anchorage, Alaska",963
+382,RM_18_Poachers_Cove,7/27/2021,PS,NA,NA,Manganese,"SGS North America, Anchorage, Alaska",1.81
+383,RM_18_Poachers_Cove,7/27/2021,PS,NA,NA,Molybdenum,"SGS North America, Anchorage, Alaska",NA
+384,RM_18_Poachers_Cove,7/27/2021,PS,NA,NA,Nickel,"SGS North America, Anchorage, Alaska",NA
+385,RM_18_Poachers_Cove,7/27/2021,PS,NA,NA,Phosphorus,"SGS North America, Anchorage, Alaska",NA
+386,RM_18_Poachers_Cove,7/27/2021,PS,NA,NA,Potassium,"SGS North America, Anchorage, Alaska",825
+387,RM_18_Poachers_Cove,7/27/2021,PS,NA,NA,Selenium,"SGS North America, Anchorage, Alaska",NA
+388,RM_18_Poachers_Cove,7/27/2021,PS,NA,NA,Silicon,"SGS North America, Anchorage, Alaska",1530
+389,RM_18_Poachers_Cove,7/27/2021,PS,NA,NA,Silver,"SGS North America, Anchorage, Alaska",NA
+390,RM_18_Poachers_Cove,7/27/2021,PS,NA,NA,Sodium,"SGS North America, Anchorage, Alaska",1380
+391,RM_18_Poachers_Cove,7/27/2021,PS,NA,NA,Thallium,"SGS North America, Anchorage, Alaska",NA
+392,RM_18_Poachers_Cove,7/27/2021,PS,NA,NA,Tin,"SGS North America, Anchorage, Alaska",NA
+393,RM_18_Poachers_Cove,7/27/2021,PS,NA,NA,Titanium,"SGS North America, Anchorage, Alaska",NA
+394,RM_18_Poachers_Cove,7/27/2021,PS,NA,NA,Vanadium,"SGS North America, Anchorage, Alaska",NA
+395,RM_18_Poachers_Cove,7/27/2021,PS,NA,NA,Zinc,"SGS North America, Anchorage, Alaska",15.2
+697,RM_18_Poachers_Cove,7/27/2021,SMPL,NA,NA,"Calcium, Total","ALS Environmental, Kelso, Washington",11.7
+698,RM_18_Poachers_Cove,7/27/2021,SMPL,NA,NA,"Iron, Total","ALS Environmental, Kelso, Washington",0.315
+699,RM_18_Poachers_Cove,7/27/2021,SMPL,NA,NA,"Magnesium, Total","ALS Environmental, Kelso, Washington",1.06
+778,RM_18_Poachers_Creek,7/27/2021,PS,NA,NA,Fecal Coliform,"Taurianen Engineering and Testing, Soldotna, Alaska",1
+804,RM_19,5/11/2021,PS,NA,NA,Total suspended solids,"Soldotna Wastewater Treatment Plant, Soldotna, Alaska",4.333333333
+828,RM_19,7/27/2021,PS,NA,NA,Total suspended solids,"Soldotna Wastewater Treatment Plant, Soldotna, Alaska",1
+396,RM_19_Slikok_Creek,7/27/2021,PS,NA,NA,Total Nitrate/Nitrite-N,"SGS North America, Anchorage, Alaska",NA
+397,RM_19_Slikok_Creek,7/27/2021,PS,NA,NA,Total Phosphorus,"SGS North America, Anchorage, Alaska",0.0417
+398,RM_19_Slikok_Creek,7/27/2021,PS,NA,NA,Aluminum,"SGS North America, Anchorage, Alaska",NA
+399,RM_19_Slikok_Creek,7/27/2021,PS,NA,NA,Antimony,"SGS North America, Anchorage, Alaska",NA
+400,RM_19_Slikok_Creek,7/27/2021,PS,NA,NA,Arsenic,"SGS North America, Anchorage, Alaska",NA
+401,RM_19_Slikok_Creek,7/27/2021,PS,NA,NA,Barium,"SGS North America, Anchorage, Alaska",12.9
+402,RM_19_Slikok_Creek,7/27/2021,PS,NA,NA,Beryllium,"SGS North America, Anchorage, Alaska",NA
+403,RM_19_Slikok_Creek,7/27/2021,PS,NA,NA,Cadmium,"SGS North America, Anchorage, Alaska",NA
+404,RM_19_Slikok_Creek,7/27/2021,PS,NA,NA,Calcium,"SGS North America, Anchorage, Alaska",18400
+405,RM_19_Slikok_Creek,7/27/2021,PS,NA,NA,Chromium,"SGS North America, Anchorage, Alaska",NA
+406,RM_19_Slikok_Creek,7/27/2021,PS,NA,NA,Cobalt,"SGS North America, Anchorage, Alaska",NA
+407,RM_19_Slikok_Creek,7/27/2021,PS,NA,NA,Copper,"SGS North America, Anchorage, Alaska",NA
+408,RM_19_Slikok_Creek,7/27/2021,PS,NA,NA,Iron,"SGS North America, Anchorage, Alaska",408
+409,RM_19_Slikok_Creek,7/27/2021,PS,NA,NA,Lead,"SGS North America, Anchorage, Alaska",NA
+410,RM_19_Slikok_Creek,7/27/2021,PS,NA,NA,Magnesium,"SGS North America, Anchorage, Alaska",4330
+411,RM_19_Slikok_Creek,7/27/2021,PS,NA,NA,Manganese,"SGS North America, Anchorage, Alaska",80.2
+412,RM_19_Slikok_Creek,7/27/2021,PS,NA,NA,Molybdenum,"SGS North America, Anchorage, Alaska",NA
+413,RM_19_Slikok_Creek,7/27/2021,PS,NA,NA,Nickel,"SGS North America, Anchorage, Alaska",NA
+414,RM_19_Slikok_Creek,7/27/2021,PS,NA,NA,Phosphorus,"SGS North America, Anchorage, Alaska",NA
+415,RM_19_Slikok_Creek,7/27/2021,PS,NA,NA,Potassium,"SGS North America, Anchorage, Alaska",918
+416,RM_19_Slikok_Creek,7/27/2021,PS,NA,NA,Selenium,"SGS North America, Anchorage, Alaska",NA
+417,RM_19_Slikok_Creek,7/27/2021,PS,NA,NA,Silicon,"SGS North America, Anchorage, Alaska",9220
+418,RM_19_Slikok_Creek,7/27/2021,PS,NA,NA,Silver,"SGS North America, Anchorage, Alaska",NA
+419,RM_19_Slikok_Creek,7/27/2021,PS,NA,NA,Sodium,"SGS North America, Anchorage, Alaska",4810
+420,RM_19_Slikok_Creek,7/27/2021,PS,NA,NA,Thallium,"SGS North America, Anchorage, Alaska",NA
+421,RM_19_Slikok_Creek,7/27/2021,PS,NA,NA,Tin,"SGS North America, Anchorage, Alaska",NA
+422,RM_19_Slikok_Creek,7/27/2021,PS,NA,NA,Titanium,"SGS North America, Anchorage, Alaska",NA
+423,RM_19_Slikok_Creek,7/27/2021,PS,NA,NA,Vanadium,"SGS North America, Anchorage, Alaska",NA
+424,RM_19_Slikok_Creek,7/27/2021,PS,NA,NA,Zinc,"SGS North America, Anchorage, Alaska",NA
+779,RM_19_Slikok_Creek,7/27/2021,PS,NA,NA,Fecal Coliform,"Taurianen Engineering and Testing, Soldotna, Alaska",1
+700,RM_19_Slikok_Creek,7/27/2021,SMPL,NA,NA,"Calcium, Total","ALS Environmental, Kelso, Washington",15.6
+701,RM_19_Slikok_Creek,7/27/2021,SMPL,NA,NA,"Iron, Total","ALS Environmental, Kelso, Washington",0.889
+702,RM_19_Slikok_Creek,7/27/2021,SMPL,NA,NA,"Magnesium, Total","ALS Environmental, Kelso, Washington",4.37
+805,RM_21,5/11/2021,PS,NA,NA,Total suspended solids,"Soldotna Wastewater Treatment Plant, Soldotna, Alaska",14.66666667
+829,RM_21,7/27/2021,PS,NA,NA,Total suspended solids,"Soldotna Wastewater Treatment Plant, Soldotna, Alaska",9.7
+425,RM_21_Soldotna_Bridge,7/27/2021,PS,NA,NA,Total Nitrate/Nitrite-N,"SGS North America, Anchorage, Alaska",NA
+426,RM_21_Soldotna_Bridge,7/27/2021,PS,NA,NA,Total Phosphorus,"SGS North America, Anchorage, Alaska",NA
+427,RM_21_Soldotna_Bridge,7/27/2021,PS,NA,NA,Aluminum,"SGS North America, Anchorage, Alaska",NA
+428,RM_21_Soldotna_Bridge,7/27/2021,PS,NA,NA,Antimony,"SGS North America, Anchorage, Alaska",NA
+429,RM_21_Soldotna_Bridge,7/27/2021,PS,NA,NA,Arsenic,"SGS North America, Anchorage, Alaska",NA
+430,RM_21_Soldotna_Bridge,7/27/2021,PS,NA,NA,Barium,"SGS North America, Anchorage, Alaska",8.69
+431,RM_21_Soldotna_Bridge,7/27/2021,PS,NA,NA,Beryllium,"SGS North America, Anchorage, Alaska",NA
+432,RM_21_Soldotna_Bridge,7/27/2021,PS,NA,NA,Cadmium,"SGS North America, Anchorage, Alaska",NA
+433,RM_21_Soldotna_Bridge,7/27/2021,PS,NA,NA,Calcium,"SGS North America, Anchorage, Alaska",13800
+434,RM_21_Soldotna_Bridge,7/27/2021,PS,NA,NA,Chromium,"SGS North America, Anchorage, Alaska",NA
+435,RM_21_Soldotna_Bridge,7/27/2021,PS,NA,NA,Cobalt,"SGS North America, Anchorage, Alaska",NA
+436,RM_21_Soldotna_Bridge,7/27/2021,PS,NA,NA,Copper,"SGS North America, Anchorage, Alaska",NA
+437,RM_21_Soldotna_Bridge,7/27/2021,PS,NA,NA,Iron,"SGS North America, Anchorage, Alaska",NA
+438,RM_21_Soldotna_Bridge,7/27/2021,PS,NA,NA,Lead,"SGS North America, Anchorage, Alaska",NA
+439,RM_21_Soldotna_Bridge,7/27/2021,PS,NA,NA,Magnesium,"SGS North America, Anchorage, Alaska",953
+440,RM_21_Soldotna_Bridge,7/27/2021,PS,NA,NA,Manganese,"SGS North America, Anchorage, Alaska",1.98
+441,RM_21_Soldotna_Bridge,7/27/2021,PS,NA,NA,Molybdenum,"SGS North America, Anchorage, Alaska",NA
+442,RM_21_Soldotna_Bridge,7/27/2021,PS,NA,NA,Nickel,"SGS North America, Anchorage, Alaska",NA
+443,RM_21_Soldotna_Bridge,7/27/2021,PS,NA,NA,Phosphorus,"SGS North America, Anchorage, Alaska",NA
+444,RM_21_Soldotna_Bridge,7/27/2021,PS,NA,NA,Potassium,"SGS North America, Anchorage, Alaska",827
+445,RM_21_Soldotna_Bridge,7/27/2021,PS,NA,NA,Selenium,"SGS North America, Anchorage, Alaska",NA
+446,RM_21_Soldotna_Bridge,7/27/2021,PS,NA,NA,Silicon,"SGS North America, Anchorage, Alaska",1560
+447,RM_21_Soldotna_Bridge,7/27/2021,PS,NA,NA,Silver,"SGS North America, Anchorage, Alaska",NA
+448,RM_21_Soldotna_Bridge,7/27/2021,PS,NA,NA,Sodium,"SGS North America, Anchorage, Alaska",1350
+449,RM_21_Soldotna_Bridge,7/27/2021,PS,NA,NA,Thallium,"SGS North America, Anchorage, Alaska",NA
+450,RM_21_Soldotna_Bridge,7/27/2021,PS,NA,NA,Tin,"SGS North America, Anchorage, Alaska",NA
+451,RM_21_Soldotna_Bridge,7/27/2021,PS,NA,NA,Titanium,"SGS North America, Anchorage, Alaska",NA
+452,RM_21_Soldotna_Bridge,7/27/2021,PS,NA,NA,Vanadium,"SGS North America, Anchorage, Alaska",NA
+453,RM_21_Soldotna_Bridge,7/27/2021,PS,NA,NA,Zinc,"SGS North America, Anchorage, Alaska",24
+780,RM_21_Soldotna_Bridge,7/27/2021,PS,NA,NA,Fecal Coliform,"Taurianen Engineering and Testing, Soldotna, Alaska",1
+703,Rm_21_Soldotna_Bridge,7/27/2021,SMPL,NA,NA,"Calcium, Total","ALS Environmental, Kelso, Washington",11.6
+704,Rm_21_Soldotna_Bridge,7/27/2021,SMPL,NA,NA,"Iron, Total","ALS Environmental, Kelso, Washington",0.29
+705,Rm_21_Soldotna_Bridge,7/27/2021,SMPL,NA,NA,"Magnesium, Total","ALS Environmental, Kelso, Washington",1.06
+806,RM_22,5/11/2021,PS,NA,NA,Total suspended solids,"Soldotna Wastewater Treatment Plant, Soldotna, Alaska",9.333333333
+830,RM_22,7/27/2021,PS,NA,NA,Total suspended solids,"Soldotna Wastewater Treatment Plant, Soldotna, Alaska",13.7
+454,RM_22_Soldotna_Creek,7/27/2021,PS,NA,NA,Total Nitrate/Nitrite-N,"SGS North America, Anchorage, Alaska",NA
+455,RM_22_Soldotna_Creek,7/27/2021,PS,NA,NA,Total Phosphorus,"SGS North America, Anchorage, Alaska",0.116
+456,RM_22_Soldotna_Creek,7/27/2021,PS,NA,NA,Aluminum,"SGS North America, Anchorage, Alaska",NA
+457,RM_22_Soldotna_Creek,7/27/2021,PS,NA,NA,Antimony,"SGS North America, Anchorage, Alaska",NA
+458,RM_22_Soldotna_Creek,7/27/2021,PS,NA,NA,Arsenic,"SGS North America, Anchorage, Alaska",8.75
+459,RM_22_Soldotna_Creek,7/27/2021,PS,NA,NA,Barium,"SGS North America, Anchorage, Alaska",14
+460,RM_22_Soldotna_Creek,7/27/2021,PS,NA,NA,Beryllium,"SGS North America, Anchorage, Alaska",NA
+461,RM_22_Soldotna_Creek,7/27/2021,PS,NA,NA,Cadmium,"SGS North America, Anchorage, Alaska",NA
+462,RM_22_Soldotna_Creek,7/27/2021,PS,NA,NA,Calcium,"SGS North America, Anchorage, Alaska",20900
+463,RM_22_Soldotna_Creek,7/27/2021,PS,NA,NA,Chromium,"SGS North America, Anchorage, Alaska",NA
+464,RM_22_Soldotna_Creek,7/27/2021,PS,NA,NA,Cobalt,"SGS North America, Anchorage, Alaska",NA
+465,RM_22_Soldotna_Creek,7/27/2021,PS,NA,NA,Copper,"SGS North America, Anchorage, Alaska",NA
+466,RM_22_Soldotna_Creek,7/27/2021,PS,NA,NA,Iron,"SGS North America, Anchorage, Alaska",357
+467,RM_22_Soldotna_Creek,7/27/2021,PS,NA,NA,Lead,"SGS North America, Anchorage, Alaska",NA
+468,RM_22_Soldotna_Creek,7/27/2021,PS,NA,NA,Magnesium,"SGS North America, Anchorage, Alaska",4660
+469,RM_22_Soldotna_Creek,7/27/2021,PS,NA,NA,Manganese,"SGS North America, Anchorage, Alaska",91.7
+470,RM_22_Soldotna_Creek,7/27/2021,PS,NA,NA,Molybdenum,"SGS North America, Anchorage, Alaska",NA
+471,RM_22_Soldotna_Creek,7/27/2021,PS,NA,NA,Nickel,"SGS North America, Anchorage, Alaska",NA
+472,RM_22_Soldotna_Creek,7/27/2021,PS,NA,NA,Phosphorus,"SGS North America, Anchorage, Alaska",NA
+473,RM_22_Soldotna_Creek,7/27/2021,PS,NA,NA,Potassium,"SGS North America, Anchorage, Alaska",1520
+474,RM_22_Soldotna_Creek,7/27/2021,PS,NA,NA,Selenium,"SGS North America, Anchorage, Alaska",NA
+475,RM_22_Soldotna_Creek,7/27/2021,PS,NA,NA,Silicon,"SGS North America, Anchorage, Alaska",10800
+476,RM_22_Soldotna_Creek,7/27/2021,PS,NA,NA,Silver,"SGS North America, Anchorage, Alaska",NA
+477,RM_22_Soldotna_Creek,7/27/2021,PS,NA,NA,Sodium,"SGS North America, Anchorage, Alaska",6020
+478,RM_22_Soldotna_Creek,7/27/2021,PS,NA,NA,Thallium,"SGS North America, Anchorage, Alaska",NA
+479,RM_22_Soldotna_Creek,7/27/2021,PS,NA,NA,Tin,"SGS North America, Anchorage, Alaska",2.88
+480,RM_22_Soldotna_Creek,7/27/2021,PS,NA,NA,Titanium,"SGS North America, Anchorage, Alaska",NA
+481,RM_22_Soldotna_Creek,7/27/2021,PS,NA,NA,Vanadium,"SGS North America, Anchorage, Alaska",NA
+482,RM_22_Soldotna_Creek,7/27/2021,PS,NA,NA,Zinc,"SGS North America, Anchorage, Alaska",15.9
+781,RM_22_Soldotna_Creek,7/27/2021,PS,NA,NA,Fecal Coliform,"Taurianen Engineering and Testing, Soldotna, Alaska",19
+706,RM_22_Soldotna_Creek,7/27/2021,SMPL,NA,NA,"Calcium, Total","ALS Environmental, Kelso, Washington",18.3
+707,RM_22_Soldotna_Creek,7/27/2021,SMPL,NA,NA,"Iron, Total","ALS Environmental, Kelso, Washington",1.07
+708,RM_22_Soldotna_Creek,7/27/2021,SMPL,NA,NA,"Magnesium, Total","ALS Environmental, Kelso, Washington",4.93
+807,RM_23,5/11/2021,PS,NA,NA,Total suspended solids,"Soldotna Wastewater Treatment Plant, Soldotna, Alaska",4.333333333
+831,RM_23,7/27/2021,PS,NA,NA,Total suspended solids,"Soldotna Wastewater Treatment Plant, Soldotna, Alaska",11
+483,RM_23_Swiftwater_Park,7/27/2021,PS,NA,NA,Total Nitrate/Nitrite-N,"SGS North America, Anchorage, Alaska",NA
+484,RM_23_Swiftwater_Park,7/27/2021,PS,NA,NA,Total Phosphorus,"SGS North America, Anchorage, Alaska",NA
+485,RM_23_Swiftwater_Park,7/27/2021,PS,NA,NA,Aluminum,"SGS North America, Anchorage, Alaska",NA
+486,RM_23_Swiftwater_Park,7/27/2021,PS,NA,NA,Antimony,"SGS North America, Anchorage, Alaska",NA
+487,RM_23_Swiftwater_Park,7/27/2021,PS,NA,NA,Arsenic,"SGS North America, Anchorage, Alaska",NA
+488,RM_23_Swiftwater_Park,7/27/2021,PS,NA,NA,Barium,"SGS North America, Anchorage, Alaska",8.71
+489,RM_23_Swiftwater_Park,7/27/2021,PS,NA,NA,Beryllium,"SGS North America, Anchorage, Alaska",NA
+490,RM_23_Swiftwater_Park,7/27/2021,PS,NA,NA,Cadmium,"SGS North America, Anchorage, Alaska",NA
+491,RM_23_Swiftwater_Park,7/27/2021,PS,NA,NA,Calcium,"SGS North America, Anchorage, Alaska",13700
+492,RM_23_Swiftwater_Park,7/27/2021,PS,NA,NA,Chromium,"SGS North America, Anchorage, Alaska",NA
+493,RM_23_Swiftwater_Park,7/27/2021,PS,NA,NA,Cobalt,"SGS North America, Anchorage, Alaska",NA
+494,RM_23_Swiftwater_Park,7/27/2021,PS,NA,NA,Copper,"SGS North America, Anchorage, Alaska",NA
+495,RM_23_Swiftwater_Park,7/27/2021,PS,NA,NA,Iron,"SGS North America, Anchorage, Alaska",NA
+496,RM_23_Swiftwater_Park,7/27/2021,PS,NA,NA,Lead,"SGS North America, Anchorage, Alaska",NA
+497,RM_23_Swiftwater_Park,7/27/2021,PS,NA,NA,Magnesium,"SGS North America, Anchorage, Alaska",936
+498,RM_23_Swiftwater_Park,7/27/2021,PS,NA,NA,Manganese,"SGS North America, Anchorage, Alaska",3.83
+499,RM_23_Swiftwater_Park,7/27/2021,PS,NA,NA,Molybdenum,"SGS North America, Anchorage, Alaska",NA
+500,RM_23_Swiftwater_Park,7/27/2021,PS,NA,NA,Nickel,"SGS North America, Anchorage, Alaska",NA
+501,RM_23_Swiftwater_Park,7/27/2021,PS,NA,NA,Phosphorus,"SGS North America, Anchorage, Alaska",NA
+502,RM_23_Swiftwater_Park,7/27/2021,PS,NA,NA,Potassium,"SGS North America, Anchorage, Alaska",810
+503,RM_23_Swiftwater_Park,7/27/2021,PS,NA,NA,Selenium,"SGS North America, Anchorage, Alaska",NA
+504,RM_23_Swiftwater_Park,7/27/2021,PS,NA,NA,Silicon,"SGS North America, Anchorage, Alaska",1490
+505,RM_23_Swiftwater_Park,7/27/2021,PS,NA,NA,Silver,"SGS North America, Anchorage, Alaska",NA
+506,RM_23_Swiftwater_Park,7/27/2021,PS,NA,NA,Sodium,"SGS North America, Anchorage, Alaska",1310
+507,RM_23_Swiftwater_Park,7/27/2021,PS,NA,NA,Thallium,"SGS North America, Anchorage, Alaska",NA
+508,RM_23_Swiftwater_Park,7/27/2021,PS,NA,NA,Tin,"SGS North America, Anchorage, Alaska",NA
+509,RM_23_Swiftwater_Park,7/27/2021,PS,NA,NA,Titanium,"SGS North America, Anchorage, Alaska",NA
+510,RM_23_Swiftwater_Park,7/27/2021,PS,NA,NA,Vanadium,"SGS North America, Anchorage, Alaska",NA
+511,RM_23_Swiftwater_Park,7/27/2021,PS,NA,NA,Zinc,"SGS North America, Anchorage, Alaska",10.4
+782,RM_23_Swiftwater_Park,7/27/2021,PS,NA,NA,Fecal Coliform,"Taurianen Engineering and Testing, Soldotna, Alaska",1
+709,RM_23_Swiftwater_Park,7/27/2021,SMPL,NA,NA,"Calcium, Total","ALS Environmental, Kelso, Washington",11.8
+710,RM_23_Swiftwater_Park,7/27/2021,SMPL,NA,NA,"Iron, Total","ALS Environmental, Kelso, Washington",0.299
+711,RM_23_Swiftwater_Park,7/27/2021,SMPL,NA,NA,"Magnesium, Total","ALS Environmental, Kelso, Washington",1.06
+808,RM_30,5/11/2021,PS,NA,NA,Total suspended solids,"Soldotna Wastewater Treatment Plant, Soldotna, Alaska",38.66666667
+832,RM_30,7/27/2021,PS,NA,NA,Total suspended solids,"Soldotna Wastewater Treatment Plant, Soldotna, Alaska",15.3
+512,RM_30_Funny_River,7/27/2021,PS,NA,NA,Total Nitrate/Nitrite-N,"SGS North America, Anchorage, Alaska",NA
+513,RM_30_Funny_River,7/27/2021,PS,NA,NA,Total Phosphorus,"SGS North America, Anchorage, Alaska",NA
+514,RM_30_Funny_River,7/27/2021,PS,NA,NA,Aluminum,"SGS North America, Anchorage, Alaska",NA
+515,RM_30_Funny_River,7/27/2021,PS,NA,NA,Antimony,"SGS North America, Anchorage, Alaska",NA
+516,RM_30_Funny_River,7/27/2021,PS,NA,NA,Arsenic,"SGS North America, Anchorage, Alaska",NA
+517,RM_30_Funny_River,7/27/2021,PS,NA,NA,Barium,"SGS North America, Anchorage, Alaska",6.69
+518,RM_30_Funny_River,7/27/2021,PS,NA,NA,Beryllium,"SGS North America, Anchorage, Alaska",NA
+519,RM_30_Funny_River,7/27/2021,PS,NA,NA,Cadmium,"SGS North America, Anchorage, Alaska",NA
+520,RM_30_Funny_River,7/27/2021,PS,NA,NA,Calcium,"SGS North America, Anchorage, Alaska",11800
+521,RM_30_Funny_River,7/27/2021,PS,NA,NA,Chromium,"SGS North America, Anchorage, Alaska",NA
+522,RM_30_Funny_River,7/27/2021,PS,NA,NA,Cobalt,"SGS North America, Anchorage, Alaska",NA
+523,RM_30_Funny_River,7/27/2021,PS,NA,NA,Copper,"SGS North America, Anchorage, Alaska",NA
+524,RM_30_Funny_River,7/27/2021,PS,NA,NA,Iron,"SGS North America, Anchorage, Alaska",257
+525,RM_30_Funny_River,7/27/2021,PS,NA,NA,Lead,"SGS North America, Anchorage, Alaska",NA
+526,RM_30_Funny_River,7/27/2021,PS,NA,NA,Magnesium,"SGS North America, Anchorage, Alaska",3050
+527,RM_30_Funny_River,7/27/2021,PS,NA,NA,Manganese,"SGS North America, Anchorage, Alaska",33.6
+528,RM_30_Funny_River,7/27/2021,PS,NA,NA,Molybdenum,"SGS North America, Anchorage, Alaska",NA
+529,RM_30_Funny_River,7/27/2021,PS,NA,NA,Nickel,"SGS North America, Anchorage, Alaska",NA
+530,RM_30_Funny_River,7/27/2021,PS,NA,NA,Phosphorus,"SGS North America, Anchorage, Alaska",NA
+531,RM_30_Funny_River,7/27/2021,PS,NA,NA,Potassium,"SGS North America, Anchorage, Alaska",688
+532,RM_30_Funny_River,7/27/2021,PS,NA,NA,Selenium,"SGS North America, Anchorage, Alaska",NA
+533,RM_30_Funny_River,7/27/2021,PS,NA,NA,Silicon,"SGS North America, Anchorage, Alaska",7830
+534,RM_30_Funny_River,7/27/2021,PS,NA,NA,Silver,"SGS North America, Anchorage, Alaska",NA
+535,RM_30_Funny_River,7/27/2021,PS,NA,NA,Sodium,"SGS North America, Anchorage, Alaska",3270
+536,RM_30_Funny_River,7/27/2021,PS,NA,NA,Thallium,"SGS North America, Anchorage, Alaska",NA
+537,RM_30_Funny_River,7/27/2021,PS,NA,NA,Tin,"SGS North America, Anchorage, Alaska",NA
+538,RM_30_Funny_River,7/27/2021,PS,NA,NA,Titanium,"SGS North America, Anchorage, Alaska",NA
+539,RM_30_Funny_River,7/27/2021,PS,NA,NA,Vanadium,"SGS North America, Anchorage, Alaska",NA
+540,RM_30_Funny_River,7/27/2021,PS,NA,NA,Zinc,"SGS North America, Anchorage, Alaska",NA
+783,RM_30_Funny_River,7/27/2021,PS,NA,NA,Fecal Coliform,"Taurianen Engineering and Testing, Soldotna, Alaska",24
+712,RM_30_Funny_River,7/27/2021,SMPL,NA,NA,"Calcium, Total","ALS Environmental, Kelso, Washington",10
+713,RM_30_Funny_River,7/27/2021,SMPL,NA,NA,"Iron, Total","ALS Environmental, Kelso, Washington",0.719
+714,RM_30_Funny_River,7/27/2021,SMPL,NA,NA,"Magnesium, Total","ALS Environmental, Kelso, Washington",3.18
+809,RM_31,5/11/2021,PS,NA,NA,Total suspended solids,"Soldotna Wastewater Treatment Plant, Soldotna, Alaska",7
+810,RM_31,5/11/2021,PS,Field Duplicate,DUP,Total suspended solids,"Soldotna Wastewater Treatment Plant, Soldotna, Alaska",8
+833,RM_31,7/27/2021,PS,NA,NA,Total suspended solids,"Soldotna Wastewater Treatment Plant, Soldotna, Alaska",9
+834,RM_31,7/27/2021,PS,Field Duplicate,DUP,Total suspended solids,"Soldotna Wastewater Treatment Plant, Soldotna, Alaska",8.7
+541,RM_31_Morgans_Landing,7/27/2021,PS,NA,NA,Total Nitrate/Nitrite-N,"SGS North America, Anchorage, Alaska",NA
+542,RM_31_Morgans_Landing,7/27/2021,PS,NA,NA,Total Phosphorus,"SGS North America, Anchorage, Alaska",NA
+543,RM_31_Morgans_Landing,7/27/2021,PS,Field Duplicate,DUP,Total Nitrate/Nitrite-N,"SGS North America, Anchorage, Alaska",NA
+544,RM_31_Morgans_Landing,7/27/2021,PS,Field Duplicate,DUP,Total Phosphorus,"SGS North America, Anchorage, Alaska",NA
+784,RM_31_Morgans_Landing,7/27/2021,PS,NA,NA,Fecal Coliform,"Taurianen Engineering and Testing, Soldotna, Alaska",2
+785,RM_31_Morgans_Landing,7/27/2021,PS,Field Duplicate,DUP,Fecal Coliform,"Taurianen Engineering and Testing, Soldotna, Alaska",1
+715,RM_31_Morgans_Landing,7/27/2021,SMPL,NA,NA,"Calcium, Total","ALS Environmental, Kelso, Washington",11.8
+716,RM_31_Morgans_Landing,7/27/2021,SMPL,NA,NA,"Iron, Total","ALS Environmental, Kelso, Washington",0.267
+717,RM_31_Morgans_Landing,7/27/2021,SMPL,NA,NA,"Magnesium, Total","ALS Environmental, Kelso, Washington",1.05
+718,RM_31_Morgans_Landing,7/27/2021,SMPL,Field Duplicate,DUP,"Calcium, Total","ALS Environmental, Kelso, Washington",11.7
+719,RM_31_Morgans_Landing,7/27/2021,SMPL,Field Duplicate,DUP,"Iron, Total","ALS Environmental, Kelso, Washington",0.287
+720,RM_31_Morgans_Landing,7/27/2021,SMPL,Field Duplicate,DUP,"Magnesium, Total","ALS Environmental, Kelso, Washington",1.04
+811,RM_36,5/11/2021,PS,NA,NA,Total suspended solids,"Soldotna Wastewater Treatment Plant, Soldotna, Alaska",12.66666667
+835,RM_36,7/27/2021,PS,NA,NA,Total suspended solids,"Soldotna Wastewater Treatment Plant, Soldotna, Alaska",1.3
+545,RM_36_Moose_River,7/27/2021,PS,NA,NA,Total Nitrate/Nitrite-N,"SGS North America, Anchorage, Alaska",NA
+546,RM_36_Moose_River,7/27/2021,PS,NA,NA,Total Phosphorus,"SGS North America, Anchorage, Alaska",NA
+786,RM_36_Moose_River,7/27/2021,PS,NA,NA,Fecal Coliform,"Taurianen Engineering and Testing, Soldotna, Alaska",1
+721,RM_36_Moose_River,7/27/2021,SMPL,NA,NA,"Calcium, Total","ALS Environmental, Kelso, Washington",22.5
+722,RM_36_Moose_River,7/27/2021,SMPL,NA,NA,"Iron, Total","ALS Environmental, Kelso, Washington",0.511
+723,RM_36_Moose_River,7/27/2021,SMPL,NA,NA,"Magnesium, Total","ALS Environmental, Kelso, Washington",3.58
+812,RM_40,5/11/2021,PS,NA,NA,Total suspended solids,"Soldotna Wastewater Treatment Plant, Soldotna, Alaska",7
+836,RM_40,7/27/2021,PS,NA,NA,Total suspended solids,"Soldotna Wastewater Treatment Plant, Soldotna, Alaska",7
+547,RM_40_Bings_Landing,7/27/2021,PS,NA,NA,Total Nitrate/Nitrite-N,"SGS North America, Anchorage, Alaska",NA
+548,RM_40_Bings_Landing,7/27/2021,PS,NA,NA,Total Phosphorus,"SGS North America, Anchorage, Alaska",NA
+549,RM_40_Bings_Landing,7/27/2021,PS,NA,NA,Benzene,"SGS North America, Anchorage, Alaska",NA
+550,RM_40_Bings_Landing,7/27/2021,PS,NA,NA,Ethylbenzene,"SGS North America, Anchorage, Alaska",NA
+551,RM_40_Bings_Landing,7/27/2021,PS,NA,NA,o-Xylene,"SGS North America, Anchorage, Alaska",NA
+552,RM_40_Bings_Landing,7/27/2021,PS,NA,NA,P & M -Xylene,"SGS North America, Anchorage, Alaska",NA
+553,RM_40_Bings_Landing,7/27/2021,PS,NA,NA,Toluene,"SGS North America, Anchorage, Alaska",NA
+554,RM_40_Bings_Landing,7/27/2021,PS,NA,NA,Xylenes (total),"SGS North America, Anchorage, Alaska",NA
+787,RM_40_Bings_Landing,7/27/2021,PS,NA,NA,Fecal Coliform,"Taurianen Engineering and Testing, Soldotna, Alaska",2
+724,RM_40_Bings_Landing,7/27/2021,SMPL,NA,NA,"Calcium, Total","ALS Environmental, Kelso, Washington",11.5
+725,RM_40_Bings_Landing,7/27/2021,SMPL,NA,NA,"Iron, Total","ALS Environmental, Kelso, Washington",0.268
+726,RM_40_Bings_Landing,7/27/2021,SMPL,NA,NA,"Magnesium, Total","ALS Environmental, Kelso, Washington",0.983
+813,RM_43,5/11/2021,PS,NA,NA,Total suspended solids,"Soldotna Wastewater Treatment Plant, Soldotna, Alaska",19
+837,RM_43,7/27/2021,PS,NA,NA,Total suspended solids,"Soldotna Wastewater Treatment Plant, Soldotna, Alaska",7.7
+555,RM_43_Upstream_of_Dow_Isalnd,7/27/2021,PS,NA,NA,Total Nitrate/Nitrite-N,"SGS North America, Anchorage, Alaska",NA
+556,RM_43_Upstream_of_Dow_Isalnd,7/27/2021,PS,NA,NA,Total Phosphorus,"SGS North America, Anchorage, Alaska",NA
+557,RM_43_Upstream_of_Dow_Isalnd,7/27/2021,PS,NA,NA,Benzene,"SGS North America, Anchorage, Alaska",NA
+558,RM_43_Upstream_of_Dow_Isalnd,7/27/2021,PS,NA,NA,Ethylbenzene,"SGS North America, Anchorage, Alaska",NA
+559,RM_43_Upstream_of_Dow_Isalnd,7/27/2021,PS,NA,NA,o-Xylene,"SGS North America, Anchorage, Alaska",NA
+560,RM_43_Upstream_of_Dow_Isalnd,7/27/2021,PS,NA,NA,P & M -Xylene,"SGS North America, Anchorage, Alaska",NA
+561,RM_43_Upstream_of_Dow_Isalnd,7/27/2021,PS,NA,NA,Toluene,"SGS North America, Anchorage, Alaska",NA
+562,RM_43_Upstream_of_Dow_Isalnd,7/27/2021,PS,NA,NA,Xylenes (total),"SGS North America, Anchorage, Alaska",NA
+788,RM_43_Upstream_of_Dow_Island,7/27/2021,PS,NA,NA,Fecal Coliform,"Taurianen Engineering and Testing, Soldotna, Alaska",1
+727,RM_43_Upstream_of_Dow_Island,7/27/2021,SMPL,NA,NA,"Calcium, Total","ALS Environmental, Kelso, Washington",11.2
+728,RM_43_Upstream_of_Dow_Island,7/27/2021,SMPL,NA,NA,"Iron, Total","ALS Environmental, Kelso, Washington",0.361
+729,RM_43_Upstream_of_Dow_Island,7/27/2021,SMPL,NA,NA,"Magnesium, Total","ALS Environmental, Kelso, Washington",0.995
+814,RM_44,5/11/2021,PS,NA,NA,Total suspended solids,"Soldotna Wastewater Treatment Plant, Soldotna, Alaska",8
+838,RM_44,7/27/2021,PS,NA,NA,Total suspended solids,"Soldotna Wastewater Treatment Plant, Soldotna, Alaska",30.3
+563,RM_44_Mouth_of_Killey_River,7/27/2021,PS,NA,NA,Total Nitrate/Nitrite-N,"SGS North America, Anchorage, Alaska",NA
+564,RM_44_Mouth_of_Killey_River,7/27/2021,PS,NA,NA,Total Phosphorus,"SGS North America, Anchorage, Alaska",NA
+789,RM_44_Mouth_of_Killey_River,7/27/2021,PS,NA,NA,Fecal Coliform,"Taurianen Engineering and Testing, Soldotna, Alaska",17
+730,RM_44_Mouth_of_Killey_River,7/27/2021,SMPL,NA,NA,"Calcium, Total","ALS Environmental, Kelso, Washington",5.92
+731,RM_44_Mouth_of_Killey_River,7/27/2021,SMPL,NA,NA,"Iron, Total","ALS Environmental, Kelso, Washington",2.17
+732,RM_44_Mouth_of_Killey_River,7/27/2021,SMPL,NA,NA,"Magnesium, Total","ALS Environmental, Kelso, Washington",1.53
+815,RM_50,5/11/2021,PS,NA,NA,Total suspended solids,"Soldotna Wastewater Treatment Plant, Soldotna, Alaska",3
+839,RM_50,7/27/2021,PS,NA,NA,Total suspended solids,"Soldotna Wastewater Treatment Plant, Soldotna, Alaska",1.2
+565,RM_50_Skilak_Lake_Outflow,7/27/2021,PS,NA,NA,Total Nitrate/Nitrite-N,"SGS North America, Anchorage, Alaska",NA
+566,RM_50_Skilak_Lake_Outflow,7/27/2021,PS,NA,NA,Total Phosphorus,"SGS North America, Anchorage, Alaska",NA
+790,RM_50_Skilak_Lake_Outflow,7/27/2021,PS,NA,NA,Fecal Coliform,"Taurianen Engineering and Testing, Soldotna, Alaska",1
+733,RM_50_Skilak_Lake_Outflow,7/27/2021,SMPL,NA,NA,"Calcium, Total","ALS Environmental, Kelso, Washington",12
+734,RM_50_Skilak_Lake_Outflow,7/27/2021,SMPL,NA,NA,"Iron, Total","ALS Environmental, Kelso, Washington",0.076
+735,RM_50_Skilak_Lake_Outflow,7/27/2021,SMPL,NA,NA,"Magnesium, Total","ALS Environmental, Kelso, Washington",0.938
+799,RM_6.5,5/11/2021,PS,NA,NA,Total suspended solids,"Soldotna Wastewater Treatment Plant, Soldotna, Alaska",107
+823,RM_6.5,7/27/2021,PS,NA,NA,Total suspended solids,"Soldotna Wastewater Treatment Plant, Soldotna, Alaska",27.3
+567,RM_6.5_Cunningham_Park,7/27/2021,PS,NA,NA,Total Nitrate/Nitrite-N,"SGS North America, Anchorage, Alaska",NA
+568,RM_6.5_Cunningham_Park,7/27/2021,PS,NA,NA,Total Phosphorus,"SGS North America, Anchorage, Alaska",NA
+569,RM_6.5_Cunningham_Park,7/27/2021,PS,NA,NA,Benzene,"SGS North America, Anchorage, Alaska",NA
+570,RM_6.5_Cunningham_Park,7/27/2021,PS,NA,NA,Ethylbenzene,"SGS North America, Anchorage, Alaska",NA
+571,RM_6.5_Cunningham_Park,7/27/2021,PS,NA,NA,o-Xylene,"SGS North America, Anchorage, Alaska",NA
+572,RM_6.5_Cunningham_Park,7/27/2021,PS,NA,NA,P & M -Xylene,"SGS North America, Anchorage, Alaska",NA
+573,RM_6.5_Cunningham_Park,7/27/2021,PS,NA,NA,Toluene,"SGS North America, Anchorage, Alaska",NA
+574,RM_6.5_Cunningham_Park,7/27/2021,PS,NA,NA,Xylenes (total),"SGS North America, Anchorage, Alaska",NA
+575,RM_6.5_Cunningham_Park,7/27/2021,PS,NA,NA,Aluminum,"SGS North America, Anchorage, Alaska",NA
+576,RM_6.5_Cunningham_Park,7/27/2021,PS,NA,NA,Antimony,"SGS North America, Anchorage, Alaska",NA
+577,RM_6.5_Cunningham_Park,7/27/2021,PS,NA,NA,Arsenic,"SGS North America, Anchorage, Alaska",NA
+578,RM_6.5_Cunningham_Park,7/27/2021,PS,NA,NA,Barium,"SGS North America, Anchorage, Alaska",8.52
+579,RM_6.5_Cunningham_Park,7/27/2021,PS,NA,NA,Beryllium,"SGS North America, Anchorage, Alaska",NA
+580,RM_6.5_Cunningham_Park,7/27/2021,PS,NA,NA,Cadmium,"SGS North America, Anchorage, Alaska",NA
+581,RM_6.5_Cunningham_Park,7/27/2021,PS,NA,NA,Calcium,"SGS North America, Anchorage, Alaska",14000
+582,RM_6.5_Cunningham_Park,7/27/2021,PS,NA,NA,Chromium,"SGS North America, Anchorage, Alaska",NA
+583,RM_6.5_Cunningham_Park,7/27/2021,PS,NA,NA,Cobalt,"SGS North America, Anchorage, Alaska",NA
+584,RM_6.5_Cunningham_Park,7/27/2021,PS,NA,NA,Copper,"SGS North America, Anchorage, Alaska",NA
+585,RM_6.5_Cunningham_Park,7/27/2021,PS,NA,NA,Iron,"SGS North America, Anchorage, Alaska",NA
+586,RM_6.5_Cunningham_Park,7/27/2021,PS,NA,NA,Lead,"SGS North America, Anchorage, Alaska",NA
+587,RM_6.5_Cunningham_Park,7/27/2021,PS,NA,NA,Magnesium,"SGS North America, Anchorage, Alaska",1090
+588,RM_6.5_Cunningham_Park,7/27/2021,PS,NA,NA,Manganese,"SGS North America, Anchorage, Alaska",3.02
+589,RM_6.5_Cunningham_Park,7/27/2021,PS,NA,NA,Molybdenum,"SGS North America, Anchorage, Alaska",NA
+590,RM_6.5_Cunningham_Park,7/27/2021,PS,NA,NA,Nickel,"SGS North America, Anchorage, Alaska",NA
+591,RM_6.5_Cunningham_Park,7/27/2021,PS,NA,NA,Phosphorus,"SGS North America, Anchorage, Alaska",NA
+592,RM_6.5_Cunningham_Park,7/27/2021,PS,NA,NA,Potassium,"SGS North America, Anchorage, Alaska",855
+593,RM_6.5_Cunningham_Park,7/27/2021,PS,NA,NA,Selenium,"SGS North America, Anchorage, Alaska",NA
+594,RM_6.5_Cunningham_Park,7/27/2021,PS,NA,NA,Silicon,"SGS North America, Anchorage, Alaska",1540
+595,RM_6.5_Cunningham_Park,7/27/2021,PS,NA,NA,Silver,"SGS North America, Anchorage, Alaska",NA
+596,RM_6.5_Cunningham_Park,7/27/2021,PS,NA,NA,Sodium,"SGS North America, Anchorage, Alaska",2250
+597,RM_6.5_Cunningham_Park,7/27/2021,PS,NA,NA,Thallium,"SGS North America, Anchorage, Alaska",NA
+598,RM_6.5_Cunningham_Park,7/27/2021,PS,NA,NA,Tin,"SGS North America, Anchorage, Alaska",NA
+599,RM_6.5_Cunningham_Park,7/27/2021,PS,NA,NA,Titanium,"SGS North America, Anchorage, Alaska",NA
+600,RM_6.5_Cunningham_Park,7/27/2021,PS,NA,NA,Vanadium,"SGS North America, Anchorage, Alaska",NA
+601,RM_6.5_Cunningham_Park,7/27/2021,PS,NA,NA,Zinc,"SGS North America, Anchorage, Alaska",83.5
+791,RM_6.5_Cunningham_Park,7/27/2021,PS,NA,NA,Fecal Coliform,"Taurianen Engineering and Testing, Soldotna, Alaska",4
+685,RM_6.5_Cunningham_Park,7/27/2021,SMPL,NA,NA,"Calcium, Total","ALS Environmental, Kelso, Washington",11.8
+686,RM_6.5_Cunningham_Park,7/27/2021,SMPL,NA,NA,"Iron, Total","ALS Environmental, Kelso, Washington",0.383
+687,RM_6.5_Cunningham_Park,7/27/2021,SMPL,NA,NA,"Magnesium, Total","ALS Environmental, Kelso, Washington",1.1
+816,RM_70,5/11/2021,PS,NA,NA,Total suspended solids,"Soldotna Wastewater Treatment Plant, Soldotna, Alaska",6
+840,RM_70,7/27/2021,PS,NA,NA,Total suspended solids,"Soldotna Wastewater Treatment Plant, Soldotna, Alaska",1.6
+602,RM_70_Jims_Landing,7/27/2021,PS,NA,NA,Total Nitrate/Nitrite-N,"SGS North America, Anchorage, Alaska",0.251
+603,RM_70_Jims_Landing,7/27/2021,PS,NA,NA,Total Phosphorus,"SGS North America, Anchorage, Alaska",NA
+792,RM_70_Jims_Landing,7/27/2021,PS,NA,NA,Fecal Coliform,"Taurianen Engineering and Testing, Soldotna, Alaska",1
+736,RM_70_Jims_Landing,7/27/2021,SMPL,NA,NA,"Calcium, Total","ALS Environmental, Kelso, Washington",15
+737,RM_70_Jims_Landing,7/27/2021,SMPL,NA,NA,"Iron, Total","ALS Environmental, Kelso, Washington",0.058
+738,RM_70_Jims_Landing,7/27/2021,SMPL,NA,NA,"Magnesium, Total","ALS Environmental, Kelso, Washington",1.16
+817,RM_74,5/11/2021,PS,NA,NA,Total suspended solids,"Soldotna Wastewater Treatment Plant, Soldotna, Alaska",3
+841,RM_74,7/27/2021,PS,NA,NA,Total suspended solids,"Soldotna Wastewater Treatment Plant, Soldotna, Alaska",1
+604,RM_74_Russian_River,7/27/2021,PS,NA,NA,Total Nitrate/Nitrite-N,"SGS North America, Anchorage, Alaska",0.358
+605,RM_74_Russian_River,7/27/2021,PS,NA,NA,Total Phosphorus,"SGS North America, Anchorage, Alaska",NA
+793,RM_74_Russian_River,7/27/2021,PS,NA,NA,Fecal Coliform,"Taurianen Engineering and Testing, Soldotna, Alaska",3
+739,RM_74_Russian_River,7/27/2021,SMPL,NA,NA,"Calcium, Total","ALS Environmental, Kelso, Washington",16.5
+740,RM_74_Russian_River,7/27/2021,SMPL,NA,NA,"Iron, Total","ALS Environmental, Kelso, Washington",NA
+741,RM_74_Russian_River,7/27/2021,SMPL,NA,NA,"Magnesium, Total","ALS Environmental, Kelso, Washington",1.06
+818,RM_79.5,5/11/2021,PS,NA,NA,Total suspended solids,"Soldotna Wastewater Treatment Plant, Soldotna, Alaska",21.66666667
+842,RM_79.5,7/27/2021,PS,NA,NA,Total suspended solids,"Soldotna Wastewater Treatment Plant, Soldotna, Alaska",0.6
+606,RM_79.5_Juneau_Creek,7/27/2021,PS,NA,NA,Total Nitrate/Nitrite-N,"SGS North America, Anchorage, Alaska",NA
+607,RM_79.5_Juneau_Creek,7/27/2021,PS,NA,NA,Total Phosphorus,"SGS North America, Anchorage, Alaska",NA
+794,RM_79.5_Juneau_Creek,7/27/2021,PS,NA,NA,Fecal Coliform,"Taurianen Engineering and Testing, Soldotna, Alaska",2
+745,RM_79.5_Juneau_Creek,7/27/2021,SMPL,NA,NA,"Calcium, Total","ALS Environmental, Kelso, Washington",15.7
+746,RM_79.5_Juneau_Creek,7/27/2021,SMPL,NA,NA,"Iron, Total","ALS Environmental, Kelso, Washington",0.035
+747,RM_79.5_Juneau_Creek,7/27/2021,SMPL,NA,NA,"Magnesium, Total","ALS Environmental, Kelso, Washington",1.17
+819,RM_82,5/11/2021,PS,NA,NA,Total suspended solids,"Soldotna Wastewater Treatment Plant, Soldotna, Alaska",4
+843,RM_82,7/27/2021,PS,NA,NA,Total suspended solids,"Soldotna Wastewater Treatment Plant, Soldotna, Alaska",0.4
+608,RM_82_Kenai_Lake_Bridge,7/27/2021,PS,NA,NA,Total Nitrate/Nitrite-N,"SGS North America, Anchorage, Alaska",NA
+609,RM_82_Kenai_Lake_Bridge,7/27/2021,PS,NA,NA,Total Phosphorus,"SGS North America, Anchorage, Alaska",NA
+795,RM_82_Kenai_Lake_Bridge,7/27/2021,PS,NA,NA,Fecal Coliform,"Taurianen Engineering and Testing, Soldotna, Alaska",NA
+742,RM_82_Kenai_Lake_Bridge,7/27/2021,SMPL,NA,NA,"Calcium, Total","ALS Environmental, Kelso, Washington",15.5
+743,RM_82_Kenai_Lake_Bridge,7/27/2021,SMPL,NA,NA,"Iron, Total","ALS Environmental, Kelso, Washington",0.063
+744,RM_82_Kenai_Lake_Bridge,7/27/2021,SMPL,NA,NA,"Magnesium, Total","ALS Environmental, Kelso, Washington",1.21
+1,RM0_No_Name_Creek,5/11/2021,PS,NA,NA,Total Nitrate/Nitrite-N,"SGS North America, Anchorage, Alaska",0.119
+2,RM0_No_Name_Creek,5/11/2021,PS,NA,NA,Total Phosphorus,"SGS North America, Anchorage, Alaska",0.0416
+3,RM0_No_Name_Creek,5/11/2021,PS,NA,NA,Arsenic,"SGS North America, Anchorage, Alaska",NA
+4,RM0_No_Name_Creek,5/11/2021,PS,NA,NA,Cadmium,"SGS North America, Anchorage, Alaska",NA
+5,RM0_No_Name_Creek,5/11/2021,PS,NA,NA,Chromium,"SGS North America, Anchorage, Alaska",NA
+6,RM0_No_Name_Creek,5/11/2021,PS,NA,NA,Copper,"SGS North America, Anchorage, Alaska",NA
+7,RM0_No_Name_Creek,5/11/2021,PS,NA,NA,Lead,"SGS North America, Anchorage, Alaska",NA
+8,RM0_No_Name_Creek,5/11/2021,PS,NA,NA,Zinc,"SGS North America, Anchorage, Alaska",NA
+9,RM0_No_Name_Creek,5/11/2021,PS,Field Duplicate,DUP,Total Nitrate/Nitrite-N,"SGS North America, Anchorage, Alaska",0.122
+10,RM0_No_Name_Creek,5/11/2021,PS,Field Duplicate,DUP,Total Phosphorus,"SGS North America, Anchorage, Alaska",0.0394
+11,RM0_No_Name_Creek,5/11/2021,PS,Field Duplicate,DUP,Arsenic,"SGS North America, Anchorage, Alaska",NA
+12,RM0_No_Name_Creek,5/11/2021,PS,Field Duplicate,DUP,Cadmium,"SGS North America, Anchorage, Alaska",NA
+13,RM0_No_Name_Creek,5/11/2021,PS,Field Duplicate,DUP,Chromium,"SGS North America, Anchorage, Alaska",NA
+14,RM0_No_Name_Creek,5/11/2021,PS,Field Duplicate,DUP,Copper,"SGS North America, Anchorage, Alaska",NA
+15,RM0_No_Name_Creek,5/11/2021,PS,Field Duplicate,DUP,Lead,"SGS North America, Anchorage, Alaska",NA
+16,RM0_No_Name_Creek,5/11/2021,PS,Field Duplicate,DUP,Zinc,"SGS North America, Anchorage, Alaska",NA
+661,RM0_No_Name_Creek,5/11/2021,SMPL,Field Duplicate,DUP,"Calcium, Total","ALS Environmental, Kelso, Washington",9.04
+662,RM0_No_Name_Creek,5/11/2021,SMPL,Field Duplicate,DUP,"Iron, Total","ALS Environmental, Kelso, Washington",4.62
+663,RM0_No_Name_Creek,5/11/2021,SMPL,Field Duplicate,DUP,"Magnesium, Total","ALS Environmental, Kelso, Washington",4.06
+664,RM0_No_Name_Creek,5/11/2021,SMPL,NA,NA,"Calcium, Total","ALS Environmental, Kelso, Washington",9.07
+665,RM0_No_Name_Creek,5/11/2021,SMPL,NA,NA,"Iron, Total","ALS Environmental, Kelso, Washington",4.35
+666,RM0_No_Name_Creek,5/11/2021,SMPL,NA,NA,"Magnesium, Total","ALS Environmental, Kelso, Washington",4.04
+17,RM1.5_Kenai_City_Dock,5/11/2021,PS,NA,NA,Total Nitrate/Nitrite-N,"SGS North America, Anchorage, Alaska",0.198
+18,RM1.5_Kenai_City_Dock,5/11/2021,PS,NA,NA,Total Phosphorus,"SGS North America, Anchorage, Alaska",0.242
+19,RM1.5_Kenai_City_Dock,5/11/2021,PS,NA,NA,Arsenic,"SGS North America, Anchorage, Alaska",1.79
+20,RM1.5_Kenai_City_Dock,5/11/2021,PS,NA,NA,Cadmium,"SGS North America, Anchorage, Alaska",NA
+21,RM1.5_Kenai_City_Dock,5/11/2021,PS,NA,NA,Chromium,"SGS North America, Anchorage, Alaska",NA
+22,RM1.5_Kenai_City_Dock,5/11/2021,PS,NA,NA,Copper,"SGS North America, Anchorage, Alaska",1.72
+23,RM1.5_Kenai_City_Dock,5/11/2021,PS,NA,NA,Lead,"SGS North America, Anchorage, Alaska",NA
+24,RM1.5_Kenai_City_Dock,5/11/2021,PS,NA,NA,Zinc,"SGS North America, Anchorage, Alaska",NA
+667,RM1.5_Kenai_City_Dock,5/11/2021,SMPL,NA,NA,"Calcium, Total","ALS Environmental, Kelso, Washington",50.7
+668,RM1.5_Kenai_City_Dock,5/11/2021,SMPL,NA,NA,"Iron, Total","ALS Environmental, Kelso, Washington",7.3
+669,RM1.5_Kenai_City_Dock,5/11/2021,SMPL,NA,NA,"Magnesium, Total","ALS Environmental, Kelso, Washington",134
+25,RM10.1_Kenai_River,5/11/2021,PS,NA,NA,Total Nitrate/Nitrite-N,"SGS North America, Anchorage, Alaska",0.228
+26,RM10.1_Kenai_River,5/11/2021,PS,NA,NA,Total Phosphorus,"SGS North America, Anchorage, Alaska",0.0141
+27,Rm10.1_Kenai_River,5/11/2021,PS,NA,NA,Arsenic,"SGS North America, Anchorage, Alaska",NA
+28,Rm10.1_Kenai_River,5/11/2021,PS,NA,NA,Cadmium,"SGS North America, Anchorage, Alaska",NA
+29,Rm10.1_Kenai_River,5/11/2021,PS,NA,NA,Chromium,"SGS North America, Anchorage, Alaska",NA
+30,Rm10.1_Kenai_River,5/11/2021,PS,NA,NA,Copper,"SGS North America, Anchorage, Alaska",NA
+31,Rm10.1_Kenai_River,5/11/2021,PS,NA,NA,Lead,"SGS North America, Anchorage, Alaska",NA
+32,Rm10.1_Kenai_River,5/11/2021,PS,NA,NA,Zinc,"SGS North America, Anchorage, Alaska",NA
+646,RM10.1_Kenai_River,5/11/2021,SMPL,NA,NA,"Calcium, Total","ALS Environmental, Kelso, Washington",9.98
+647,RM10.1_Kenai_River,5/11/2021,SMPL,NA,NA,"Iron, Total","ALS Environmental, Kelso, Washington",0.427
+648,RM10.1_Kenai_River,5/11/2021,SMPL,NA,NA,"Magnesium, Total","ALS Environmental, Kelso, Washington",1.31
+33,RM10_Beaver_Creek,5/11/2021,PS,NA,NA,Total Nitrate/Nitrite-N,"SGS North America, Anchorage, Alaska",0.109
+34,RM10_Beaver_Creek,5/11/2021,PS,NA,NA,Total Phosphorus,"SGS North America, Anchorage, Alaska",0.0843
+35,RM10_Beaver_creek,5/11/2021,PS,NA,NA,Arsenic,"SGS North America, Anchorage, Alaska",2.62
+36,RM10_Beaver_creek,5/11/2021,PS,NA,NA,Cadmium,"SGS North America, Anchorage, Alaska",NA
+37,RM10_Beaver_creek,5/11/2021,PS,NA,NA,Chromium,"SGS North America, Anchorage, Alaska",NA
+38,RM10_Beaver_creek,5/11/2021,PS,NA,NA,Copper,"SGS North America, Anchorage, Alaska",NA
+39,RM10_Beaver_creek,5/11/2021,PS,NA,NA,Lead,"SGS North America, Anchorage, Alaska",NA
+40,RM10_Beaver_creek,5/11/2021,PS,NA,NA,Zinc,"SGS North America, Anchorage, Alaska",NA
+673,RM10_Beaver_Creek,5/11/2021,SMPL,NA,NA,"Calcium, Total","ALS Environmental, Kelso, Washington",11.1
+674,RM10_Beaver_Creek,5/11/2021,SMPL,NA,NA,"Iron, Total","ALS Environmental, Kelso, Washington",2.83
+675,RM10_Beaver_Creek,5/11/2021,SMPL,NA,NA,"Magnesium, Total","ALS Environmental, Kelso, Washington",2.86
+41,RM12.5_Pillar,5/11/2021,PS,NA,NA,Arsenic,"SGS North America, Anchorage, Alaska",NA
+42,RM12.5_Pillar,5/11/2021,PS,NA,NA,Cadmium,"SGS North America, Anchorage, Alaska",NA
+43,RM12.5_Pillar,5/11/2021,PS,NA,NA,Chromium,"SGS North America, Anchorage, Alaska",NA
+44,RM12.5_Pillar,5/11/2021,PS,NA,NA,Copper,"SGS North America, Anchorage, Alaska",NA
+45,RM12.5_Pillar,5/11/2021,PS,NA,NA,Lead,"SGS North America, Anchorage, Alaska",NA
+46,RM12.5_Pillar,5/11/2021,PS,NA,NA,Zinc,"SGS North America, Anchorage, Alaska",NA
+47,RM12.5_Pillars,5/11/2021,PS,NA,NA,Total Nitrate/Nitrite-N,"SGS North America, Anchorage, Alaska",0.259
+48,RM12.5_Pillars,5/11/2021,PS,NA,NA,Total Phosphorus,"SGS North America, Anchorage, Alaska",0.0195
+649,RM12.5_Pillars,5/11/2021,SMPL,NA,NA,"Calcium, Total","ALS Environmental, Kelso, Washington",10
+650,RM12.5_Pillars,5/11/2021,SMPL,NA,NA,"Iron, Total","ALS Environmental, Kelso, Washington",0.471
+651,RM12.5_Pillars,5/11/2021,SMPL,NA,NA,"Magnesium, Total","ALS Environmental, Kelso, Washington",1.28
+49,RM18_Poachers_Cove,5/11/2021,PS,NA,NA,Total Nitrate/Nitrite-N,"SGS North America, Anchorage, Alaska",0.319
+50,RM18_Poachers_Cove,5/11/2021,PS,NA,NA,Total Phosphorus,"SGS North America, Anchorage, Alaska",0.0178
+51,RM18_Poachers_Cove,5/11/2021,PS,NA,NA,Arsenic,"SGS North America, Anchorage, Alaska",NA
+52,RM18_Poachers_Cove,5/11/2021,PS,NA,NA,Cadmium,"SGS North America, Anchorage, Alaska",NA
+53,RM18_Poachers_Cove,5/11/2021,PS,NA,NA,Chromium,"SGS North America, Anchorage, Alaska",NA
+54,RM18_Poachers_Cove,5/11/2021,PS,NA,NA,Copper,"SGS North America, Anchorage, Alaska",NA
+55,RM18_Poachers_Cove,5/11/2021,PS,NA,NA,Lead,"SGS North America, Anchorage, Alaska",NA
+56,RM18_Poachers_Cove,5/11/2021,PS,NA,NA,Zinc,"SGS North America, Anchorage, Alaska",NA
+652,RM18_Poachers_Cove,5/11/2021,SMPL,NA,NA,"Calcium, Total","ALS Environmental, Kelso, Washington",10.1
+653,RM18_Poachers_Cove,5/11/2021,SMPL,NA,NA,"Iron, Total","ALS Environmental, Kelso, Washington",0.546
+654,RM18_Poachers_Cove,5/11/2021,SMPL,NA,NA,"Magnesium, Total","ALS Environmental, Kelso, Washington",1.27
+57,RM19_Slikok_Creek,5/11/2021,PS,NA,NA,Total Nitrate/Nitrite-N,"SGS North America, Anchorage, Alaska",0.093
+58,RM19_Slikok_Creek,5/11/2021,PS,NA,NA,Total Phosphorus,"SGS North America, Anchorage, Alaska",0.0286
+59,RM19_Slikok_Creek,5/11/2021,PS,NA,NA,Arsenic,"SGS North America, Anchorage, Alaska",NA
+60,RM19_Slikok_Creek,5/11/2021,PS,NA,NA,Cadmium,"SGS North America, Anchorage, Alaska",NA
+61,RM19_Slikok_Creek,5/11/2021,PS,NA,NA,Chromium,"SGS North America, Anchorage, Alaska",NA
+62,RM19_Slikok_Creek,5/11/2021,PS,NA,NA,Copper,"SGS North America, Anchorage, Alaska",NA
+63,RM19_Slikok_Creek,5/11/2021,PS,NA,NA,Lead,"SGS North America, Anchorage, Alaska",NA
+64,RM19_Slikok_Creek,5/11/2021,PS,NA,NA,Zinc,"SGS North America, Anchorage, Alaska",NA
+655,RM19_Slikok_Creek,5/11/2021,SMPL,NA,NA,"Calcium, Total","ALS Environmental, Kelso, Washington",7.8
+656,RM19_Slikok_Creek,5/11/2021,SMPL,NA,NA,"Iron, Total","ALS Environmental, Kelso, Washington",0.605
+657,RM19_Slikok_Creek,5/11/2021,SMPL,NA,NA,"Magnesium, Total","ALS Environmental, Kelso, Washington",2.3
+65,RM21_Soldotna_Bridge,5/11/2021,PS,NA,NA,Total Nitrate/Nitrite-N,"SGS North America, Anchorage, Alaska",0.328
+66,RM21_Soldotna_Bridge,5/11/2021,PS,NA,NA,Total Phosphorus,"SGS North America, Anchorage, Alaska",0.0472
+67,RM21_Soldotna_Bridge,5/11/2021,PS,NA,NA,Arsenic,"SGS North America, Anchorage, Alaska",NA
+68,RM21_Soldotna_Bridge,5/11/2021,PS,NA,NA,Cadmium,"SGS North America, Anchorage, Alaska",NA
+69,RM21_Soldotna_Bridge,5/11/2021,PS,NA,NA,Chromium,"SGS North America, Anchorage, Alaska",NA
+70,RM21_Soldotna_Bridge,5/11/2021,PS,NA,NA,Copper,"SGS North America, Anchorage, Alaska",0.599
+71,RM21_Soldotna_Bridge,5/11/2021,PS,NA,NA,Lead,"SGS North America, Anchorage, Alaska",NA
+72,RM21_Soldotna_Bridge,5/11/2021,PS,NA,NA,Zinc,"SGS North America, Anchorage, Alaska",NA
+658,RM21_Solotna_Bridge,5/11/2021,SMPL,NA,NA,"Calcium, Total","ALS Environmental, Kelso, Washington",9.59
+659,RM21_Solotna_Bridge,5/11/2021,SMPL,NA,NA,"Iron, Total","ALS Environmental, Kelso, Washington",0.526
+660,RM21_Solotna_Bridge,5/11/2021,SMPL,NA,NA,"Magnesium, Total","ALS Environmental, Kelso, Washington",1.3
+73,RM22_Soldotna_Creek,5/11/2021,PS,NA,NA,Total Nitrate/Nitrite-N,"SGS North America, Anchorage, Alaska",NA
+74,RM22_Soldotna_Creek,5/11/2021,PS,NA,NA,Total Phosphorus,"SGS North America, Anchorage, Alaska",0.0804
+75,RM22_Soldotna_Creek,5/11/2021,PS,NA,NA,Arsenic,"SGS North America, Anchorage, Alaska",4.86
+76,RM22_Soldotna_Creek,5/11/2021,PS,NA,NA,Cadmium,"SGS North America, Anchorage, Alaska",NA
+77,RM22_Soldotna_Creek,5/11/2021,PS,NA,NA,Chromium,"SGS North America, Anchorage, Alaska",NA
+78,RM22_Soldotna_Creek,5/11/2021,PS,NA,NA,Copper,"SGS North America, Anchorage, Alaska",NA
+79,RM22_Soldotna_Creek,5/11/2021,PS,NA,NA,Lead,"SGS North America, Anchorage, Alaska",NA
+80,RM22_Soldotna_Creek,5/11/2021,PS,NA,NA,Zinc,"SGS North America, Anchorage, Alaska",NA
+634,RM22_Soldotna_Creek,5/11/2021,SMPL,NA,NA,"Calcium, Total","ALS Environmental, Kelso, Washington",12.5
+635,RM22_Soldotna_Creek,5/11/2021,SMPL,NA,NA,"Iron, Total","ALS Environmental, Kelso, Washington",1.03
+636,RM22_Soldotna_Creek,5/11/2021,SMPL,NA,NA,"Magnesium, Total","ALS Environmental, Kelso, Washington",3.57
+81,RM23_Swiftwater,5/11/2021,PS,NA,NA,Total Nitrate/Nitrite-N,"SGS North America, Anchorage, Alaska",0.239
+82,RM23_Swiftwater,5/11/2021,PS,NA,NA,Total Phosphorus,"SGS North America, Anchorage, Alaska",0.0163
+83,RM23_Swiftwater_Park,5/11/2021,PS,NA,NA,Arsenic,"SGS North America, Anchorage, Alaska",NA
+84,RM23_Swiftwater_Park,5/11/2021,PS,NA,NA,Cadmium,"SGS North America, Anchorage, Alaska",NA
+85,RM23_Swiftwater_Park,5/11/2021,PS,NA,NA,Chromium,"SGS North America, Anchorage, Alaska",NA
+86,RM23_Swiftwater_Park,5/11/2021,PS,NA,NA,Copper,"SGS North America, Anchorage, Alaska",0.398
+87,RM23_Swiftwater_Park,5/11/2021,PS,NA,NA,Lead,"SGS North America, Anchorage, Alaska",0.128
+88,RM23_Swiftwater_Park,5/11/2021,PS,NA,NA,Zinc,"SGS North America, Anchorage, Alaska",NA
+637,RM23_Swiftwater_Park,5/11/2021,SMPL,NA,NA,"Calcium, Total","ALS Environmental, Kelso, Washington",10.7
+638,RM23_Swiftwater_Park,5/11/2021,SMPL,NA,NA,"Iron, Total","ALS Environmental, Kelso, Washington",0.418
+639,RM23_Swiftwater_Park,5/11/2021,SMPL,NA,NA,"Magnesium, Total","ALS Environmental, Kelso, Washington",1.28
+89,RM30_Funny_River,5/11/2021,PS,NA,NA,Total Nitrate/Nitrite-N,"SGS North America, Anchorage, Alaska",0.0746
+90,RM30_Funny_River,5/11/2021,PS,NA,NA,Total Phosphorus,"SGS North America, Anchorage, Alaska",0.0396
+91,RM30_Funny_River,5/11/2021,PS,NA,NA,Arsenic,"SGS North America, Anchorage, Alaska",NA
+92,RM30_Funny_River,5/11/2021,PS,NA,NA,Cadmium,"SGS North America, Anchorage, Alaska",NA
+93,RM30_Funny_River,5/11/2021,PS,NA,NA,Chromium,"SGS North America, Anchorage, Alaska",NA
+94,RM30_Funny_River,5/11/2021,PS,NA,NA,Copper,"SGS North America, Anchorage, Alaska",NA
+95,RM30_Funny_River,5/11/2021,PS,NA,NA,Lead,"SGS North America, Anchorage, Alaska",NA
+96,RM30_Funny_River,5/11/2021,PS,NA,NA,Zinc,"SGS North America, Anchorage, Alaska",NA
+640,RM30_Funny_River,5/11/2021,SMPL,NA,NA,"Calcium, Total","ALS Environmental, Kelso, Washington",5.09
+641,RM30_Funny_River,5/11/2021,SMPL,NA,NA,"Iron, Total","ALS Environmental, Kelso, Washington",0.807
+642,RM30_Funny_River,5/11/2021,SMPL,NA,NA,"Magnesium, Total","ALS Environmental, Kelso, Washington",1.79
+97,RM31_Morgans_Landing,5/11/2021,PS,NA,NA,Total Nitrate/Nitrite-N,"SGS North America, Anchorage, Alaska",0.25
+98,RM31_Morgans_Landing,5/11/2021,PS,NA,NA,Total Phosphorus,"SGS North America, Anchorage, Alaska",0.0392
+99,RM31_Morgans_Landing,5/11/2021,PS,NA,NA,Arsenic,"SGS North America, Anchorage, Alaska",2.7
+100,RM31_Morgans_Landing,5/11/2021,PS,NA,NA,Cadmium,"SGS North America, Anchorage, Alaska",NA
+101,RM31_Morgans_Landing,5/11/2021,PS,NA,NA,Chromium,"SGS North America, Anchorage, Alaska",NA
+102,RM31_Morgans_Landing,5/11/2021,PS,NA,NA,Copper,"SGS North America, Anchorage, Alaska",0.455
+103,RM31_Morgans_Landing,5/11/2021,PS,NA,NA,Lead,"SGS North America, Anchorage, Alaska",0.114
+104,RM31_Morgans_Landing,5/11/2021,PS,NA,NA,Zinc,"SGS North America, Anchorage, Alaska",NA
+105,RM31_Morgans_Landing,5/11/2021,PS,Field Duplicate,DUP,Total Nitrate/Nitrite-N,"SGS North America, Anchorage, Alaska",0.226
+106,RM31_Morgans_Landing,5/11/2021,PS,Field Duplicate,DUP,Total Phosphorus,"SGS North America, Anchorage, Alaska",0.0174
+643,RM31_Morgans_Landing,5/11/2021,SMPL,NA,NA,"Calcium, Total","ALS Environmental, Kelso, Washington",11.1
+644,RM31_Morgans_Landing,5/11/2021,SMPL,NA,NA,"Iron, Total","ALS Environmental, Kelso, Washington",0.417
+645,RM31_Morgans_Landing,5/11/2021,SMPL,NA,NA,"Magnesium, Total","ALS Environmental, Kelso, Washington",1.32
+107,RM36_Moose_River,5/11/2021,PS,NA,NA,Total Nitrate/Nitrite-N,"SGS North America, Anchorage, Alaska",NA
+108,RM36_Moose_River,5/11/2021,PS,NA,NA,Total Phosphorus,"SGS North America, Anchorage, Alaska",0.0391
+109,RM36_Moose_River,5/11/2021,PS,NA,NA,Arsenic,"SGS North America, Anchorage, Alaska",4.88
+110,RM36_Moose_River,5/11/2021,PS,NA,NA,Cadmium,"SGS North America, Anchorage, Alaska",NA
+111,RM36_Moose_River,5/11/2021,PS,NA,NA,Chromium,"SGS North America, Anchorage, Alaska",NA
+112,RM36_Moose_River,5/11/2021,PS,NA,NA,Copper,"SGS North America, Anchorage, Alaska",0.368
+113,RM36_Moose_River,5/11/2021,PS,NA,NA,Lead,"SGS North America, Anchorage, Alaska",0.0735
+114,RM36_Moose_River,5/11/2021,PS,NA,NA,Zinc,"SGS North America, Anchorage, Alaska",NA
+115,RM40_Bings_Landing,5/11/2021,PS,NA,NA,Total Nitrate/Nitrite-N,"SGS North America, Anchorage, Alaska",0.33
+116,RM40_Bings_Landing,5/11/2021,PS,NA,NA,Total Phosphorus,"SGS North America, Anchorage, Alaska",NA
+117,RM40_Bings_Landing,5/11/2021,PS,NA,NA,Arsenic,"SGS North America, Anchorage, Alaska",NA
+118,RM40_Bings_Landing,5/11/2021,PS,NA,NA,Cadmium,"SGS North America, Anchorage, Alaska",NA
+119,RM40_Bings_Landing,5/11/2021,PS,NA,NA,Chromium,"SGS North America, Anchorage, Alaska",NA
+120,RM40_Bings_Landing,5/11/2021,PS,NA,NA,Copper,"SGS North America, Anchorage, Alaska",0.545
+121,RM40_Bings_Landing,5/11/2021,PS,NA,NA,Lead,"SGS North America, Anchorage, Alaska",0.127
+122,RM40_Bings_Landing,5/11/2021,PS,NA,NA,Zinc,"SGS North America, Anchorage, Alaska",NA
+123,RM43_Upstream_of_Dow_Island,5/11/2021,PS,NA,NA,Total Nitrate/Nitrite-N,"SGS North America, Anchorage, Alaska",0.36
+124,RM43_Upstream_of_Dow_Island,5/11/2021,PS,NA,NA,Total Phosphorus,"SGS North America, Anchorage, Alaska",0.0228
+125,RM43_Upstream_of_Dow_Island,5/11/2021,PS,NA,NA,Arsenic,"SGS North America, Anchorage, Alaska",NA
+126,RM43_Upstream_of_Dow_Island,5/11/2021,PS,NA,NA,Cadmium,"SGS North America, Anchorage, Alaska",NA
+127,RM43_Upstream_of_Dow_Island,5/11/2021,PS,NA,NA,Chromium,"SGS North America, Anchorage, Alaska",NA
+128,RM43_Upstream_of_Dow_Island,5/11/2021,PS,NA,NA,Copper,"SGS North America, Anchorage, Alaska",0.959
+129,RM43_Upstream_of_Dow_Island,5/11/2021,PS,NA,NA,Lead,"SGS North America, Anchorage, Alaska",0.187
+130,RM43_Upstream_of_Dow_Island,5/11/2021,PS,NA,NA,Zinc,"SGS North America, Anchorage, Alaska",NA
+131,RM44_Mouth_of_Killey_River,5/11/2021,PS,NA,NA,Total Nitrate/Nitrite-N,"SGS North America, Anchorage, Alaska",0.603
+132,RM44_Mouth_of_Killey_River,5/11/2021,PS,NA,NA,Total Phosphorus,"SGS North America, Anchorage, Alaska",0.0151
+133,RM44_Mouth_of_Killey_River,5/11/2021,PS,NA,NA,Arsenic,"SGS North America, Anchorage, Alaska",NA
+134,RM44_Mouth_of_Killey_River,5/11/2021,PS,NA,NA,Cadmium,"SGS North America, Anchorage, Alaska",NA
+135,RM44_Mouth_of_Killey_River,5/11/2021,PS,NA,NA,Chromium,"SGS North America, Anchorage, Alaska",NA
+136,RM44_Mouth_of_Killey_River,5/11/2021,PS,NA,NA,Copper,"SGS North America, Anchorage, Alaska",0.71
+137,RM44_Mouth_of_Killey_River,5/11/2021,PS,NA,NA,Lead,"SGS North America, Anchorage, Alaska",0.083
+138,RM44_Mouth_of_Killey_River,5/11/2021,PS,NA,NA,Zinc,"SGS North America, Anchorage, Alaska",NA
+139,RM50_Skilak_Lake_Outflow,5/11/2021,PS,NA,NA,Total Nitrate/Nitrite-N,"SGS North America, Anchorage, Alaska",0.199
+140,RM50_Skilak_Lake_Outflow,5/11/2021,PS,NA,NA,Total Phosphorus,"SGS North America, Anchorage, Alaska",NA
+141,RM50_Skilak_Lake_Outlet,5/11/2021,PS,NA,NA,Arsenic,"SGS North America, Anchorage, Alaska",NA
+142,RM50_Skilak_Lake_Outlet,5/11/2021,PS,NA,NA,Cadmium,"SGS North America, Anchorage, Alaska",NA
+143,RM50_Skilak_Lake_Outlet,5/11/2021,PS,NA,NA,Chromium,"SGS North America, Anchorage, Alaska",NA
+144,RM50_Skilak_Lake_Outlet,5/11/2021,PS,NA,NA,Copper,"SGS North America, Anchorage, Alaska",NA
+145,RM50_Skilak_Lake_Outlet,5/11/2021,PS,NA,NA,Lead,"SGS North America, Anchorage, Alaska",NA
+146,RM50_Skilak_Lake_Outlet,5/11/2021,PS,NA,NA,Zinc,"SGS North America, Anchorage, Alaska",NA
+147,RM6.5_Cunning_Hem,5/11/2021,PS,NA,NA,Total Nitrate/Nitrite-N,"SGS North America, Anchorage, Alaska",0.225
+148,RM6.5_Cunning_Hem,5/11/2021,PS,NA,NA,Total Phosphorus,"SGS North America, Anchorage, Alaska",0.189
+149,RM6.5_Cunningham_Park,5/11/2021,PS,NA,NA,Arsenic,"SGS North America, Anchorage, Alaska",NA
+150,RM6.5_Cunningham_Park,5/11/2021,PS,NA,NA,Cadmium,"SGS North America, Anchorage, Alaska",NA
+151,RM6.5_Cunningham_Park,5/11/2021,PS,NA,NA,Chromium,"SGS North America, Anchorage, Alaska",NA
+152,RM6.5_Cunningham_Park,5/11/2021,PS,NA,NA,Copper,"SGS North America, Anchorage, Alaska",NA
+153,RM6.5_Cunningham_Park,5/11/2021,PS,NA,NA,Lead,"SGS North America, Anchorage, Alaska",NA
+154,RM6.5_Cunningham_Park,5/11/2021,PS,NA,NA,Zinc,"SGS North America, Anchorage, Alaska",NA
+670,RM6.5_Cunningham_Park,5/11/2021,SMPL,NA,NA,"Calcium, Total","ALS Environmental, Kelso, Washington",11.4
+671,RM6.5_Cunningham_Park,5/11/2021,SMPL,NA,NA,"Iron, Total","ALS Environmental, Kelso, Washington",5.6
+672,RM6.5_Cunningham_Park,5/11/2021,SMPL,NA,NA,"Magnesium, Total","ALS Environmental, Kelso, Washington",2.97
+155,RM70_Jims_Landing,5/11/2021,PS,NA,NA,Total Nitrate/Nitrite-N,"SGS North America, Anchorage, Alaska",0.745
+156,RM70_Jims_Landing,5/11/2021,PS,NA,NA,Total Phosphorus,"SGS North America, Anchorage, Alaska",NA
+157,RM70_Jims_Landing,5/11/2021,PS,NA,NA,Arsenic,"SGS North America, Anchorage, Alaska",NA
+158,RM70_Jims_Landing,5/11/2021,PS,NA,NA,Cadmium,"SGS North America, Anchorage, Alaska",NA
+159,RM70_Jims_Landing,5/11/2021,PS,NA,NA,Chromium,"SGS North America, Anchorage, Alaska",NA
+160,RM70_Jims_Landing,5/11/2021,PS,NA,NA,Copper,"SGS North America, Anchorage, Alaska",0.348
+161,RM70_Jims_Landing,5/11/2021,PS,NA,NA,Lead,"SGS North America, Anchorage, Alaska",0.0763
+162,RM70_Jims_Landing,5/11/2021,PS,NA,NA,Zinc,"SGS North America, Anchorage, Alaska",NA
+163,RM74_Russian_River,5/11/2021,PS,NA,NA,Total Nitrate/Nitrite-N,"SGS North America, Anchorage, Alaska",1.12
+164,RM74_Russian_River,5/11/2021,PS,NA,NA,Total Phosphorus,"SGS North America, Anchorage, Alaska",NA
+165,RM74_Russian_River,5/11/2021,PS,NA,NA,Arsenic,"SGS North America, Anchorage, Alaska",NA
+166,RM74_Russian_River,5/11/2021,PS,NA,NA,Cadmium,"SGS North America, Anchorage, Alaska",NA
+167,RM74_Russian_River,5/11/2021,PS,NA,NA,Chromium,"SGS North America, Anchorage, Alaska",NA
+168,RM74_Russian_River,5/11/2021,PS,NA,NA,Copper,"SGS North America, Anchorage, Alaska",NA
+169,RM74_Russian_River,5/11/2021,PS,NA,NA,Lead,"SGS North America, Anchorage, Alaska",NA
+170,RM74_Russian_River,5/11/2021,PS,NA,NA,Zinc,"SGS North America, Anchorage, Alaska",NA
+171,RM79.5_Juneau_Creek,5/11/2021,PS,NA,NA,Arsenic,"SGS North America, Anchorage, Alaska",NA
+172,RM79.5_Juneau_Creek,5/11/2021,PS,NA,NA,Cadmium,"SGS North America, Anchorage, Alaska",NA
+173,RM79.5_Juneau_Creek,5/11/2021,PS,NA,NA,Chromium,"SGS North America, Anchorage, Alaska",NA
+174,RM79.5_Juneau_Creek,5/11/2021,PS,NA,NA,Copper,"SGS North America, Anchorage, Alaska",0.679
+175,RM79.5_Juneau_Creek,5/11/2021,PS,NA,NA,Lead,"SGS North America, Anchorage, Alaska",0.228
+176,RM79.5_Juneau_Creek,5/11/2021,PS,NA,NA,Zinc,"SGS North America, Anchorage, Alaska",3.12
+177,RM79.5_Juneau_Creek,5/11/2021,PS,NA,NA,Total Nitrate/Nitrite-N,"SGS North America, Anchorage, Alaska",0.869
+178,RM79.5_Juneau_Creek,5/11/2021,PS,NA,NA,Total Phosphorus,"SGS North America, Anchorage, Alaska",0.0212
+179,RM82_Kenai_Lake_Bridge,5/11/2021,PS,NA,NA,Total Nitrate/Nitrite-N,"SGS North America, Anchorage, Alaska",0.454
+180,RM82_Kenai_Lake_Bridge,5/11/2021,PS,NA,NA,Total Phosphorus,"SGS North America, Anchorage, Alaska",NA
+181,RM82_Kenai_Lake_Bridge,5/11/2021,PS,NA,NA,Arsenic,"SGS North America, Anchorage, Alaska",NA
+182,RM82_Kenai_Lake_Bridge,5/11/2021,PS,NA,NA,Cadmium,"SGS North America, Anchorage, Alaska",NA
+183,RM82_Kenai_Lake_Bridge,5/11/2021,PS,NA,NA,Chromium,"SGS North America, Anchorage, Alaska",NA
+184,RM82_Kenai_Lake_Bridge,5/11/2021,PS,NA,NA,Copper,"SGS North America, Anchorage, Alaska",0.603
+185,RM82_Kenai_Lake_Bridge,5/11/2021,PS,NA,NA,Lead,"SGS North America, Anchorage, Alaska",0.156
+186,RM82_Kenai_Lake_Bridge,5/11/2021,PS,NA,NA,Zinc,"SGS North America, Anchorage, Alaska",4.36
+610,Trip_Blank_1,7/27/2021,TB,Trip Blank,Blank,Benzene,"SGS North America, Anchorage, Alaska",NA
+611,Trip_Blank_1,7/27/2021,TB,Trip Blank,Blank,Ethylbenzene,"SGS North America, Anchorage, Alaska",NA
+612,Trip_Blank_1,7/27/2021,TB,Trip Blank,Blank,o-Xylene,"SGS North America, Anchorage, Alaska",NA
+613,Trip_Blank_1,7/27/2021,TB,Trip Blank,Blank,P & M -Xylene,"SGS North America, Anchorage, Alaska",NA
+614,Trip_Blank_1,7/27/2021,TB,Trip Blank,Blank,Toluene,"SGS North America, Anchorage, Alaska",NA
+615,Trip_Blank_1,7/27/2021,TB,Trip Blank,Blank,Xylenes (total),"SGS North America, Anchorage, Alaska",NA
+616,Trip_Blank_2,7/27/2021,TB,Trip Blank,Blank,Benzene,"SGS North America, Anchorage, Alaska",NA
+617,Trip_Blank_2,7/27/2021,TB,Trip Blank,Blank,Ethylbenzene,"SGS North America, Anchorage, Alaska",NA
+618,Trip_Blank_2,7/27/2021,TB,Trip Blank,Blank,o-Xylene,"SGS North America, Anchorage, Alaska",NA
+619,Trip_Blank_2,7/27/2021,TB,Trip Blank,Blank,P & M -Xylene,"SGS North America, Anchorage, Alaska",NA
+620,Trip_Blank_2,7/27/2021,TB,Trip Blank,Blank,Toluene,"SGS North America, Anchorage, Alaska",NA
+621,Trip_Blank_2,7/27/2021,TB,Trip Blank,Blank,Xylenes (total),"SGS North America, Anchorage, Alaska",NA
+622,Trip_Blank_3,7/27/2021,TB,Trip Blank,Blank,Benzene,"SGS North America, Anchorage, Alaska",NA
+623,Trip_Blank_3,7/27/2021,TB,Trip Blank,Blank,Ethylbenzene,"SGS North America, Anchorage, Alaska",NA
+624,Trip_Blank_3,7/27/2021,TB,Trip Blank,Blank,o-Xylene,"SGS North America, Anchorage, Alaska",NA
+625,Trip_Blank_3,7/27/2021,TB,Trip Blank,Blank,P & M -Xylene,"SGS North America, Anchorage, Alaska",NA
+626,Trip_Blank_3,7/27/2021,TB,Trip Blank,Blank,Toluene,"SGS North America, Anchorage, Alaska",NA
+627,Trip_Blank_3,7/27/2021,TB,Trip Blank,Blank,Xylenes (total),"SGS North America, Anchorage, Alaska",NA
+628,Trip_Blank_4,7/27/2021,TB,Trip Blank,Blank,Benzene,"SGS North America, Anchorage, Alaska",NA
+629,Trip_Blank_4,7/27/2021,TB,Trip Blank,Blank,Ethylbenzene,"SGS North America, Anchorage, Alaska",NA
+630,Trip_Blank_4,7/27/2021,TB,Trip Blank,Blank,o-Xylene,"SGS North America, Anchorage, Alaska",NA
+631,Trip_Blank_4,7/27/2021,TB,Trip Blank,Blank,P & M -Xylene,"SGS North America, Anchorage, Alaska",NA
+632,Trip_Blank_4,7/27/2021,TB,Trip Blank,Blank,Toluene,"SGS North America, Anchorage, Alaska",NA
+633,Trip_Blank_4,7/27/2021,TB,Trip Blank,Blank,Xylenes (total),"SGS North America, Anchorage, Alaska",NA

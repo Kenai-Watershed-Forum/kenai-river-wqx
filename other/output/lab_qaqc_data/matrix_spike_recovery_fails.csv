@@ -1,0 +1,7 @@
+"","lab_name","sample","collect_date","extracted_date","sample_type","result","analyte","dissolved","analytical_method","resultflag","percent_recovered","rec_limit_low","rec_limit_high","sample_rpd","rpd_limit_low","rpd_limit_high","loq","lod","detection_limit","sample_condition","rec_limit_pass"
+"1","SGS North America, Anchorage, Alaska","1212275001_MS_FOR_[WFI2930]","2021-05-06",NA,"MS",5.64,"Total Nitrate/Nitrite-N",".","SM21 4500NO3-F","=",113,90,110,NA,NA,NA,0.2,0.1,0.05,NA,"N"
+"2","SGS North America, Anchorage, Alaska","1212275001_MSD_FOR_[WFI2930]","2021-05-06",NA,"MSD",5.61,"Total Nitrate/Nitrite-N",".","SM21 4500NO3-F","=",112,90,110,"0.63",0,25,0.2,0.1,0.05,NA,"N"
+"3","SGS North America, Anchorage, Alaska","1212334001_MS_FOR_[WFI2930]","2021-05-11",NA,"MS",5.97,"Total Nitrate/Nitrite-N",".","SM21 4500NO3-F","=",115,90,110,NA,NA,NA,0.2,0.1,0.05,NA,"N"
+"4","SGS North America, Anchorage, Alaska","1212334001_MSD_FOR_[WFI2930]","2021-05-11",NA,"MSD",5.89,"Total Nitrate/Nitrite-N",".","SM21 4500NO3-F","=",114,90,110,"1.4",0,25,0.2,0.1,0.05,NA,"N"
+"5","SGS North America, Anchorage, Alaska","1212341018MS","2021-05-11",NA,"MS",6.14,"Total Nitrate/Nitrite-N",".","SM21 4500NO3-F","=",118,90,110,NA,NA,NA,0.2,0.1,0.05,NA,"N"
+"6","SGS North America, Anchorage, Alaska","1212341018MSD","2021-05-11",NA,"MSD",5.87,"Total Nitrate/Nitrite-N",".","SM21 4500NO3-F","=",113,90,110,"4.4",0,25,0.2,0.1,0.05,NA,"N"
