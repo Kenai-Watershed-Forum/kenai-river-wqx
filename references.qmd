@@ -1,0 +1,15 @@
+<<<<<<< HEAD
+# References {.unnumbered}
+
+::: {#refs}
+:::
+
+\newpage
+=======
+# References {.unnumbered}
+
+::: {#refs}
+:::
+
+\newpage
+>>>>>>> cb4283d25c8f6f21c969c7895136d6d68bddc50e

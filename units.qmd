@@ -1,0 +1,22 @@
+# Units {.unnumbered}
+
+Conversions:
+
+-   1 gram = 1000 micrograms
+
+-   °F = 9/5(°C) + 32
+
+Unit Abbreviations:
+
+-   mg/L = milligrams per liter
+
+-   μg/L = micrograms per liter
+
+-   CFU/100m = coliform forming units per 100 milliliters
+
+-   μS/cm = microsiemens per centimeter
+
+-   NTU= nephelometric turbidity unit
+
+\newpage
+
