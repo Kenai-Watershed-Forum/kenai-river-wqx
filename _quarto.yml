@@ -35,7 +35,7 @@ book:
     - appendix_a.qmd
     - appendix_b.qmd
 
-  repo-url: https://github.com/Kenai-Watershed-Forum/kenai-river-wqx-report-v2.git
+  repo-url: https://github.com/Kenai-Watershed-Forum/kenai-river-wqx
   search:
     location: sidebar
     type: textbox
