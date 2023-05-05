@@ -1230,11 +1230,15 @@ Yes. Analytical methods from the approved 2020 QAPP were employed.
 
 <br>
 
-**2.) Were field duplicates, blanks, and/or other QC samples collected as planned?**
+**2.) Were there any deviations from the sampling plan?**
+
+All sites were visited as planned on 5/11/2021 and 7/27/2021.
+
+**3.) Were field duplicates, blanks, and/or other QC samples collected as planned?**
 
 ```{r echo = F}
-### First: get number of samples (results) actually collected from formatted, collated results
-### by parameter
+### First: get number of samples (results) actually collected from formatted, collated results created from the above code chunks
+### report for each parameter and date
 total_samples_collected_2021_summary_param <- read.csv('other/output/aqwms_formatted_results/2021_kwf_baseline_results_aqwms.csv') %>%
   clean_names() %>%
   group_by(result_analytical_method_id,characteristic_name,activity_start_date,activity_type) %>%
@@ -1246,15 +1250,15 @@ total_samples_collected_2021_summary_param <- read.csv('other/output/aqwms_forma
 
 ### Second: use kit request data to count "required" (planned) samples
 
-## read in SPRING 2021 planned samples
+## read in SPRING 2021 planned samples from the packing list
 spring21_planned <- read_excel("other/input/2021_wqx_data/spring_2021_wqx_data/SGS/KRBWQM_SGS_bottle_order_Spring_2021.xlsx", sheet = "bottles_analyses_spring_2021") %>%
   mutate(activity_start_date = spring21_sample_date)
 
-## read in SUMMER 2021 planned samples
+## read in SUMMER 2021 planned samples from the packing list
 summer21_planned <- read_excel("other/input/2021_wqx_data/summer_2021_wqx_data/SGS/KRBWQM_SGS_bottle_order_Summer_2021.xlsx", sheet = "bottles_analyses_summer_2021") %>%
   mutate(activity_start_date = summer21_sample_date)
 
-## combine spring and summer 2021
+## combine spring and summer 2021 planned samples
 planned_samples_2021 <- bind_rows(spring21_planned,summer21_planned) %>%
   
 ## prepare and summarise table samples collected and tests performed
@@ -1263,6 +1267,7 @@ planned_samples_2021 <- bind_rows(spring21_planned,summer21_planned) %>%
   select(site,container_size,quantity,preservative,analysis_1,analysis_2,activity_start_date) %>%
   fill(site, .direction = "down") %>%
   filter(site != "Spare Kit") %>%
+  # make sample type names consistent
   mutate(sample_type = case_when(
     grepl("DUPLICATE",site, ignore.case = TRUE) ~ "FIELD DUPLICATE",
     grepl("blank",analysis_1, ignore.case = TRUE) ~ "TRIP BLANK"
@@ -1270,7 +1275,7 @@ planned_samples_2021 <- bind_rows(spring21_planned,summer21_planned) %>%
   pivot_longer(values_to = "analysis", cols = c("analysis_1","analysis_2")) %>%
   filter(!is.na(analysis)) %>%
   
-  # consolidate BTEX analysis types ("blank" analysis is same as regular)
+  # consolidate BTEX analysis types ("blank" analysis is same as analysis regular samples; difference is only that no sample was collected for the trip blanks)
   
   # distinction for trip blanks (for BTEX) listed in "activity type" column
   
@@ -1291,7 +1296,7 @@ planned_samples_2021 <- bind_rows(spring21_planned,summer21_planned) %>%
     analysis == "4500-NO3(F)" ~ 1, # Nitrate/Nitrite                           
     analysis == "4500-P-E" ~ 1, # total phosphorus
     analysis == "200.7" ~ 3,          # total metals
-    analysis == "200.8" ~ 6, # custom short list; though lab accidentally ran full list of 27 analytes in 2021
+    analysis == "200.8" ~ 6, # custom short list; note that lab accidentally ran full list of 27 analytes in 2021
     analysis == "2540-D" ~ 1, # TSS
     analysis == "9222D" ~ 1,
     analysis == "8260D" ~ 6)) %>% # BTEX analyses
@@ -1347,11 +1352,6 @@ write.csv(planned_actual_analyses_2021,"other/output/field_qa_qc_data/planned_ac
 # TO DO::: once data that does not pass QC muster is flagged and removed, we will append an additional column(s) to the tables generated in there questions 
 ```
 
-```{r, echo = F}
-knitr::kable(planned_actual_analyses_2021)
-
-```
-
 <br>
 
 ```{r, echo = F}
@@ -1359,25 +1359,37 @@ xfun::embed_file('other/output/field_qa_qc_data/planned_actual_analyses_2021.csv
 
 ```
 
+To see a table comparing planned vs actual results for 2021, view the excel file linked above.
+
 From the above table we can see that there are deviations between planned and actual results available. These reasons for the deviations are known and are attributable to two causes:
 
 *Cause 1:* The Spring 2021 Chain of Custody (COC) from KWF to SGS was completed erroneously. The COC specified for 200.8 analyses to be complete for all sites (when they should have stopped upstream of Morgan's Landing RM31), and it also specified for 200.7 analyses to stop upstream of Morgan's Landing (when they should have been performed for all sites in the project).
 
-As a result, for Spring 2021 total metals data will be unavailable for sites upstream of Morgan's Landing RM31.
+As a result, for Spring 2021 total metals data will be unavailable for sites upstream of the Morgan's Landing RM31 site.
 
-*Cause 2:* For Summer 2021, the SGS performed the 200.8 analyses for all 27 analytes available for the method; instead of just the smaller subset of analytes. (E.g., KWF received extra data for free, no consequences of deviating from planned analyses).
+*Cause 2:* For Summer 2021, the SGS performed the 200.8 analyses for all 27 analytes available for the method; instead of just the smaller subset of analytes as requested. (E.g., KWF received extra data for free. In this case., there are no consequences of deviating from the planned analyses).
 
 <br>
 
-**3.) Do the laboratory reports provide results for all sites and parameters?**
+**4.) Do the laboratory reports provide results for all sites and parameters?**
 
-*Analysis in progress here as of 4-14-2023*
+The laboratory reports provide results for all sites, and for all parameters, with the exceptions outlined above in question #3.
 
-```{r echo = F}
+<br>
 
-# --> not all parameters collected at all sites; see above (e.g. not diss metals above morgans)
+**5.) Is a copy of the Chain of Custody included with the laboratory reports?**
 
-```
+We worked with three separate laboratories in 2021:
+
+-   SGS Laboratories, Anchorage, AK
+
+    -   Chain of Custody documents are included within the PDF laboratory reports linked above earlier in this appendix.
+
+-   Soldotna Wastewater Treatment Plant, Soldotna, AK
+
+    -   
+
+-   Tauriainen Engineering & Testing, Soldotna, AK
 
 ```{r echo = F}
 knitr::knit_exit()
