@@ -1387,9 +1387,23 @@ We worked with three separate laboratories in 2021:
 
 -   Soldotna Wastewater Treatment Plant, Soldotna, AK
 
-    -   
+    -   Chain of Custody documents are on file with Kenai Watershed Forum for fecal coliform and total suspended solids for 5/11/2021, and for total suspended solids on 7/27/2021.
 
 -   Tauriainen Engineering & Testing, Soldotna, AK
+
+    -   An individual document for each sample reports the time and date of delivery and analysis for each sample. These documents are included with the PDF laboratory reports linked above earlier in this appendix.
+
+**6.) Do the laboratory reports match the Chain of Custody and requested methods throughout?**
+
+The laboratory reports match the Chain of Custody and requested methods, with the one exception discussed in question #3. For summer 2021, the SGS performed the 200.8 analyses for all 27 analytes available for the method; instead of just the smaller subset of analytes as requested. (E.g., KWF received extra data for free. In this case., there are no consequences of deviating from the planned analyses).
+
+**7.) Are the number of samples on the laboratory reports the same as on the Chain of Custody?**
+
+The quantity of sample bottles sent to the laboratories matches the number of analyzed samples for samples collected and delivered on 5/11/2021 and 7/27/2021.
+
+**8.) Was all supporting info provided in the laboratory report, such as reporting limits for all analyses and definitions?**
+
+Suppl
 
 ```{r echo = F}
 knitr::knit_exit()
