@@ -1393,17 +1393,37 @@ We worked with three separate laboratories in 2021:
 
     -   An individual document for each sample reports the time and date of delivery and analysis for each sample. These documents are included with the PDF laboratory reports linked above earlier in this appendix.
 
+<br>
+
 **6.) Do the laboratory reports match the Chain of Custody and requested methods throughout?**
 
 The laboratory reports match the Chain of Custody and requested methods, with the one exception discussed in question #3. For summer 2021, the SGS performed the 200.8 analyses for all 27 analytes available for the method; instead of just the smaller subset of analytes as requested. (E.g., KWF received extra data for free. In this case., there are no consequences of deviating from the planned analyses).
+
+<br>
 
 **7.) Are the number of samples on the laboratory reports the same as on the Chain of Custody?**
 
 The quantity of sample bottles sent to the laboratories matches the number of analyzed samples for samples collected and delivered on 5/11/2021 and 7/27/2021.
 
+<br>
+
 **8.) Was all supporting info provided in the laboratory report, such as reporting limits for all analyses and definitions?**
 
-Suppl
+We worked with three separate laboratories in 2021:
+
+-   SGS Laboratories, Anchorage, AK
+
+    -   SGS provided data as PDFs which included reporting limits, as well as in the form of an Electronic Data Deliverable where this information is also included in column format.
+
+-   Soldotna Wastewater Treatment Plant (SWWTP), Soldotna, AK
+
+    -   SWWTP provided data in the form of .xls files. Reporting limits are described in this project's current Quality Assurance Action Plan.
+
+-   Tauriainen Engineering & Testing, Soldotna, AK
+
+    -   Tauriainen provided data in the form of PDF documents. Reporting limits are described in this project's current Quality Assurance Action Plan.
+    
+**9.) Are site names, dates, and times correct and as expected?**
 
 ```{r echo = F}
 knitr::knit_exit()
