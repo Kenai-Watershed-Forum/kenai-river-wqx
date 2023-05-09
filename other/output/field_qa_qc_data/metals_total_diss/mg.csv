@@ -1,0 +1,39 @@
+"","collect_date","collect_time","monitoring_location_name","units","result_detection_condition","sample_condition","Magnesium","Magnesium, Total","particulate_conc","total_greater_diss"
+"1",2021-07-27,09:30:00,"Kenai River - River Mile 0 - ""No Name"" Creek","ug/L",NA,NA,7320,7230,-90,"N"
+"2",2021-07-27,09:45:00,"Kenai River - River Mile 0 - ""No Name"" Creek","ug/L",NA,"Field Duplicate",6960,6950,-10,"N"
+"3",2021-07-27,10:30:00,"Kenai River - River Mile 1.5","ug/L",NA,NA,68600,66900,-1700,"N"
+"4",2021-07-27,09:50:00,"Kenai River - River Mile 10 - Beaver Creek","ug/L",NA,NA,3860,3960,100,"Y"
+"5",2021-07-27,10:10:00,"Kenai River - River Mile 10.1","ug/L",NA,NA,988,1100,112,"Y"
+"6",2021-07-27,10:28:00,"Kenai River - The Pillars Park","ug/L",NA,NA,919,1080,161,"Y"
+"7",2021-07-27,10:50:00,"Kenai River - River Mile 18","ug/L",NA,NA,963,1060,97,"Y"
+"8",2021-07-27,09:28:00,"Kenai River - River Mile 19 - Slikok Creek","ug/L",NA,NA,4330,4370,40,"Y"
+"9",2021-07-27,10:10:00,"Kenai River - River Mile 21","ug/L",NA,NA,953,1060,107,"Y"
+"10",2021-07-27,11:25:00,"Kenai River - River Mile 22 - Soldotna Creek","ug/L",NA,NA,4660,4930,270,"Y"
+"11",2021-07-27,10:43:00,"Kenai River - River Mile 23","ug/L",NA,NA,936,1060,124,"Y"
+"12",2021-07-27,09:30:00,"Kenai River - River Mile 30 - Funny River","ug/L",NA,NA,3050,3180,130,"Y"
+"13",2021-07-27,09:10:00,"Kenai River - Cunningham Park","ug/L",NA,NA,1090,1100,10,"Y"
+"14",2021-05-11,11:35:00,"Kenai River - River Mile 22 - Soldotna Creek","ug/L",NA,NA,NA,3570,NA,NA
+"15",2021-05-11,11:10:00,"Kenai River - River Mile 23","ug/L",NA,NA,NA,1280,NA,NA
+"16",2021-05-11,09:06:00,"Kenai River - River Mile 30 - Funny River","ug/L",NA,NA,NA,1790,NA,NA
+"17",2021-05-11,10:13:00,"Kenai River - River Mile 31","ug/L",NA,NA,NA,1320,NA,NA
+"18",2021-05-11,10:30:00,"Kenai River - River Mile 10.1","ug/L",NA,NA,NA,1310,NA,NA
+"19",2021-05-11,10:50:00,"Kenai River - The Pillars Park","ug/L",NA,NA,NA,1280,NA,NA
+"20",2021-05-11,11:25:00,"Kenai River - River Mile 18","ug/L",NA,NA,NA,1270,NA,NA
+"21",2021-05-11,12:09:00,"Kenai River - River Mile 19 - Slikok Creek","ug/L",NA,NA,NA,2300,NA,NA
+"22",2021-05-11,09:53:00,"Kenai River - River Mile 21","ug/L",NA,NA,NA,1300,NA,NA
+"23",2021-05-11,10:17:00,"Kenai River - River Mile 0 - ""No Name"" Creek","ug/L",NA,"Field Duplicate",NA,4060,NA,NA
+"24",2021-05-11,10:12:00,"Kenai River - River Mile 0 - ""No Name"" Creek","ug/L",NA,NA,NA,4040,NA,NA
+"25",2021-05-11,09:30:00,"Kenai River - River Mile 74 - Russian River","ug/L",NA,NA,NA,134000,NA,NA
+"26",2021-05-11,09:15:00,"Kenai River - Cunningham Park","ug/L",NA,NA,NA,2970,NA,NA
+"27",2021-05-11,10:05:00,"Kenai River - River Mile 10 - Beaver Creek","ug/L",NA,NA,NA,2860,NA,NA
+"28",2021-07-27,10:50:00,"Kenai River - River Mile 31","ug/L",NA,NA,NA,1050,NA,NA
+"29",2021-07-27,10:50:00,"Kenai River - River Mile 31","ug/L",NA,"Field Duplicate",NA,1040,NA,NA
+"30",2021-07-27,11:30:00,"Kenai River - River Mile 36 - Moose River","ug/L",NA,NA,NA,3580,NA,NA
+"31",2021-07-27,09:50:00,"Kenai River - River Mile 40","ug/L",NA,NA,NA,983,NA,NA
+"32",2021-07-27,09:30:00,"Kenai River - River Mile 43","ug/L",NA,NA,NA,995,NA,NA
+"33",2021-07-27,09:14:00,"Kenai River - River Mile 44 - Killey River","ug/L",NA,NA,NA,1530,NA,NA
+"34",2021-07-27,08:40:00,"Kenai River - River Mile 50 - Skilak Lake Outflow","ug/L",NA,NA,NA,938,NA,NA
+"35",2021-07-27,09:40:00,"Kenai River - River Mile 70 - Jim's Landing","ug/L",NA,NA,NA,1160,NA,NA
+"36",2021-07-27,08:50:00,"Kenai River - River Mile 74 - Russian River","ug/L",NA,NA,NA,1060,NA,NA
+"37",2021-07-27,08:15:00,"Kenai River Mile 82 - Kenai Lake Bridge","ug/L",NA,NA,NA,1210,NA,NA
+"38",2021-07-27,09:10:00,"Kenai River Juneau Creek","ug/L",NA,NA,NA,1170,NA,NA
