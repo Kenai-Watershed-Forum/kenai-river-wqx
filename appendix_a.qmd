@@ -1198,6 +1198,7 @@ xfun::embed_file('other/output/aqwms_formatted_results/2021_kwf_baseline_results
 #z <- read.csv("other/output/aqwms_formatted_results/2021_kwf_baseline_results_aqwms.csv")
 #z1 <- data.frame(unique(z$Characteristic.Name))
 
+
 ```
 
 <br>
@@ -1500,6 +1501,9 @@ col_names <- c(
   "rec_time",
   "lab_name")
 
+# read in data
+total_samples_collected_2021_summary_param <- read.csv('other/output/aqwms_formatted_results/2021_kwf_baseline_results_aqwms.csv')
+
 # read in columns relevant to holding time calculations
 holdtime_dat <- dat %>%
   select(all_of(col_names)) %>%
@@ -1623,7 +1627,15 @@ rm(ca,fe,mg)
 
 **19.) Are the duplicate sample(s) RPD within range described in QAPP? **
 
-adapt from existing script
+In 2021, duplicate samples were collected at two sites on both 5/11/2021 and 7/27/2021: 
+
+-   No Name Creek (Tributary, RM0)
+-   Funny River (Tributary, RM30)
+
+from DEC 2022 field report: "... a set of paired samples was evaluated for RPD only if: 
+
+a.) one or both of the samples were above the [LOQ)]; AND if 
+b.) one or both of the samples were at least two times the [LOQ]." 
 
 ```{r}
 
@@ -1638,31 +1650,69 @@ adapt from existing script
 qaqc_sites_2021 <- read_excel("other/input/AQWMS/aqwms_qaqc/aqwms_qaqc_info.xlsx", sheet = "field_dup_sites_2021") %>%
   remove_empty()
 
+# read in data formatted for export
+export_dat <- read.csv('other/output/aqwms_formatted_results/2021_kwf_baseline_results_aqwms.csv') %>%
+  clean_names()
+
 # inner join
-field_dup_dat_2021 <- inner_join(dat,qaqc_sites_2021) 
+field_dup_dat_2021 <- inner_join(export_dat,qaqc_sites_2021) 
 
 # specify and retain columns needed for RPD analysis
 rpd_cols <- c("monitoring_location_id",
-              "collect_date",
+              "activity_id",
               "activity_type",
-              "analyte",
-              "result_analytical_method_id",
-              "result",
-              "units",
-              "sample_condition",
-              "result_qualifier",
-              "loq",
+              "activity_start_date",
+              "characteristic_name",
+              "result_value",
+              "result_unit",
+              "result_detection_condition",
               "result_detection_limit_type_1",
               "result_detection_limit_value_1",
-              "result_detection_limit_unit_1")
+              "result_detection_limit_unit_1"
+             )
 field_dup_dat_2021 %<>% select(one_of(rpd_cols))
 
 
+# assign columns to check if data can be evaluated for RPD
 
+rpd_check_dat <- field_dup_dat_2021 %>%
+  # is sample above LOQ?
+  mutate(above_loq = case_when(
+    result_value > result_detection_limit_value_1 ~ "Y",
+    TRUE ~ "N")) %>%
+# is sample 2x LOQ ?
+  mutate(loq_2x = case_when(
+    result_value > 2*result_detection_limit_value_1 ~ "Y",
+    TRUE ~ "N")) 
 
-
+# make downloadable table
+# maybe make this as as tab 
+xfun::embed_file(rpd_check_dat, text = "Download 2021 Duplicate Sample Data")
 ```
 
+```{r echo = F}
+
+# 5/10/2023:: working here to determine hwo bets to execute 2-stage winnowing process to decide2 which data can be used for RPD calcs
+
+rpd_cols_1 <- c("monitoring_location_id",
+              "activity_type",
+              "activity_start_date",
+              "characteristic_name",
+              "result_value",
+              "result_unit",
+              "result_detection_limit_type_1",
+              "result_detection_limit_value_1",
+              "result_detection_limit_unit_1",
+              "above_loq",
+              "loq_2x"
+             )
+
+z <- rpd_check_dat %>%
+  #mutate(rn = row_number()) %>%
+  select(all_of(rpd_cols_1)) %>%
+  pivot_wider(names_from = "activity_type", values_from = c("result_value"))
+
+```
 
 
 
