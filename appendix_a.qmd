@@ -1192,6 +1192,8 @@ The above data sources have been collated in to a single .csv file (available fo
 ```{r, echo = F}
 xfun::embed_file('other/output/aqwms_formatted_results/2021_kwf_baseline_results_aqwms.csv', text = "Download All Provisional 2021 Kenai River Baseline Water Quality Monitoring Results, Formatted for EPA WQX uplift")
 
+
+
 # check unique activity types
 #z <- read.csv("other/output/aqwms_formatted_results/2021_kwf_baseline_results_aqwms.csv")
 #z1 <- data.frame(unique(z$Characteristic.Name))
@@ -1422,9 +1424,9 @@ We worked with three separate laboratories in 2021:
 -   Tauriainen Engineering & Testing, Soldotna, AK
 
     -   Tauriainen provided data in the form of PDF documents. Reporting limits are described in this project's current Quality Assurance Action Plan.
-    
+
 <br>
-    
+
 **9.) Are site names, dates, and times correct and as expected?**
 
 -   *Yes, after post-season correction documented in this report.* Notes: In 2021 Kenai Watershed Forum used pre-printed waterproof labels on all sample bottles, reducing opportunity for field and lab transcription errors. Remaining site name transcription errors from laboratories were corrected in post-season data review.
@@ -1433,7 +1435,7 @@ We worked with three separate laboratories in 2021:
 
 **10.) Were there any issues with instrument calibration?**
 
--   Instruments to measure intrinsic water quality parameters (sondes; to measure pH, dissolved oxygen, conductivity, turbidity) were not employed in 2021. 
+-   Instruments to measure intrinsic water quality parameters (sondes; to measure pH, dissolved oxygen, conductivity, turbidity) were not employed in 2021.
 
 -   Teams did use hand-held probes to record water temperature on-site. Prior to field use, the hand-held probes were verified as measuring within the accuracy level define in the QAPP using an ice bath in the laboratory.
 
@@ -1451,7 +1453,7 @@ We worked with three separate laboratories in 2021:
 
 <br>
 
-**13.) Was instrument verification during the field season performed according to the QAPP and instrument recommendations? **
+**13.) Was instrument verification during the field season performed according to the QAPP and instrument recommendations?**
 
 -   The hand-held water temperature probes were verified as measuring within the accuracy level define in the QAPP using an ice bath in the laboratory, according to instrument recommendations.
 
@@ -1463,23 +1465,21 @@ We worked with three separate laboratories in 2021:
 
 <br>
 
-**15.) Do the instrument data files site IDs, time stamps and file names match? **
+**15.) Do the instrument data files site IDs, time stamps and file names match?**
 
 -   Instrument files were not employed in 2021. Measurements from hand held probes were recorded on waterproof paper field forms.
 
 <br>
 
-**16.) Is any insitu field data rejected and why? **
+**16.) Is any insitu field data rejected and why?**
 
 -   No insitu data is rejected from 5/11/2021 or 7/27/2021.
 
 <br>
 
-**17.) Were preservation, hold time and temperature requirements met? **
+**17.) Were preservation, hold time and temperature requirements met?**
 
 -   Yes. Summer and Spring 2021 holding time requirements were met for all samples. See downloadable files below. Laboratory result documents indicated no compromises of preservation and temperature requirements.
-
-
 
 ```{r hold-times, echo = F, messages = F, warnings = F}
 
@@ -1542,16 +1542,21 @@ xfun::embed_file("other/output/field_qa_qc_data/holding_time_calcs.csv", text = 
 
 <br>
 
-**18.) Are dissolved metal quantities less than total metals quantities? **
+**18.) Are dissolved metal quantities less than total metals quantities?**
 
-(might need to make this question later in sequence)
+-   Dissolved metals results are *not* consistently less than total metals results, as would be anticipated (see link at [Flowlink](https://www.flowlink.ca/post/2018/12/15/dissolved-total-metals-whats-the-difference-and-why-it-matters) website)
 
--   In 2021, there are values available for both dissolved and total metals for three elements: Ca, Fe, and Mg; for sites at and downstream of RM 31. 
+-   In 2021, there are results available for both dissolved and total metals for three elements: Ca, Fe, and Mg; for sites at and downstream of RM 31.
 
-(spring only)
+-   Dissolved metals results are available for 7/27/2021 (summer) only, and not for 5/11/2021 (spring); see question #3 in this sequence.
 
-cases when total < diss ... why ... ..download below
+-   Results:
 
+    -   Calcium: all available observations show dissolved metals \> total metals
+
+    -   Iron: all available observations show dissolved metals \< total metals
+
+    -   Magnesium: nearly all available observations show dissolved metals \< total metals, with the exception of three sites, all near the Kenai River mouth
 
 ```{r echo = F}
 
@@ -1607,14 +1612,56 @@ mg_dir <- paste0(dir,"mg",".csv")
 write.csv(mg,mg_dir)
 xfun::embed_file(paste0(dir,"mg",".csv"), text = "Download 2021 Magnesium data, total vs dissolved")
 
+rm(ca,fe,mg)
+
 # NOTE: make the above 3 dataframe results into a function! Note that in 2023 we are getting total metals for Cu and Zn as well...!
 
 
 ```
 
+<br>
+
+**19.) Are the duplicate sample(s) RPD within range described in QAPP? **
+
+adapt from existing script
+
+```{r}
+
+# generate table of rpd values and make csv downloadable
+
+# general approach:
+# create table with RPD goals from QAPP
+# calculate observed 2021 RPD values
+# compare to goals
+
+# subset field data from sites with field duplicates in 2021
+qaqc_sites_2021 <- read_excel("other/input/AQWMS/aqwms_qaqc/aqwms_qaqc_info.xlsx", sheet = "field_dup_sites_2021") %>%
+  remove_empty()
+
+# inner join
+field_dup_dat_2021 <- inner_join(dat,qaqc_sites_2021) 
+
+# specify and retain columns needed for RPD analysis
+rpd_cols <- c("monitoring_location_id",
+              "collect_date",
+              "activity_type",
+              "analyte",
+              "result_analytical_method_id",
+              "result",
+              "units",
+              "sample_condition",
+              "result_qualifier",
+              "loq",
+              "result_detection_limit_type_1",
+              "result_detection_limit_value_1",
+              "result_detection_limit_unit_1")
+field_dup_dat_2021 %<>% select(one_of(rpd_cols))
 
 
 
+
+
+```
 
 
 
@@ -1623,7 +1670,5 @@ xfun::embed_file(paste0(dir,"mg",".csv"), text = "Download 2021 Magnesium data, 
 ```{r echo = F}
 knitr::knit_exit()
 ```
-
-
 
 \newpage
