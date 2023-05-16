@@ -1239,7 +1239,7 @@ All sites were visited as planned on 5/11/2021 and 7/27/2021. Most intrinsic wat
 
 **3.) Were field duplicates, blanks, and/or other QC samples collected as planned?**
 
-```{r echo = F}
+```{r echo = F, message = F}
 ### First: get number of samples (results) actually collected from formatted, collated results created from the above code chunks
 ### report for each parameter and date
 total_samples_collected_2021_summary_param <- read.csv('other/output/aqwms_formatted_results/2021_kwf_baseline_results_aqwms.csv') %>%
@@ -1361,6 +1361,8 @@ write.csv(planned_actual_analyses_2021,"other/output/field_qa_qc_data/planned_ac
 xfun::embed_file('other/output/field_qa_qc_data/planned_actual_analyses_2021.csv', text = "Download Planned vs. Actual Analysis Results for 2021, Kenai Baseline")
 
 ```
+
+<br>
 
 To see a table comparing planned vs actual results for 2021, view the excel file linked above.
 
@@ -1548,7 +1550,7 @@ xfun::embed_file("other/output/field_qa_qc_data/holding_time_calcs.csv", text = 
 
 **18.) Are dissolved metal quantities less than total metals quantities?**
 
--   Dissolved metals results are *not* consistently less than total metals results, as would be anticipated (see link at [Flowlink](https://www.flowlink.ca/post/2018/12/15/dissolved-total-metals-whats-the-difference-and-why-it-matters) website)
+-   Dissolved metals results are *not* consistently less than total metals results, as would be anticipated (see [Flowlink](https://www.flowlink.ca/post/2018/12/15/dissolved-total-metals-whats-the-difference-and-why-it-matters) website)
 
 -   In 2021, there are results available for both dissolved and total metals for three elements: Ca, Fe, and Mg; for sites at and downstream of RM 31.
 
@@ -1562,7 +1564,7 @@ xfun::embed_file("other/output/field_qa_qc_data/holding_time_calcs.csv", text = 
 
     -   Magnesium: nearly all available observations show dissolved metals \< total metals, with the exception of three sites, all near the Kenai River mouth
 
-```{r echo = F}
+```{r echo = F, message = F, warning = F}
 
 # define elements to compare
 diss_total_analytes <- c("Calcium, Total","Iron, Total","Magnesium, Total",
@@ -1625,24 +1627,17 @@ rm(ca,fe,mg)
 
 <br>
 
-**19.) Are the duplicate sample(s) RPD within range described in QAPP? **
+**19.) Are the duplicate sample(s) RPD (Relative Percent Difference) within range described in QAPP?**
 
-In 2021, duplicate samples were collected at two sites on both 5/11/2021 and 7/27/2021: 
+In 2021, field duplicate samples were collected at two sites on both 5/11/2021 and 7/27/2021:
 
 -   No Name Creek (Tributary, RM0)
 -   Funny River (Tributary, RM30)
 
-from DEC 2022 field report: "... a set of paired samples was evaluated for RPD only if: 
+Following the example in the Alaska Department of Environmental Conservation 2021 Kenai River Metals Field Report [@apsens2022]: "... a set of paired samples was evaluated for RPD only if:
 
-a.) one or both of the samples were above the [LOQ)]; AND if 
-b.) one or both of the samples were at least two times the [LOQ]." 
-
-Work in progress here as of `r Sys.Date()`
-
-```{r echo = F}
-knitr::knit_exit()
-```
-
+-   a.) one or both of the samples were above the \[LOQ)\]; AND if
+-   b.) one or both of the samples were at least two times the \[LOQ\]."
 
 ```{r}
 
@@ -1665,86 +1660,101 @@ export_dat <- read.csv('other/output/aqwms_formatted_results/2021_kwf_baseline_r
 field_dup_dat_2021 <- inner_join(export_dat,qaqc_sites_2021) 
 
 # specify and retain columns needed for RPD analysis
-rpd_cols <- c("monitoring_location_id",
-              "activity_id",
-              "activity_type",
-              "activity_start_date",
-              "characteristic_name",
-              "result_value",
-              "result_unit",
-              "result_detection_condition",
-              "result_detection_limit_type_1",
-              "result_detection_limit_value_1",
-              "result_detection_limit_unit_1"
-             )
-field_dup_dat_2021 %<>% select(one_of(rpd_cols))
-
-
-# assign columns to check if data can be evaluated for RPD
-
-rpd_check_dat <- field_dup_dat_2021 %>%
-  # is sample above LOQ?
-  mutate(above_loq = case_when(
-    result_value > result_detection_limit_value_1 ~ "Y",
-    TRUE ~ "N")) %>%
-# is sample 2x LOQ ?
-  mutate(loq_2x = case_when(
-    result_value > 2*result_detection_limit_value_1 ~ "Y",
-    TRUE ~ "N")) 
-
-# make downloadable table
-# maybe make this as as tab 
-# export csv of rpd results from 1st stage
-xfun::embed_file(rpd_check_dat, text = "Download 2021 Duplicate Sample Data")
-```
-
-
-```{r echo = F}
-
-# 5/10/2023:: working here to determine how bets to execute 2-stage winnowing process to decide which data can be used for RPD calcs
 
 rpd_cols_1 <- c("monitoring_location_id",
               "activity_type",
               "activity_start_date",
               "characteristic_name",
+              "result_detection_condition",
               "result_value",
               "result_unit",
               "result_detection_limit_type_1",
               "result_detection_limit_value_1",
-              "result_detection_limit_unit_1",
-              "above_loq",
-              "loq_2x"
+              "result_detection_limit_unit_1"
              )
 
-z <- rpd_check_dat %>%
-  #mutate(rn = row_number()) %>%
+# prepare dataframe to evaluate if pairs of values can be evaluated for RPD
+rpd_check_dat <- field_dup_dat_2021 %>%
   select(all_of(rpd_cols_1)) %>%
   pivot_wider(names_from = "activity_type", values_from = c("result_value")) %>%
   clean_names() %>%
   
-  # does this pair of measurements meet criteria that allow them to be used for RPD calculations?
-  # need to do this at an earlier step in order to satisfy 2-step question. again: 
-   # 1.) one or both of the measurements must be above the parameter's limit of quantitation (LOQ), and 
-  # 2.) one or both of the measurements must be at least two times the LOQ."
+# assign columns to check if data can be evaluated for RPD
+
+# field samples
   
-  mutate(rpd_eligible = )
+# is field sample above LOQ?
+  mutate(field_above_loq = case_when(
+    field_msr_obs > result_detection_limit_value_1 ~ "Y",
+    TRUE ~ "N")) %>%
+# is field sample 2x LOQ ?
+  mutate(field_loq_2x = case_when(
+    field_msr_obs > 2*result_detection_limit_value_1 ~ "Y",
+    TRUE ~ "N")) %>%
   
+# qc samples
   
-  # calculate RPD values
-  mutate(rpd_pct = ((field_msr_obs - quality_control_field_replicate_msr_obs) / 
-                      ((field_msr_obs + quality_control_field_replicate_msr_obs)/2))*100) %>%
-  mutate(rpd_pct = abs(round(rpd_pct,2))) %>%
-  
-  # add note in cases where only one value is available, and that value passes LOQ and LOQ_2x requirements
-  mutate()
-  mutate(rpd_note = case_when(
-    rpd_eligible == "Y" & is.na(quality_control_field_replicate_msr_obs) ~ "Missing duplicate observation; single field observation meets LOQ and LOQ_2x requirements."
-  ))
+# is qc sample above LOQ?
+  mutate(qc_above_loq = case_when(
+    quality_control_field_replicate_msr_obs > result_detection_limit_value_1 ~ "Y",
+    TRUE ~ "N")) %>%
+# is qc sample 2x LOQ ?
+  mutate(qc_loq_2x = case_when(
+    quality_control_field_replicate_msr_obs > 2*result_detection_limit_value_1 ~ "Y",
+    TRUE ~ "N"))
 
 ```
 
+```{r echo = F}
+# execute 2-stage winnowing process to determine which data can be used for RPD calculations
+
+# evaluate if observations can be use for RPD calculations
+rpd_check_dat %<>%
+  
+  # does this pair of measurements meet criteria that allow them to be used for RPD calculations?
+  # 1.) one or both of the measurements must be above the parameter's limit of quantitation (LOQ), AND
+  # 2.) one or both of the measurements must be at least two times the LOQ."
+  
+  mutate(loq_pass = case_when(
+    field_above_loq == "Y" | qc_above_loq == "Y" ~ "Y",
+    TRUE ~ "N")) %>%
+  mutate(loq_2x_pass = case_when(
+    field_loq_2x == "Y" | qc_loq_2x == "Y" ~ "Y",
+    TRUE ~ "N")) %>%
+  # pair of values is eligible for RPD calcs if above criteria met, and both values are present
+  mutate(rpd_eligible = case_when(
+    loq_pass == "Y" & loq_2x_pass == "Y" & !is.na(field_msr_obs) & !is.na(quality_control_field_replicate_msr_obs) ~ "Y" ,
+         TRUE ~ "N"))
+  
+# calculate RPD values
+rpd_check_dat %<>%
+
+  # calc absolute percent diff between field and qc sample value
+  mutate(rpd_pct = ((field_msr_obs - quality_control_field_replicate_msr_obs) / 
+                      ((field_msr_obs + quality_control_field_replicate_msr_obs)/2))*100) %>%
+  mutate(rpd_pct = abs(round(rpd_pct,2))) 
+  
+
+# write csv
+write.csv(rpd_check_dat,"other/output/field_qa_qc_data/rpd_check_dat.csv", row.names = F)
+  
+# export csv of rpd results 
+xfun::embed_file("other/output/field_qa_qc_data/rpd_check_dat.csv", text = "Download 2021 Duplicate Sample Data")
+```
+
+<br>
+
+From the above table we can see that a limited subset of paired values from field duplicates are eligible to be used for Relative Percent Difference calculations. 
+
+RPD values range from `r min(rpd_check_dat$rpd_pct)` to `r max(rpd_check_dat$rpd_pct`.
+
+Of a total of X paired observations, x pairs pass LOQ criteria and x pairs pass LOQ 2x criteria
 
 
+Work in progress here as of `r Sys.Date()`
 
+```{r echo = F}
+knitr::knit_exit()
+```
 
 \newpage
