@@ -1,0 +1,70 @@
+"monitoring_location_id","activity_start_date","characteristic_name","result_detection_condition","result_unit","result_detection_limit_type_1","result_detection_limit_value_1","result_detection_limit_unit_1","field_msr_obs","quality_control_field_replicate_msr_obs","field_above_loq","field_loq_2x","qc_above_loq","qc_loq_2x","loq_pass","loq_2x_pass","rpd_eligible","rpd_pct"
+"KR RM 0 NNC","2021-05-11","Total Nitrate/Nitrite-N","Present Below Quantification Limit","mg/L","Limit of Quantitation",0.2,"mg/L",0.119,0.122,"N","N","N","N","N","N","N",2.49
+"KR RM 0 NNC","2021-05-11","Total Phosphorus",NA,"mg/L","Limit of Quantitation",0.04,"mg/L",0.0416,NA,"Y","N","N","N","Y","N","N",NA
+"KR RM 0 NNC","2021-05-11","Arsenic","Not Detected","ug/L","Limit of Quantitation",5,"ug/L",NA,NA,"N","N","N","N","N","N","N",NA
+"KR RM 0 NNC","2021-05-11","Cadmium","Not Detected","ug/L","Limit of Quantitation",0.5,"ug/L",NA,NA,"N","N","N","N","N","N","N",NA
+"KR RM 0 NNC","2021-05-11","Chromium","Not Detected","ug/L","Limit of Quantitation",5,"ug/L",NA,NA,"N","N","N","N","N","N","N",NA
+"KR RM 0 NNC","2021-05-11","Copper","Not Detected","ug/L","Limit of Quantitation",1,"ug/L",NA,NA,"N","N","N","N","N","N","N",NA
+"KR RM 0 NNC","2021-05-11","Lead","Not Detected","ug/L","Limit of Quantitation",0.2,"ug/L",NA,NA,"N","N","N","N","N","N","N",NA
+"KR RM 0 NNC","2021-05-11","Zinc","Not Detected","ug/L","Limit of Quantitation",10,"ug/L",NA,NA,"N","N","N","N","N","N","N",NA
+"KR RM 0 NNC","2021-05-11","Total Phosphorus","Present Below Quantification Limit","mg/L","Limit of Quantitation",0.04,"mg/L",NA,0.0394,"N","N","N","N","N","N","N",NA
+"KR RM 31","2021-05-11","Total Nitrate/Nitrite-N",NA,"mg/L","Limit of Quantitation",0.2,"mg/L",0.25,0.226,"Y","N","Y","N","Y","N","N",10.08
+"KR RM 31","2021-05-11","Total Phosphorus","Present Below Quantification Limit","mg/L","Limit of Quantitation",0.04,"mg/L",0.0392,0.0174,"N","N","N","N","N","N","N",77.03
+"KR RM 31","2021-05-11","Arsenic","Present Below Quantification Limit","ug/L","Limit of Quantitation",5,"ug/L",2.7,NA,"N","N","N","N","N","N","N",NA
+"KR RM 31","2021-05-11","Cadmium","Not Detected","ug/L","Limit of Quantitation",0.5,"ug/L",NA,NA,"N","N","N","N","N","N","N",NA
+"KR RM 31","2021-05-11","Chromium","Not Detected","ug/L","Limit of Quantitation",5,"ug/L",NA,NA,"N","N","N","N","N","N","N",NA
+"KR RM 31","2021-05-11","Copper","Present Below Quantification Limit","ug/L","Limit of Quantitation",1,"ug/L",0.455,NA,"N","N","N","N","N","N","N",NA
+"KR RM 31","2021-05-11","Lead","Present Below Quantification Limit","ug/L","Limit of Quantitation",0.2,"ug/L",0.114,NA,"N","N","N","N","N","N","N",NA
+"KR RM 31","2021-05-11","Zinc","Not Detected","ug/L","Limit of Quantitation",10,"ug/L",NA,NA,"N","N","N","N","N","N","N",NA
+"KR RM 0 NNC","2021-07-27","Total Nitrate/Nitrite-N","Not Detected","mg/L","Limit of Quantitation",0.2,"mg/L",NA,NA,"N","N","N","N","N","N","N",NA
+"KR RM 0 NNC","2021-07-27","Total Phosphorus","Not Detected","mg/L","Limit of Quantitation",0.04,"mg/L",NA,NA,"N","N","N","N","N","N","N",NA
+"KR RM 0 NNC","2021-07-27","Aluminum","Not Detected","ug/L","Limit of Quantitation",20,"ug/L",NA,NA,"N","N","N","N","N","N","N",NA
+"KR RM 0 NNC","2021-07-27","Antimony","Not Detected","ug/L","Limit of Quantitation",1,"ug/L",NA,NA,"N","N","N","N","N","N","N",NA
+"KR RM 0 NNC","2021-07-27","Arsenic","Not Detected","ug/L","Limit of Quantitation",5,"ug/L",NA,NA,"N","N","N","N","N","N","N",NA
+"KR RM 0 NNC","2021-07-27","Barium",NA,"ug/L","Limit of Quantitation",3,"ug/L",11.9,11.9,"Y","Y","Y","Y","Y","Y","Y",0
+"KR RM 0 NNC","2021-07-27","Beryllium","Not Detected","ug/L","Limit of Quantitation",0.4,"ug/L",NA,NA,"N","N","N","N","N","N","N",NA
+"KR RM 0 NNC","2021-07-27","Cadmium","Not Detected","ug/L","Limit of Quantitation",0.5,"ug/L",NA,NA,"N","N","N","N","N","N","N",NA
+"KR RM 0 NNC","2021-07-27","Calcium",NA,"ug/L","Limit of Quantitation",500,"ug/L",16200,16300,"Y","Y","Y","Y","Y","Y","Y",0.62
+"KR RM 0 NNC","2021-07-27","Chromium","Not Detected","ug/L","Limit of Quantitation",5,"ug/L",NA,NA,"N","N","N","N","N","N","N",NA
+"KR RM 0 NNC","2021-07-27","Cobalt","Not Detected","ug/L","Limit of Quantitation",4,"ug/L",NA,NA,"N","N","N","N","N","N","N",NA
+"KR RM 0 NNC","2021-07-27","Copper","Not Detected","ug/L","Limit of Quantitation",1,"ug/L",NA,NA,"N","N","N","N","N","N","N",NA
+"KR RM 0 NNC","2021-07-27","Iron",NA,"ug/L","Limit of Quantitation",250,"ug/L",527,625,"Y","Y","Y","Y","Y","Y","Y",17.01
+"KR RM 0 NNC","2021-07-27","Lead","Not Detected","ug/L","Limit of Quantitation",0.2,"ug/L",NA,NA,"N","N","N","N","N","N","N",NA
+"KR RM 0 NNC","2021-07-27","Magnesium",NA,"ug/L","Limit of Quantitation",50,"ug/L",7320,6960,"Y","Y","Y","Y","Y","Y","Y",5.04
+"KR RM 0 NNC","2021-07-27","Manganese",NA,"ug/L","Limit of Quantitation",1,"ug/L",146,149,"Y","Y","Y","Y","Y","Y","Y",2.03
+"KR RM 0 NNC","2021-07-27","Molybdenum","Not Detected","ug/L","Limit of Quantitation",2,"ug/L",NA,NA,"N","N","N","N","N","N","N",NA
+"KR RM 0 NNC","2021-07-27","Nickel","Not Detected","ug/L","Limit of Quantitation",2,"ug/L",NA,NA,"N","N","N","N","N","N","N",NA
+"KR RM 0 NNC","2021-07-27","Phosphorus","Not Detected","ug/L","Limit of Quantitation",200,"ug/L",NA,NA,"N","N","N","N","N","N","N",NA
+"KR RM 0 NNC","2021-07-27","Potassium",NA,"ug/L","Limit of Quantitation",500,"ug/L",3010,2910,"Y","Y","Y","Y","Y","Y","Y",3.38
+"KR RM 0 NNC","2021-07-27","Selenium","Not Detected","ug/L","Limit of Quantitation",5,"ug/L",NA,NA,"N","N","N","N","N","N","N",NA
+"KR RM 0 NNC","2021-07-27","Silicon",NA,"ug/L","Limit of Quantitation",1000,"ug/L",9610,9740,"Y","Y","Y","Y","Y","Y","Y",1.34
+"KR RM 0 NNC","2021-07-27","Silver","Not Detected","ug/L","Limit of Quantitation",1,"ug/L",NA,NA,"N","N","N","N","N","N","N",NA
+"KR RM 0 NNC","2021-07-27","Thallium","Not Detected","ug/L","Limit of Quantitation",1,"ug/L",NA,NA,"N","N","N","N","N","N","N",NA
+"KR RM 0 NNC","2021-07-27","Tin","Not Detected","ug/L","Limit of Quantitation",1,"ug/L",NA,NA,"N","N","N","N","N","N","N",NA
+"KR RM 0 NNC","2021-07-27","Titanium","Not Detected","ug/L","Limit of Quantitation",6.25,"ug/L",NA,NA,"N","N","N","N","N","N","N",NA
+"KR RM 0 NNC","2021-07-27","Vanadium","Not Detected","ug/L","Limit of Quantitation",20,"ug/L",NA,NA,"N","N","N","N","N","N","N",NA
+"KR RM 0 NNC","2021-07-27","Zinc","Not Detected","ug/L","Limit of Quantitation",10,"ug/L",NA,NA,"N","N","N","N","N","N","N",NA
+"KR RM 0 NNC","2021-07-27","Sodium",NA,"ug/L","Limit of Quantitation",2500,"ug/L",42700,39500,"Y","Y","Y","Y","Y","Y","Y",7.79
+"KR RM 0 NNC","2021-07-27","Zinc",NA,"ug/L","Limit of Quantitation",10,"ug/L",NA,12.3,"N","N","Y","N","Y","N","N",NA
+"KR RM 31","2021-07-27","Total Nitrate/Nitrite-N","Not Detected","mg/L","Limit of Quantitation",0.2,"mg/L",NA,NA,"N","N","N","N","N","N","N",NA
+"KR RM 31","2021-07-27","Total Phosphorus","Not Detected","mg/L","Limit of Quantitation",0.04,"mg/L",NA,NA,"N","N","N","N","N","N","N",NA
+"KR RM 31","2021-05-11","Calcium, Total",NA,"mg/L","Limit of Quantitation",0.021,"mg/L",11.1,NA,"Y","Y","N","N","Y","Y","N",NA
+"KR RM 31","2021-05-11","Iron, Total",NA,"mg/L","Limit of Quantitation",0.021,"mg/L",0.417,NA,"Y","Y","N","N","Y","Y","N",NA
+"KR RM 31","2021-05-11","Magnesium, Total",NA,"mg/L","Limit of Quantitation",0.0053,"mg/L",1.32,NA,"Y","Y","N","N","Y","Y","N",NA
+"KR RM 0 NNC","2021-05-11","Calcium, Total",NA,"mg/L","Limit of Quantitation",0.021,"mg/L",9.07,9.04,"Y","Y","Y","Y","Y","Y","Y",0.33
+"KR RM 0 NNC","2021-05-11","Iron, Total",NA,"mg/L","Limit of Quantitation",0.021,"mg/L",4.35,4.62,"Y","Y","Y","Y","Y","Y","Y",6.02
+"KR RM 0 NNC","2021-05-11","Magnesium, Total",NA,"mg/L","Limit of Quantitation",0.0053,"mg/L",4.04,4.06,"Y","Y","Y","Y","Y","Y","Y",0.49
+"KR RM 0 NNC","2021-07-27","Calcium, Total",NA,"mg/L","Limit of Quantitation",0.021,"mg/L",13.8,13.7,"Y","Y","Y","Y","Y","Y","Y",0.73
+"KR RM 0 NNC","2021-07-27","Iron, Total",NA,"mg/L","Limit of Quantitation",0.021,"mg/L",2.39,2.51,"Y","Y","Y","Y","Y","Y","Y",4.9
+"KR RM 0 NNC","2021-07-27","Magnesium, Total",NA,"mg/L","Limit of Quantitation",0.0053,"mg/L",7.23,6.95,"Y","Y","Y","Y","Y","Y","Y",3.95
+"KR RM 31","2021-07-27","Calcium, Total",NA,"mg/L","Limit of Quantitation",0.021,"mg/L",11.8,11.7,"Y","Y","Y","Y","Y","Y","Y",0.85
+"KR RM 31","2021-07-27","Iron, Total",NA,"mg/L","Limit of Quantitation",0.021,"mg/L",0.267,0.287,"Y","Y","Y","Y","Y","Y","Y",7.22
+"KR RM 31","2021-07-27","Magnesium, Total",NA,"mg/L","Limit of Quantitation",0.0053,"mg/L",1.05,1.04,"Y","Y","Y","Y","Y","Y","Y",0.96
+"KR RM 0 NNC","2021-05-11","Fecal Coliform",NA,"cfu/100ml","Limit of Quantitation",1,"cfu/100ml",22,13,"Y","Y","Y","Y","Y","Y","Y",51.43
+"KR RM 31","2021-05-11","Fecal Coliform",NA,"cfu/100ml","Limit of Quantitation",1,"cfu/100ml",21,2,"Y","Y","Y","N","Y","Y","Y",165.22
+"KR RM 0 NNC","2021-07-27","Fecal Coliform",NA,"cfu/100ml","Limit of Quantitation",1,"cfu/100ml",40,45,"Y","Y","Y","Y","Y","Y","Y",11.76
+"KR RM 31","2021-07-27","Fecal Coliform",NA,"cfu/100ml","Limit of Quantitation",1,"cfu/100ml",2,1,"Y","N","N","N","Y","N","N",66.67
+"KR RM 0 NNC","2021-05-11","Total suspended solids",NA,"mg/l","Limit of Quantitation",1,"mg/l",14.3333333333333,13.3333333333333,"Y","Y","Y","Y","Y","Y","Y",7.23
+"KR RM 31","2021-05-11","Total suspended solids",NA,"mg/l","Limit of Quantitation",1,"mg/l",7.00000000000002,8,"Y","Y","Y","Y","Y","Y","Y",13.33
+"KR RM 0 NNC","2021-07-27","Total suspended solids",NA,"mg/l","Limit of Quantitation",1,"mg/l",4,4.7,"Y","Y","Y","Y","Y","Y","Y",16.09
+"KR RM 31","2021-07-27","Total suspended solids",NA,"mg/l","Limit of Quantitation",1,"mg/l",9,8.7,"Y","Y","Y","Y","Y","Y","Y",3.39
