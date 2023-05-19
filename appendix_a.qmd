@@ -1740,15 +1740,32 @@ write.csv(rpd_check_dat,"other/output/field_qa_qc_data/rpd_check_dat.csv", row.n
   
 # export csv of rpd results 
 xfun::embed_file("other/output/field_qa_qc_data/rpd_check_dat.csv", text = "Download 2021 Duplicate Sample Data")
+
+z <- rpd_check_dat %>%
+  select(monitoring_location_id,characteristic_name,activity_start_date,rpd_pct) %>%
+  arrange(characteristic_name)
 ```
 
 <br>
 
-From the above table we can see that a limited subset of paired values from field duplicates are eligible to be used for Relative Percent Difference calculations. 
+From the above table, we can see that a limited subset of paired values from field duplicates are eligible to be used for RPD calculations. Pairs of measurements must meet LOQ criteria described above ("a" and "b"). Of 69 paired field duplicate observations, 24 of them may be used for RPD calculations.
 
 RPD values range from `r min(rpd_check_dat$rpd_pct)` to `r max(rpd_check_dat$rpd_pct`.
 
-Of a total of X paired observations, x pairs pass LOQ criteria and x pairs pass LOQ 2x criteria
+In the 2023 QAPP, RPD values for most parameters are set at 20%, with the exception of "Phosphorus, total" and "Nitrates (NO2+NO3)" at 25%, and "Suspended solids, total" at 5%.
+
+Using the available RPD values based on the above criteria, four paired observations exceed project precision goals in 2021. Three of these four observations are for fecal coliform, and one is for total phosphorus.
+
+Most other parameters have at least one available RPD value that is within project precision goals defined in the QAPP. The parameters that do not have at least one RPD calculation available, due to the LOQ constraints described above, include the following: 
+
+In 2021 the full suite of dissolved metals was run for method 200.8 on samples from 7/27/2021, but we intend to submit data only that had a pre-defined QA plan as outlined in the QAPP, which is the case for the following dissolved six metals: Mg, As, Cd, Cr, Cu, Pb, and Zn.
+
+--> which parameters have no RPD vals?? ... consider just the 6 diss metals in the qapp
+
+SUMMARY
+
+FC values may be suspect
+
 
 
 Work in progress here as of `r Sys.Date()`
