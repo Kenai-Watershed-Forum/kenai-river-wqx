@@ -57,12 +57,16 @@ The code scripts below assemble water quality data from the three analytical lab
 ```{r, echo = F, message = F}
 library("xfun")
 
-xfun::embed_file('other/input/2021_wqx_data/spring_2021_wqx_data/SGS/spring_2021_sgs_batch_info.csv', text = "Download Original Spring 2021 Metals/Nutrients Lab Results from SGS")
+xfun::embed_file('other/input/2021_wqx_data/spring_2021_wqx_data/SGS/spring_2021_sgs_batch_info.csv', text = "Download Original Spring 2021 Metals/Nutrients Lab Results from SGS - Electronic Data Delivery file")
+
+xfun::embed_file('other/input/2021_wqx_data/spring_2021_wqx_data/SGS/Spring 2021 Results from SGS.pdf', text = "Download Original Spring 2021 Metals/Nutrients Lab Results from SGS - PDF file")
 
 ```
 
 ```{r, echo = F}
-xfun::embed_file('other/input/2021_wqx_data/summer_2021_wqx_data/SGS/summer_2021_sgs_batch_info.csv', text = "Download Original Summer 2021 Metals/Nutrients Lab Results from SGS")
+xfun::embed_file('other/input/2021_wqx_data/summer_2021_wqx_data/SGS/summer_2021_sgs_batch_info.csv', text = "Download Original Summer 2021 Metals/Nutrients Lab Results from SGS - Electronic Data Delivery file")
+
+xfun::embed_file('other/input/2021_wqx_data/summer_2021_wqx_data/SGS/SGS_results_Summer2021.pdf', text = "Download Original Summer 2021 Metals/Nutrients Lab Results from SGS - PDF file")
 
 ```
 
@@ -1748,23 +1752,105 @@ z <- rpd_check_dat %>%
 
 <br>
 
-From the above table, we can see that a limited subset of paired values from field duplicates are eligible to be used for RPD calculations. Pairs of measurements must meet LOQ criteria described above ("a" and "b"). Of 69 paired field duplicate observations, 24 of them may be used for RPD calculations.
+From the above table, we can see that a limited subset of paired values from field duplicates are eligible to be used for RPD calculations. Pairs of measurements must meet LOQ criteria described above ("a" and "b"). For 2021 data, of 69 paired field duplicate observations, 24 of them may be used for RPD calculations.
 
 RPD values range from `r min(rpd_check_dat$rpd_pct)` to `r max(rpd_check_dat$rpd_pct`.
 
-In the 2023 QAPP, RPD values for most parameters are set at 20%, with the exception of "Phosphorus, total" and "Nitrates (NO2+NO3)" at 25%, and "Suspended solids, total" at 5%.
+In the 2020 QAPP, RPD values for most parameters are set at 20%, with the exception of "Phosphorus, total" and "Nitrates (NO2+NO3)" at 25%, and "Suspended solids, total" at 5%.
 
-Using the available RPD values based on the above criteria, four paired observations exceed project precision goals in 2021. Three of these four observations are for fecal coliform, and one is for total phosphorus.
+Using the available RPD values against the above criteria, four paired observations exceed project precision goals in 2021. Three of these four observations are for fecal coliform, and one is for total phosphorus.
 
 Most other parameters have at least one available RPD value that is within project precision goals defined in the QAPP. The parameters that do not have at least one RPD calculation available, due to the LOQ constraints described above, include the following: 
 
-In 2021 the full suite of dissolved metals was run for method 200.8 on samples from 7/27/2021, but we intend to submit data only that had a pre-defined QA plan as outlined in the QAPP, which is the case for the following dissolved six metals: Mg, As, Cd, Cr, Cu, Pb, and Zn.
+-   Arsenic
+-   Cadmium
+-   Chromium
+-   Copper
+-   Lead
+-   Zinc
 
---> which parameters have no RPD vals?? ... consider just the 6 diss metals in the qapp
+In 2021 the full suite of dissolved metals was run for method 200.8 on samples from 7/27/2021. However we intend to only submit data for parameters that had a pre-defined QA plan as outlined in the QAPP, which is the case for the following dissolved six metals: Mg, As, Cd, Cr, Cu, Pb, and Zn.
 
 SUMMARY
 
-FC values may be suspect
+Fecal coliform values may be suspect due to high RPD values. Calculate RPD values for 2014-2022 and comapre, also compare to RPD values in previous comprehensive report. 
+
+Based in this information, we will decide which results to flag and not submit to EPA WQX.
+
+<br>
+
+**20.) Were there any laboratory discrepancies, errors, data qualifiers, or QC failures (review laboratory duplicates, matrix spikes and blanks)?**
+
+Laboratory discrepancies from the SGS lab are described on page 2 of the spring and summer reports, available for download below.
+
+```{r echo = F}
+xfun::embed_file('other/input/2021_wqx_data/spring_2021_wqx_data/SGS/Spring 2021 Results from SGS.pdf', text = "Download Original Spring 2021 Metals/Nutrients Lab Results from SGS - PDF file")
+
+xfun::embed_file('other/input/2021_wqx_data/spring_2021_wqx_data/SGS/Spring 2021 Results from SGS.pdf', text = "Download Original Spring 2021 Metals/Nutrients Lab Results from SGS - PDF file")
+
+```
+
+
+```{r}
+# calculate qa/qc discrepancies as detailed in PDF reports check qapp for guidance, or check w/ qa officer...
+
+matrix_spike_limits <- read.csv("other/output/lab_qaqc_data/2021_lab_qaqc_data/sgs21_als21_qaqc_dat.csv") %>%
+  select(lab_name,sample,collect_date,extracted_date,sample_type,result,analyte,dissolved,analytical_method,
+         resultflag,percent_recovered,rec_limit_low,rec_limit_high,sample_rpd,rpd_limit_low,rpd_limit_high,
+         loq,lod,detection_limit,sample_condition) %>%
+  
+  # Matrix Spike Recovery
+  # calculate if matrix spike recovery limits pass requirements
+  mutate(rec_limit_pass = case_when(
+    is.na(rec_limit_low) ~ "",
+    percent_recovered > rec_limit_high |
+      percent_recovered < rec_limit_low ~ "N",
+    TRUE ~ "Y"
+  ))
+
+# calculate total number of matrix spike cases where recovery exceeded limits
+matrix_spike_recovery_fails <- matrix_spike_limits %>%
+  filter(rec_limit_pass == "N") %>%
+  nrow() %>%
+  as.numeric()
+
+# generate table of specific failed samples
+matrix_spike_recovery_fails_tbl <- matrix_spike_limits %>%
+  filter(rec_limit_pass == "N") %>%
+  select(-extracted_date,-dissolved)
+write.csv(matrix_spike_recovery_fails_tbl,"other/output/lab_qaqc_data/matrix_spike_recovery_fails.csv")
+
+```
+
+
+The following discrepancies were identified in the results from SGS laboratories:
+
+**Matrix Spike Recoveries**
+
+A total of `r matrix_spike_recovery_fails` matrix spike or matrix spike duplicate samples are outside of QC criteria. The limit of recovery range for the analyte "Total Nitrate/Nitrite-N" is 90% - 110%. For these matrix spike measurements outside of the QC criteria, recovery levels range from 112% - 118%.
+
+```{r matrix-spikes, echo = F, messages = F, warnings = F}
+# embed for download
+xfun::embed_file("other/output/lab_qaqc_data/matrix_spike_recovery_fails.csv", text = "Download Matrix Spike Recovery Values Exceeding Threshold for Spring and Summer 2021 Sample Analyses")
+
+```
+
+No additional lab QA/QC anomalies for any other parameters were noted by any laboratories contracted in 2021. Additional details are available upon request at [hydrology\@kenaiwatershed.org](mailto:hydrology@kenaiwatershed.org){.email}
+
+As of `r Sys.Date()` we would like to consult with ADEC to determine if these laboratory-identified discrepancies are grounds for rejecting field observations.
+
+
+<br>
+
+**21.) Is any laboratory data rejected and why? **
+
+As of `r Sys.Date()` we would like to consult with ADEC to determine if these discrepancies discussed in questions #18, #19, and #20 are grounds for rejecting field observations. If so, results will be flagged as appropriate and not submitted to EPA WQX.
+
+<br>
+
+**22.) During the field season, review raw data files (EDDs [Electronic Data Deliverables], instrument records) as they are received. Document changes and corrections to methods as needed.**
+
+In 2021, KWF initiated receipt of machine-readable EDD files as standard practice. 
 
 
 
