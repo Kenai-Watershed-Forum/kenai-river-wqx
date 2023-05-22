@@ -1226,6 +1226,9 @@ xfun::embed_file('other/documents/AQWMS_documents/Kenai_Baseline_Data_Evaluation
 
 ##### Overall Project Success
 
+Note: the sequence of questions is structured such that data will be gradually flagged at each step based on the criteria described.
+
+
 ```{r, echo = F, message = F}
 
 # work with excel file Kenai_Baseline_Data_Evaluation_Checklist_20230331.xlsx and resequence evaluation to logical order
@@ -1850,7 +1853,53 @@ As of `r Sys.Date()` we would like to consult with ADEC to determine if these di
 
 **22.) During the field season, review raw data files (EDDs [Electronic Data Deliverables], instrument records) as they are received. Document changes and corrections to methods as needed.**
 
-In 2021, KWF initiated receipt of machine-readable EDD files as standard practice. 
+In 2021, KWF initiated as standard practice the receipt of machine-readable EDD files. The EDD files are being reviewed as part of this QA/QC process, which was initiated in Winter 2022.
+
+<br>
+
+**23.) Is the dataset complete and did you receive the expected number of results?**
+
+From the discussion and results in question #3, we can see that there are deviations between planned and actual results available. These reasons for the deviations are known and are attributable to the two discussed in response to question #3.
+
+<br>
+
+
+**24.) Was the data collected representative of environmental conditions?.**
+
+The weather and hydrologicl
+
+**XX.) Does project meet Completeness Measure A criteria?**
+
+From the QAPP, Completeness Measure A: "the primary number of samples collected divided by the useable number of samples submitted to ADEC with a goal of 85% completeness."
+
+-   As a project whole
+-   For individual parameters
+-   For individual sites
+
+
+```{r}
+total_samples_collected_2021_summary_param <- read.csv('other/output/aqwms_formatted_results/2021_kwf_baseline_results_aqwms.csv') %>%
+  clean_names() %>%
+  group_by(result_analytical_method_id,characteristic_name,activity_start_date,activity_type) %>%
+  count() %>%
+  rename(actual_results_n = n) %>%
+  transform(activity_start_date = ymd(activity_start_date)) 
+
+
+```
+
+
+
+<br>
+
+**XX.) Does project meet Completeness Measure B criteria?**
+
+From the QAPP, Completeness Measure B: "the planned number of samples divided by the useable samples (submitted to ADEC) with a goal of 60%."
+
+-   As a project whole
+-   For individual parameters
+-   For individual sites
+
 
 
 

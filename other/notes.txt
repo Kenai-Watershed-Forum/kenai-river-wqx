@@ -35,3 +35,8 @@ Distinguish between application in columns
 2.) "sample_type" (PS, TB, SMPL)
 
 3.) I think I have addressed this; will find out in export file
+
+
+5/22/2023
+
+In general for future drafts of QA/QC procedure: write intake/processing scripts in .R files and source them in to the Quarto file. Will make easier in long term to apply standard across multiple documents.
