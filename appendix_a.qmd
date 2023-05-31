@@ -1752,7 +1752,7 @@ z <- rpd_check_dat %>%
   select(monitoring_location_id,characteristic_name,activity_start_date,rpd_pct) %>%
   arrange(characteristic_name)
 ```
-
+ 
 <br>
 
 From the above table, we can see that a limited subset of paired values from field duplicates are eligible to be used for RPD calculations. Pairs of measurements must meet LOQ criteria described above ("a" and "b"). For 2021 data, of 69 paired field duplicate observations, 24 of them may be used for RPD calculations.
@@ -1781,6 +1781,14 @@ Fecal coliform values may be suspect due to high RPD values. Calculate RPD value
 Based in this information, we will decide which results to flag and not submit to EPA WQX.
 
 <br>
+
+
+
+Work in progress here as of `r Sys.Date()`
+
+```{r echo = F}
+knitr::knit_exit()
+```
 
 **20.) Were there any laboratory discrepancies, errors, data qualifiers, or QC failures (review laboratory duplicates, matrix spikes and blanks)?**
 
@@ -1903,10 +1911,6 @@ From the QAPP, Completeness Measure B: "the planned number of samples divided by
 
 
 
-Work in progress here as of `r Sys.Date()`
 
-```{r echo = F}
-knitr::knit_exit()
-```
 
 \newpage
