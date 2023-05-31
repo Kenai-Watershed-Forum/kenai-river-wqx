@@ -19,13 +19,13 @@ knitr::knit_exit()
 # 1.) ensure data is transferred from EDD to final export (currently is not, eg. average = "NA", rpd is blank)
 # 2.) assign these data as LAB replicates. wtf.
 
-----> not sure if the above is incorporated in flwo yet 3/29/2022
+----> not sure if the above is incorporated in flow yet 3/29/2022
 
 Interpretation:
 in sgs, FIELD dups are labeled "PS" (project sample) is sample_type
 in als, LAB dups are labeled "DUP1" in sample_type
 
-so::: if its a FIELD dup then this info in conatined in sample name only, not in a distinct column (--->From wwhich lab does this apply???)
+so::: if its a FIELD dup then this info in conatined in sample name only, not in a distinct column (---> From wwhich lab does this apply???)
 
 
 
