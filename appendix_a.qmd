@@ -1228,7 +1228,6 @@ xfun::embed_file('other/documents/AQWMS_documents/Kenai_Baseline_Data_Evaluation
 
 Note: the sequence of questions is structured such that data will be gradually flagged at each step based on the criteria described.
 
-
 ```{r, echo = F, message = F}
 
 # work with excel file Kenai_Baseline_Data_Evaluation_Checklist_20230331.xlsx and resequence evaluation to logical order
@@ -1752,7 +1751,7 @@ z <- rpd_check_dat %>%
   select(monitoring_location_id,characteristic_name,activity_start_date,rpd_pct) %>%
   arrange(characteristic_name)
 ```
- 
+
 <br>
 
 From the above table, we can see that a limited subset of paired values from field duplicates are eligible to be used for RPD calculations. Pairs of measurements must meet LOQ criteria described above ("a" and "b"). For 2021 data, of 69 paired field duplicate observations, 24 of them may be used for RPD calculations.
@@ -1763,7 +1762,7 @@ In the 2020 QAPP, RPD values for most parameters are set at 20%, with the except
 
 Using the available RPD values against the above criteria, four paired observations exceed project precision goals in 2021. Three of these four observations are for fecal coliform, and one is for total phosphorus.
 
-Most other parameters have at least one available RPD value that is within project precision goals defined in the QAPP. The parameters that do not have at least one RPD calculation available, due to the LOQ constraints described above, include the following: 
+Most other parameters have at least one available RPD value that is within project precision goals defined in the QAPP. The parameters that do not have at least one RPD calculation available, due to the LOQ constraints described above, include the following:
 
 -   Arsenic
 -   Cadmium
@@ -1776,13 +1775,11 @@ In 2021 the full suite of dissolved metals was run for method 200.8 on samples f
 
 SUMMARY
 
-Fecal coliform values may be suspect due to high RPD values. Calculate RPD values for 2014-2022 and comapre, also compare to RPD values in previous comprehensive report. 
+Fecal coliform values may be suspect due to high RPD values. Calculate RPD values for 2014-2022 and comapre, also compare to RPD values in previous comprehensive report.
 
 Based in this information, we will decide which results to flag and not submit to EPA WQX.
 
 <br>
-
-
 
 Work in progress here as of `r Sys.Date()`
 
@@ -1800,7 +1797,6 @@ xfun::embed_file('other/input/2021_wqx_data/spring_2021_wqx_data/SGS/Spring 2021
 xfun::embed_file('other/input/2021_wqx_data/spring_2021_wqx_data/SGS/Spring 2021 Results from SGS.pdf', text = "Download Original Spring 2021 Metals/Nutrients Lab Results from SGS - PDF file")
 
 ```
-
 
 ```{r}
 # calculate qa/qc discrepancies as detailed in PDF reports check qapp for guidance, or check w/ qa officer...
@@ -1833,7 +1829,6 @@ write.csv(matrix_spike_recovery_fails_tbl,"other/output/lab_qaqc_data/matrix_spi
 
 ```
 
-
 The following discrepancies were identified in the results from SGS laboratories:
 
 **Matrix Spike Recoveries**
@@ -1850,16 +1845,15 @@ No additional lab QA/QC anomalies for any other parameters were noted by any lab
 
 As of `r Sys.Date()` we would like to consult with ADEC to determine if these laboratory-identified discrepancies are grounds for rejecting field observations.
 
-
 <br>
 
-**21.) Is any laboratory data rejected and why? **
+**21.) Is any laboratory data rejected and why?**
 
 As of `r Sys.Date()` we would like to consult with ADEC to determine if these discrepancies discussed in questions #18, #19, and #20 are grounds for rejecting field observations. If so, results will be flagged as appropriate and not submitted to EPA WQX.
 
 <br>
 
-**22.) During the field season, review raw data files (EDDs [Electronic Data Deliverables], instrument records) as they are received. Document changes and corrections to methods as needed.**
+**22.) During the field season, review raw data files (EDDs \[Electronic Data Deliverables\], instrument records) as they are received. Document changes and corrections to methods as needed.**
 
 In 2021, KWF initiated as standard practice the receipt of machine-readable EDD files. The EDD files are being reviewed as part of this QA/QC process, which was initiated in Winter 2022.
 
@@ -1870,7 +1864,6 @@ In 2021, KWF initiated as standard practice the receipt of machine-readable EDD 
 From the discussion and results in question #3, we can see that there are deviations between planned and actual results available. These reasons for the deviations are known and are attributable to the two discussed in response to question #3.
 
 <br>
-
 
 **24.) Was the data collected representative of environmental conditions?.**
 
@@ -1884,7 +1877,6 @@ From the QAPP, Completeness Measure A: "the primary number of samples collected 
 -   For individual parameters
 -   For individual sites
 
-
 ```{r}
 total_samples_collected_2021_summary_param <- read.csv('other/output/aqwms_formatted_results/2021_kwf_baseline_results_aqwms.csv') %>%
   clean_names() %>%
@@ -1896,8 +1888,6 @@ total_samples_collected_2021_summary_param <- read.csv('other/output/aqwms_forma
 
 ```
 
-
-
 <br>
 
 **XX.) Does project meet Completeness Measure B criteria?**
@@ -1907,10 +1897,5 @@ From the QAPP, Completeness Measure B: "the planned number of samples divided by
 -   As a project whole
 -   For individual parameters
 -   For individual sites
-
-
-
-
-
 
 \newpage
