@@ -29,7 +29,7 @@ This report can also be downloaded as an Microsoft Word document by clicking on 
 :::
 
 ::: {.content-visible when-format="docx"}
-This document is a report on the project, "Water Quality Assessment of the Kenai River Watershed, 2000 - 2023." It is an update to historical reports summarising available data to date [@mccard2007; @guerronorejuela2016].
+This document is a report on the project, "Water Quality Assessment of the Kenai River Watershed, 2000 - 2022." It is an update to historical reports summarising available data to date [@mccard2007; @guerronorejuela2016].
 
 This draft report is best accessed as an online interactive document at https://kenai-watershed-forum.github.io/kenai-river-wqx-report-v2/, where it can also be downloaded as an Microsoft Word document. All project files and source code are hosted in a public GitHub repository, also accessible at the above URL.
 :::
