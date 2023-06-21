@@ -1004,7 +1004,7 @@ dat <- left_join(dat,chemical_preservative)
 
 ############# f.) assign bottle type and color ######################
 
-## read in table
+## read in external table
 bottle_type_color <- read_excel("other/input/AQWMS/AQWMS_template_matching_table.xlsx", sheet = "sample_container_type_color") %>%
   select(-description) %>%
   filter(!is.na(sample_container_type))
@@ -1075,7 +1075,7 @@ dat %<>%
 
 # also need to disambiguate "PS" from "SMPL" (the latter is the ALS lab designation) (exploring around line 474 to diagnose)
 
-## Note: at this stage there are lots of format issues with conventions in the "sample" column, but this is not retained in the final data export so it is not an issues. For reference, these issues include:
+## Note: at this stage there are lots of format issues with conventions in the "sample" column, but this column is not retained in the final data export so it is not an urgent issue. For reference, these issues include:
 # inconsistency in sample_name formats too (with _)?
 # a few FC results have no sample name (possibly these are method blanks)
 # a few TSS results have only partial sample names
@@ -1094,6 +1094,8 @@ dat %<>%
 ############ g.) prepare final format ###############################
 
 # create column structure from example in AQWMS template. Use existing input from SGS results if applicable, specify value from "Permitted Values" tab if SGS input not applicable or not yet specified
+
+# 6/21/23:: check to see if format will still work for EPA WQX template
 
 dat %<>%
   # Proceeding left to right across columns of AWQMS template
@@ -1781,7 +1783,7 @@ In 2021 the full suite of dissolved metals was run for method 200.8 on samples f
 
 SUMMARY
 
-Fecal coliform values may be suspect due to high RPD values. Calculate RPD values for 2014-2022 and comapre, also compare to RPD values in previous comprehensive report.
+Fecal coliform values may be suspect due to high RPD values. Calculate RPD values for 2014-2022 and compare, also compare to RPD values in previous comprehensive report.
 
 Based in this information, we will decide which results to flag and not submit to EPA WQX.
 

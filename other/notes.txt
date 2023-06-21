@@ -40,3 +40,15 @@ Distinguish between application in columns
 5/22/2023
 
 In general for future drafts of QA/QC procedure: write intake/processing scripts in .R files and source them in to the Quarto file. Will make easier in long term to apply standard across multiple documents.
+
+6/21/23
+
+Next steps:
+
+Finish winnowing data through QA/QC steps and retain passable data
+re-inspect existing column structuere of KWF data already in epa wqx
+ensure that export structure for 2021 can match existing needed columns in kwf's 2021 dataset
+repeat for 2022
+ensure 2017-2020 is in wqx
+repeat for 2014,2015,2016 data
+
