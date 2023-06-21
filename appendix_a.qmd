@@ -1631,6 +1631,12 @@ rm(ca,fe,mg)
 
 ```
 
+Work in progress here as of `r Sys.Date()`
+
+```{r echo = F}
+knitr::knit_exit()
+```
+
 <br>
 
 **19.) Are the duplicate sample(s) RPD (Relative Percent Difference) within range described in QAPP?**
@@ -1781,11 +1787,7 @@ Based in this information, we will decide which results to flag and not submit t
 
 <br>
 
-Work in progress here as of `r Sys.Date()`
 
-```{r echo = F}
-knitr::knit_exit()
-```
 
 **20.) Were there any laboratory discrepancies, errors, data qualifiers, or QC failures (review laboratory duplicates, matrix spikes and blanks)?**
 
