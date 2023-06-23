@@ -56,3 +56,7 @@ repeat for 2014,2015,2016 data
 
 TO DO: draw logic flow chart for 2-step winnowing process for LOQ & 2x LOQ criteria; send to ADEC staff to confirm interpretation.
 
+6/24/23
+
+GENERAL PLAN: apply resultFlag to all cases of data that might not work for regulatory criteria, do not submit to EPA WQX. BUT still assess these data in visualizations, color-code to show there is a resultFlag.
+

@@ -1363,7 +1363,6 @@ write.csv(planned_actual_analyses_2021,"other/output/field_qa_qc_data/planned_ac
 # TO DO::: once data that does not pass QC muster is flagged and removed, we will append an additional column(s) to the tables generated in there questions 
 ```
 
-<br>
 
 ```{r, echo = F}
 xfun::embed_file('other/output/field_qa_qc_data/planned_actual_analyses_2021.csv', text = "Download Planned vs. Actual Analysis Results for 2021, Kenai Baseline")
@@ -1372,15 +1371,15 @@ xfun::embed_file('other/output/field_qa_qc_data/planned_actual_analyses_2021.csv
 
 <br>
 
-To see a table comparing planned vs actual results for 2021, view the excel file linked above.
+To see a table comparing planned vs actual results for 2021, view the csv file linked above.
 
-From the above table we can see that there are deviations between planned and actual results available. These reasons for the deviations are known and are attributable to two causes:
+From the above table we can see that there are deviations between planned results and actual results available. These reasons for the deviations are known and are attributable to two causes:
 
-*Cause 1:* The Spring 2021 Chain of Custody (COC) from KWF to SGS was completed erroneously. The COC specified for 200.8 analyses to be complete for all sites (when they should have stopped upstream of Morgan's Landing RM31), and it also specified for 200.7 analyses to stop upstream of Morgan's Landing (when they should have been performed for all sites in the project).
+***Cause 1:*** The Spring 2021 Chain of Custody (COC) from KWF to SGS was completed erroneously. The COC specified for 200.8 analyses to be complete for all sites (when they should have stopped upstream of Morgan's Landing RM31), and it also specified for 200.7 analyses to stop upstream of Morgan's Landing (when they should have been performed for all sites in the project).
 
 As a result, for Spring 2021 total metals data will be unavailable for sites upstream of the Morgan's Landing RM31 site.
 
-*Cause 2:* For Summer 2021, the SGS performed the 200.8 analyses for all 27 analytes available for the method; instead of just the smaller subset of analytes as requested. (E.g., KWF received extra data for free. In this case., there are no consequences of deviating from the planned analyses).
+***Cause 2:*** For Summer 2021, the SGS laboratory performed the 200.8 analyses for all 27 analytes available for the method; instead of just the smaller subset of analytes as requested. (E.g., KWF received extra data for free. In this case., there are no consequences of deviating from the planned analyses).
 
 <br>
 
@@ -1410,7 +1409,7 @@ We worked with three separate laboratories in 2021:
 
 **6.) Do the laboratory reports match the Chain of Custody and requested methods throughout?**
 
-The laboratory reports match the Chain of Custody and requested methods, with the one exception discussed in question #3. For summer 2021, the SGS performed the 200.8 analyses for all 27 analytes available for the method; instead of just the smaller subset of analytes as requested. (E.g., KWF received extra data for free. In this case., there are no consequences of deviating from the planned analyses).
+The laboratory reports match the Chain of Custody and requested methods, with the one exception discussed in question #3. For summer 2021, the SGS laboratory performed the 200.8 analyses for all 27 analytes available for the method; instead of just the smaller subset of analytes as requested. (E.g., KWF received extra data for free. In this case., there are no consequences of deviating from the planned analyses).
 
 <br>
 
@@ -1448,7 +1447,7 @@ We worked with three separate laboratories in 2021:
 
 -   Instruments to measure intrinsic water quality parameters (sondes; to measure pH, dissolved oxygen, conductivity, turbidity) were not employed in 2021.
 
--   Teams did use hand-held probes to record water temperature on-site. Prior to field use, the hand-held probes were verified as measuring within the accuracy level define in the QAPP using an ice bath in the laboratory.
+-   Teams did use hand-held probes to record water temperature on-site. Prior to field use, the hand-held probes were verified as measuring within the accuracy level defined in the QAPP using an ice bath in the Kenai Watershed Forum laboratory.
 
 <br>
 
@@ -1460,7 +1459,7 @@ We worked with three separate laboratories in 2021:
 
 **12.) Was instrument calibration performed according to the QAPP and instrument recommendations?**
 
--   Water temperature is a parameter that is "verified" rather than calibrated. The hand-held water temperature probes were verified as measuring within the accuracy level define in the QAPP using an ice bath in the laboratory, according to instrument recommendations.
+-   Water temperature is a parameter that is "verified" rather than calibrated. The hand-held water temperature probes were verified as measuring within the accuracy level defined in the QAPP using an ice bath in the laboratory, according to instrument recommendations.
 
 <br>
 
@@ -1545,7 +1544,10 @@ holdtime_dat <- left_join(holdtime_dat,max_holding_times) %>%
   mutate(hold_time_pass = case_when(
     hold_time_hours > max_holding_time_hours ~ "N",
     TRUE ~ "Y"))
+```
 
+
+```{r echo = F}
 # save hold time calculation results as external csv
 write.csv(holdtime_dat,"other/output/field_qa_qc_data/holding_time_calcs.csv", row.names = F)
 
@@ -1558,7 +1560,7 @@ xfun::embed_file("other/output/field_qa_qc_data/holding_time_calcs.csv", text = 
 
 **18.) Are dissolved metal quantities less than total metals quantities?**
 
--   Dissolved metals results are *not* consistently less than total metals results, as would be anticipated (see [Flowlink](https://www.flowlink.ca/post/2018/12/15/dissolved-total-metals-whats-the-difference-and-why-it-matters) website for rationale.)
+-   Dissolved metals results are ***not*** consistently less than total metals results, as would be anticipated (see [Flowlink](https://www.flowlink.ca/post/2018/12/15/dissolved-total-metals-whats-the-difference-and-why-it-matters) website for description and rationale.)
 
 -   In 2021, there are results available for both dissolved and total metals for three elements: Ca, Fe, and Mg; for sites at and downstream of RM 31.
 
@@ -1750,7 +1752,14 @@ rpd_check_dat %<>%
   mutate(rpd_pct = ((field_msr_obs - quality_control_field_replicate_msr_obs) / 
                       ((field_msr_obs + quality_control_field_replicate_msr_obs)/2))*100) %>%
   mutate(rpd_pct = abs(round(rpd_pct,2))) 
+
+# apply result flags where appropriate according to RPD logic described below
+z <- rpd_check_dat %>%
+  mutate(resultFlag = case_when(
+    field
+  ))
   
+# check 2016 report to see hwo this was executed exactly .... seems like a ton of data lost
 
 # write csv
 write.csv(rpd_check_dat,"other/output/field_qa_qc_data/rpd_check_dat.csv", row.names = F)
@@ -1763,6 +1772,9 @@ A csv file of RPD values organized by site, date, and parameter may be downloade
 ```{r echo = F}
 # export csv of rpd results 
 xfun::embed_file("other/output/field_qa_qc_data/rpd_check_dat.csv", text = "Download 2021 Duplicate Sample Data")
+
+# note: code in the next chunk references an object named "rpd_check_dat," do not change the name of the csv
+
 
 #z <- rpd_check_dat %>%
 #  select(monitoring_location_id,characteristic_name,activity_start_date,rpd_pct) %>%
@@ -1806,11 +1818,41 @@ We attempted to calculate RPD values for all parameters collected in 2021 at two
 
 *Special note on 2021 fecal coliform data*
 
-Given that 3 out of 4 RPD values for fecal coliform values are >60% (project goal is 20%), field data values for this dataset generally may be suspect. 
+Given that 3 out of 4 RPD values for fecal coliform values are >60% (project goal is 20%), field data values for this dataset generally may be suspect.  As a result KWF does not plan to submit 2021 fecal coliform data to the EPA WQX as of `r sys.Date()`.
 
-TO DO: Calculate RPD values for 2014-2022 and compare, also compare to RPD values in previous comprehensive report.
+Fecal coliform data will be evaluated in this report and assessed against state standards, but given the high RPD values, 2021 data will not be considered in the context of potential regulatory exceedences.
+
+TO DO: Calculate and visualize RPD values for 2014-2022 and compare, also compare to RPD values in previous comprehensive report.
 
 Based in this information, we will decide which results to flag and not submit to EPA WQX. Further discussion will be present here in final report, along with a visual flow chart of the logic for when data is excluded and included.
+
+```{r}
+
+# notes on flagging data
+# based on above description, use case_when logic to apply flag Y/N as appropriate. remain agnostic of parameter and year
+# source results file, re-save as "flagged file" in same folder; for each step that involves flagging
+# in final output, flagged results will be excluded prior to EPA uplift
+
+# read in data formatted for export
+export_dat <- read.csv('other/output/aqwms_formatted_results/2021_kwf_baseline_results_aqwms.csv') %>%
+  clean_names()
+
+# read in rpd check data
+export_dat_flagged <- export_dat %>%
+  mutate(resultFlag = case_when(
+    characteristic_name == "Fecal Coliform" ~ "Y"
+  ))
+
+write.csv(export_dat_flagged,"other/output/aqwms_formatted_results/2021_export_data_flagged.csv")
+
+# WORKING HERE: apply flags based on RPD values in earlier csv, then join here. don't need to make it available for re-download until end of gauntlet with remaining qapp quetsions.
+
+#
+
+
+```
+
+
 
 <br>
 
@@ -1925,6 +1967,10 @@ total_samples_collected_2021_summary_param <- read.csv('other/output/aqwms_forma
 
 
 # procedure: based on discussion in above questions, decide what is flagged as "unusable." THEN return to this quetsion to calculate completeness measure A. adapt from existing code in "appendix_a_temp.qmd"
+
+# also see:
+
+xfun::embed_file('other/output/field_qa_qc_data/planned_actual_analyses_2021.csv', text = "Download Planned vs. Actual Analysis Results for 2021, Kenai Baseline")
 
 ```
 
