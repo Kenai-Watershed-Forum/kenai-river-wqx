@@ -52,3 +52,7 @@ repeat for 2022
 ensure 2017-2020 is in wqx
 repeat for 2014,2015,2016 data
 
+6/23/23
+
+TO DO: draw logic flow chart for 2-step winnowing process for LOQ & 2x LOQ criteria; send to ADEC staff to confirm interpretation.
+
