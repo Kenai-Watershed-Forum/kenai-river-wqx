@@ -21,7 +21,12 @@ To see a ten-minute presentation introducing this project and it's history, watc
 
 <br>
 
-This report can also be downloaded as an Microsoft Word document by clicking on the 'W' symbol in the upper left corner. When the report is complete, it will be available as a PDF. All project files and source code are hosted in a public GitHub repository, which is accessible by clicking the GitHub symbol in the upper left corner.
+*Downloads*
+This report can also be downloaded as an Microsoft Word document by clicking on the 'W' symbol in the upper left corner. When the report is complete, it will be available as a PDF. 
+
+
+*Github*
+All project files and source code are hosted in a public GitHub repository, which is accessible by clicking the GitHub symbol in the upper left corner.
 
 ***This online report is not optimized for use on mobile devices, and is best accessed on a desktop or laptop computer.***
 
@@ -31,7 +36,9 @@ This report can also be downloaded as an Microsoft Word document by clicking on 
 ::: {.content-visible when-format="docx"}
 This document is a report on the project, "Water Quality Assessment of the Kenai River Watershed, 2000 - 2022." It is an update to historical reports summarising available data to date [@mccard2007; @guerronorejuela2016].
 
-This draft report is best accessed as an online interactive document at https://kenai-watershed-forum.github.io/kenai-river-wqx-report-v2/, where it can also be downloaded as an Microsoft Word document. All project files and source code are hosted in a public GitHub repository, also accessible at the above URL.
+This draft report is best accessed as an online interactive document at https://kenai-watershed-forum.github.io/kenai-river-wqx-report-v2/, where it can also be downloaded as an Microsoft Word document. 
+
+All project files and source code are hosted in a public GitHub repository, also accessible at the above URL.
 :::
 
 ```{r echo = F}
