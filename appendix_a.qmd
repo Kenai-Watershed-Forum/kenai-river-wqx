@@ -1724,6 +1724,12 @@ rpd_check_dat <- field_dup_dat_2021 %>%
 
 ```
 
+
+```{r echo = F}
+knitr::knit_exit()
+```
+
+
 ```{r echo = F}
 # execute 2-stage winnowing process to determine which data can be used for RPD calculations
 
