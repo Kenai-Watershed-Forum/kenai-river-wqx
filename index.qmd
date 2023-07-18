@@ -12,6 +12,8 @@ format:
     code-summary: "Show the code"
 ---
 
+Test...
+
 ::: {.content-visible when-format="html"}
 This document is the online work-in-progress version of the Water Quality Assessment of the Kenai River Watershed, 2000 - 2023. When completed, it will be an update to historical reports summarising available data to date for this project [@mccard2007; @guerronorejuela2016].
 
@@ -22,7 +24,7 @@ To see a ten-minute presentation introducing this project and it's history, watc
 <br>
 
 *Downloads*
-This report can also be downloaded as an Microsoft Word document by clicking on the 'W' symbol in the upper left corner. When the report is complete, it will be available as a PDF. 
+This report can also be downloaded as an Microsoft Word document by clicking on the 'W' symbol in the upper left corner. When the report is complete, it will be available to download as a PDF. 
 
 
 *Github*
