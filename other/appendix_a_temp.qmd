@@ -4,6 +4,8 @@ title: "appendix_a_temp"
 
 5/8/2023 working on transferring content from here to appendix a. delete when done examining
 
+test 
+
 ```{r}
 
 # [REMOVE TEXT] The code will be excuted here (prior to the review questions) rather than in individual chunks above each individual question, because some of the questions are not sequentially independent. (That is to say, values from multiple questions are needed to answer single questions, sometimes from prior and sometimes from after a particular question. For example in question #4, we want to know how many values we excluded from the whole original dataset, which requires decisions based on questions following question #5). Ideally, one day, we would have these questions in the sequence most logical for data analysis.
