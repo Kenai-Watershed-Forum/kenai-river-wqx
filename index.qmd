@@ -22,10 +22,12 @@ To see a ten-minute presentation introducing this project and it's history, watc
 <br>
 
 *Downloads*
+
 This report can also be downloaded as an Microsoft Word document by clicking on the 'W' symbol in the upper left corner. When the report is complete, it will be available to download as a PDF. 
 
 
 *Github*
+
 All project files and source code are hosted in a public GitHub repository, which is accessible by clicking the GitHub symbol in the upper left corner.
 
 ***This online report is not optimized for use on mobile devices, and is best accessed on a desktop or laptop computer.***
