@@ -1245,6 +1245,8 @@ Yes. Analytical methods from the approved 2020 QAPP were employed.
 
 All sites were visited as planned on 5/11/2021 and 7/27/2021. Most intrinsic water quality parameters measured with instruments (pH, dissolved oxygen, conductivity, turbidity) were not measured.
 
+<br>
+
 **3.) Were field duplicates, blanks, and/or other QC samples collected as planned?**
 
 ```{r echo = F, message = F}
@@ -1371,7 +1373,7 @@ xfun::embed_file('other/output/field_qa_qc_data/planned_actual_analyses_2021.csv
 
 <br>
 
-To see a table comparing planned vs actual results for 2021, view the csv file linked above.
+To see a table comparing planned vs actual results for 2021, download and view the csv file linked above.
 
 From the above table we can see that there are deviations between planned results and actual results available. These reasons for the deviations are known and are attributable to two causes:
 
@@ -1379,7 +1381,7 @@ From the above table we can see that there are deviations between planned result
 
 As a result, for Spring 2021 total metals data will be unavailable for sites upstream of the Morgan's Landing RM31 site.
 
-***Cause 2:*** For Summer 2021, the SGS laboratory performed the 200.8 analyses for all 27 analytes available for the method; instead of just the smaller subset of analytes as requested. (E.g., KWF received extra data for free. In this case., there are no consequences of deviating from the planned analyses).
+***Cause 2:*** For Summer 2021, the SGS laboratory performed the 200.8 analyses (dissolved metals) for all 27 analytes available for the method; instead of just the smaller subset of analytes as requested. (E.g., KWF received extra data for free. In this case., there are no consequences of deviating from the planned analyses).
 
 <br>
 
@@ -1642,7 +1644,6 @@ See discussion XX in "Summary" section of this report for plans in future years 
 <br>
 
 
-
 **19.) Are the duplicate sample(s) RPD (Relative Percent Difference) within range described in QAPP?**
 
 In 2021, field duplicate samples were collected at two sites on both 5/11/2021 and 7/27/2021:
@@ -1652,7 +1653,7 @@ In 2021, field duplicate samples were collected at two sites on both 5/11/2021 a
 
 Following the example in the Alaska Department of Environmental Conservation 2021 Kenai River Metals Field Report [@apsens2022]: "... a set of paired samples was evaluated for RPD only if:
 
--   a.) one or both of the samples were above the \[LOQ)\]; AND if
+-   a.) one or both of the samples were above the Limit of Quantitation (LOQ); AND if
 -   b.) one or both of the samples were at least two times the \[LOQ\]."
 
 ```{r echo = F, message = F, warning = F}
@@ -1725,9 +1726,7 @@ rpd_check_dat <- field_dup_dat_2021 %>%
 ```
 
 
-```{r echo = F}
-knitr::knit_exit()
-```
+
 
 
 ```{r echo = F}
@@ -1760,12 +1759,12 @@ rpd_check_dat %<>%
   mutate(rpd_pct = abs(round(rpd_pct,2))) 
 
 # apply result flags where appropriate according to RPD logic described below
-z <- rpd_check_dat %>%
-  mutate(resultFlag = case_when(
-    field
-  ))
+#z <- rpd_check_dat %>%
+#  mutate(resultFlag = case_when(
+#    field
+#  ))
   
-# check 2016 report to see hwo this was executed exactly .... seems like a ton of data lost
+# check 2016 report to see how this was executed exactly .... seems like a ton of data 
 
 # write csv
 write.csv(rpd_check_dat,"other/output/field_qa_qc_data/rpd_check_dat.csv", row.names = F)
@@ -1820,11 +1819,19 @@ We attempted to calculate RPD values for all parameters collected in 2021 at two
 -   It ***was not possible*** to calculate RPD values because:
     -   a.) one or both of the samples **were not above** the LOQ; OR one or both of the samples **were not** at least two times the LOQ
     -   Project data will be submitted to EPA WQX if both paired values are non-detect
+    
+KWF sent a memo to the Alaska Department of Environmental Conservation on August 22, 2023 with an inquiry about best practices for interpreting and applying RPD values as described above. The memo includes a visual flow chart and is available for download below.
+
+```{r echo = F}
+# export csv of rpd results 
+xfun::embed_file("other/documents/QAPP/memos/KWF Memo to ADEC August 2023.pdf", text = "Download August 2023 Memo to ADEC regarding RPD Interpretation")
+
+```
 
 
 *Special note on 2021 fecal coliform data*
 
-Given that 3 out of 4 RPD values for fecal coliform values are >60% (project goal is 20%), field data values for this dataset generally may be suspect.  As a result KWF does not plan to submit 2021 fecal coliform data to the EPA WQX as of `r sys.Date()`.
+Given that 3 out of 4 RPD values for fecal coliform values are >60% (project goal is 20%), field data values for this dataset generally may be suspect.  As a result KWF does not plan to submit 2021 fecal coliform data to the EPA WQX for 2021.
 
 Fecal coliform data will be evaluated in this report and assessed against state standards, but given the high RPD values, 2021 data will not be considered in the context of potential regulatory exceedences.
 
@@ -1832,10 +1839,16 @@ TO DO: Calculate and visualize RPD values for 2014-2022 and compare, also compar
 
 Based in this information, we will decide which results to flag and not submit to EPA WQX. Further discussion will be present here in final report, along with a visual flow chart of the logic for when data is excluded and included.
 
+```{r echo = F}
+knitr::knit_exit()
+```
+
 ```{r}
 
 # notes on flagging data
-# based on above description, use case_when logic to apply flag Y/N as appropriate. remain agnostic of parameter and year
+# based on above description, use case_when logic to apply flag Y/N as appropriate. 
+
+# remain agnostic of parameter and year
 # source results file, re-save as "flagged file" in same folder; for each step that involves flagging
 # in final output, flagged results will be excluded prior to EPA uplift
 
