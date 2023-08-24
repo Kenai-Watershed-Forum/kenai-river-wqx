@@ -1828,16 +1828,14 @@ All 2021 field results will be submitted unflagged to the EPA WQX unless discuss
 
 -   *Fecal Coliform*
 
-    -   Given that 3 out of 4 RPD values for fecal coliform values are \>60% (project goal is 20%), field data values for the 2021 dataset may vary from actual environmental conditions. As a result KWF will submit 2021 fecal coliform data to the EPA WQX as "flagged". Fecal coliform data will be evaluated in this report and assessed against state standards, but given the high RPD values, 2021 data will likely not be considered in the context of potential regulatory exceedences.
+    -   Given that 3 out of 4 RPD values for fecal coliform values are \>60%, field data values for the 2021 dataset may vary from actual environmental conditions. The 2020 KWF QAPP does not specify an RPD value for fecal coliform, but specifies lab control checks for sterility and temperature. We used EPA Method 9222D (drinking water) for fecal coliform analysis methods, which does not specify an RPD value. However EPA general recommendations for pathogens in sewage sludge recommends and RPD of 20% [(link)](https://www.epa.gov/biosolids/quality-assurance-project-plan-qapp). Given these considerations, KWF will submit 2021 fecal coliform data to the EPA WQX as "flagged". Fecal coliform data will be evaluated in this report and assessed against state standards, but given the high RPD values among duplicate samples, 2021 data will likely not be considered in the context of potential regulatory exceedences.
 
     -   TO DO: Calculate and visualize RPD values for 2014-2022 and compare, also compare to RPD values in previous comprehensive report.
 
 -   *Selected Metals (As, Cd, Cr, Cu, Pb, Zn)*
 
-    -    Because these parameters do not have an associated RPD value from 2021 field data, they will be submitted to EPA WQX as "flagged."
-    -    Note: beginning in Summer 2022, KWF initiated a series of changes to the QAPP that will better facilitate QA/QC decisions regarding Total Metals and Dissolved metals results.
-
-
+    -   Because these parameters do not have an associated RPD value from 2021 field data, they will be submitted to EPA WQX as "flagged."
+    -   Note: beginning in Summer 2022, KWF initiated a series of changes to the QAPP that will better facilitate QA/QC decisions regarding Total Metals and Dissolved metals results. These changes include inclusion of a dissolved metals field blank, and changing from field filtration to lab filtration as standard practice.
 
 ```{r}
 
@@ -1934,7 +1932,7 @@ xfun::embed_file("other/output/lab_qaqc_data/matrix_spike_recovery_fails_2021.cs
 
 No additional laboratory QA/QC anomalies for any other parameters were noted by any laboratories contracted in 2021. Additional details are available upon request at [hydrology\@kenaiwatershed.org](mailto:hydrology@kenaiwatershed.org){.email}
 
-As of `r Sys.Date()` "Total Nitrate/Nitrite-N" values will be flagged for the spring 2021 dataset. (Spring only and not summer because no matrix spike recovery exedences were observed from the summer 2021 lab results). The matrix spike recovery fails indicate that reported lab values may be 2% - 7% above actual field values. At a later date we will evaluate these results in the context of year 2000 - present data to help evaluate the relevancy of this flag.
+As of `r Sys.Date()`, "Total Nitrate/Nitrite-N" values will be flagged for the spring 2021 dataset. (Spring only and not summer because no matrix spike recovery exedences were observed from the summer 2021 lab results). The matrix spike recovery exceedances indicate that reported lab values may be 2% - 7% above actual field values. At a later date we will evaluate these results in the context of year 2000 - present data to help evaluate the relevancy of this flag.
 
 <br>
 
@@ -1962,15 +1960,10 @@ The data collected in this project is representative of seasonal hydrological co
 
 <br>
 
-Work in progress here as of `r Sys.Date()`
-
-```{r echo = F}
-knitr::knit_exit()
-```
 
 **25.) Does project meet Completeness Measure A criteria?**
 
-From the QAPP, Completeness Measure A: "the primary number of samples collected divided by the usable number of samples submitted to ADEC with a goal of 85% completeness."
+From the QAPP, Completeness Measure A: "the primary number of samples collected divided by the usable number of samples submitted to ADEC with a goal of 85% completeness." (Note that as of 2023 results are now submitted directly to EPA rather than DEC).
 
 (Note: metals parameters not specified in the QAPP are excluded from these analyses. In 2021, SGS laboratories provided dissolved metals results for parameters beyond what was originally requested.)
 
@@ -1978,9 +1971,20 @@ From the QAPP, Completeness Measure A: "the primary number of samples collected 
 -   For individual parameters
 -   For individual sites
 
-```{r echo = F}
-total_samples_collected_2021_summary_param <- read.csv('other/output/aqwms_formatted_results/2021_export_data_flagged.csv') %>%
+```{r echo = F, message=FALSE}
+# read in list of analytes specified in QAPP
+analytes_2021 <- read.csv("other/input/AQWMS/analytes_list_manual_edit.csv")
+colnames(analytes_2021) <- c("characteristic_name","a","param_in_qapp") 
+analytes_2021 %<>% select(-a)
+
+# BY PARAMETER
+# summarise flags by parameter
+completeness_summary_param <- read.csv('other/output/aqwms_formatted_results/2021_export_data_flagged.csv') %>%
   clean_names() %>%
+  # reduce the list of analytes to only those specified in QAPP
+  left_join(analytes_2021) %>%
+  filter(param_in_qapp == "Y") %>%
+  # summarise
   group_by(result_analytical_method_id,characteristic_name,flag) %>%
   count() %>%
   rename(actual_results_n = n) %>%
@@ -1989,26 +1993,85 @@ total_samples_collected_2021_summary_param <- read.csv('other/output/aqwms_forma
   rename(flag_Y = Y,
          flag_N = N) %>%
   rowwise() %>%
-  mutate(total_samples = sum(flag_Y,flag_N, na.rm = T))
+  mutate(total_samples = sum(flag_Y,flag_N, na.rm = T)) %>%
+  # calculate Completeness Measure A for each parameter
+  mutate(cma = flag_N/total_samples)%>%
+  mutate(cma = replace_na(cma,0)) %>%
+  adorn_pct_formatting(,,,cma)
+write.csv(completeness_summary_param,"other/output/field_qa_qc_data/completeness_measures/cma_parameter.csv")
 
 
+## BY SITE
+# summarise flags by site
+completeness_summary_site <- read.csv('other/output/aqwms_formatted_results/2021_export_data_flagged.csv') %>%
+  clean_names() %>%
+  # reduce the list of analytes to only those specified in QAPP
+  left_join(analytes_2021) %>%
+  filter(param_in_qapp == "Y") %>%
+  # summarise
+  group_by(monitoring_location_id,flag) %>%
+  count() %>%
+  rename(actual_results_n = n) %>%
+ # transform(activity_start_date = ymd(activity_start_date)) 
+  pivot_wider(names_from = "flag", values_from = "actual_results_n") %>%
+  rename(flag_Y = Y,
+         flag_N = N) %>%
+  rowwise() %>%
+  mutate(total_samples = sum(flag_Y,flag_N, na.rm = T)) %>%
+  # calculate Completeness Measure A for each parameter
+  mutate(cma = flag_N/total_samples)%>%
+  mutate(cma = replace_na(cma,0)) %>%
+  adorn_pct_formatting(,,,cma)
+write.csv(completeness_summary_site,"other/output/field_qa_qc_data/completeness_measures/cma_site.csv")
 
-# 8/23/2023 working here
-# next step: use list in other/input/AQWMS/analytes_list_manual_edit.csv to reduce list and make completeness calcs
+
+# OVERALL
+# summarise flags for overall project
+completeness_summary_project <- read.csv('other/output/aqwms_formatted_results/2021_export_data_flagged.csv') %>%
+  clean_names() %>%
+  # reduce the list of analytes to only those specified in QAPP
+  left_join(analytes_2021) %>%
+  filter(param_in_qapp == "Y") %>%
+  # summarise
+  group_by(flag) %>%
+  count() %>%
+  rename(actual_results_n = n) %>%
+ # transform(activity_start_date = ymd(activity_start_date)) 
+  pivot_wider(names_from = "flag", values_from = "actual_results_n") %>%
+  rename(flag_Y = Y,
+         flag_N = N) %>%
+  rowwise() %>%
+  mutate(total_samples = sum(flag_Y,flag_N, na.rm = T)) %>%
+  # calculate Completeness Measure A for each parameter
+  mutate(cma = flag_N/total_samples)%>%
+  mutate(cma = replace_na(cma,0)) %>%
+  adorn_pct_formatting(,,,cma)
+write.csv(completeness_summary_project,"other/output/field_qa_qc_data/completeness_measures/cma_project.csv")
 
 
+# procedure: based on discussion in above questions, decide what is flagged as "unusable." THEN return to this question to calculate completeness measure A. adapt from existing code in "appendix_a_temp.qmd"
 
-# procedure: based on discussion in above questions, decide what is flagged as "unusable." THEN return to this quetsion to calculate completeness measure A. adapt from existing code in "appendix_a_temp.qmd"
 
-# also see:
+```
+<br>
 
-xfun::embed_file('other/output/field_qa_qc_data/planned_actual_analyses_2021.csv', text = "Download Planned vs. Actual Analysis Results for 2021, Kenai Baseline")
+```{r complete-measures, echo = F, messages = F, warnings = F}
+# embed for download
+xfun::embed_file("other/output/field_qa_qc_data/completeness_measures/cma_parameter.csv", text = "Download Completeness Measure A Results, By Parameter")
+xfun::embed_file("other/output/field_qa_qc_data/completeness_measures/cma_site.csv", text = "Download Completeness Measure A Results, By Site")
+xfun::embed_file("other/output/field_qa_qc_data/completeness_measures/cma_project.csv", text = "Download Completeness Measure A Results, By Overall")
 
 ```
 
 <br>
 
-**XX.) Does project meet Completeness Measure B criteria?**
+*Discussion on "Completeness Measure A" Results*
+
+Based on the data flagging decisions discussed in the previous questions, the 2021 dataset did not achieve all Completeness Measure A goals. By parameter, all dissolved metals had a value of 0% for Completeness Measure A since the decision was made to flag these as a result of an inability to calculate Relative Percent Difference values. By Site, Completeness Measure A values ranged from 44.4% - 71.4%, depending on the site's sampling plan. For the overall 2021 dataset, Completeness Measure A is calculated at 50.1%; indicating that 50.1% of the overall result values were flagged.
+
+<br>
+
+**26.) Does project meet Completeness Measure B criteria?**
 
 From the QAPP, Completeness Measure B: "the planned number of samples divided by the useable samples (submitted to ADEC) with a goal of 60%."
 
@@ -2017,11 +2080,23 @@ From the QAPP, Completeness Measure B: "the planned number of samples divided by
 -   For individual sites
 
 
+```{r echo = F, message=FALSE}
+
+# working here to possibly adapt script from temp files from cmb
+
+```
 
 
---> TO DO: confirm trip blank values are zero for BTEX
+
+
+Work in progress here as of `r Sys.Date()`
+
+```{r echo = F}
+knitr::knit_exit()
+```
 
 
 
+--\> TO DO: confirm trip blank values are zero for BTEX
 
 \newpage
