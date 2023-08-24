@@ -1041,8 +1041,9 @@ write.csv(data.frame(unique(dat$analyte)),"other/input/AQWMS/analytes_list.csv",
 # manually assign abbreviations for each analyte in the sister file "analytes_list_manual_edit.csv"
 
 # re-import edited list of analyte abbreviation names, then append to dataframe. Use in later step when creating Activity IDs.
-analyte_abbrev <- read.csv("other/input/AQWMS/analytes_list_manual_edit.csv")
+analyte_abbrev <- read.csv("other/input/AQWMS/analytes_list_manual_edit.csv") 
 colnames(analyte_abbrev) <- c("analyte","analyte_abbreviation")
+analyte_abbrev %<>% select(analyte, analyte_abbreviation)
 dat %<>%
   left_join(analyte_abbrev)
 ```
@@ -1365,7 +1366,6 @@ write.csv(planned_actual_analyses_2021,"other/output/field_qa_qc_data/planned_ac
 # TO DO::: once data that does not pass QC muster is flagged and removed, we will append an additional column(s) to the tables generated in there questions 
 ```
 
-
 ```{r, echo = F}
 xfun::embed_file('other/output/field_qa_qc_data/planned_actual_analyses_2021.csv', text = "Download Planned vs. Actual Analysis Results for 2021, Kenai Baseline")
 
@@ -1548,7 +1548,6 @@ holdtime_dat <- left_join(holdtime_dat,max_holding_times) %>%
     TRUE ~ "Y"))
 ```
 
-
 ```{r echo = F}
 # save hold time calculation results as external csv
 write.csv(holdtime_dat,"other/output/field_qa_qc_data/holding_time_calcs.csv", row.names = F)
@@ -1643,7 +1642,6 @@ See discussion XX in "Summary" section of this report for plans in future years 
 
 <br>
 
-
 **19.) Are the duplicate sample(s) RPD (Relative Percent Difference) within range described in QAPP?**
 
 In 2021, field duplicate samples were collected at two sites on both 5/11/2021 and 7/27/2021:
@@ -1654,7 +1652,7 @@ In 2021, field duplicate samples were collected at two sites on both 5/11/2021 a
 Following the example in the Alaska Department of Environmental Conservation 2021 Kenai River Metals Field Report [@apsens2022]: "... a set of paired samples was evaluated for RPD only if:
 
 -   a.) one or both of the samples were above the Limit of Quantitation (LOQ); AND if
--   b.) one or both of the samples were at least two times the \[LOQ\]."
+-   b.) one or both of the samples were at least two times the LOQ."
 
 ```{r echo = F, message = F, warning = F}
 
@@ -1725,10 +1723,6 @@ rpd_check_dat <- field_dup_dat_2021 %>%
 
 ```
 
-
-
-
-
 ```{r echo = F}
 # execute 2-stage winnowing process to determine which data can be used for RPD calculations
 
@@ -1770,8 +1764,6 @@ rpd_check_dat %<>%
 write.csv(rpd_check_dat,"other/output/field_qa_qc_data/rpd_check_dat.csv", row.names = F)
 ```
 
-<br>
-
 A csv file of RPD values organized by site, date, and parameter may be downloaded below:
 
 ```{r echo = F}
@@ -1788,7 +1780,7 @@ xfun::embed_file("other/output/field_qa_qc_data/rpd_check_dat.csv", text = "Down
 
 <br>
 
-From the above table, we can see that a limited subset of paired values from field duplicates are eligible to be used for RPD calculations. Pairs of measurements must meet LOQ criteria described above ("a" and "b"). For 2021 data, of 69 paired field duplicate observations, 24 of them may be used for RPD calculations.
+From the above downloadable table, we can see that a limited subset of paired values from field duplicates are eligible to be used for RPD calculations for 2021. Pairs of measurements must meet LOQ criteria described above ("a" and "b") in order to be used. For 2021 data, of 69 paired field duplicate observations, 24 of them meet these criteria and thus may be used for RPD calculations.
 
 RPD values range from `r min(rpd_check_dat$rpd_pct, na.rm = T)` % to `r max(rpd_check_dat$rpd_pct, na.rm = T)` %.
 
@@ -1805,7 +1797,7 @@ Most other parameters have at least one available RPD value that is within proje
 -   Lead
 -   Zinc
 
-*Other notes* 
+*Other notes*
 
 In 2021 the full suite of dissolved metals was run for method 200.8 on samples from 7/27/2021. However we intend to only submit data for parameters that had a pre-defined QA plan as outlined in the QAPP, which is the case for the following dissolved six metals: Mg, As, Cd, Cr, Cu, Pb, and Zn.
 
@@ -1815,12 +1807,12 @@ We attempted to calculate RPD values for all parameters collected in 2021 at two
 
 -   It ***was possible*** to calculate RPD values because:
     -   a.) one or both of the samples **were above** the LOQ; AND one or both of the samples **were** at least two times the LOQ
-    -   Project data will be submitted to EPA WQX if RPD values meet project goals outlined in the QAPP
+    -   Project data for this parameter will be submitted to EPA WQX if RPD values meet project goals outlined in the QAPP
 -   It ***was not possible*** to calculate RPD values because:
     -   a.) one or both of the samples **were not above** the LOQ; OR one or both of the samples **were not** at least two times the LOQ
-    -   Project data will be submitted to EPA WQX if both paired values are non-detect
-    
-KWF sent a memo to the Alaska Department of Environmental Conservation on August 22, 2023 with an inquiry about best practices for interpreting and applying RPD values as described above. The memo includes a visual flow chart and is available for download below.
+    -   Project data for this parameter will be submitted to EPA WQX if both paired values are non-detect
+
+Best practices for interpreting and applying RPD data in order to flag/not flag the overall dataset are currently being finalized. KWF communicated with the Alaska Department of Environmental Conservation on August 22, 2023 via an inquiry on this topic. The memo includes a visual flow chart of the logic for when data is flagged, and is available for download below.
 
 ```{r echo = F}
 # export csv of rpd results 
@@ -1828,50 +1820,61 @@ xfun::embed_file("other/documents/QAPP/memos/KWF Memo to ADEC August 2023.pdf", 
 
 ```
 
+<br>
 
-*Special note on 2021 fecal coliform data*
+*Final determinations on submitting / not submitting 2021 data to the EPA WQX*
 
-Given that 3 out of 4 RPD values for fecal coliform values are >60% (project goal is 20%), field data values for this dataset generally may be suspect.  As a result KWF does not plan to submit 2021 fecal coliform data to the EPA WQX for 2021.
+All 2021 field results will be submitted unflagged to the EPA WQX unless discussed below.
 
-Fecal coliform data will be evaluated in this report and assessed against state standards, but given the high RPD values, 2021 data will not be considered in the context of potential regulatory exceedences.
+-   *Fecal Coliform*
 
-TO DO: Calculate and visualize RPD values for 2014-2022 and compare, also compare to RPD values in previous comprehensive report.
+    -   Given that 3 out of 4 RPD values for fecal coliform values are \>60% (project goal is 20%), field data values for the 2021 dataset may vary from actual environmental conditions. As a result KWF will submit 2021 fecal coliform data to the EPA WQX as "flagged". Fecal coliform data will be evaluated in this report and assessed against state standards, but given the high RPD values, 2021 data will likely not be considered in the context of potential regulatory exceedences.
 
-Based in this information, we will decide which results to flag and not submit to EPA WQX. Further discussion will be present here in final report, along with a visual flow chart of the logic for when data is excluded and included.
+    -   TO DO: Calculate and visualize RPD values for 2014-2022 and compare, also compare to RPD values in previous comprehensive report.
 
-```{r echo = F}
-knitr::knit_exit()
-```
+-   *Selected Metals (As, Cd, Cr, Cu, Pb, Zn)*
+
+    -    Because these parameters do not have an associated RPD value from 2021 field data, they will be submitted to EPA WQX as "flagged."
+    -    Note: beginning in Summer 2022, KWF initiated a series of changes to the QAPP that will better facilitate QA/QC decisions regarding Total Metals and Dissolved metals results.
+
+
 
 ```{r}
+
+# MOVE THIS STEP TO LAST AFTER ALL QUATESTION THAT COULD PRODUCE A FLAG
 
 # notes on flagging data
 # based on above description, use case_when logic to apply flag Y/N as appropriate. 
 
 # remain agnostic of parameter and year
-# source results file, re-save as "flagged file" in same folder; for each step that involves flagging
-# in final output, flagged results will be excluded prior to EPA uplift
+# source results file, re-save as "flagged file" in same folder; for each additional future step that involves flagging
+
 
 # read in data formatted for export
 export_dat <- read.csv('other/output/aqwms_formatted_results/2021_kwf_baseline_results_aqwms.csv') %>%
-  clean_names()
+  clean_names() %>%
+  transform(activity_start_date = ymd(activity_start_date))
 
-# read in rpd check data
-export_dat_flagged <- export_dat %>%
-  mutate(resultFlag = case_when(
-    characteristic_name == "Fecal Coliform" ~ "Y"
-  ))
+# apply manually-chosen data flags based on discussion in question 19
+flags_2021 <- read.csv('other/input/AQWMS/2021_data_flag_decisions.csv') %>%
+  select(-notes) %>%
+  transform(activity_start_date = mdy(activity_start_date))
 
-write.csv(export_dat_flagged,"other/output/aqwms_formatted_results/2021_export_data_flagged.csv")
+export_dat <- full_join(export_dat,flags_2021) %>%
+  # fill in "flag" column with "N" if not already "Y"
+  mutate(flag = case_when(
+    is.na(flag) ~ "N",
+    TRUE ~ "Y"
+  )) %>%
+  filter(!is.na(activity_id))
 
-# WORKING HERE: apply flags based on RPD values in earlier csv, then join here. don't need to make it available for re-download until end of gauntlet with remaining qapp quetsions.
+#do we need to distinguish between RPD flag and MS flag?
 
-#
 
+# re-export results w/ rpd flag column
+write.csv(export_dat,"other/output/aqwms_formatted_results/2021_export_data_flagged.csv")
 
 ```
-
-
 
 <br>
 
@@ -1931,32 +1934,31 @@ xfun::embed_file("other/output/lab_qaqc_data/matrix_spike_recovery_fails_2021.cs
 
 No additional laboratory QA/QC anomalies for any other parameters were noted by any laboratories contracted in 2021. Additional details are available upon request at [hydrology\@kenaiwatershed.org](mailto:hydrology@kenaiwatershed.org){.email}
 
-As of `r Sys.Date()` we do not intend to reject "Total Nitrate/Nitrite-N" values from the 2021 dataset. The matrix spike recovery fails indicate that reported lab values may be 2% - 7% above actual field values. At a later date we will evaluate these results in the context of year 2000 - present data to help evaluate the validity of this decision, and remove the results from the EPA WQX if appropriate. We would also like to consult with ADEC to determine if these laboratory-identified discrepancies are grounds for rejecting field observations.
-
+As of `r Sys.Date()` "Total Nitrate/Nitrite-N" values will be flagged for the spring 2021 dataset. (Spring only and not summer because no matrix spike recovery exedences were observed from the summer 2021 lab results). The matrix spike recovery fails indicate that reported lab values may be 2% - 7% above actual field values. At a later date we will evaluate these results in the context of year 2000 - present data to help evaluate the relevancy of this flag.
 
 <br>
 
 **21.) Is any laboratory data rejected and why?**
 
-As of `r Sys.Date()` we would like to consult with ADEC to determine if these discrepancies discussed in questions #18, #19, and #20 are grounds for rejecting field observations. If so, results will be flagged as appropriate and not submitted to EPA WQX.
+No additional 2021 laboratory data currently indicates a need for being flagged or rejected.
 
 <br>
 
 **22.) During the field season, review raw data files (EDDs \[Electronic Data Deliverables\], instrument records) as they are received. Document changes and corrections to methods as needed.**
 
-In 2021, KWF initiated as standard practice the receipt of machine-readable EDD files for contracted laboratories, in addition to PDF results. The EDD files are being reviewed as part of this QA/QC process, which was initiated in Winter 2022.
+In 2021, KWF initiated as standard practice the receipt of machine-readable EDD files from contracted laboratories, in addition to PDF results. The EDD files are being reviewed as part of this QA/QC process, which was initiated in Winter 2022.
 
 <br>
 
 **23.) Is the dataset complete and did you receive the expected number of results?**
 
-From the discussion and results in question #3, deviations are evident between planned and actual results reported. The reasons for the deviations are known and are attributable to the two factors discussed in question #3.
+From the discussion and results in question #3, deviations are evident between planned and actual results reported. The reasons for the deviations are known and are attributable to the two factors discussed in question #3, and thus not concerning to project integrity.
 
 <br>
 
 **24.) Was the data collected representative of environmental conditions?.**
 
-The data collected in this project is representative of seasonal hydrological conditions on the fieldwork days. Conditions vary instantaneously thus this dataset serves to provide representative longitudinal snapshots of the watershed across space on two dates.
+The data collected in this project is representative of seasonal hydrological conditions on two fieldwork days in 2021. Conditions vary instantaneously thus this dataset serves to provide representative longitudinal snapshots of the watershed across space on the two dates. Flagged data may indicate that results may require additional interpretation or exclusion from analysis.
 
 <br>
 
@@ -1966,23 +1968,34 @@ Work in progress here as of `r Sys.Date()`
 knitr::knit_exit()
 ```
 
-
-
 **25.) Does project meet Completeness Measure A criteria?**
 
-From the QAPP, Completeness Measure A: "the primary number of samples collected divided by the useable number of samples submitted to ADEC with a goal of 85% completeness."
+From the QAPP, Completeness Measure A: "the primary number of samples collected divided by the usable number of samples submitted to ADEC with a goal of 85% completeness."
+
+(Note: metals parameters not specified in the QAPP are excluded from these analyses. In 2021, SGS laboratories provided dissolved metals results for parameters beyond what was originally requested.)
 
 -   As a project whole
 -   For individual parameters
 -   For individual sites
 
 ```{r echo = F}
-total_samples_collected_2021_summary_param <- read.csv('other/output/aqwms_formatted_results/2021_kwf_baseline_results_aqwms.csv') %>%
+total_samples_collected_2021_summary_param <- read.csv('other/output/aqwms_formatted_results/2021_export_data_flagged.csv') %>%
   clean_names() %>%
-  group_by(result_analytical_method_id,characteristic_name,activity_start_date,activity_type) %>%
+  group_by(result_analytical_method_id,characteristic_name,flag) %>%
   count() %>%
   rename(actual_results_n = n) %>%
-  transform(activity_start_date = ymd(activity_start_date)) 
+ # transform(activity_start_date = ymd(activity_start_date)) 
+  pivot_wider(names_from = "flag", values_from = "actual_results_n") %>%
+  rename(flag_Y = Y,
+         flag_N = N) %>%
+  rowwise() %>%
+  mutate(total_samples = sum(flag_Y,flag_N, na.rm = T))
+
+
+
+# 8/23/2023 working here
+# next step: use list in other/input/AQWMS/analytes_list_manual_edit.csv to reduce list and make completeness calcs
+
 
 
 # procedure: based on discussion in above questions, decide what is flagged as "unusable." THEN return to this quetsion to calculate completeness measure A. adapt from existing code in "appendix_a_temp.qmd"
@@ -1993,7 +2006,6 @@ xfun::embed_file('other/output/field_qa_qc_data/planned_actual_analyses_2021.csv
 
 ```
 
-
 <br>
 
 **XX.) Does project meet Completeness Measure B criteria?**
@@ -2003,5 +2015,13 @@ From the QAPP, Completeness Measure B: "the planned number of samples divided by
 -   As a project whole
 -   For individual parameters
 -   For individual sites
+
+
+
+
+--> TO DO: confirm trip blank values are zero for BTEX
+
+
+
 
 \newpage
