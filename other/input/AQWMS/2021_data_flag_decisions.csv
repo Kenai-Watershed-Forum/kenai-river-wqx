@@ -1,0 +1,16 @@
+characteristic_name,activity_start_date,flag,notes
+Arsenic,5/11/2021,Y,no RPD value available
+Cadmium,5/11/2021,Y,no RPD value available
+Chromium,5/11/2021,Y,no RPD value available
+Copper,5/11/2021,Y,no RPD value available
+Lead,5/11/2021,Y,no RPD value available
+Zinc,5/11/2021,Y,no RPD value available
+Fecal Coliform,5/11/2021,Y,3 of 4 RPD values >60%
+Arsenic,7/27/2021,Y,no RPD value available
+Cadmium,7/27/2021,Y,no RPD value available
+Chromium,7/27/2021,Y,no RPD value available
+Copper,7/27/2021,Y,no RPD value available
+Lead,7/27/2021,Y,no RPD value available
+Zinc,7/27/2021,Y,no RPD value available
+Fecal Coliform,7/27/2021,Y,3 of 4 RPD values >60%
+Total Nitrate/Nitrite-N,5/11/2021,Y,matrix spike and matrix spike duplicate values outside of QAPP allowed ranges
