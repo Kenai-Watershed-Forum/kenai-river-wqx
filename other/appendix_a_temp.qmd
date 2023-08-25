@@ -4,7 +4,7 @@ title: "appendix_a_temp"
 
 5/8/2023 working on transferring content from here to appendix a. delete when done examining
 
-test 
+test
 
 ```{r}
 
