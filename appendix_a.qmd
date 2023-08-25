@@ -2075,15 +2075,68 @@ Based on the data flagging decisions discussed in the previous questions, the 20
 
 From the QAPP, Completeness Measure B: "the planned number of samples divided by the useable samples (submitted to ADEC) with a goal of 60%."
 
--   As a project whole
 -   For individual parameters
 -   For individual sites
+-   As a project whole
 
 
 ```{r echo = F, message=FALSE}
 
-# working here to possibly adapt script from temp files from cmb
+# BY PARAMETER (actually by method)
+# unflagged (usable) vs expected results
+cmb_by_method <- read.csv('other/output/aqwms_formatted_results/2021_export_data_flagged.csv') %>%
+  clean_names() %>%
+  # reduce the list of analytes to only those specified in QAPP
+  left_join(analytes_2021) %>%
+  filter(param_in_qapp == "Y") %>%
+  group_by(result_analytical_method_id, activity_start_date, activity_type, flag) %>%
+  count() %>%
+  rename(unflagged_results_n = n) %>%
+  pivot_wider(names_from = "flag", values_from = "unflagged_results_n") %>%
+  rename(flag_Y = Y,
+         flag_N = N) %>%
+  transform(activity_start_date = ymd(activity_start_date)) %>%
+  left_join(planned_samples_2021_summary) %>%
+  # calculate Completeness Measure B for each parameter
+  mutate(cmb = flag_N/expected_results_n)%>%
+  mutate(cmb = replace_na(cmb,0)) %>%
+  adorn_pct_formatting(,,,cmb)
+write.csv(cmb_by_method,"other/output/field_qa_qc_data/completeness_measures/cmb_parameter.csv")
 
+
+
+# BY SITE
+# unflagged (usable) vs expected results
+cmb_by_site <- read.csv('other/output/aqwms_formatted_results/2021_export_data_flagged.csv') %>%
+  clean_names() %>%
+  # reduce the list of analytes to only those specified in QAPP
+  left_join(analytes_2021) %>%
+  filter(param_in_qapp == "Y") %>%
+  group_by(monitoring_location_id,flag) %>%
+  count() %>%
+  rename(unflagged_results_n = n) %>%
+  pivot_wider(names_from = "flag", values_from = "unflagged_results_n") %>%
+  rename(flag_Y = Y,
+         flag_N = N) %>%
+  
+  # WORKING HERE: 8/24/2023:::format for planned sample summary df does not include site names yet. create df that includes site names
+  
+  
+  
+  
+  left_join(planned_samples_2021_summary) %>%
+  # calculate Completeness Measure B for each parameter
+  mutate(cmb = flag_N/expected_results_n)%>%
+  mutate(cmb = replace_na(cmb,0)) %>%
+  adorn_pct_formatting(,,,cmb)
+write.csv(cmb_by_method,"other/output/field_qa_qc_data/completeness_measures/cmb_parameter.csv")
+
+
+  
+
+
+
+ 
 ```
 
 
