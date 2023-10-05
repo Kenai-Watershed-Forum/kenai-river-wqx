@@ -9,7 +9,7 @@ format:
     code-summary: "Show the code"
 ---
 
-# Appendix: Data Review and Uplift
+# Appendix: Data Review and Upload
 
 ```{r echo = F, message = F}
 
@@ -24,23 +24,23 @@ format:
 
 Prior to publishing analysis and interpretation of water quality data, we will ensure that all data that meets QA/QC standards outlined in the current project [Quality Assurance Project Plan (QAPP)](https://paperpile.com/app/p/7703451b-460d-00b4-82a0-1086ea2554c3) and is accessible in the appropriate repository.
 
-Water quality data from this project is ultimately destined for the Environmental Protection Agency's Water Quality Exchange (EPA WQX). The process of transferring these data to the higher-level EPA repository is referred to as data "uplift."
+Water quality data from this project is ultimately destined for the Environmental Protection Agency's Water Quality Exchange (EPA WQX).
 
 The Quality Assurance Project Plan (QAPP) for this project describes data management details and responsible parties for each step of the data pipeline from observation to repository. The 2021 data preparation and review process is published here as an appendix as an example of the process applied annually to each year's data.
 
-### 2021 Water Quality Data
+### Year 2021 Water Quality Data
 
 In this appendix we will collate 2021 laboratory data from several sources into a single spreadsheet document with a consistent format. The desired end format is a spreadsheet template provided by the EPA Water Quality Exchange. These template files are available to download from the EPA at <https://www.epa.gov/waterdata/water-quality-exchange-web-template-files>.
 
-Once the data is collated, it will be evaluated according to a Quality Assurance Checklist (template example provided by the Alaska Department of Environmental Conservation Soldotna office). Field observations that do not meet the quality assurance standards described in the evaluation checklist will be flagged and will not be uplifted to the EPA WQX.
+Once the data is collated, it will be evaluated according to a Quality Assurance Checklist (template example provided by the Alaska Department of Environmental Conservation Soldotna office). Field observations that do not meet the quality assurance standards described in the evaluation checklist will be flagged before being uploaded to the EPA WQX.
 
-Data that has been uplifted to the EPA WQX is evaluated biannually by the Alaska Department of Environmental Conservation (ADEC) in their [Integrated Water Quality Monitoring and Assessment Report](https://dec.alaska.gov/water/water-quality/integrated-report/)[^appendix_a-1]. The integrated report evaluates available water quality data from the previous five years against Alaska water quality standards and regulations [@adec2020].
+Data that has been uploaded to the EPA WQX is evaluated biannually by the Alaska Department of Environmental Conservation (ADEC) in their [Integrated Water Quality Monitoring and Assessment Report](https://dec.alaska.gov/water/water-quality/integrated-report/)[^appendix_a-1]. The integrated report evaluates available water quality data from the previous five years against Alaska water quality standards and regulations [@adec2020].
 
 [^appendix_a-1]: https://dec.alaska.gov/water/water-quality/integrated-report/
 
 #### 2021 Water Quality Data AQWMS Formatting
 
-The code scripts below assemble water quality data from the three analytical laboratories that partnered with Kenai Watershed Forum for this project in 2021:
+The code scripts in this document assemble water quality data from the three analytical laboratories that partnered with Kenai Watershed Forum for this project in 2021:
 
 -   SGS Laboratories (Anchorage, AK)
 
@@ -1190,7 +1190,7 @@ write.csv(dat,"other/output/aqwms_formatted_results/2021_kwf_baseline_results_aq
 
 <br>
 
-### 2021 Provisional Results, Prior to Data Review
+### 2021 Provisional Results, Prior to QA/QC Review
 
 *Results last updated `r Sys.Date()`*
 
@@ -1232,6 +1232,8 @@ xfun::embed_file('other/documents/AQWMS_documents/Kenai_Baseline_Data_Evaluation
 Note: the sequence of questions is structured such that data will be gradually flagged at each step based on the criteria described.
 
 ```{r, echo = F, message = F}
+
+# [NOTE 10/5/2023 IS THIS ABOVE STATEMENT TRUE???]
 
 # work with excel file Kenai_Baseline_Data_Evaluation_Checklist_20230331.xlsx and resequence evaluation to logical order
 ```
@@ -1377,7 +1379,7 @@ To see a table comparing planned vs actual results for 2021, download and view t
 
 From the above table we can see that there are deviations between planned results and actual results available. These reasons for the deviations are known and are attributable to two causes:
 
-***Cause 1:*** The Spring 2021 Chain of Custody (COC) from KWF to SGS was completed erroneously. The COC specified for 200.8 analyses to be complete for all sites (when they should have stopped upstream of Morgan's Landing RM31), and it also specified for 200.7 analyses to stop upstream of Morgan's Landing (when they should have been performed for all sites in the project).
+***Cause 1:*** The Spring 2021 Chain of Custody (COC) from KWF to SGS was completed erroneously. The COC specified for 200.8 analyses (dissolved metals) to be complete for all sites (when they should have stopped upstream of Morgan's Landing RM31), and it also specified for 200.7 analyses to stop upstream of Morgan's Landing (when they should have been performed for all sites in the project).
 
 As a result, for Spring 2021 total metals data will be unavailable for sites upstream of the Morgan's Landing RM31 site.
 
@@ -1561,11 +1563,15 @@ xfun::embed_file("other/output/field_qa_qc_data/holding_time_calcs.csv", text = 
 
 **18.) Are dissolved metal quantities less than total metals quantities?**
 
--   Dissolved metals results are ***not*** consistently less than total metals results, as would be anticipated (see [Flowlink](https://www.flowlink.ca/post/2018/12/15/dissolved-total-metals-whats-the-difference-and-why-it-matters) website for description and rationale.)
+-   Dissolved metals results are ***not*** consistently less than total metals results, as would be logically anticipated (see post from [Flowlink Environmental](https://www.flowlink.ca/post/2018/12/15/dissolved-total-metals-whats-the-difference-and-why-it-matters) website for description and rationale):
 
--   In 2021, there are results available for both dissolved and total metals for three elements: Ca, Fe, and Mg; for sites at and downstream of RM 31.
+    -   [**"Dissolved metal concentration** is determined by filtering a water sample through 0.45 uM filter. Water that passes through the filter is analyzed for metals and the result is reported as dissolved metal concentration. **Total metal concentration** is determined by analyzing the unfiltered sample.]{.underline}
 
--   Dissolved metals results are available for 7/27/2021 (summer) only, and not for 5/11/2021 (spring); see question #3 in this sequence.
+        [**"Total metal concentration = Dissolved metal concentration + Particulate (insoluble) metal concentration.**]{.underline}"
+
+    -   In 2021, there are results available for both dissolved and total metals for three elements: Ca, Fe, and Mg; for sites at and downstream of RM 31.
+
+    -   Dissolved metals results are available for 7/27/2021 (summer) only, and not for 5/11/2021 (spring); see question #3 in this sequence.
 
 -   Results:
 
@@ -1637,6 +1643,8 @@ rm(ca,fe,mg)
 ```
 
 <br>
+
+As of Fall 2023 it is unclear why the values measured for total metals is greater than dissolved metals for the cases described above.
 
 See discussion XX in "Summary" section of this report for plans in future years to address the issue of dissolved metals values being greater than total metals values in some cases.
 
@@ -1764,14 +1772,13 @@ rpd_check_dat %<>%
 write.csv(rpd_check_dat,"other/output/field_qa_qc_data/rpd_check_dat.csv", row.names = F)
 ```
 
-A csv file of RPD values organized by site, date, and parameter may be downloaded below:
+A csv file of Relative Percent Difference values organized by site, date, and parameter may be downloaded below:
 
 ```{r echo = F}
 # export csv of rpd results 
-xfun::embed_file("other/output/field_qa_qc_data/rpd_check_dat.csv", text = "Download 2021 Duplicate Sample Data")
+xfun::embed_file("other/output/field_qa_qc_data/rpd_check_dat.csv", text = "Download 2021 Duplicate Sample Relative Percent Difference Data")
 
 # note: code in the next chunk references an object named "rpd_check_dat," do not change the name of the csv
-
 
 #z <- rpd_check_dat %>%
 #  select(monitoring_location_id,characteristic_name,activity_start_date,rpd_pct) %>%
@@ -1784,7 +1791,7 @@ From the above downloadable table, we can see that a limited subset of paired va
 
 RPD values range from `r min(rpd_check_dat$rpd_pct, na.rm = T)` % to `r max(rpd_check_dat$rpd_pct, na.rm = T)` %.
 
-In the 2020 QAPP, RPD values for most parameters are set at 20%, with the exception of "Phosphorus, total" and "Nitrates (NO2+NO3)" at 25%, and "Suspended solids, total" at 5%.
+In the 2020 Quality Assurance Action Plan, Relative percent Difference values for most parameters are set at 20%, with the exception of "Phosphorus, total" and "Nitrates (NO2+NO3)" at 25%, and "Suspended solids, total" at 5%.
 
 Using the available RPD values against the above criteria, four paired observations exceed project precision goals in 2021. Three of these four observations are for fecal coliform, and one is for total phosphorus.
 
@@ -1822,13 +1829,14 @@ xfun::embed_file("other/documents/QAPP/memos/KWF Memo to ADEC August 2023.pdf", 
 
 <br>
 
-*Final determinations on submitting / not submitting 2021 data to the EPA WQX*
+*Final determinations on flagging / not flagging 2021 data submitted to the EPA WQX*
 
 All 2021 field results will be submitted unflagged to the EPA WQX unless discussed below.
 
 -   *Fecal Coliform*
 
-    -   Given that 3 out of 4 RPD values for fecal coliform values are \>60%, field data values for the 2021 dataset may vary from actual environmental conditions. The 2020 KWF QAPP does not specify an RPD value for fecal coliform, but specifies lab control checks for sterility and temperature. We used EPA Method 9222D (drinking water) for fecal coliform analysis methods, which does not specify an RPD value. However EPA general recommendations for pathogens in sewage sludge recommends and RPD of 20% [(link)](https://www.epa.gov/biosolids/quality-assurance-project-plan-qapp). Given these considerations, KWF will submit 2021 fecal coliform data to the EPA WQX as "flagged". Fecal coliform data will be evaluated in this report and assessed against state standards, but given the high RPD values among duplicate samples, 2021 data will likely not be considered in the context of potential regulatory exceedences.
+    -   Given that 3 out of 4 RPD values for fecal coliform values are \>60%, field data values for the 2021 dataset may vary from actual environmental conditions. The 2020 KWF QAPP does not specify an RPD value for fecal coliform, it only specifies control checks for sterility and temperature. We used EPA Method 9222D (drinking water) for fecal coliform analysis methods, which does not specify an RPD value. However EPA general recommendations for pathogens in sewage sludge recommends and RPD of 20% [(link)](https://www.epa.gov/biosolids/quality-assurance-project-plan-qapp). 
+    -   Given the above considerations, KWF will submit 2021 fecal coliform data to the EPA WQX as "flagged". Fecal coliform data will be evaluated in this report and assessed against state standards, but given the high RPD values among duplicate samples, 2021 data will likely not be considered in the context of potential regulatory exceedences.
 
     -   TO DO: Calculate and visualize RPD values for 2014-2022 and compare, also compare to RPD values in previous comprehensive report.
 
@@ -1878,7 +1886,7 @@ write.csv(export_dat,"other/output/aqwms_formatted_results/2021_export_data_flag
 
 **20.) Were there any laboratory discrepancies, errors, data qualifiers, or QC failures (review laboratory duplicates, matrix spikes and blanks)?**
 
-Laboratory discrepancies from the SGS lab are described on page 2 of the spring and summer reports, which are available for download below.
+Laboratory discrepancies from the SGS lab are described on page 2 of the spring and summer PDF document reports, which are available for download below.
 
 ```{r echo = F}
 xfun::embed_file('other/input/2021_wqx_data/spring_2021_wqx_data/SGS/Spring 2021 Results from SGS.pdf', text = "Download Original Spring 2021 Metals/Nutrients Lab Results from SGS - PDF file")
@@ -1918,6 +1926,8 @@ write.csv(matrix_spike_recovery_fails_tbl,"other/output/lab_qaqc_data/matrix_spi
 
 ```
 
+<br>
+
 The following discrepancies were identified in the results from SGS laboratories:
 
 **Matrix Spike Recoveries**
@@ -1929,6 +1939,8 @@ A total of `r matrix_spike_recovery_fails` matrix spike or matrix spike duplicat
 xfun::embed_file("other/output/lab_qaqc_data/matrix_spike_recovery_fails_2021.csv", text = "Download Matrix Spike Recovery Values Exceeding Threshold for 2021 Sample Analyses")
 
 ```
+
+<br>
 
 No additional laboratory QA/QC anomalies for any other parameters were noted by any laboratories contracted in 2021. Additional details are available upon request at [hydrology\@kenaiwatershed.org](mailto:hydrology@kenaiwatershed.org){.email}
 
@@ -1960,12 +1972,13 @@ The data collected in this project is representative of seasonal hydrological co
 
 <br>
 
-
 **25.) Does project meet Completeness Measure A criteria?**
 
 From the QAPP, Completeness Measure A: "the primary number of samples collected divided by the usable number of samples submitted to ADEC with a goal of 85% completeness." (Note that as of 2023 results are now submitted directly to EPA rather than DEC).
 
 (Note: metals parameters not specified in the QAPP are excluded from these analyses. In 2021, SGS laboratories provided dissolved metals results for parameters beyond what was originally requested.)
+
+We calculated Completeness Measure A at the following project scales:
 
 -   As a project whole
 -   For individual parameters
@@ -2053,6 +2066,7 @@ write.csv(completeness_summary_project,"other/output/field_qa_qc_data/completene
 
 
 ```
+
 <br>
 
 ```{r complete-measures, echo = F, messages = F, warnings = F}
@@ -2067,9 +2081,19 @@ xfun::embed_file("other/output/field_qa_qc_data/completeness_measures/cma_projec
 
 *Discussion on "Completeness Measure A" Results*
 
-Based on the data flagging decisions discussed in the previous questions, the 2021 dataset did not achieve all Completeness Measure A goals. By parameter, all dissolved metals had a value of 0% for Completeness Measure A since the decision was made to flag these as a result of an inability to calculate Relative Percent Difference values. By Site, Completeness Measure A values ranged from 44.4% - 71.4%, depending on the site's sampling plan. For the overall 2021 dataset, Completeness Measure A is calculated at 50.1%; indicating that 50.1% of the overall result values were flagged.
+Based on the data flagging decisions discussed in the previous questions, the 2021 dataset did not achieve all Completeness Measure A goals. By parameter, all dissolved metals had a value of 0% for Completeness Measure A since the decision was made to flag these as a result of an inability to calculate Relative Percent Difference values. 
+
+By Site, Completeness Measure A values ranged from 44.4% - 71.4%, depending on the site's sampling plan. 
+
+For the overall 2021 dataset, Completeness Measure A is calculated at 50.1%; indicating that 50.1% of the overall result values were flagged.
 
 <br>
+
+Work in progress here as of `r Sys.Date()`
+
+```{r echo = F}
+knitr::knit_exit()
+```
 
 **26.) Does project meet Completeness Measure B criteria?**
 
@@ -2078,7 +2102,6 @@ From the QAPP, Completeness Measure B: "the planned number of samples divided by
 -   For individual parameters
 -   For individual sites
 -   As a project whole
-
 
 ```{r echo = F, message=FALSE}
 
@@ -2138,17 +2161,6 @@ write.csv(cmb_by_method,"other/output/field_qa_qc_data/completeness_measures/cmb
 
  
 ```
-
-
-
-
-Work in progress here as of `r Sys.Date()`
-
-```{r echo = F}
-knitr::knit_exit()
-```
-
-
 
 --\> TO DO: confirm trip blank values are zero for BTEX
 
