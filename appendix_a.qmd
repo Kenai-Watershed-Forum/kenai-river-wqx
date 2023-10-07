@@ -1274,14 +1274,16 @@ spring21_planned <- read_excel("other/input/2021_wqx_data/spring_2021_wqx_data/S
 summer21_planned <- read_excel("other/input/2021_wqx_data/summer_2021_wqx_data/SGS/KRBWQM_SGS_bottle_order_Summer_2021.xlsx", sheet = "bottles_analyses_summer_2021") %>%
   mutate(activity_start_date = summer21_sample_date)
 
+
 ## combine spring and summer 2021 planned samples
 planned_samples_2021 <- bind_rows(spring21_planned,summer21_planned) %>%
   
 ## prepare and summarise table samples collected and tests performed
   clean_names() %>%
   filter(item == "Bottle") %>%
-  select(site,container_size,quantity,preservative,analysis_1,analysis_2,activity_start_date) %>%
+  select(monitoring_location_id,site,container_size,quantity,preservative,analysis_1,analysis_2,activity_start_date) %>%
   fill(site, .direction = "down") %>%
+  fill(monitoring_location_id, .direction = "down") %>%
   filter(site != "Spare Kit") %>%
   # make sample type names consistent
   mutate(sample_type = case_when(
@@ -1323,7 +1325,7 @@ planned_samples_2021 <- bind_rows(spring21_planned,summer21_planned) %>%
   select(-sample_type)
 
 # clear intermediary dataframes steps
-rm(spring21_planned,summer21_planned)
+# rm(spring21_planned,summer21_planned)
 
 
 # create summary table of PLANNED samples
@@ -1342,10 +1344,27 @@ planned_samples_2021_summary <- planned_samples_2021 %>%
     activity_type == "Field Msr/Obs" ~ "Field Msr/Obs",
     activity_type == "Trip Blank" ~ "Quality Control Sample-Trip Blank"
   ))
+
+# BY SITE
+# create summary table of PLANNED samples BY SITE
+planned_samples_2021_summary_by_site <- planned_samples_2021 %>%
+  group_by(monitoring_location_id,analysis,expected_results,activity_start_date,activity_type) %>%
+  summarise(expected_ct = sum(expected_results)) %>%
+  ungroup() %>%
+  select(-expected_results) %>%
+  rename(expected_results_n = expected_ct,
+         result_analytical_method_id = analysis) %>%
+  transform(activity_start_date = mdy(activity_start_date),
+            expected_results_n = as.numeric(expected_results_n)) %>%
+  # replace naming conventions in "activity_type" column to match join dataframe
+  mutate(activity_type = case_when(
+    activity_type == "Field Duplicate" ~ "Quality Control Field Replicate Msr/Obs",
+    activity_type == "Field Msr/Obs" ~ "Field Msr/Obs",
+    activity_type == "Trip Blank" ~ "Quality Control Sample-Trip Blank"
+  ))
+
   
-
 ### create table of quantity of samples (results) actually collected; not grouped by parameter, but instead by analysis type
-
 total_samples_collected_2021_summary <- read.csv('other/output/aqwms_formatted_results/2021_kwf_baseline_results_aqwms.csv') %>%
   clean_names() %>%
   group_by(result_analytical_method_id,activity_start_date,activity_type) %>%
@@ -1862,6 +1881,7 @@ export_dat <- read.csv('other/output/aqwms_formatted_results/2021_kwf_baseline_r
   transform(activity_start_date = ymd(activity_start_date))
 
 # apply manually-chosen data flags based on discussion in question 19
+# NOTE: this csv also has a column for summary rationale for each flagging decision
 flags_2021 <- read.csv('other/input/AQWMS/2021_data_flag_decisions.csv') %>%
   select(-notes) %>%
   transform(activity_start_date = mdy(activity_start_date))
@@ -1980,9 +2000,11 @@ From the QAPP, Completeness Measure A: "the primary number of samples collected 
 
 We calculated Completeness Measure A at the following project scales:
 
--   As a project whole
 -   For individual parameters
 -   For individual sites
+-   As a project whole
+
+
 
 ```{r echo = F, message=FALSE}
 # read in list of analytes specified in QAPP
@@ -2081,29 +2103,31 @@ xfun::embed_file("other/output/field_qa_qc_data/completeness_measures/cma_projec
 
 *Discussion on "Completeness Measure A" Results*
 
-Based on the data flagging decisions discussed in the previous questions, the 2021 dataset did not achieve all Completeness Measure A goals. By parameter, all dissolved metals had a value of 0% for Completeness Measure A since the decision was made to flag these as a result of an inability to calculate Relative Percent Difference values. 
+Based on the data flagging decisions discussed in the previous questions, the 2021 dataset did not achieve all Completeness Measure A goals. 
 
-By Site, Completeness Measure A values ranged from 44.4% - 71.4%, depending on the site's sampling plan. 
+When completeness results were summarized by parameter, all dissolved metals had a value of 0% for Completeness Measure A since the decision was made to flag these as a result of an inability to calculate Relative Percent Difference values. 
 
-For the overall 2021 dataset, Completeness Measure A is calculated at 50.1%; indicating that 50.1% of the overall result values were flagged.
+When completeness results were summarised by Site, Completeness Measure A values ranged from 44.4% - 71.4%, depending on the site's sampling plan. 
+
+When completeness results are summarized for the overall 2021 dataset, Completeness Measure A is calculated at 50.1%; indicating that 50.1% of the overall result values were flagged.
 
 <br>
 
-Work in progress here as of `r Sys.Date()`
 
-```{r echo = F}
-knitr::knit_exit()
-```
 
 **26.) Does project meet Completeness Measure B criteria?**
 
 From the QAPP, Completeness Measure B: "the planned number of samples divided by the useable samples (submitted to ADEC) with a goal of 60%."
 
--   For individual parameters
+For these calculations, we will consider "usable" as "unflagged
+
+-   For individual parameters (analysis methods)
 -   For individual sites
 -   As a project whole
 
 ```{r echo = F, message=FALSE}
+
+# NOTE: IF THE NUMBER/TYPE OF PLANNED SAMPLES IS IDENTICAL TO THE SAMPLES ACTUALLY COLLECTED, THAT COMPLETENESS MEASURES A = COMPLETENESS MEASURES B
 
 # BY PARAMETER (actually by method)
 # unflagged (usable) vs expected results
@@ -2130,6 +2154,12 @@ write.csv(cmb_by_method,"other/output/field_qa_qc_data/completeness_measures/cmb
 
 # BY SITE
 # unflagged (usable) vs expected results
+
+# prepare table of planned sample summary that includes site names
+
+
+
+# repeat methods as above for parameter
 cmb_by_site <- read.csv('other/output/aqwms_formatted_results/2021_export_data_flagged.csv') %>%
   clean_names() %>%
   # reduce the list of analytes to only those specified in QAPP
@@ -2141,26 +2171,29 @@ cmb_by_site <- read.csv('other/output/aqwms_formatted_results/2021_export_data_f
   pivot_wider(names_from = "flag", values_from = "unflagged_results_n") %>%
   rename(flag_Y = Y,
          flag_N = N) %>%
-  
-  # WORKING HERE: 8/24/2023:::format for planned sample summary df does not include site names yet. create df that includes site names
-  
-  
-  
-  
-  left_join(planned_samples_2021_summary) %>%
-  # calculate Completeness Measure B for each parameter
-  mutate(cmb = flag_N/expected_results_n)%>%
+  left_join(planned_samples_2021_summary_by_site) %>%
+  # calculate Completeness Measure B for each SITE
+  mutate(cmb = flag_N/expected_ct)%>%
   mutate(cmb = replace_na(cmb,0)) %>%
   adorn_pct_formatting(,,,cmb)
+
+# calculated results here are non-sensical. re-assess what we need in the tables being joined; by site
+
+
 write.csv(cmb_by_method,"other/output/field_qa_qc_data/completeness_measures/cmb_parameter.csv")
 
+# BY PROJECT WHOLE
+# unflagged (usable) vs expected results 
 
-  
 
-
-
- 
 ```
+
+Work in progress here as of `r Sys.Date()`
+
+```{r echo = F}
+knitr::knit_exit()
+```
+
 
 --\> TO DO: confirm trip blank values are zero for BTEX
 
