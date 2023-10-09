@@ -917,7 +917,7 @@ swwtp_tss21 %<>%
 
 ####### The SWWTP SOP for TSS specifies the following for QA practices: "Every year the Soldotna WWTP must participate in the DMR QA as part of our NPDES permit.  Part of the DMR QA test set is the TSS PE sample.  This test must be performed and we must pass the sample to be able to report data for the year." Further details on the DMR QA test at https://www.epa.gov/compliance/discharge-monitoring-report-quality-assurance-study-program
 
-####### Bottom line: need to report this gap in planned QA practices, and re-instate recommended QA for TSS for 2023 !!! This topic has been added to the agenda of the technical advisory committee meeting March 20th, 2023.
+####### Bottom line: need to re-instate recommended QA for TSS for 2023. This topic has been added to the agenda of the technical advisory committee meeting March 20th, 2023.
 
 ####### Update code here for 2023 and/or other previous years 2014-2020
 
@@ -1854,7 +1854,8 @@ All 2021 field results will be submitted unflagged to the EPA WQX unless discuss
 
 -   *Fecal Coliform*
 
-    -   Given that 3 out of 4 RPD values for fecal coliform values are \>60%, field data values for the 2021 dataset may vary from actual environmental conditions. The 2020 KWF QAPP does not specify an RPD value for fecal coliform, it only specifies control checks for sterility and temperature. We used EPA Method 9222D (drinking water) for fecal coliform analysis methods, which does not specify an RPD value. However EPA general recommendations for pathogens in sewage sludge recommends and RPD of 20% [(link)](https://www.epa.gov/biosolids/quality-assurance-project-plan-qapp). 
+    -   Given that 3 out of 4 RPD values for fecal coliform values are \>60%, field data values for the 2021 dataset may vary from actual environmental conditions. The 2020 KWF QAPP does not specify an RPD value for fecal coliform, it only specifies control checks for sterility and temperature. We used EPA Method 9222D (drinking water) for fecal coliform analysis methods, which does not specify an RPD value. However EPA general recommendations for pathogens in sewage sludge recommends and RPD of 20% [(link)](https://www.epa.gov/biosolids/quality-assurance-project-plan-qapp).
+
     -   Given the above considerations, KWF will submit 2021 fecal coliform data to the EPA WQX as "flagged". Fecal coliform data will be evaluated in this report and assessed against state standards, but given the high RPD values among duplicate samples, 2021 data will likely not be considered in the context of potential regulatory exceedences.
 
     -   TO DO: Calculate and visualize RPD values for 2014-2022 and compare, also compare to RPD values in previous comprehensive report.
@@ -2004,8 +2005,6 @@ We calculated Completeness Measure A at the following project scales:
 -   For individual sites
 -   As a project whole
 
-
-
 ```{r echo = F, message=FALSE}
 # read in list of analytes specified in QAPP
 analytes_2021 <- read.csv("other/input/AQWMS/analytes_list_manual_edit.csv")
@@ -2103,17 +2102,15 @@ xfun::embed_file("other/output/field_qa_qc_data/completeness_measures/cma_projec
 
 *Discussion on "Completeness Measure A" Results*
 
-Based on the data flagging decisions discussed in the previous questions, the 2021 dataset did not achieve all Completeness Measure A goals. 
+Based on the data flagging decisions discussed in the previous questions, the 2021 dataset did not achieve all Completeness Measure A goals.
 
-When completeness results were summarized by parameter, all dissolved metals had a value of 0% for Completeness Measure A since the decision was made to flag these as a result of an inability to calculate Relative Percent Difference values. 
+When completeness results were summarized by parameter, all dissolved metals had a value of 0% for Completeness Measure A since the decision was made to flag these as a result of an inability to calculate Relative Percent Difference values.
 
-When completeness results were summarised by Site, Completeness Measure A values ranged from 44.4% - 71.4%, depending on the site's sampling plan. 
+When completeness results were summarised by Site, Completeness Measure A values ranged from 44.4% - 71.4%, depending on the site's sampling plan.
 
 When completeness results are summarized for the overall 2021 dataset, Completeness Measure A is calculated at 50.1%; indicating that 50.1% of the overall result values were flagged.
 
 <br>
-
-
 
 **26.) Does project meet Completeness Measure B criteria?**
 
@@ -2125,7 +2122,7 @@ For these calculations, we will consider "usable" as "unflagged
 -   For individual sites
 -   As a project whole
 
-```{r echo = F, message=FALSE}
+```{r echo = F, message=FALSE, eval= F}
 
 # NOTE: IF THE NUMBER/TYPE OF PLANNED SAMPLES IS IDENTICAL TO THE SAMPLES ACTUALLY COLLECTED, THAT COMPLETENESS MEASURES A = COMPLETENESS MEASURES B
 
@@ -2158,7 +2155,6 @@ write.csv(cmb_by_method,"other/output/field_qa_qc_data/completeness_measures/cmb
 # prepare table of planned sample summary that includes site names
 
 
-
 # repeat methods as above for parameter
 cmb_by_site <- read.csv('other/output/aqwms_formatted_results/2021_export_data_flagged.csv') %>%
   clean_names() %>%
@@ -2178,6 +2174,7 @@ cmb_by_site <- read.csv('other/output/aqwms_formatted_results/2021_export_data_f
   adorn_pct_formatting(,,,cmb)
 
 # calculated results here are non-sensical. re-assess what we need in the tables being joined; by site
+# WORKING HERE 10/7/2023
 
 
 write.csv(cmb_by_method,"other/output/field_qa_qc_data/completeness_measures/cmb_parameter.csv")
@@ -2188,12 +2185,45 @@ write.csv(cmb_by_method,"other/output/field_qa_qc_data/completeness_measures/cmb
 
 ```
 
+Work still in progress on calculating Completness Measures B as of `r Sys.Date()`
+
+<br>
+
+**27.) Was the QA officer consulted for any data concerns?**
+
+*Note: the 2012 and 2019 approved Quality Assurance Action Plan (QAPP) documents list Alaska Dept of Environmental Conservation Staff as the project's QA officer* [@kenaiwatershedforum2012; @kenaiwatershedforum2019]*, whereas the 2023 approved QAPP lists Kenai Watershed Forum staff as the project QA officer*[@kenaiwatershedforum2023]*.*
+
+Kenai Watershed Forum consulted regularly with staff from the Alaska Department of Environmental Conservation in order to prepare 2021 field data and confirm methods.
+
+<br>
+
+**Are the correct monitoring locations associated with the project?**
+
+```{r echo = F, message=FALSE}
+
+site_check <- export_dat %>%
+  distinct(monitoring_location_id,activity_latitude,activity_longitude) %>%
+  transform(activity_longitude = as.numeric(activity_longitude))
+
+library(leaflet)
+
+leaflet(site_check) %>%
+  addTiles() %>%
+  addMarkers(~activity_longitude,~activity_latitude,
+             popup = ~as.character(monitoring_location_id),
+             label = ~as.character(monitoring_location_id))
+
+
+# juneau creek coords are wrong 
+
+```
+
+
 Work in progress here as of `r Sys.Date()`
 
 ```{r echo = F}
 knitr::knit_exit()
 ```
-
 
 --\> TO DO: confirm trip blank values are zero for BTEX
 
