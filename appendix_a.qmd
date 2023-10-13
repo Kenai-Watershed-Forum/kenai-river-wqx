@@ -957,7 +957,7 @@ rm(swwtp_tss_spring21,swwtp_tss_sitenames,swwtp_tss21)
 site_coords <- read_excel("other/input/AQWMS/AQWMS_template_matching_table.xlsx", sheet = "site_coordinates") %>%
   remove_empty()
 
-## join coords to overall df
+ ## join coords to overall df
 dat <- left_join(dat,site_coords)
 
 
@@ -1098,6 +1098,8 @@ dat %<>%
 
 # 6/21/23:: check to see if format will still work for EPA WQX template
 
+# 10/12/2023 - there might not be a poing to doing 'all' of this formatting at this stage, if we don;t have it flagged and ready for export yet
+
 dat %<>%
   # Proceeding left to right across columns of AWQMS template
   # Mutate new column or rename existing column as needed
@@ -1200,7 +1202,6 @@ The above data sources have been collated in to a single .csv file (available fo
 xfun::embed_file('other/output/aqwms_formatted_results/2021_kwf_baseline_results_aqwms.csv', text = "Download All Provisional 2021 Kenai River Baseline Water Quality Monitoring Results, Formatted for EPA WQX uplift")
 
 
-
 # check unique activity types
 #z <- read.csv("other/output/aqwms_formatted_results/2021_kwf_baseline_results_aqwms.csv")
 #z1 <- data.frame(unique(z$Characteristic.Name))
@@ -1214,7 +1215,7 @@ xfun::embed_file('other/output/aqwms_formatted_results/2021_kwf_baseline_results
 
 ### 2021 Data QA/QC Evaluation
 
-Prior to uplift to the EPA WQX, all water quality data must be checked against a series of standard questions in order to evaluate how quality assurance / quality check (QA/QC) requirements are met. The draft Data Evaluation Checklist Template (available for download below) outlines these questions:
+Prior to upload to the EPA WQX, all water quality data must be checked against a series of standard questions in order to evaluate how quality assurance / quality check (QA/QC) requirements are met. The draft Data Evaluation Checklist Template (available for download below) outlines these questions:
 
 ```{r, echo = F}
 xfun::embed_file('other/documents/AQWMS_documents/Kenai_Baseline_Data_Evaluation_Checklist_20230331.xlsx', text = "Download Draft Kenai Baseline Data Evaluation Checklist Template")
@@ -1901,6 +1902,12 @@ export_dat <- full_join(export_dat,flags_2021) %>%
 # re-export results w/ rpd flag column
 write.csv(export_dat,"other/output/aqwms_formatted_results/2021_export_data_flagged.csv")
 
+# remove existing "export_dat" dataframe
+rm(export_dat)
+
+
+# Coordinates for JC site are still correct at this step.
+# is RM 43 missing longitude?
 ```
 
 <br>
@@ -2197,14 +2204,26 @@ Kenai Watershed Forum consulted regularly with staff from the Alaska Department 
 
 <br>
 
-**Are the correct monitoring locations associated with the project?**
+**28.) Are the correct monitoring locations associated with the project?**
 
 ```{r echo = F, message=FALSE}
 
+# read in locations from exported data (export_dat)
+export_dat <- read.csv("other/output/aqwms_formatted_results/2021_export_data_flagged.csv")
+
 site_check <- export_dat %>%
   distinct(monitoring_location_id,activity_latitude,activity_longitude) %>%
-  transform(activity_longitude = as.numeric(activity_longitude))
+  transform(activity_longitude = as.numeric(iconv(activity_longitude, 'utf-8', 'ascii', sub=''))) %>%
 
+  # the row for KR RM 43 longitude likely contains a non-unicode character, thus the "iconv" function, otherwise it becomes NA. The above transform also leave that row as latitude > 0, thus the "case_when" step below. Sheesh!
+  
+  mutate(activity_longitude = case_when(
+    monitoring_location_id == "KR RM 43" ~ activity_longitude*-1,
+    TRUE ~ activity_longitude
+  ))
+  
+
+# generate map
 library(leaflet)
 
 leaflet(site_check) %>%
@@ -2213,10 +2232,57 @@ leaflet(site_check) %>%
              popup = ~as.character(monitoring_location_id),
              label = ~as.character(monitoring_location_id))
 
+```
 
-# juneau creek coords are wrong 
+In the above map we can see that coordinates for the 2021 field sites correspond to the locations listed in the Quality Assurance Project Plan.
+
+<br>
+
+**29.) Are the QAPP and other supporting documents attached?**
+
+The QAPP will be included and attached in the data submission to the EPA WQX. Find the current approved QAPP posted on Kenai Watershed Forum's website at https://www.kenaiwatershed.org/news-media/qapp-revisions-completed-2023/.
+
+<br>
+
+**30.) Is all project metdata correct?**
+
+Answer TBD.
+
+<br>
+
+**31.) Is the organization ID correct?**
+
+Kenai Watershed Forum's Organization ID in the EPA Water Quality Exchange is "EPA_WQX." This value is manually confirmed during the upload process.
+
+<br>
+
+**32.) Are the time zones consistent and correct (AKDT in summer)?**
+
+```{r echo = F}
+
+# Existing format does not include AKDT time zone column.
+
+# read in locations from exported data (export_dat)
+export_dat <- read.csv("other/output/aqwms_formatted_results/2021_export_data_flagged.csv") %>%
+  mutate(time_zone = "AKDT")
+# re-write export_dat
+write.csv(export_dat,"other/output/aqwms_formatted_results/2021_export_data_flagged.csv")
 
 ```
+
+All times zones are listed as AKDT.
+
+<br>
+
+**32.) Are all media types included? Media types appropriate to Characteristic?**
+
+"Water" is the only media type considered in this project. All "Characteristics" (parameters) are measured from water samples or in-situ water conditions.
+
+
+
+
+
+
 
 
 Work in progress here as of `r Sys.Date()`
