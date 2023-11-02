@@ -2204,7 +2204,7 @@ Kenai Watershed Forum consulted regularly with staff from the Alaska Department 
 
 <br>
 
-**28.) Are the correct monitoring locations associated with the project?**
+**28.) Are the correct monitoring locations associated with the project? Are latitide and longitude filled out in a consistent format?**
 
 ```{r echo = F, message=FALSE}
 
@@ -2234,7 +2234,7 @@ leaflet(site_check) %>%
 
 ```
 
-In the above map we can see that coordinates for the 2021 field sites correspond to the locations listed in the Quality Assurance Project Plan.
+In the above map we can see that coordinates for the 2021 field sites correspond to the locations listed in the Quality Assurance Project Plan, thus they are filled out in a consistent format.
 
 <br>
 
@@ -2274,9 +2274,15 @@ All times zones are listed as AKDT.
 
 <br>
 
-**32.) Are all media types included? Media types appropriate to Characteristic?**
+**33.) Are all media types included? Media types appropriate to Characteristic?**
 
 "Water" is the only media type considered in this project. All "Characteristics" (parameters) are measured from water samples or in-situ water conditions.
+
+<br>
+
+**34.) Check Sample Collection, Preparation and Preservation Methods, Thermal Preservative, Equipment ID, Activity Media. Is supporting information included and correct??**
+
+
 
 
 
