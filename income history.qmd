@@ -1,0 +1,66 @@
+---
+title: Baseline Financial History
+execute:
+  echo: false
+  
+---
+
+
+Plot and summarise KWF Baseline Water Quality Financial Income History
+
+```{r echo = F}
+
+# clear environment
+rm(list=ls())
+
+# load packages
+library(tidyverse)
+library(readxl)
+library(openxlsx)
+library(data.table)
+library(stringr)
+library(magrittr)
+library(janitor)
+library(hms)
+library(lubridate)
+library(anytime)
+
+```
+
+
+```{r echo = F}
+# read in and restructure data to long format
+dat <- read_excel("other/input/financial/Baseline Income History.xlsx", 
+                  sheet = "income_history", range = "D4:W17") %>%
+  rename("org" = "...1") %>%
+  filter(!is.na(org)) %>%
+  pivot_longer(cols = "2005":"2023",names_to = "year")
+
+
+# plot 1
+dat %>%
+  ggplot(aes(x = year, y = value, label = value, fill = org)) +
+  geom_bar(stat = "identity") +
+  scale_y_continuous(labels = scales::dollar_format()) +
+  xlab("") +
+  ylab("") +
+  ggtitle("Baseline Income History 2005-2023")
+
+ggsave("other/output/financial/2005_2023_income_plot1.jpg", width = 10, height = 8)
+
+  
+# plot 2
+dat %>%
+  ggplot(aes(x = year, y = value, label = value)) +
+  geom_bar(stat = "identity", position = "dodge") +
+  facet_grid(org ~ .) +
+  theme(strip.text.y = element_text(angle = 360)) +
+  scale_y_continuous(labels = scales::dollar_format()) +
+  xlab("") +
+  ylab("") +
+  ggtitle("Baseline Income History 2005-2023")
+
+ggsave("other/output/financial/2005_2023_income_plot2.jpg", width = 10, height = 8)
+
+```
+
