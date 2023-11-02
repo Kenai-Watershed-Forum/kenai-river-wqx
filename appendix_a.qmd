@@ -2282,8 +2282,94 @@ All times zones are listed as AKDT.
 
 **34.) Check Sample Collection, Preparation and Preservation Methods, Thermal Preservative, Equipment ID, Activity Media. Is supporting information included and correct??**
 
+```{r echo = F}
+# sample collection method
+unique(export_dat$equipment_id)
+
+```
+"Sample collection method": all sample values have "Equipment ID" listed as "Water Bottle."
+
+"Preparation":this information corresponds to the "result sample fraction" column 
+
+"Preservation Methods": this information corresponds to the "preservative" and "thermal preservative" columns.
+
+<br>
+
+**35.) Are all expected activity types present and are QC samples correctly identified?**
+
+```{r echo = F}
+# id unique
+unique(export_dat$activity_type)
+
+```
+
+<br>
+
+The activity types present are listed above. All three types were planned and anticipated. QC samples are described earlier in Question #3.
+
+<br>
+
+**36.) Is the Activity media subdivision filled in (if relevant)?**
+
+```{r echo = F}
+
+unique(export_dat$activity_media_subdivision_name)
+
+```
+All "Activity Media Subdivision" names are listed as "Surface Water."
 
 
+<br>
+
+**37.) For Water activity media, is the relative depth filled in?**
+
+Yes, "activity depth height measure" and "activity depth height measure unit" are included as columns.
+
+<br>
+
+**38.) Is the number of results for each Characteristic correct?**
+
+Questions #2 and #3 address this topic in detail. A summary table of the total number of observations for each characteristic is available in the downloadable table below.
+
+```{r echo = F}
+#summarise
+chr_num <- export_dat %>%
+  group_by(characteristic_name) %>%
+  tally()
+
+# save
+dir <- "other/output/misc/characteristic_count_2021.csv"
+write.csv(chr_num,dir)
+```
+
+```{r echo = F}
+# embed for download
+xfun::embed_file(dir, text = "Download Observation Count by Characteristic, 2021 Kenai River Baseline Water Quality")
+```
+
+<br>
+
+**39.) Do the range of result values make sense?**
+
+The range of results will be evaluated visually and numerically in each characteristic-specific section of the comprehensive report, relative to past results. Likely outliers will be identified and recorded in spreadsheet (download below). Each likely outlier will have accompanying notes discussing the choice, and a decisions as to whether further statistical investigation is warranted.
+
+```{r echo = F}
+embed_file("other/input/outliers/baseline_outliers.xlsx", text = "Download identified potential outliers for 2021 Kenai River Baseline Water Quality data")
+
+```
+
+<br>
+
+**40.) Are units correct and consistent for each parameter?**
+
+```{echo = F}
+
+unit_tbl <- export_dat %>%
+  select(characteristic_name,result_unit) %>%
+  distinct()
+unique(export_dat$result_unit)
+
+```
 
 
 
