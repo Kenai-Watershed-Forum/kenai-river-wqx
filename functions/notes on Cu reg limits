@@ -1,0 +1,15 @@
+11/16/2023
+
+Following through on Cu as example parameter with non-static regulatory value; depends on hardness
+
+steps:
+
+1.) in external script, calculate hardness for all sample events where available, store csv
+
+2.) modify boxplot script 
+- try case_when - source for parameters where reg limits are calculated vs not
+case_when(parameter = one_of(static_reg_vals, source("static_reg_vals.xlsx",
+          parameter = one_of(dynamic_reg_vals,source)   )))
+          
+
+Still working here, not sure how to make dynamic calculations/references

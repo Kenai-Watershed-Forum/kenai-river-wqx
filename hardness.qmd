@@ -1,0 +1,24 @@
+# Hardness
+
+---
+execute:
+  echo: false
+date: "`r Sys.Date()`"
+format:
+  html:
+    code-fold: true
+    code-tools: true
+    code-summary: "Show the code"
+---
+
+Some parameter results are evaluated against hardness-dependent regulatory criteria. We calculated hardness according to the following formula:
+
+Hardness = 2.497(Total Calcium in mg/L) + 4.119(Total Magnesium in mg/L)
+
+
+
+```{r echo = F, warning=FALSE, message=FALSE,fig.height=10}
+
+
+
+```
