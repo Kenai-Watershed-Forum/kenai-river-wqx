@@ -7,3 +7,7 @@ some regulatory limits require special consideration for how to plot. eg Cu has 
 maybe a function calculate hardness?
 
 try doing all this for Cu specifically and see what we can learn
+
+
+
+seperate external script that calculates reg limits & hardness for all parameters, all sample events
