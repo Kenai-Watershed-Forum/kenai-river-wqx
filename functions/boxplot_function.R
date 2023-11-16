@@ -33,6 +33,8 @@ trib_order <- c("No Name Creek",
 # Select mainstem Kenai River sites that are part of baseline monitoring
 
 # read in regulatory values
+
+# static reg values
 reg_vals <- read_xlsx("other/input/regulatory_limits/master_reg_limits.xlsx", sheet = "static_regulatory_values") %>%
   filter(!is.na(agency),
          standard_type %in% c("drinking_water","irrigation_water","stock_water")) %>%
@@ -44,9 +46,12 @@ reg_vals <- read_xlsx("other/input/regulatory_limits/master_reg_limits.xlsx", sh
 # --> to do: select whichever static limit is the lowest and show that one, distinguish what type of
 # limit by legend
 
+
+
+
+
+
 # will need a step here to convert units to make reg value match parameter vals
-
-
 
 # Describe Overall Boxplot function
 

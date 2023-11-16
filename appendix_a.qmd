@@ -1199,7 +1199,7 @@ write.csv(dat,"other/output/aqwms_formatted_results/2021_kwf_baseline_results_aq
 The above data sources have been collated in to a single .csv file (available for download) into a format compatible with the EPA Water Quality Exchange. ***These data have not yet been evaluated against QA/QC standards following guidance in the current project Quality Assurance Project Plan.***
 
 ```{r, echo = F}
-xfun::embed_file('other/output/aqwms_formatted_results/2021_kwf_baseline_results_aqwms.csv', text = "Download All Provisional 2021 Kenai River Baseline Water Quality Monitoring Results, Formatted for EPA WQX uplift")
+xfun::embed_file('other/output/aqwms_formatted_results/2021_kwf_baseline_results_aqwms.csv', text = "Download All Provisional 2021 Kenai River Baseline Water Quality Monitoring Results, Formatted for EPA WQX import")
 
 
 # check unique activity types

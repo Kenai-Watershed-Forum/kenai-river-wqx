@@ -1,0 +1,45 @@
+# Regulatory Limits
+
+We calculated regulatory limits based on freshwater quality standards listed from state and federal regulatory agencies.
+
+https://dec.alaska.gov/water/water-quality/standards/
+
+
+##Hardness
+
+Some regulatory values are hardness-dependent, and hardness varies by site, by season, and with hydrologic conditions. We calculated hardness according to the following formula:
+
+Hardness = 2.497(Total Calcium in mg/L) + 4.119(Total Magnesium in mg/L)
+
+For sampling events with duplicate samples, we calculated average hardness
+
+```{r echo = F}
+# calculate hardness for all sample events in project history
+
+# source formatted data
+dat <- read.csv("other/output/analysis_format/baseline_analysis_format.csv")
+
+# calculate hardness column
+hd <- dat %>%
+  select(activity_identifier, activity_start_date, characteristic_name, result_measure_value) %>%
+  filter(characteristic_name %in% (c("Magnesium","Calcium"))) %>%
+  group_by(activity_identifier, activity_start_date, characteristic_name) %>%
+  summarise(avg_value = mean(result_measure_value)) %>%
+  pivot_wider(names_from = "characteristic_name", values_from = "avg_value") %>%
+  mutate(hardness = 2.497*(Calcium) + 4.119*(Magnesium)) %>%
+  select(-Calcium, -Magnesium)
+
+# join hardness back to overall dataset
+z <- left_join(dat,hd)
+
+# need to distinguish dup samples
+# this export does not seem to include the distinction?!
+
+# going back to appendix a to remedy
+
+# it appears that export from EPA WQX of 2000 - 2014 data does not include status of samples as DUP or Trip Blank. Are results included at all? Also not that from Summer 2022 - present we are also using field blanks
+
+# 11/16/23 working here to set up formulas for calculated criteria, see spreadsheet other/input/regulatory_limits
+  
+```
+
