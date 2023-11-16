@@ -23,11 +23,13 @@ book:
       chapters:
       - data_qa_qc.qmd
       - parameters.qmd
+      - hardness.qmd
       - arsenic.qmd
-      - benzene.qmd
       - cadmium.qmd
-      - calcium.qmd
       - chromium.qmd
+      - copper.qmd
+      - benzene.qmd
+      - calcium.qmd
       - summary.qmd
       - references.qmd
 

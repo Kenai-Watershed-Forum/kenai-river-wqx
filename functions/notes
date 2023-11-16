@@ -1,0 +1,9 @@
+consider a function that would spit out basic text results (max/min, what year they were observed, where)
+
+consider a function for trend analysis. don;t need to do this for all parameters, just when there's exceedences or general interest in the topic
+
+some regulatory limits require special consideration for how to plot. eg Cu has freshwater actute and chronic criteria that both depend on hardness
+
+maybe a function calculate hardness?
+
+try doing all this for Cu specifically and see what we can learn

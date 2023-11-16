@@ -2351,7 +2351,7 @@ xfun::embed_file(dir, text = "Download Observation Count by Characteristic, 2021
 
 **39.) Do the range of result values make sense?**
 
-The range of results will be evaluated visually and numerically in each characteristic-specific section of the comprehensive report, relative to past results. Likely outliers will be identified and recorded in spreadsheet (download below). Each likely outlier will have accompanying notes discussing the choice, and a decisions as to whether further statistical investigation is warranted.
+Prior to upload to the EPA WQX, the range of results will be evaluated visually and numerically in each characteristic-specific section of the comprehensive report, relative to past results. Likely outliers will be identified and recorded in a dedicated spreadsheet (download below). Each likely outlier will have accompanying notes discussing the choice, and a decisions as to whether a more detailed statistical investigation is warranted.
 
 ```{r echo = F}
 embed_file("other/input/outliers/baseline_outliers.xlsx", text = "Download identified potential outliers for 2021 Kenai River Baseline Water Quality data")
