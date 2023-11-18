@@ -14,6 +14,8 @@ Hardness = 2.497(Total Calcium in mg/L) + 4.119(Total Magnesium in mg/L)
 For sampling events with duplicate samples, we calculated average hardness
 
 ```{r echo = F}
+library(tidyverse)
+
 # calculate hardness for all sample events in project history
 
 # source formatted data
@@ -24,6 +26,7 @@ hd <- dat %>%
   select(activity_identifier, activity_start_date, characteristic_name, result_measure_value) %>%
   filter(characteristic_name %in% (c("Magnesium","Calcium"))) %>%
   group_by(activity_identifier, activity_start_date, characteristic_name) %>%
+  # get mean of duplicate samples
   summarise(avg_value = mean(result_measure_value)) %>%
   pivot_wider(names_from = "characteristic_name", values_from = "avg_value") %>%
   mutate(hardness = 2.497*(Calcium) + 4.119*(Magnesium)) %>%
@@ -40,6 +43,11 @@ z <- left_join(dat,hd)
 # it appears that export from EPA WQX of 2000 - 2014 data does not include status of samples as DUP or Trip Blank. Are results included at all? Also not that from Summer 2022 - present we are also using field blanks
 
 # 11/16/23 working here to set up formulas for calculated criteria, see spreadsheet other/input/regulatory_limits
+
+# 1.) read in static reg values
+# 2.) calculate acute values
+# 3.) calculate chronic values
+# 4.) calculate other condition-dependent values (e.g. temp)
   
 ```
 

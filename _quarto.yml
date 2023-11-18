@@ -24,7 +24,6 @@ book:
       - data_qa_qc.qmd
       - parameters.qmd
       - reg_limits.qmd
-      - hardness.qmd
       - arsenic.qmd
       - cadmium.qmd
       - chromium.qmd
