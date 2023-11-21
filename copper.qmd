@@ -11,31 +11,24 @@ format:
     code-summary: "Show the code"
 ---
 
-Typically present in surface waters, naturally low concentrations of copper are essential as micronutrients for plants and animals, but elevated levels can be toxic to certain aquatic species (USEPA, 2007). Concentrations of copper can increase in surface waters due to discharges from mining, the leather industry, electrical equipment, and fabricated metal products (USEPA, 2007). Copper is present in the brake pads of
-vehicles and can enter surface waters in storm water runoff (USEPA, 2015). The standard for copper set by the ADEC, ranges from 1.75 μg/L to 29.28 μg/L, depending on hardness, for chronic exposure to aquatic life in freshwater (see Appendix X) (ADEC 2008).
+Typically present in surface waters, naturally low concentrations of copper are essential as micronutrients for plants and animals, but elevated levels can be toxic to certain aquatic species (USEPA, 2007). Concentrations of copper can increase in surface waters due to discharges from mining, the leather industry, electrical equipment, and fabricated metal products (USEPA, 2007). Copper is present in the brake pads of vehicles and can enter surface waters in storm water runoff (USEPA, 2015). The standard for copper set by the ADEC, ranges from 1.75 μg/L to 29.28 μg/L, depending on hardness, for chronic exposure to aquatic life in freshwater (see Appendix X) (ADEC 2008).
 
-The highest concentration of copper in the mainstem was reported at _____ μg/L at [site] in [season/year], and the lowest levels were below the MDL of ____ μg/L. In the summer, ____ exceedances occurred at [sites], and copper concentrations exceeded the criteria during individual sampling dates at [sites]. Higher levels occurred ____, while the lowest concentrations were detected at ____. [Were exceedances were recorded for the mainstem during the sampling events in spring/summer?]. Copper concentrations in the tributaries ranged from ___ μg/L in the [site/year] to below the MDL of ___ μg/L that occurred in many locations during this project. Exceedances in the spring occurred at..... Exceedances in the summer occurred at ....
-
-
+The highest concentration of copper in the mainstem was reported at \_\_\_\_\_ μg/L at \[site\] in \[season/year\], and the lowest levels were below the MDL of \_\_\_\_ μg/L. In the summer, \_\_\_\_ exceedances occurred at \[sites\], and copper concentrations exceeded the criteria during individual sampling dates at \[sites\]. Higher levels occurred \_\_\_\_, while the lowest concentrations were detected at \_\_\_\_. \[Were exceedances were recorded for the mainstem during the sampling events in spring/summer?\]. Copper concentrations in the tributaries ranged from \_\_\_ μg/L in the \[site/year\] to below the MDL of \_\_\_ μg/L that occurred in many locations during this project. Exceedances in the spring occurred at..... Exceedances in the summer occurred at ....
 
 ```{r echo = F, warning=FALSE, message=FALSE,fig.height=10}
 
 # set parameter
 parameter <- "Copper"
 
-# source formatted data
-dat <- read.csv("other/output/analysis_format/baseline_analysis_format.csv")
+# source static regulatory criteria boxplot function
+source("functions/static_boxplot_function.R")
+make_boxplot(param = parameter)
 
-# source boxplot function
-source("functions/boxplot_function.R")
+# source calculated regulatory criteria plot(s) function
+
 
 # source table download function
 source("functions/table_download.R")
-
-# plot 
-make_boxplot(param = parameter)
-
-# download table
 download_tbl(param = parameter)
 
 ```

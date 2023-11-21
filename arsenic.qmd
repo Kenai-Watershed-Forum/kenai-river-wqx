@@ -11,25 +11,23 @@ format:
     code-summary: "Show the code"
 ---
 
-```{r echo = F, warning=FALSE, message=FALSE, fig.height=10}
+```{r echo = F, warning=FALSE, message=FALSE, fig.height=10, fig.width=10}
+
 
 # set parameter
 parameter <- "Arsenic"
 
-# read in prepared data from local directory
-dat <- read.csv("other/output/analysis_format/baseline_analysis_format.csv")
+# source static regulatory criteria boxplot function
+source("functions/static_boxplot_function.R")
+make_boxplot(param = parameter)
 
-# source boxplot function
-source("functions/boxplot_function.R")
+# source calculated regulatory criteria plot(s) function
+
 
 # source table download function
 source("functions/table_download.R")
-
-# plot 
-make_boxplot(param = parameter)
-
-# download table
 download_tbl(param = parameter)
+
 
 ```
 
