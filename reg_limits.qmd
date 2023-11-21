@@ -2,21 +2,27 @@
 
 We calculated regulatory limits based on freshwater quality standards listed from state and federal regulatory agencies.
 
-https://dec.alaska.gov/water/water-quality/standards/
+
 
 
 ##Hardness
 
 Some regulatory values are hardness-dependent, and hardness varies by site, by season, and with hydrologic conditions. We calculated hardness according to the following formula:
 
+:::{.callout-note appearance = "simple}
+
 Hardness = 2.497(Total Calcium in mg/L) + 4.119(Total Magnesium in mg/L)
 
-For sampling events with duplicate samples, we calculated average hardness
+:::
+
+For sampling events with duplicate samples, we calculated average hardness.
 
 ```{r echo = F}
 library(tidyverse)
+library(readxl)
+library(janitor)
 
-# calculate hardness for all sample events in project history
+# calculate hardness for all sample events in project history with available data
 
 # source formatted data
 dat <- read.csv("other/output/analysis_format/baseline_analysis_format.csv")
@@ -33,12 +39,46 @@ hard <- dat %>%
   select(-Calcium, -Magnesium)
 
 # join hardness back to overall dataset
-#z <- left_join(dat,hard) %>%
-  
-  # calc
+dat <- left_join(dat,hard) 
+
+# export hardness results
+dir <- "other/output/hardness/dat_hardness.csv"
+write.csv(dat, dir, row.names = F)
+
+# make data downloadable
+xfun::embed_file(dir, name = "Kenai River Baseline Hardness Data")
+
+```
+
+<br>
+
+We calculated hardness-dependent criteria based on formulas published on the Alaska Department of Environmental Conservation's Water Quality Standards Section website. The "Alaska Water Quality Criteria Manual for Toxic and other Deleterious Organic and Inorganic Substances" (2022) document along with the "Inorganic Toxics Criteria Worksheet" provide parameter-specific formulas for many substances.
+
+https://dec.alaska.gov/water/water-quality/standards/
+
+Hardness-dependent criteria may be calculated from the following for freshwater metals:
+
+Acute (dissolved) = exp {m A[ln(hardness)]+ bA} (CF)
+Chronic (dissolved) = exp{m C [ln(hardness)] + bC} (CF)
+
+```{r echo = F}
+
+# hardness-dependent criteria
+# see page 29 of "Alaska Water Quality Criteria Manual for Toxic and other Deleterious Organic and Inorganic Substances" for parameters and formulas
+
+# read in parameters for hardness dependent criteria
+diss_metals_hard_param <- read_excel("other/input/regulatory_limits/master_reg_limits.xlsx", skip = 1, sheet = "diss_metals_hard_parameters") %>%
+  remove_empty() %>%
+  select(-parameter_agency_name)
+
+# join calculation parameters to overall dataset
+z <- inner_join(dat, diss_metals_hard_param) %>%
+  # calculate hardness dependent criteria values
+  mutate(fw_acute_std = exp(m_a*(log(hardness)) + b_a)*fw_acute_convert)
 
 
 
+# for hardness dependent conversion factors, maybe use a case_when for those two (Cd, Pb) specifically
 
 
 
