@@ -1,4 +1,4 @@
-# Water Quality Parameters Results
+# Interpreting Boxplots
 
 ---
 execute:
@@ -324,11 +324,7 @@ dat <- anti_join(dat,outliers)
 # write finalized data that will be used for graphing and analysis to external location so it can be sourced by other qmd docs
 write.csv(dat,"other/output/analysis_format/baseline_analysis_format.csv",row.names = F)
 
-# experimenting w/ making a boxplot that shows reg limits as hlines
 
-source("functions/boxplot_function.R")
-parameter <- "Copper"
-make_boxplot(param = parameter)
 
 
 # https://stackoverflow.com/questions/40350230/variable-hline-in-ggplot-with-facet

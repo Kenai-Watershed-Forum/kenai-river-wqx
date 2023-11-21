@@ -22,7 +22,7 @@ library(tidyverse)
 dat <- read.csv("other/output/analysis_format/baseline_analysis_format.csv")
 
 # calculate hardness column
-hd <- dat %>%
+hard <- dat %>%
   select(activity_identifier, activity_start_date, characteristic_name, result_measure_value) %>%
   filter(characteristic_name %in% (c("Magnesium","Calcium"))) %>%
   group_by(activity_identifier, activity_start_date, characteristic_name) %>%
@@ -33,14 +33,18 @@ hd <- dat %>%
   select(-Calcium, -Magnesium)
 
 # join hardness back to overall dataset
-z <- left_join(dat,hd)
+#z <- left_join(dat,hard) %>%
+  
+  # calc
 
-# need to distinguish dup samples
-# this export does not seem to include the distinction?!
 
-# going back to appendix a to remedy
 
-# it appears that export from EPA WQX of 2000 - 2014 data does not include status of samples as DUP or Trip Blank. Are results included at all? Also not that from Summer 2022 - present we are also using field blanks
+
+
+
+
+
+# it appears that export from EPA WQX of 2000 - 2014 data does not include status of samples as DUP or Trip Blank. Are results included at all? Also note that from Summer 2022 - present we are also using field blanks
 
 # 11/16/23 working here to set up formulas for calculated criteria, see spreadsheet other/input/regulatory_limits
 
