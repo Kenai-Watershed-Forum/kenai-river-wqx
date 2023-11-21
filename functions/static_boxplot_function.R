@@ -36,8 +36,6 @@ trib_order <- c("No Name Creek",
 dat <- read.csv("other/output/analysis_format/baseline_analysis_format.csv")
 
 
-
-
 #### PREPARE PLOT #####
 
 # Regulatory Threshold Lines
