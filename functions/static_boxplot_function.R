@@ -41,6 +41,8 @@ dat <- read.csv("other/output/analysis_format/baseline_analysis_format.csv")
 # Regulatory Threshold Lines
 
 # static reg values
+
+
 reg_vals <- read_xlsx("other/input/regulatory_limits/master_reg_limits.xlsx", sheet = "static_regulatory_values") %>%
   filter(!is.na(agency),
          standard_type %in% c("drinking_water","irrigation_water","stock_water")) %>%
@@ -55,6 +57,21 @@ hline_data <- reg_vals %>%
   filter(characteristic_name == parameter) %>%
   pivot_longer(cols = ends_with("water"), names_to = "standard", values_to = "value") %>%
   rename("Standard" = "standard")
+
+# how to incorporate other reg vals here (N & P, bacteria, hydrocarbons, etc)
+
+# plan
+# 1.) develop lists of all STATIC reg limits. gather together into same DF here, w/ column for name type of limit
+# 2.) re-knit doc each time new category is added
+# 3.) develop separate calculated box plot for all non-static values
+
+# WORKING HERE 11/27/23
+
+
+
+
+
+
 
 
 
