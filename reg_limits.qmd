@@ -52,7 +52,7 @@ xfun::embed_file(dir, name = "Kenai River Baseline Hardness Data")
 
 <br>
 
-We calculated hardness-dependent criteria based on formulas published on the Alaska Department of Environmental Conservation's Water Quality Standards Section website. The "Alaska Water Quality Criteria Manual for Toxic and other Deleterious Organic and Inorganic Substances" (2022) document along with the "Inorganic Toxics Criteria Worksheet" provide parameter-specific formulas for many substances.
+We calculated hardness-dependent criteria based on formulas published on the Alaska Department of Environmental Conservation's Water Quality Standards Section website. The "Alaska Water Quality Criteria Manual for Toxic and other Deleterious Organic and Inorganic Substances" (2022) document, along with the "Inorganic Toxics Criteria Worksheet" provide parameter-specific formulas for many substances.
 
 https://dec.alaska.gov/water/water-quality/standards/
 
@@ -69,16 +69,37 @@ Chronic (dissolved) = exp{m C [ln(hardness)] + bC} (CF)
 # read in parameters for hardness dependent criteria
 diss_metals_hard_param <- read_excel("other/input/regulatory_limits/master_reg_limits.xlsx", skip = 1, sheet = "diss_metals_hard_parameters") %>%
   remove_empty() %>%
-  select(-parameter_agency_name)
+  select(-parameter_agency_name) %>%
+  filter(!is.na(characteristic_name))
 
 # join calculation parameters to overall dataset
+
+
 z <- inner_join(dat, diss_metals_hard_param) %>%
   # calculate hardness dependent criteria values
-  mutate(fw_acute_std = exp(m_a*(log(hardness)) + b_a)*fw_acute_convert)
+  
+  ## ACUTE ##
+  mutate(fw_acute_std = case_when(
+    # cadmium
+    characteristic_name == "Cadmium" ~ exp(m_a*log(hardness) + b_a) * (1.136672 - ((log(hardness)*0.041838))),
+    # lead
+    characteristic_name == "Lead" ~ exp(m_a*log(hardness) + b_a) * (1.46203 - ((log(hardness)*0.145712))),
+    # all other acute hardness-dependent criteria
+    .default = exp(m_a*log(hardness) + b_a)
+  )) %>%
+  
+  ## CHRONIC ##
+  mutate(fw_chronic_std = case_when(
+    # cadmium
+    characteristic_name == "Cadmium" ~ exp(m_c*log(hardness) + b_c) * (1.101672 - ((log(hardness)*0.041838))),
+    # lead (identical formula as acute)
+    characteristic_name == "Lead" ~ exp(m_c*log(hardness) + b_c) * (1.46203 - ((log(hardness)*0.145712))),
+    # all other hardness-dependent criteria
+    .default = exp(m_c*log(hardness) + b_c)))
+  
 
+# note: there is certainly a cleaner way to code this, but for now am just reflecting the formula format as provided in the ADEC manual.
 
-
-# for hardness dependent conversion factors, maybe use a case_when for those two (Cd, Pb) specifically
 
 
 
