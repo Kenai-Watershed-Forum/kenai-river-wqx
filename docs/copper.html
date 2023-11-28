@@ -6,7 +6,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="dcterms.date" content="2023-11-20">
+<meta name="dcterms.date" content="2023-11-28">
 
 <title>Water Quality Assessment of the Kenai River Watershed from 2000 to 2022 [DRAFT] - 10&nbsp; Copper</title>
 <style>
@@ -215,7 +215,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./parameters.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Water Quality Parameters Results</span></span></a>
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Interpreting Boxplots</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -323,7 +323,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">November 20, 2023</p>
+      <p class="date">November 28, 2023</p>
     </div>
   </div>
   
@@ -335,7 +335,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <p>Typically present in surface waters, naturally low concentrations of copper are essential as micronutrients for plants and animals, but elevated levels can be toxic to certain aquatic species (USEPA, 2007). Concentrations of copper can increase in surface waters due to discharges from mining, the leather industry, electrical equipment, and fabricated metal products (USEPA, 2007). Copper is present in the brake pads of vehicles and can enter surface waters in storm water runoff (USEPA, 2015). The standard for copper set by the ADEC, ranges from 1.75 μg/L to 29.28 μg/L, depending on hardness, for chronic exposure to aquatic life in freshwater (see Appendix X) (ADEC 2008).</p>
 <p>The highest concentration of copper in the mainstem was reported at _____ μg/L at [site] in [season/year], and the lowest levels were below the MDL of ____ μg/L. In the summer, ____ exceedances occurred at [sites], and copper concentrations exceeded the criteria during individual sampling dates at [sites]. Higher levels occurred ____, while the lowest concentrations were detected at ____. [Were exceedances were recorded for the mainstem during the sampling events in spring/summer?]. Copper concentrations in the tributaries ranged from ___ μg/L in the [site/year] to below the MDL of ___ μg/L that occurred in many locations during this project. Exceedances in the spring occurred at….. Exceedances in the summer occurred at ….</p>
-<div class="cell" data-hash="copper_cache/html/unnamed-chunk-1_46bd7741c2aaf600222d0272d1471116">
+<div class="cell">
 <div class="cell-output-display">
 <p><img src="copper_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid" width="672"></p>
 </div>
@@ -667,22 +667,18 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="co"># set parameter</span></span>
 <span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>parameter <span class="ot">&lt;-</span> <span class="st">"Copper"</span></span>
 <span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a><span class="co"># source formatted data</span></span>
-<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>dat <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"other/output/analysis_format/baseline_analysis_format.csv"</span>)</span>
-<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a><span class="co"># source boxplot function</span></span>
-<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="st">"functions/boxplot_function.R"</span>)</span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a><span class="co"># source static regulatory criteria boxplot function</span></span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="st">"functions/static_boxplot_function.R"</span>)</span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a><span class="fu">make_boxplot</span>(<span class="at">param =</span> parameter)</span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a><span class="co"># source calculated regulatory criteria plot(s) function</span></span>
 <span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a><span class="co"># source table download function</span></span>
-<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="st">"functions/table_download.R"</span>)</span>
-<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a><span class="co"># plot </span></span>
-<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a><span class="fu">make_boxplot</span>(<span class="at">param =</span> parameter)</span>
-<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a><span class="co"># download table</span></span>
-<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a><span class="fu">download_tbl</span>(<span class="at">param =</span> parameter)</span>
-<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a><span class="co"># source table download function</span></span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="st">"functions/table_download.R"</span>)</span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a><span class="fu">download_tbl</span>(<span class="at">param =</span> parameter)</span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 

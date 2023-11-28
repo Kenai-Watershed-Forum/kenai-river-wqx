@@ -23,7 +23,6 @@ make_boxplot(param = parameter)
 
 # source calculated regulatory criteria plot(s) function
 
-
 # source table download function
 source("functions/table_download.R")
 download_tbl(param = parameter)

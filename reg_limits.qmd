@@ -1,13 +1,50 @@
 # Regulatory Limits
 
-We calculated regulatory limits based on freshwater quality standards listed from state and federal regulatory agencies.
+We calculated regulatory limits based on freshwater quality standards listed from state and federal regulatory agencies...
 
 
 
+## Metals
 
-##Hardness
+### Static Regulatory Threshold Values for Metals
 
-Some regulatory values are hardness-dependent, and hardness varies by site, by season, and with hydrologic conditions. We calculated hardness according to the following formula:
+Some regulatory threshold values for metals are static and do not depend on additional environmental parameters. The metals parameters in the downloadable table below have static thresholds assigned.
+
+```{r echo = F}
+
+library(tidyverse)
+library(janitor)
+library(readxl)
+library(xfun)
+ 
+# read in reg threshold values for metals with static values
+static_metals_reg_vals <- read_xlsx("other/input/regulatory_limits/master_reg_limits.xlsx", sheet = "static_regulatory_values") %>%
+  filter(!is.na(agency),
+         standard_type %in% c("drinking_water","irrigation_water","stock_water")) %>%
+  remove_empty() %>%
+  select(parameter_baseline_name,standard_type,reg_value,reg_unit) %>%
+  pivot_wider(names_from = standard_type, values_from = reg_value) %>%
+  rename(characteristic_name = parameter_baseline_name) %>%
+  pivot_longer(cols = ends_with("water"), names_to = "standard", values_to = "value") %>%
+  rename("Standard" = "standard")
+
+# define directory
+dir <- "other/input/regulatory_limits/formatted_reg_vals/static_metals_reg_vals.csv"
+
+# export csv
+write.csv(static_metals_reg_vals, dir, row.names = F)
+
+# make viewable
+embed_file(dir, text = "Metals with Static Regulatory Threshold Values")
+
+```
+
+<br>
+
+
+### Metals with Hardness-Dependent Regulatory Values
+
+Some regulatory values for metals are not simple static values, and are instead hardness-dependent. Hardness varies by site, by season, and with hydrologic conditions. We calculated hardness according to the following formula:
 
 :::{.callout-note appearance = "simple}
 
@@ -52,14 +89,18 @@ xfun::embed_file(dir, name = "Kenai River Baseline Hardness Data")
 
 <br>
 
-We calculated hardness-dependent criteria based on formulas published on the Alaska Department of Environmental Conservation's Water Quality Standards Section website. The "Alaska Water Quality Criteria Manual for Toxic and other Deleterious Organic and Inorganic Substances" (2022) document, along with the "Inorganic Toxics Criteria Worksheet" provide parameter-specific formulas for many substances.
+We calculated hardness-dependent regulatory criteria based on formulas published on the Alaska Department of Environmental Conservation's Water Quality Standards Section website. The "Alaska Water Quality Criteria Manual for Toxic and other Deleterious Organic and Inorganic Substances" (2022) document, along with the "Inorganic Toxics Criteria Worksheet" provide parameter-specific formulas for many substances.
 
 https://dec.alaska.gov/water/water-quality/standards/
 
 Hardness-dependent criteria may be calculated from the following for freshwater metals:
 
-Acute (dissolved) = exp {m A[ln(hardness)]+ bA} (CF)
-Chronic (dissolved) = exp{m C [ln(hardness)] + bC} (CF)
+Acute (dissolved) = exp{mA[ln(hardness)]+ bA} (CF)
+Chronic (dissolved) = exp{mC [ln(hardness)] + bC} (CF)
+
+where mA, bA, mC, and bC are numerical parameters specific to each substance, and CF is the conversion factor for acute vs. chronic criteria.
+
+These values are graphically displayed in the following chapters not juxtaposed against static horizontal lines, but instead they are highlighted by shape or color when the calculated threshold is exceeded.
 
 ```{r echo = F}
 
@@ -74,9 +115,9 @@ diss_metals_hard_param <- read_excel("other/input/regulatory_limits/master_reg_l
 
 # join calculation parameters to overall dataset
 
-
-z <- inner_join(dat, diss_metals_hard_param) %>%
-  # calculate hardness dependent criteria values
+hardness_dependent_metals_thresholds <- inner_join(dat, diss_metals_hard_param) %>%
+  
+  # Calculate hardness dependent criteria values
   
   ## ACUTE ##
   mutate(fw_acute_std = case_when(
@@ -92,18 +133,34 @@ z <- inner_join(dat, diss_metals_hard_param) %>%
   mutate(fw_chronic_std = case_when(
     # cadmium
     characteristic_name == "Cadmium" ~ exp(m_c*log(hardness) + b_c) * (1.101672 - ((log(hardness)*0.041838))),
-    # lead (identical formula as acute)
+    # lead 
     characteristic_name == "Lead" ~ exp(m_c*log(hardness) + b_c) * (1.46203 - ((log(hardness)*0.145712))),
     # all other hardness-dependent criteria
-    .default = exp(m_c*log(hardness) + b_c)))
+    .default = exp(m_c*log(hardness) + b_c))) %>%
   
+    # retain and rename needed columns
+  select(characteristic_name, activity_start_date, result_sample_fraction_text, result_measure_value, result_measure_measure_unit_code, trib_mainstem, tributary_name, site_name, season, fw_acute_std, fw_chronic_std) %>%
+  
+  # calculate when exceedances occur
+  ## acute
+  mutate(fw_acute_exceed = case_when(
+    result_measure_value >= fw_acute_std ~ "Y")) %>%
+  
+  ## chronic
+  mutate(fw_chronic_exceed = case_when(
+    result_measure_value >= fw_chronic_std ~ "Y")) 
 
-# note: there is certainly a cleaner way to code this, but for now am just reflecting the formula format as provided in the ADEC manual.
+# note: there is certainly a cleaner way to code the above, but for now am just reflecting the formula format as provided in the ADEC manual.
 
 
+# define directory
+dir <- "other/input/regulatory_limits/formatted_reg_vals/calculated_metals_reg_vals.csv"
 
+# write csv of results
+write.csv(hardness_dependent_metals_thresholds, dir, row.names = F)
 
-
+# make csv downloadable
+embed_file(dir, text = "Hardness Dependent Regulatory Thresholds for Metals - Kenai River Baseline Water Quality")
 
 # it appears that export from EPA WQX of 2000 - 2014 data does not include status of samples as DUP or Trip Blank. Are results included at all? Also note that from Summer 2022 - present we are also using field blanks
 
@@ -115,4 +172,39 @@ z <- inner_join(dat, diss_metals_hard_param) %>%
 # 4.) calculate other condition-dependent values (e.g. temp)
   
 ```
+
+<br>
+
+## Hydrocarbons
+
+
+### Diesel Range Organics 
+### Gasoline Range Organics 
+### Residual Range Organics 
+### Total BTEX 
+
+Total aromatic hydrocarbons (TAH) means the sum of the following volatile monoaromatic hydrocarbon compounds: benzene, toluene, ethylbenzene, and the xylene isomers, commonly called BTEX.
+
+For each sampling event with available data, we calculated the sum of the parameters that compose BTEX and compared them to a static threshold value.
+
+The 2022 ADEC manual does not list a limit for total BTEX, but instead it lists limits for each of the parameters individiually. For purposes of comparison to historical trends, we included the static value of 10 ug/L in our graphic plots for a threshold, as was published in Guerron-Orejuela 2016.
+
+
+
+
+
+## Nutrients (Nitrogen and Phosphorus)
+
+<br>
+
+## Bacteria
+
+<br>
+
+## Total Suspended Solids
+
+<br>
+
+## Other Parameters
+
 

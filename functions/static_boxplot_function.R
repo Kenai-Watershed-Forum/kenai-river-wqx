@@ -31,32 +31,26 @@ trib_order <- c("No Name Creek",
                 "Juneau Creek")
 
 
-#### READ IN DATA #####
+#### READ IN WQX DATA #####
 # read in prepared data from local directory
 dat <- read.csv("other/output/analysis_format/baseline_analysis_format.csv")
 
 
+#### READ IN Regulatory Threshold Values ####
+# read in and combine various static reg values
+
+# static metals threshold values
+static_metals_reg_vals <- read.csv("other/input/regulatory_limits/formatted_reg_vals/static_metals_reg_vals.csv")
+
+# join all regulatory value dataframes
+reg_vals <- static_metals_reg_vals
+
+
 #### PREPARE PLOT #####
-
-# Regulatory Threshold Lines
-
-# static reg values
-
-
-reg_vals <- read_xlsx("other/input/regulatory_limits/master_reg_limits.xlsx", sheet = "static_regulatory_values") %>%
-  filter(!is.na(agency),
-         standard_type %in% c("drinking_water","irrigation_water","stock_water")) %>%
-  remove_empty() %>%
-  select(parameter_baseline_name,standard_type,reg_value,reg_unit) %>%
-  pivot_wider(names_from = standard_type, values_from = reg_value) %>%
-  rename(characteristic_name = parameter_baseline_name)
-
 
 ## define horizontal line positions for regulatory limits
 hline_data <- reg_vals %>%
-  filter(characteristic_name == parameter) %>%
-  pivot_longer(cols = ends_with("water"), names_to = "standard", values_to = "value") %>%
-  rename("Standard" = "standard")
+  filter(characteristic_name == parameter) 
 
 # how to incorporate other reg vals here (N & P, bacteria, hydrocarbons, etc)
 
@@ -66,13 +60,6 @@ hline_data <- reg_vals %>%
 # 3.) develop separate calculated box plot for all non-static values
 
 # WORKING HERE 11/27/23
-
-
-
-
-
-
-
 
 
 
@@ -142,11 +129,9 @@ make_boxplot <- function(param) {
                aes(yintercept = value, linetype = Standard, color = Standard)) 
   
   
-  
   # define language for plot titles
   static_plot_type <- "\nStatic Regulatory Values"
-  
-  
+
   # tribs
   tribs <- p_trib %+% subset(parameter_dat, trib_mainstem %in% "t") +
     ggtitle(paste(parameter,"in Kenai River Tributaries ",min_year,"to",max_year,static_plot_type))
@@ -157,8 +142,14 @@ make_boxplot <- function(param) {
   
   # place trib and mainstem plot images together
   plot_grid(ms,tribs, align = 'v', ncol = 1)
+
+  
+## plots completed ##
   
 }
+
+
+
 
 
 

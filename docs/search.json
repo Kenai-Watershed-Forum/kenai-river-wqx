@@ -11,7 +11,7 @@
     "href": "arsenic.html",
     "title": "7  Arsenic",
     "section": "",
-    "text": "Download Arsenic Kenai River Baseline Data.csv\n\n\n\nFrom 2016 report:\nNatural sources of arsenic in the Cook Inlet Basin include volcanic ash, glaciation, and mineral deposits. Only a minimal contribution of arsenic results from human activities like wood preservation (Glass and Frenzel, 2001). Arsenic is naturally present as a compound in rocks within the Kenai River Watershed, and as a dissolved metal, it can be acutely or chronically toxic to fish (Glass, 1999). The Alaska Department of Environmental Conservation (ADEC) and the United States Environmental Protection Agency (USEPA) have set the standard at 150 micrograms per liter (µg/L) for freshwater aquatic life chronically exposed to arsenic and 10 micrograms per liter (µg/L) for drinking water (Appendix X) (USEPA, 2014; ADEC, 2008).\nNone of the samples exceeded the Alaska or federal standard for freshwater aquatic life at any sampling location in spring or summer. The highest level detected in the mainstem was 46.5 µg/L at Mile 1.5 in May 2007, and arsenic was not detected on many occasions below the method detection limit (MDL) of 0.25 µg/L (Table 6). In the Kenai River mainstem, Mile 1.5 had the highest median level in the spring event and summer monitoring event, followed by Mile 6.5 in the spring event and Mile 23 during the summer monitoring event (figures X & X). In the mainstem, higher arsenic levels occurred in the spring samples, while the tributaries levels were higher during the summer with more detected levels between the years 2007-2014 than any of the previous years. (Tables X & X)\nThe highest concentration on the mainstem occurred at Mile 1.5 where arsenic was detected on every sampling event after 2005, while arsenic was detected on all sampling dates at Beaver Creek, Soldotna Creek, and Moose River. The concentrations of arsenic ranged from a high of 12.8 µg/L in Soldotna Creek in summer 2014 to below the MDL of 0.25 µg/L in many locations. Of the tributaries, Soldotna Creek had the highest median level, followed by Moose River and then Beaver Creek in summer and Soldotna, Beaver and Moose in spring. No Name Creek had the fewest incidences of arsenic detection of all the tributaries. (Tables X & X)\nWhen comparing the arsenic levels to the Alaska Department of Environmental Conservation standards for drinking water, the main stem at Mile 1.5 is the only station that presents multiple exceedances. All exceedances took place during the spring sampling events. (Tables X & X)\nConcentrations of arsenic are generally lower in surface streams than in groundwater, which is typically the source of drinking water (Glass and Frenzel, 2001). The USEPA set the criterion for arsenic in drinking water at 10 µg/L because arsenic has been linked to cancer, skin damage, and circulatory problems (USEPA, 2003). Although the levels of arsenic reported in this study do not exceed the national criterion for the health of an aquatic community in freshwater, groundwater may contain concentrations that are hazardous to human health, and all sources of drinking water should be tested for arsenic."
+    "text": "Download Arsenic Kenai River Baseline Data.csv\n\n\nDownload Arsenic Kenai River Baseline Data.csv\n\n\n\nFrom 2016 report:\nNatural sources of arsenic in the Cook Inlet Basin include volcanic ash, glaciation, and mineral deposits. Only a minimal contribution of arsenic results from human activities like wood preservation (Glass and Frenzel, 2001). Arsenic is naturally present as a compound in rocks within the Kenai River Watershed, and as a dissolved metal, it can be acutely or chronically toxic to fish (Glass, 1999). The Alaska Department of Environmental Conservation (ADEC) and the United States Environmental Protection Agency (USEPA) have set the standard at 150 micrograms per liter (µg/L) for freshwater aquatic life chronically exposed to arsenic and 10 micrograms per liter (µg/L) for drinking water (Appendix X) (USEPA, 2014; ADEC, 2008).\nNone of the samples exceeded the Alaska or federal standard for freshwater aquatic life at any sampling location in spring or summer. The highest level detected in the mainstem was 46.5 µg/L at Mile 1.5 in May 2007, and arsenic was not detected on many occasions below the method detection limit (MDL) of 0.25 µg/L (Table 6). In the Kenai River mainstem, Mile 1.5 had the highest median level in the spring event and summer monitoring event, followed by Mile 6.5 in the spring event and Mile 23 during the summer monitoring event (figures X & X). In the mainstem, higher arsenic levels occurred in the spring samples, while the tributaries levels were higher during the summer with more detected levels between the years 2007-2014 than any of the previous years. (Tables X & X)\nThe highest concentration on the mainstem occurred at Mile 1.5 where arsenic was detected on every sampling event after 2005, while arsenic was detected on all sampling dates at Beaver Creek, Soldotna Creek, and Moose River. The concentrations of arsenic ranged from a high of 12.8 µg/L in Soldotna Creek in summer 2014 to below the MDL of 0.25 µg/L in many locations. Of the tributaries, Soldotna Creek had the highest median level, followed by Moose River and then Beaver Creek in summer and Soldotna, Beaver and Moose in spring. No Name Creek had the fewest incidences of arsenic detection of all the tributaries. (Tables X & X)\nWhen comparing the arsenic levels to the Alaska Department of Environmental Conservation standards for drinking water, the main stem at Mile 1.5 is the only station that presents multiple exceedances. All exceedances took place during the spring sampling events. (Tables X & X)\nConcentrations of arsenic are generally lower in surface streams than in groundwater, which is typically the source of drinking water (Glass and Frenzel, 2001). The USEPA set the criterion for arsenic in drinking water at 10 µg/L because arsenic has been linked to cancer, skin damage, and circulatory problems (USEPA, 2003). Although the levels of arsenic reported in this study do not exceed the national criterion for the health of an aquatic community in freshwater, groundwater may contain concentrations that are hazardous to human health, and all sources of drinking water should be tested for arsenic."
   },
   {
     "objectID": "cadmium.html",
@@ -23,8 +23,85 @@
   {
     "objectID": "parameters.html#interpreting-box-plots",
     "href": "parameters.html#interpreting-box-plots",
-    "title": "5  Water Quality Parameters Results",
+    "title": "5  Interpreting Boxplots",
     "section": "5.1 Interpreting Box Plots",
     "text": "5.1 Interpreting Box Plots\nEach of the following graphs display the sampling results for a specific parameter, such as arsenic. Within these graphs, a box and extending lines represent the results reported at each sampling site. A horizontal line within the box corresponds to the median of the data. The box contains 50% of the data and the vertical lines display the minimum and maximum values. Any data points that fall outside of the acceptable range are outliers and are portrayed as small circles (Figure 5.1).\n\n\n\nFigure 5.1: Components of a box plot"
+  },
+  {
+    "objectID": "reg_limits.html",
+    "href": "reg_limits.html",
+    "title": "6  Regulatory Limits",
+    "section": "",
+    "text": "We calculated regulatory limits based on freshwater quality standards listed from state and federal regulatory agencies.\n##Hardness\nSome regulatory values are hardness-dependent, and hardness varies by site, by season, and with hydrologic conditions. We calculated hardness according to the following formula:\n:::{.callout-note appearance = “simple}\nHardness = 2.497(Total Calcium in mg/L) + 4.119(Total Magnesium in mg/L)\n:::\nFor sampling events with duplicate samples, we calculated average hardness.\n\n\n── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──\n✔ dplyr     1.1.3     ✔ readr     2.1.4\n✔ forcats   1.0.0     ✔ stringr   1.5.1\n✔ ggplot2   3.4.4     ✔ tibble    3.2.1\n✔ lubridate 1.9.3     ✔ tidyr     1.3.0\n✔ purrr     1.0.2     \n── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──\n✖ dplyr::filter() masks stats::filter()\n✖ dplyr::lag()    masks stats::lag()\nℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors\n\nAttaching package: 'janitor'\n\n\nThe following objects are masked from 'package:stats':\n\n    chisq.test, fisher.test\n\n\n`summarise()` has grouped output by 'activity_identifier', 'activity_start_date'. You can override using the `.groups` argument.\nJoining with `by = join_by(activity_identifier, activity_start_date)`\n\n\nDownload Kenai River Baseline Hardness Data\n\n\n\nWe calculated hardness-dependent criteria based on formulas published on the Alaska Department of Environmental Conservation’s Water Quality Standards Section website. The “Alaska Water Quality Criteria Manual for Toxic and other Deleterious Organic and Inorganic Substances” (2022) document, along with the “Inorganic Toxics Criteria Worksheet” provide parameter-specific formulas for many substances.\nhttps://dec.alaska.gov/water/water-quality/standards/\nHardness-dependent criteria may be calculated from the following for freshwater metals:\nAcute (dissolved) = exp {m A[ln(hardness)]+ bA} (CF) Chronic (dissolved) = exp{m C [ln(hardness)] + bC} (CF)\n\n\nvalue for \"which\" not specified, defaulting to c(\"rows\", \"cols\")\n\n\nNew names:\nJoining with `by = join_by(characteristic_name)`\n• `` -&gt; `...9`\n• `` -&gt; `...10`\n• `` -&gt; `...11`\n• `` -&gt; `...12`"
+  },
+  {
+    "objectID": "chromium.html",
+    "href": "chromium.html",
+    "title": "9  Chromium",
+    "section": "",
+    "text": "Download Chromium Kenai River Baseline Data.csv"
+  },
+  {
+    "objectID": "copper.html",
+    "href": "copper.html",
+    "title": "10  Copper",
+    "section": "",
+    "text": "Typically present in surface waters, naturally low concentrations of copper are essential as micronutrients for plants and animals, but elevated levels can be toxic to certain aquatic species (USEPA, 2007). Concentrations of copper can increase in surface waters due to discharges from mining, the leather industry, electrical equipment, and fabricated metal products (USEPA, 2007). Copper is present in the brake pads of vehicles and can enter surface waters in storm water runoff (USEPA, 2015). The standard for copper set by the ADEC, ranges from 1.75 μg/L to 29.28 μg/L, depending on hardness, for chronic exposure to aquatic life in freshwater (see Appendix X) (ADEC 2008).\nThe highest concentration of copper in the mainstem was reported at _____ μg/L at [site] in [season/year], and the lowest levels were below the MDL of ____ μg/L. In the summer, ____ exceedances occurred at [sites], and copper concentrations exceeded the criteria during individual sampling dates at [sites]. Higher levels occurred ____, while the lowest concentrations were detected at ____. [Were exceedances were recorded for the mainstem during the sampling events in spring/summer?]. Copper concentrations in the tributaries ranged from ___ μg/L in the [site/year] to below the MDL of ___ μg/L that occurred in many locations during this project. Exceedances in the spring occurred at….. Exceedances in the summer occurred at ….\n\n\n\n\n\nDownload Copper Kenai River Baseline Data.csv"
+  },
+  {
+    "objectID": "benzene.html",
+    "href": "benzene.html",
+    "title": "11  Benzene",
+    "section": "",
+    "text": "Download Benzene Kenai River Baseline Data.csv"
+  },
+  {
+    "objectID": "calcium.html",
+    "href": "calcium.html",
+    "title": "12  Calcium",
+    "section": "",
+    "text": "Download Calcium Kenai River Baseline Data.csv"
+  },
+  {
+    "objectID": "reg_limits.html#metals",
+    "href": "reg_limits.html#metals",
+    "title": "6  Regulatory Limits",
+    "section": "6.1 Metals",
+    "text": "6.1 Metals\n\n6.1.1 Static Regulatory Threshold Values for Metals\nSome regulatory threshold values for metals are static and do not depend on additional environmental parameters. The metals parameters in the downloadable table below have static thresholds assigned.\n\n\n── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──\n✔ dplyr     1.1.3     ✔ readr     2.1.4\n✔ forcats   1.0.0     ✔ stringr   1.5.1\n✔ ggplot2   3.4.4     ✔ tibble    3.2.1\n✔ lubridate 1.9.3     ✔ tidyr     1.3.0\n✔ purrr     1.0.2     \n── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──\n✖ dplyr::filter() masks stats::filter()\n✖ dplyr::lag()    masks stats::lag()\nℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors\n\nAttaching package: 'janitor'\n\n\nThe following objects are masked from 'package:stats':\n\n    chisq.test, fisher.test\n\n\n\nAttaching package: 'xfun'\n\n\nThe following objects are masked from 'package:base':\n\n    attr, isFALSE\n\n\nvalue for \"which\" not specified, defaulting to c(\"rows\", \"cols\")\n\nNew names:\n\n\nMetals with Static Regulatory Threshold Values\n\n\n\n\n\n6.1.2 Metals with Hardness-Dependent Regulatory Values\nSome regulatory values for metals are not simple static values, and are instead hardness-dependent. Hardness varies by site, by season, and with hydrologic conditions. We calculated hardness according to the following formula:\n:::{.callout-note appearance = “simple}\nHardness = 2.497(Total Calcium in mg/L) + 4.119(Total Magnesium in mg/L)\n:::\nFor sampling events with duplicate samples, we calculated average hardness.\n\n\n`summarise()` has grouped output by 'activity_identifier',\n'activity_start_date'. You can override using the `.groups` argument.\nJoining with `by = join_by(activity_identifier, activity_start_date)`\n\n\nDownload Kenai River Baseline Hardness Data\n\n\n\nWe calculated hardness-dependent regulatory criteria based on formulas published on the Alaska Department of Environmental Conservation’s Water Quality Standards Section website. The “Alaska Water Quality Criteria Manual for Toxic and other Deleterious Organic and Inorganic Substances” (2022) document, along with the “Inorganic Toxics Criteria Worksheet” provide parameter-specific formulas for many substances.\nhttps://dec.alaska.gov/water/water-quality/standards/\nHardness-dependent criteria may be calculated from the following for freshwater metals:\nAcute (dissolved) = exp{mA[ln(hardness)]+ bA} (CF) Chronic (dissolved) = exp{mC [ln(hardness)] + bC} (CF)\nwhere mA, bA, mC, and bC are numerical parameters specific to each substance, and CF is the conversion factor for acute vs. chronic criteria.\nThese values are graphically displayed in the following chapters not juxtaposed against static horizontal lines, but instead they are highlighted by shape or color when the calculated threshold is exceeded.\n\n\nvalue for \"which\" not specified, defaulting to c(\"rows\", \"cols\")\n\n\nNew names:\nJoining with `by = join_by(characteristic_name)`\n• `` -&gt; `...9`\n• `` -&gt; `...10`\n• `` -&gt; `...11`\n• `` -&gt; `...12`\n\n\nHardness Dependent Regulatory Thresholds for Metals - Kenai River Baseline Water Quality"
+  },
+  {
+    "objectID": "reg_limits.html#hydrocarbons",
+    "href": "reg_limits.html#hydrocarbons",
+    "title": "6  Regulatory Limits",
+    "section": "6.2 Hydrocarbons",
+    "text": "6.2 Hydrocarbons\nDiesel Range Organics Gasoline Range Organics Residual Range Organics Total BTEX"
+  },
+  {
+    "objectID": "reg_limits.html#nutrients-nitrogen-and-phosphorus",
+    "href": "reg_limits.html#nutrients-nitrogen-and-phosphorus",
+    "title": "6  Regulatory Limits",
+    "section": "6.3 Nutrients (Nitrogen and Phosphorus)",
+    "text": "6.3 Nutrients (Nitrogen and Phosphorus)"
+  },
+  {
+    "objectID": "reg_limits.html#bacteria",
+    "href": "reg_limits.html#bacteria",
+    "title": "6  Regulatory Limits",
+    "section": "6.4 Bacteria",
+    "text": "6.4 Bacteria"
+  },
+  {
+    "objectID": "reg_limits.html#total-suspended-solids",
+    "href": "reg_limits.html#total-suspended-solids",
+    "title": "6  Regulatory Limits",
+    "section": "6.5 Total Suspended Solids",
+    "text": "6.5 Total Suspended Solids"
+  },
+  {
+    "objectID": "reg_limits.html#other-parameters",
+    "href": "reg_limits.html#other-parameters",
+    "title": "6  Regulatory Limits",
+    "section": "6.6 Other Parameters",
+    "text": "6.6 Other Parameters"
   }
 ]
