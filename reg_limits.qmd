@@ -178,33 +178,86 @@ embed_file(dir, text = "Hardness Dependent Regulatory Thresholds for Metals - Ke
 ## Hydrocarbons
 
 
+
+
+```{r echo = F}
+
 ### Diesel Range Organics 
 ### Gasoline Range Organics 
 ### Residual Range Organics 
+
+# The above parameter names are included in the 2016 report. However it is unclear which specific parameters have equivalent names in the data downloaded from the EPA WQX
+
+# Skip for now and return to as a later task
+
+```
+
+
 ### Total BTEX 
 
 Total aromatic hydrocarbons (TAH) means the sum of the following volatile monoaromatic hydrocarbon compounds: benzene, toluene, ethylbenzene, and the xylene isomers, commonly called BTEX.
 
 For each sampling event with available data, we calculated the sum of the parameters that compose BTEX and compared them to a static threshold value.
 
-The 2022 ADEC manual does not list a limit for total BTEX, but instead it lists limits for each of the parameters individiually. For purposes of comparison to historical trends, we included the static value of 10 ug/L in our graphic plots for a threshold, as was published in Guerron-Orejuela 2016.
+```{r echo = F}
+
+# check
+# does value for sum of "Benzene, toluene, ethyl benzene, xylenes mix" match value for sum of individual parameters? Are there events where both formats are reported?
+
+```
 
 
 
 
+<br>
 
 ## Nutrients (Nitrogen and Phosphorus)
+
+```{r echo = F}
+
+# The parameters in the existing dataset cover two names: 1.) "Inorganic nitrogen (nitrate and nitrite)" and 2.) "Nitrate"
+
+# 2016 report: "inorganic nitrogen is generally present in well-aerated, natural streams in the form of nitrate (Glass, 1999)."
+
+# just different names for the same parameter?
+
+```
+
 
 <br>
 
 ## Bacteria
 
+```{r echo = F}
+
+# page 15 18 AAC https://www.epa.gov/system/files/documents/2023-05/akwqs-chapter70-2023.pdf
+
+# see description/code for beach project: https://dec.alaska.gov/media/23091/kenai-river-beach-2020-final-report.pdf
+
+
+
+```
+
+
 <br>
 
 ## Total Suspended Solids
 
+```{r echo = F}
+
+# pg 22 https://www.epa.gov/system/files/documents/2023-05/akwqs-chapter70-2023.pdf
+```
+
+
 <br>
 
 ## Other Parameters
+
+```{r echo = F}
+
+# pH, conductivity, temp, turb, DO
+
+```
+
 
 
