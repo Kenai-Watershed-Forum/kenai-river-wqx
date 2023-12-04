@@ -1096,7 +1096,11 @@ dat %<>%
 
 # 6/21/23:: check to see if format will still work for EPA WQX template
 
-# 10/12/2023 - there might not be a poing to doing 'all' of this formatting at this stage, if we don;t have it flagged and ready for export yet
+# 10/12/2023 - there might not be a point to doing 'all' of this formatting at this stage, if we don;t have it flagged and ready for export yet
+
+# WORKING HERE:: 12/4/2023 - confirmed that it was unnecessary to have the column names formatted with capital letters & spaces at this stage.
+
+# Current task - take the dataframe at the end of this long script, make so column names/structure conforms to the ADEC example. In the QA/QC process, it went through the janitor::clean_names process, thus names need to be fixed again at the end.
 
 dat %<>%
   # Proceeding left to right across columns of AWQMS template
