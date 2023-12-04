@@ -4,7 +4,7 @@ The PDF document "KWF_QAPP_v3_2023.pdf" has been signed by all necessary parties
 doucment serves as the active, approved copy.
 
 The MS Word document "kwf_qapp_draft_v3_20230509.docx" was used to generate the final PDF.
-Edits to the QAPP should be made to this document. It is not approved for action until all signers
+Future edits with tracked changes to the QAPP should be made to this document. Edist to the QAPP are not approved for action until all signers
 have re-signed the document.
 
 ALWAYS ALWAYS use "tracked changes" mode in the MS Word document when making edits. This is 

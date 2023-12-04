@@ -22,7 +22,7 @@ format:
 
 ## Introduction
 
-Prior to publishing analysis and interpretation of water quality data, we will ensure that all data that meets QA/QC standards outlined in the current project [Quality Assurance Project Plan (QAPP)](https://paperpile.com/app/p/7703451b-460d-00b4-82a0-1086ea2554c3) and is accessible in the appropriate repository.
+Prior to publishing analysis and interpretation of water quality data, we will ensure that all data that meets QA/QC standards outlined in the current project [Quality Assurance Project Plan (QAPP)](https://paperpile.com/app/p/7703451b-460d-00b4-82a0-1086ea2554c3) and is accessible in the appropriate public repository.
 
 Water quality data from this project is ultimately destined for the Environmental Protection Agency's Water Quality Exchange (EPA WQX).
 
@@ -73,8 +73,6 @@ xfun::embed_file('other/input/2021_wqx_data/summer_2021_wqx_data/SGS/SGS_results
 \**Note: the chain of custody documents for SGS Laboratories are integrated into the above downloadable PDF files.*
 
 \newpage
-
-<br>
 
 ```{r, 2021 AQWMS formatting for SGS, echo = F, message = F}
 
@@ -1226,8 +1224,6 @@ xfun::embed_file('other/documents/AQWMS_documents/Kenai_Baseline_Data_Evaluation
 
 #### Pre-Database
 
-<br>
-
 ##### Overall Project Success
 
 Note: the sequence of questions is structured such that data will be gradually flagged at each step based on the criteria described.
@@ -1247,7 +1243,7 @@ Yes. Analytical methods from the approved 2020 QAPP were employed.
 
 **2.) Were there any deviations from the sampling plan?**
 
-All sites were visited as planned on 5/11/2021 and 7/27/2021. Most intrinsic water quality parameters measured with instruments (pH, dissolved oxygen, conductivity, turbidity) were not measured.
+All sites were visited as planned on 5/11/2021 and 7/27/2021. Most intrinsic water quality parameters measured with instruments (pH, dissolved oxygen, conductivity, turbidity) were not measured, which is a deviation of from the QAPP.
 
 <br>
 
@@ -1399,11 +1395,11 @@ To see a table comparing planned vs actual results for 2021, download and view t
 
 From the above table we can see that there are deviations between planned results and actual results available. These reasons for the deviations are known and are attributable to two causes:
 
-***Cause 1:*** The Spring 2021 Chain of Custody (COC) from KWF to SGS was completed erroneously. The COC specified for 200.8 analyses (dissolved metals) to be complete for all sites (when they should have stopped upstream of Morgan's Landing RM31), and it also specified for 200.7 analyses to stop upstream of Morgan's Landing (when they should have been performed for all sites in the project).
+***Cause 1:*** The Spring 2021 Chain of Custody (COC) from KWF to SGS was completed erroneously. The COC specified for EPA Method 200.8 analyses (dissolved metals) to be complete for all sites (when they should have stopped upstream of Morgan's Landing RM31), and it also specified for EPA Method 200.7 analyses (total metals) to stop upstream of Morgan's Landing (when they should have been performed for all sites in the project).
 
 As a result, for Spring 2021 total metals data will be unavailable for sites upstream of the Morgan's Landing RM31 site.
 
-***Cause 2:*** For Summer 2021, the SGS laboratory performed the 200.8 analyses (dissolved metals) for all 27 analytes available for the method; instead of just the smaller subset of analytes as requested. (E.g., KWF received extra data for free. In this case., there are no consequences of deviating from the planned analyses).
+***Cause 2:*** For Summer 2021, the SGS laboratory performed the EPA Method 200.8 analyses (dissolved metals) for all 27 analytes available for the method; instead of just the smaller subset of analytes as requested. (E.g., KWF received extra data for free. In this case., there are no consequences of deviating from the planned analyses).
 
 <br>
 
@@ -1433,7 +1429,9 @@ We worked with three separate laboratories in 2021:
 
 **6.) Do the laboratory reports match the Chain of Custody and requested methods throughout?**
 
-The laboratory reports match the Chain of Custody and requested methods, with the one exception discussed in question #3. For summer 2021, the SGS laboratory performed the 200.8 analyses for all 27 analytes available for the method; instead of just the smaller subset of analytes as requested. (E.g., KWF received extra data for free. In this case., there are no consequences of deviating from the planned analyses).
+The laboratory reports match the Chain of Custody and requested methods, with the one exception discussed in question #3.
+
+For summer 2021, the SGS laboratory performed the EPA Method 200.8 analyses for all 27 analytes available for the method; instead of just the smaller subset of analytes as requested. (E.g., KWF received extra data for free. In this case., there are no consequences of deviating from the planned analyses).
 
 <br>
 
@@ -1463,7 +1461,7 @@ We worked with three separate laboratories in 2021:
 
 **9.) Are site names, dates, and times correct and as expected?**
 
--   *Yes, after post-season correction documented in this report.* Notes: In 2021 Kenai Watershed Forum used pre-printed waterproof labels on all sample bottles, reducing opportunity for field and lab transcription errors. Remaining site name transcription errors from laboratories were corrected in post-season data review.
+-   *Yes, after post-season correction documented in this report.* Notes: In 2021 Kenai Watershed Forum used pre-printed waterproof labels on all sample bottles, reducing opportunity for field and lab transcription errors. Remaining site name transcription errors from laboratories were corrected in post-season data review, using scripted code that did not modify the original report.
 
 <br>
 
@@ -1811,11 +1809,13 @@ From the above downloadable table, we can see that a limited subset of paired va
 
 RPD values range from `r min(rpd_check_dat$rpd_pct, na.rm = T)` % to `r max(rpd_check_dat$rpd_pct, na.rm = T)` %.
 
-In the 2020 Quality Assurance Action Plan, Relative percent Difference values for most parameters are set at 20%, with the exception of "Phosphorus, total" and "Nitrates (NO2+NO3)" at 25%, and "Suspended solids, total" at 5%.
+In the 2020 Quality Assurance Action Plan, Relative Percent Difference values for most parameters are set at 20%, with the exception of "Phosphorus, total" and "Nitrates (NO2+NO3)" at 25%, and "Suspended solids, total" at 5%.
 
 Using the available RPD values against the above criteria, four paired observations exceed project precision goals in 2021. Three of these four observations are for fecal coliform, and one is for total phosphorus.
 
-Most other parameters have at least one available RPD value that is within project precision goals defined in the QAPP. The parameters that do not have at least one RPD calculation available, due to the LOQ constraints described above, are the following:
+Most other parameters have at least one available RPD value that is within project precision goals defined in the QAPP.
+
+The parameters that do *not* have at least one RPD calculation available, due to the LOQ constraints described above, are the following:
 
 -   Arsenic
 -   Cadmium
@@ -1828,16 +1828,16 @@ Most other parameters have at least one available RPD value that is within proje
 
 In 2021 the full suite of dissolved metals was run for method 200.8 on samples from 7/27/2021. However we intend to only submit data for parameters that had a pre-defined QA plan as outlined in the QAPP, which is the case for the following dissolved six metals: Mg, As, Cd, Cr, Cu, Pb, and Zn.
 
-**Summary of Discussion on RPD (Relative percent Difference) Values for 2021**
+**Summary of Discussion on RPD (Relative Percent Difference) Values for 2021**
 
 We attempted to calculate RPD values for all parameters collected in 2021 at two field sites on two dates. For each pair of duplicate observations, one of the following descriptions apply:
 
 -   It ***was possible*** to calculate RPD values because:
     -   a.) one or both of the samples **were above** the LOQ; AND one or both of the samples **were** at least two times the LOQ
-    -   Project data for this parameter will be submitted to EPA WQX if RPD values meet project goals outlined in the QAPP
+        -   Project data for this parameter will be submitted unflagged to EPA WQX if RPD values meet project goals outlined in the QAPP
 -   It ***was not possible*** to calculate RPD values because:
     -   a.) one or both of the samples **were not above** the LOQ; OR one or both of the samples **were not** at least two times the LOQ
-    -   Project data for this parameter will be submitted to EPA WQX if both paired values are non-detect
+        -   Project data for this parameter will be submitted unflagged to EPA WQX if both paired values are non-detect
 
 Best practices for interpreting and applying RPD data in order to flag/not flag the overall dataset are currently being finalized. KWF communicated with the Alaska Department of Environmental Conservation on August 22, 2023 via an inquiry on this topic. The memo includes a visual flow chart of the logic for when data is flagged, and is available for download below.
 
@@ -1851,7 +1851,7 @@ xfun::embed_file("other/documents/QAPP/memos/KWF Memo to ADEC August 2023.pdf", 
 
 *Final determinations on flagging / not flagging 2021 data submitted to the EPA WQX*
 
-All 2021 field results will be submitted unflagged to the EPA WQX unless discussed below.
+***All 2021 field results will be submitted unflagged to the EPA WQX unless discussed below.***
 
 -   *Fecal Coliform*
 
@@ -1864,17 +1864,18 @@ All 2021 field results will be submitted unflagged to the EPA WQX unless discuss
 -   *Selected Metals (As, Cd, Cr, Cu, Pb, Zn)*
 
     -   Because these parameters do not have an associated RPD value from 2021 field data, they will be submitted to EPA WQX as "flagged."
-    -   Note: beginning in Summer 2022, KWF initiated a series of changes to the QAPP that will better facilitate QA/QC decisions regarding Total Metals and Dissolved metals results. These changes include inclusion of a dissolved metals field blank, and changing from field filtration to lab filtration as standard practice.
+    -   Note: beginning in Summer 2022, KWF initiated a series of changes to the QAPP that will better facilitate QA/QC decisions regarding Total Metals and Dissolved metals results. These changes include use of a dissolved metals field blank, and changing from field filtration to lab filtration as standard practice.
 
-```{r}
+```{r echo = F}
 
-# MOVE THIS STEP TO LAST AFTER ALL QUATESTION THAT COULD PRODUCE A FLAG
+# MOVE THIS STEP TO LAST AFTER ALL QUESTIONS THAT COULD PRODUCE A FLAG
+
+# doing now: 12/4/23 11:20 - check to see if any other questions generate flags
 
 # notes on flagging data
 # based on above description, use case_when logic to apply flag Y/N as appropriate. 
-
-# remain agnostic of parameter and year
-# source results file, re-save as "flagged file" in same folder; for each additional future step that involves flagging
+# code should remain agnostic of parameter and year
+# source the results file, re-save as "flagged file" in same folder; do so for each additional future step that involves flagging
 
 
 # read in data formatted for export
@@ -1896,11 +1897,11 @@ export_dat <- full_join(export_dat,flags_2021) %>%
   )) %>%
   filter(!is.na(activity_id))
 
-#do we need to distinguish between RPD flag and MS flag?
+# do we need to distinguish between RPD flag and MS flag?
 
 
 # re-export results w/ rpd flag column
-write.csv(export_dat,"other/output/aqwms_formatted_results/2021_export_data_flagged.csv")
+write.csv(export_dat,"other/output/aqwms_formatted_results/2021_export_data_flagged.csv", row.names = F)
 
 # remove existing "export_dat" dataframe
 rm(export_dat)
@@ -1914,7 +1915,7 @@ rm(export_dat)
 
 **20.) Were there any laboratory discrepancies, errors, data qualifiers, or QC failures (review laboratory duplicates, matrix spikes and blanks)?**
 
-Laboratory discrepancies from the SGS lab are described on page 2 of the spring and summer PDF document reports, which are available for download below.
+Laboratory discrepancies and QC failures from the SGS lab are described on page 2 of the spring and summer PDF document reports, which are available for download below.
 
 ```{r echo = F}
 xfun::embed_file('other/input/2021_wqx_data/spring_2021_wqx_data/SGS/Spring 2021 Results from SGS.pdf', text = "Download Original Spring 2021 Metals/Nutrients Lab Results from SGS - PDF file")
@@ -1960,7 +1961,7 @@ The following discrepancies were identified in the results from SGS laboratories
 
 **Matrix Spike Recoveries**
 
-A total of `r matrix_spike_recovery_fails` matrix spike or matrix spike duplicate samples are outside of QC criteria. The limit of recovery range for the analyte "Total Nitrate/Nitrite-N" is 90% - 110%. For these matrix spike measurements outside of the QC criteria, recovery levels range from 112% - 118%. These values that exceed threshold may be downloaded as a table below:
+A total of `r matrix_spike_recovery_fails` matrix spike or matrix spike duplicate samples are outside of QC criteria. The limit of recovery range for the analyte "Total Nitrate/Nitrite-N" is 90% - 110%. For these matrix spike measurements outside of the QC criteria, recovery levels range from 112% - 118%. The subset of sample values that exceed threshold may be downloaded as a table below:
 
 ```{r matrix-spikes, echo = F, messages = F, warnings = F}
 # embed for download
@@ -1973,6 +1974,14 @@ xfun::embed_file("other/output/lab_qaqc_data/matrix_spike_recovery_fails_2021.cs
 No additional laboratory QA/QC anomalies for any other parameters were noted by any laboratories contracted in 2021. Additional details are available upon request at [hydrology\@kenaiwatershed.org](mailto:hydrology@kenaiwatershed.org){.email}
 
 As of `r Sys.Date()`, "Total Nitrate/Nitrite-N" values will be flagged for the spring 2021 dataset. (Spring only and not summer because no matrix spike recovery exedences were observed from the summer 2021 lab results). The matrix spike recovery exceedances indicate that reported lab values may be 2% - 7% above actual field values. At a later date we will evaluate these results in the context of year 2000 - present data to help evaluate the relevancy of this flag.
+
+```{r echo = F}
+
+# apply "flag = Y" to all "Total Nitrate/Nitrite-N" values for Spring 2021
+
+# this step is already accomplished in a previous code block, which imports and joins "other/input/AQWMS/2021_data_flag_decisions.csv" to the parameters chosen in this discussion.
+
+```
 
 <br>
 
@@ -1996,13 +2005,15 @@ From the discussion and results in question #3, deviations are evident between p
 
 **24.) Was the data collected representative of environmental conditions?.**
 
-The data collected in this project is representative of seasonal hydrological conditions on two fieldwork days in 2021. Conditions vary instantaneously thus this dataset serves to provide representative longitudinal snapshots of the watershed across space on the two dates. Flagged data may indicate that results may require additional interpretation or exclusion from analysis.
+The data collected in this project is representative of seasonal hydrological conditions on two fieldwork days in 2021. Conditions vary instantaneously thus this dataset serves to provide representative longitudinal snapshots of the watershed across space on the two dates.
+
+Flagged data indicates that lab results may not be representative of environmental conditions, and thus may require additional interpretation or exclusion from analysis.
 
 <br>
 
 **25.) Does project meet Completeness Measure A criteria?**
 
-From the QAPP, Completeness Measure A: "the primary number of samples collected divided by the usable number of samples submitted to ADEC with a goal of 85% completeness." (Note that as of 2023 results are now submitted directly to EPA rather than DEC).
+From the QAPP, Completeness Measure A: "the primary number of samples collected divided by the usable number of samples submitted to ADEC, with a goal of 85% completeness." (Note that as of 2023 results are now submitted directly to EPA rather than DEC, per request of DEC).
 
 (Note: metals parameters not specified in the QAPP are excluded from these analyses. In 2021, SGS laboratories provided dissolved metals results for parameters beyond what was originally requested.)
 
@@ -2095,8 +2106,6 @@ write.csv(completeness_summary_project,"other/output/field_qa_qc_data/completene
 
 ```
 
-<br>
-
 ```{r complete-measures, echo = F, messages = F, warnings = F}
 # embed for download
 xfun::embed_file("other/output/field_qa_qc_data/completeness_measures/cma_parameter.csv", text = "Download Completeness Measure A Results, By Parameter")
@@ -2115,7 +2124,7 @@ When completeness results were summarized by parameter, all dissolved metals had
 
 When completeness results were summarised by Site, Completeness Measure A values ranged from 44.4% - 71.4%, depending on the site's sampling plan.
 
-When completeness results are summarized for the overall 2021 dataset, Completeness Measure A is calculated at 50.1%; indicating that 50.1% of the overall result values were flagged.
+When completeness results are summarized for the overall 2021 dataset, Completeness Measure A is calculated at 50.1%; indicating that 49.9% of the overall result values were flagged.
 
 <br>
 
@@ -2123,7 +2132,7 @@ When completeness results are summarized for the overall 2021 dataset, Completen
 
 From the QAPP, Completeness Measure B: "the planned number of samples divided by the useable samples (submitted to ADEC) with a goal of 60%."
 
-For these calculations, we will consider "usable" as "unflagged
+For these calculations, we will consider "usable" as "unflagged," and will calculate at the following scales:
 
 -   For individual parameters (analysis methods)
 -   For individual sites
@@ -2131,7 +2140,7 @@ For these calculations, we will consider "usable" as "unflagged
 
 ```{r echo = F, message=FALSE, eval= F}
 
-# NOTE: IF THE NUMBER/TYPE OF PLANNED SAMPLES IS IDENTICAL TO THE SAMPLES ACTUALLY COLLECTED, THAT COMPLETENESS MEASURES A = COMPLETENESS MEASURES B
+# NOTE: IF THE NUMBER/TYPE OF PLANNED SAMPLES IS IDENTICAL TO THE SAMPLES ACTUALLY COLLECTED, THAN COMPLETENESS MEASURES A = COMPLETENESS MEASURES B (?!)
 
 # BY PARAMETER (actually by method)
 # unflagged (usable) vs expected results
@@ -2198,13 +2207,15 @@ Work still in progress on calculating Completness Measures B as of `r Sys.Date()
 
 **27.) Was the QA officer consulted for any data concerns?**
 
-*Note: the 2012 and 2019 approved Quality Assurance Action Plan (QAPP) documents list Alaska Dept of Environmental Conservation Staff as the project's QA officer* [@kenaiwatershedforum2012; @kenaiwatershedforum2019]*, whereas the 2023 approved QAPP lists Kenai Watershed Forum staff as the project QA officer*[@kenaiwatershedforum2023]*.*
+*Note: the 2012 and 2019 approved Quality Assurance Action Plan (QAPP) documents list Alaska Dept of Environmental Conservation Staff as the project's QA officer* [@kenaiwatershedforum2012; @kenaiwatershedforum2019]*, whereas the 2023 approved QAPP lists Kenai Watershed Forum staff as the project QA officer* [@kenaiwatershedforum2023]*.*
 
-Kenai Watershed Forum consulted regularly with staff from the Alaska Department of Environmental Conservation in order to prepare 2021 field data and confirm methods.
+Kenai Watershed Forum consulted regularly with staff from the Alaska Department of Environmental Conservation and EPA Region 10 Office in order to prepare 2021 field data and confirm field methods and data QA/QC procedures.
 
 <br>
 
-**28.) Are the correct monitoring locations associated with the project? Are latitide and longitude filled out in a consistent format?**
+**28.) Are the correct monitoring locations associated with the project? Are latitude and longitude filled out in a consistent format?**
+
+We used the leaflet package to generate a map of unique sites from the 2021 dataset:
 
 ```{r echo = F, message=FALSE}
 
@@ -2240,19 +2251,19 @@ In the above map we can see that coordinates for the 2021 field sites correspond
 
 **29.) Are the QAPP and other supporting documents attached?**
 
-The QAPP will be included and attached in the data submission to the EPA WQX. Find the current approved QAPP posted on Kenai Watershed Forum's website at https://www.kenaiwatershed.org/news-media/qapp-revisions-completed-2023/.
+The QAPP will be included and attached in the data submission to the EPA WQX. Find the current approved QAPP posted on Kenai Watershed Forum's website at <https://www.kenaiwatershed.org/news-media/qapp-revisions-completed-2023/>.
 
 <br>
 
-**30.) Is all project metdata correct?**
+**30.) Is all project metadata correct?**
 
-Answer TBD.
+Answer TBD. More detail applied here once upload is complete.
 
 <br>
 
 **31.) Is the organization ID correct?**
 
-Kenai Watershed Forum's Organization ID in the EPA Water Quality Exchange is "EPA_WQX." This value is manually confirmed during the upload process.
+Kenai Watershed Forum's Organization ID in the EPA Water Quality Exchange is "Kenai_WQX." This value is manually confirmed during the upload process.
 
 <br>
 
@@ -2287,9 +2298,10 @@ All times zones are listed as AKDT.
 unique(export_dat$equipment_id)
 
 ```
+
 "Sample collection method": all sample values have "Equipment ID" listed as "Water Bottle."
 
-"Preparation":this information corresponds to the "result sample fraction" column 
+"Preparation":this information corresponds to the "result sample fraction" column
 
 "Preservation Methods": this information corresponds to the "preservative" and "thermal preservative" columns.
 
@@ -2316,8 +2328,8 @@ The activity types present are listed above. All three types were planned and an
 unique(export_dat$activity_media_subdivision_name)
 
 ```
-All "Activity Media Subdivision" names are listed as "Surface Water."
 
+All "Activity Media Subdivision" names are listed as "Surface Water."
 
 <br>
 
@@ -2362,20 +2374,38 @@ embed_file("other/input/outliers/baseline_outliers.xlsx", text = "Download ident
 
 **40.) Are units correct and consistent for each parameter?**
 
-```{echo = F}
+```{r echo = F}
 
-unit_tbl <- export_dat %>%
-  select(characteristic_name,result_unit) %>%
+z <- export_dat %>%
+  select(characteristic_name, result_unit) %>%
   distinct()
-unique(export_dat$result_unit)
+data.frame(unique(z$result_unit))
+
+# apply correction to make units consistent. May be different solution here for other years
+
+export_dat[export_dat == "mg/l"] <- 'mg/L'
 
 ```
 
+We observe that equivalent units, "mg/L" and "mg/l", have slightly different notation among parameters. We will correct this at this step to make terms consistent.
 
+<br>
 
+**41.) Are detection limits and laboratory qualifiers included for analytical results?**
 
+Laboratory qualifiers including "J" (below limit of quantitation; is an estimate), "=", (observed value), "U" (below detection limit), and "ND" (Not Detected) are included in the column titled "result_qualifier."
 
+Detection limits and their corresponding units are included in columns titled "result_detection_limit_type_1" and in "result_detection_limit_unit_1" corresponding to Limit of Quanititation, and in columns titled "result_detection_limit_type_2" and "result_detection_limit_unit_2" corresponding to Method Detection Level.
 
+<br>
+
+**42.) Are results trip blanks and/or field blanks above detection limits, and is any related data flagged as a result?**
+
+In summer 2021, trip blanks were included with those field crews tasked with collection water samples for hydrocarbon analyses. Sites visited by these crews include RM 1.5 - Kenai City Dock, RM 6.5 - Cunningham Park, Rm 40 - Bing's Landing, and RM 43 - Upstream of Dow Island.
+
+On the summer 2021 SGS chain of custody documents, BTEX trip blanks are specified for the above sites. However in the reported results, a single sample named "Trip Blank" is reported. This error resulted from a mis-communication with SGS staff.
+
+In this case, all hydrocarbon results in the Trip Blank are reported as below detection limit, suggesting there is not a need to flag summer 2021 hydrocarbon results.
 
 Work in progress here as of `r Sys.Date()`
 
