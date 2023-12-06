@@ -2414,6 +2414,17 @@ In this case, all hydrocarbon results in the Trip Blank are reported as below de
 Work in progress here as of `r Sys.Date()`
 
 ```{r echo = F}
+
+# next steps
+
+# Current task - take the dataframe at the end of this long script, make so column names/structure conforms to the ADEC example. In the QA/QC process, it went through the janitor::clean_names process, thus names need to be fixed again at the end.
+
+## 1.) see that column name structure in EPA WQX matches that of adec aqwms example
+## 2.) ensure that df export from here matches EPA WQX column names
+
+
+
+
 knitr::knit_exit()
 ```
 
