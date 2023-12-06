@@ -2475,12 +2475,12 @@ We plotted locations on a map using the leaflet package, and confirmed that exis
 wqp_sites <- read.csv("other/input/WQX_downloads/station/station.csv")
 
 # read in locations from exported data (export_dat)
-site_check <- wqp_sites %>%
+wqp_sites %<>%
   distinct(MonitoringLocationName,MonitoringLocationDescriptionText,LatitudeMeasure,LongitudeMeasure) %>%
   filter(str_detect(MonitoringLocationName,"^KBL"))
   
 # generate map
-leaflet(site_check) %>%
+leaflet(wqp_sites) %>%
   addTiles() %>%
   addMarkers(~LongitudeMeasure,~LatitudeMeasure,
              popup = ~as.character(MonitoringLocationName),
@@ -2508,8 +2508,14 @@ Within Kenai Watershed Forum's EPA Water Quality Portal web account, we develope
 # Re-develop the "export_dat" dataframe to match desired import configuration for EPA WQP
 
 # rejoin WQP site info to export_dat
+## use matched data at "other/input/AQWMS/AQWMS_matching_table.xlsx
+site_name_match <- read_excel("other/input/AQWMS/AQWMS_template_matching_table.xlsx", sheet = "adec_site_names") %>%
+  remove_empty()
+
+export_dat <- left_join(export_dat, site_name_match)
 
 # working here 12/6/23 - modify/adapt/delete code below to accomplish above 2 goals
+# rename as "export_dat" once script successful & complete
 
 dat %<>%
   # Proceeding left to right across columns of AWQMS template
