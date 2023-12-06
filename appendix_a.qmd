@@ -537,7 +537,7 @@ swwtp_spring21 %<>%
 swwtp_spring21_site_matching <- read_excel("other/input/AQWMS/swwtp_site_names_matching_table_manual_edit.xlsx") 
 
 # join
-# 2/14/23 - working here - modify join table to contain "sample" column w/ format RM_0_No_Name_Creek
+# modify join table to contain "sample" column w/ format RM_0_No_Name_Creek
 swwtp_spring21 %<>%  
   full_join(swwtp_spring21_site_matching) %>%
   select(-sample_location_rm)
@@ -1048,8 +1048,6 @@ dat %<>%
 
 ```{r include = F}
 
-# WORKING HERE 2/10/2023, see notes below
-
 ## b.) sample_condition abbreviations
 
 dat %<>%
@@ -1065,8 +1063,6 @@ dat %<>%
 
 
 ########################## TO DO
-
-#### working here 2/14/23
 
 # issues to resolve:
 # some samples from 5/11/2021 no name creek have "PS" for sample type but have "Field Duplicate" for sample_condition. need to fix. 
@@ -1098,7 +1094,7 @@ dat %<>%
 
 # 10/12/2023 - there might not be a point to doing 'all' of this formatting at this stage, if we don;t have it flagged and ready for export yet
 
-# WORKING HERE:: 12/4/2023 - confirmed that it was unnecessary to have the column names formatted with capital letters & spaces at this stage.
+# 12/4/2023 - confirmed that it was unnecessary to have the column names formatted with capital letters & spaces at this stage.
 
 # Current task - take the dataframe at the end of this long script, make so column names/structure conforms to the ADEC example. In the QA/QC process, it went through the janitor::clean_names process, thus names need to be fixed again at the end.
 
@@ -2194,7 +2190,6 @@ cmb_by_site <- read.csv('other/output/aqwms_formatted_results/2021_export_data_f
   adorn_pct_formatting(,,,cmb)
 
 # calculated results here are non-sensical. re-assess what we need in the tables being joined; by site
-# WORKING HERE 10/7/2023
 
 
 write.csv(cmb_by_method,"other/output/field_qa_qc_data/completeness_measures/cmb_parameter.csv")
@@ -2422,12 +2417,200 @@ Work in progress here as of `r Sys.Date()`
 ## 1.) see that column name structure in EPA WQX matches that of adec aqwms example
 ## 2.) ensure that df export from here matches EPA WQX column names
 
+# projects
+# monitoring locations
+# results & activities
+
 
 
 
 knitr::knit_exit()
 ```
 
---\> TO DO: confirm trip blank values are zero for BTEX
+<br>
+
+### Uploading 2021 data to the EPA Water Quality Exchange (EPA WQX)
+
+Each water quality dataset that is housed in the EPA WQX consists of three uploads:
+
+-   Project description
+
+-   Monitoring locations
+
+-   Results and activities
+
+We will prepare and finalize each of these uploads here.
+
+#### Project Description
+
+On 12/5/2023 we downloaded the KWF Agency Baseline project description datafile from the EPA Water Quality Portal ([EPA WQP](https://www.waterqualitydata.us/#countrycode=US&statecode=US%3A02&countycode=US%3A02%3A122&within=65&lat=60.550309&long=-151.098437&organization=KENAI_WQX&mimeType=csv&providers=NWIS&providers=STEWARDS&providers=STORET)). The file can be directly accessed at the link below:
+
+```{r echo = F}
+
+embed_file("other/input/WQX_downloads/project/project.csv")
+
+```
+
+We found that the project file listed the QAPP (Quality Assurance Project Plan) as "not yet approved." It is possible that this designation is listed as such because previously approved versions of the QAPP (versions 1.0 and 2.0) do not include signatures from an EPA staff on the Title & Approval page, but were instead approved by Alaska Department of Environment Conservation Staff. For the [QAPP approved on 5/9/2023](https://www.kenaiwatershed.org/news-media/qapp-revisions-completed-2023/) (version 3.0), two EPA staff signed as approvers on the Title & Approval page.
+
+To apply this correction, in the "Project" spreadsheet we modified "QAPP Approval Status" from "N" to "Y" and re-uploaded to the EPA Water Quality Exchange in Winter 2023.
+
+#### Monitoring locations
+
+On 12/5/2023 we downloaded the KWF Agency Baseline project monitoring locations datafile from the EPA Water Quality Portal ([EPA WQP](https://www.waterqualitydata.us/#advanced=true)). The file can be directly accessed at the link below:
+
+```{r echo = F}
+
+embed_file("other/input/WQX_downloads/station/station.csv")
+
+```
+
+We retained all sites whose column description for "MonitoringLocationName" contained the prefix "KBL" (Kenai Baseline).
+
+We plotted locations on a map using the leaflet package, and confirmed that existing site names in the database matched those used in the 2021 dataset. 
+
+```{r echo = F, message=FALSE}
+
+# import csv of sites downloaded from EPA Water Quality Portal
+wqp_sites <- read.csv("other/input/WQX_downloads/station/station.csv")
+
+# read in locations from exported data (export_dat)
+site_check <- wqp_sites %>%
+  distinct(MonitoringLocationName,MonitoringLocationDescriptionText,LatitudeMeasure,LongitudeMeasure) %>%
+  filter(str_detect(MonitoringLocationName,"^KBL"))
+  
+# generate map
+leaflet(site_check) %>%
+  addTiles() %>%
+  addMarkers(~LongitudeMeasure,~LatitudeMeasure,
+             popup = ~as.character(MonitoringLocationName),
+             label = ~as.character(MonitoringLocationName))
+
+
+
+# It appears that the "monitoring location id" site names provided by ADEC are not in the existing project dataset on the EPA WQX. (Example: ADEC template calls the No Name Creek site "KR RM 0 NNC", whereas the existing name in the EPA database for this site is "KBL_t_00.0", indicating "Kenai River Baseline, tributary, river mile 0.00")
+
+# For the next step, "Results & Activities," we need to use the existing EPA site names for MonitoringLocationID, and also integrate these into the Activity ID names, and also make sure other relevant columns like MonitoringLocationDescriptionText are included.
+
+# we can perform the join by lat/long if we convert to character and have the same number of decimal places in both dataframes
+# this issue will be avoidable in the future!
+
+```
+
+<br>
+
+#### Results and Activities
+
+Within Kenai Watershed Forum's EPA Water Quality Portal web account, we developed an import configuration that accomodated all relevant columns and data types for this project. We based the configuration primarily on the template provided by the Alaska Dept of Environmental Conservation.
+
+```{r echo = F}
+
+# Re-develop the "export_dat" dataframe to match desired import configuration for EPA WQP
+
+# rejoin WQP site info to export_dat
+
+# working here 12/6/23 - modify/adapt/delete code below to accomplish above 2 goals
+
+dat %<>%
+  # Proceeding left to right across columns of AWQMS template
+  # Mutate new column or rename existing column as needed
+  
+  mutate(
+    `Monitoring Location ID` = monitoring_location_id,
+    `Activity Media Name` = "Water",
+    `Activity Media Subdivision Name` = "Surface Water",
+    # create activity ID name conditionally if condition(s) present
+    `Activity ID` = case_when(
+      is.na(sample_condition) ~ paste0(`Monitoring Location ID`,"-",collect_date,"-",analyte_abbreviation),
+      !is.na(sample_condition) ~ paste0(`Monitoring Location ID`,"-",collect_date,"-",analyte_abbreviation,"-",sample_condition_abbrv)),
+    `Activity Start Date` = collect_date,
+    `Activity Start Time` = collect_time,
+    `Activity End Date` = "",
+    `Activity End Time` = "",
+    `Activity Latitude` = latitude, 
+    `Activity Longitude` = longitude, 
+    `Activity Source Map Scale` = "",
+    `Activity Type` = case_when(
+      sample_condition == "Field Duplicate" ~ "Quality Control Field Replicate Msr/Obs",
+      sample_condition == "Blank" ~ "Quality Control Sample-Trip Blank",
+      sample_type == "TB" ~ "Quality Control Sample-Trip Blank",
+      TRUE ~ "Field Msr/Obs"),
+    # All samples are surface grab samples. Depths are assigned across the board here as 6 inches (~15 cm) 
+    `Activity Depth/Height Measure` = 15,
+    `Activity Depth/Height Unit` = "cm",
+    # Next three columns not applicable for surface grab samples
+    `Activity Top Depth/Height Measure` = "",
+    `Activity Top Depth/Height Unit` = "",
+    `Activity Bottom Depth/Height Measure` = "",
+    `Activity Bottom Depth/Height Unit` = "",
+    `Activity Relative Depth Name` = "",
+    `Activity Comment` = note,
+    `Characteristic Name` = analyte,
+    `Result Analytical Method ID` = epa_analysis_id,
+    `Result Analytical Method Context` = context_code,
+    `Method Speciation` = "",
+    `Result Value` =  result,
+    `Result Unit` = units,
+    `Result Qualifier` = resultflag,
+    `Result Weight Basis` = "Sampled",
+    `Statistical Base Code` = stat_base_code,
+    `Result Sample Fraction` = result_sample_fraction, 
+    `Result Value Type` = "Actual",
+    `Result Comment` = "",
+    `Sample Collection Method ID` = "",
+    `Equipment ID` = "Water Bottle",
+    `Result Detection Condition` = result_detection_condition,
+    `Result Detection Limit Type 1` = "Limit of Quantitation",
+    `Result Detection Limit Value 1` = loq,
+    `Result Detection Limit Unit 1` = units,
+   # note: lod = "limit of detection"; equivalent to "method detection level"
+    `Result Detection Limit Type 2` = "Method Detection Level",
+    `Result Detection Limit Value 2` = lod,
+    `Result Detection Limit Unit 2` = units,
+    `Laboratory Accreditation Indicator` = "",
+    `Laboratory Name` = lab_name,
+    `Laboratory Sample ID` = lab_sample,
+    `Analysis Start Date` = run_date,
+    `Analysis Start Time` = run_time,
+    `Biological Intent` = "",
+    `Subject Taxonomic Name` = "",
+    `Thermal Preservative` = "Cold packs",
+    `Sample Container Type` = sample_container_type,
+    `Sample Container Color` = sample_container_color,
+    `Chemical Preservative` = preservative
+    # remove columns that were mutated to a new name
+    ,.keep = "unused")
+
+# Save a copy of the whole dataframe with all results and parameters prior to reducing it to just the column subset. We will use this later in QA/QC analyses.
+all_dat <- dat
+
+# next, for our AQWMS export, we want to retain just those columns listed in the AQWMS template
+# found solution to this problem here: https://gist.github.com/djhocking/62c76e63543ba9e94ebe
+
+# get all column names from AQWMS template
+aqwms_colnames <- read_excel("other/input/AQWMS/AWQMS_KWF_Baseline_2021.xlsx", sheet = "KWF Baseline AWQMS Template") %>%
+  colnames()
+
+# select from subset of column in aqwms template
+ dat %<>%
+  select(one_of(aqwms_colnames))
+ 
+# export final formatted AQWMS results to external csv
+write.csv(dat,"other/output/aqwms_formatted_results/2021_kwf_baseline_results_aqwms.csv",row.names = F)
+
+
+
+
+
+
+
+
+
+
+```
+
+
+
+
 
 \newpage
