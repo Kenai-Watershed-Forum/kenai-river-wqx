@@ -2505,7 +2505,7 @@ Within Kenai Watershed Forum's EPA Water Quality Portal web account, we develope
 
 ```{r echo = F}
 
-# Re-develop the "export_dat" dataframe to match desired import configuration for EPA WQP
+# Re-develop the "export_dat" dataframe to match desired import configuration for EPA WQP; modify import config as needed
 
 # rejoin WQP site info to export_dat
 ## use matched data at "other/input/AQWMS/AQWMS_matching_table.xlsx
@@ -2517,56 +2517,60 @@ export_dat <- left_join(export_dat, site_name_match)
 # working here 12/6/23 - modify/adapt/delete code below to accomplish above 2 goals
 # rename as "export_dat" once script successful & complete
 
-dat %<>%
+
+# dat %<>%
   # Proceeding left to right across columns of AWQMS template
   # Mutate new column or rename existing column as needed
   
-  mutate(
-    `Monitoring Location ID` = monitoring_location_id,
+z <- export_dat %>%  mutate(
+    `Project ID` = 10000007,
+    `Monitoring Location ID` = MonitoringLocationName,
     `Activity Media Name` = "Water",
     `Activity Media Subdivision Name` = "Surface Water",
     # create activity ID name conditionally if condition(s) present
     `Activity ID` = case_when(
-      is.na(sample_condition) ~ paste0(`Monitoring Location ID`,"-",collect_date,"-",analyte_abbreviation),
-      !is.na(sample_condition) ~ paste0(`Monitoring Location ID`,"-",collect_date,"-",analyte_abbreviation,"-",sample_condition_abbrv)),
-    `Activity Start Date` = collect_date,
-    `Activity Start Time` = collect_time,
+      is.na(sample_condition) ~ paste0(`MonitoringLocationName`,"-",collect_date,"-",analyte_abbreviation),
+      !is.na(sample_condition) ~ paste0(`MonitoringLocationName`,"-",collect_date,"-",analyte_abbreviation,"-",sample_condition_abbrv)),
+    `Activity Start Date` = activity_start_date,
+    `Activity Start Time` = activity_start_time,
+    `Activity Start Time Zone` = "AKDT",
     `Activity End Date` = "",
     `Activity End Time` = "",
-    `Activity Latitude` = latitude, 
-    `Activity Longitude` = longitude, 
+    `Activity End Time Zone` = "AKDT",
+    `Activity Latitude` = activity_latitude, 
+    `Activity Longitude` = activity_longitude, 
     `Activity Source Map Scale` = "",
-    `Activity Type` = case_when(
-      sample_condition == "Field Duplicate" ~ "Quality Control Field Replicate Msr/Obs",
-      sample_condition == "Blank" ~ "Quality Control Sample-Trip Blank",
-      sample_type == "TB" ~ "Quality Control Sample-Trip Blank",
-      TRUE ~ "Field Msr/Obs"),
+    `Activity Type` = activity_type,
     # All samples are surface grab samples. Depths are assigned across the board here as 6 inches (~15 cm) 
-    `Activity Depth/Height Measure` = 15,
-    `Activity Depth/Height Unit` = "cm",
+    `Activity Depth/Height Measure` = activity_depth_height_measure,
+    `Activity Depth/Height Unit` = activity_depth_height_unit,
     # Next three columns not applicable for surface grab samples
     `Activity Top Depth/Height Measure` = "",
     `Activity Top Depth/Height Unit` = "",
     `Activity Bottom Depth/Height Measure` = "",
     `Activity Bottom Depth/Height Unit` = "",
     `Activity Relative Depth Name` = "",
-    `Activity Comment` = note,
-    `Characteristic Name` = analyte,
-    `Result Analytical Method ID` = epa_analysis_id,
-    `Result Analytical Method Context` = context_code,
+    `Activity Comment` = activity_comment,
+    `Characteristic Name` = characteristic_name,
+    `Result Analytical Method ID` = result_analytical_method_id,
+    `Result Analytical Method Context` = result_analytical_method_context,
     `Method Speciation` = "",
-    `Result Value` =  result,
-    `Result Unit` = units,
-    `Result Qualifier` = resultflag,
-    `Result Weight Basis` = "Sampled",
-    `Statistical Base Code` = stat_base_code,
+    `Result Value` =  result_value,
+    `Result Unit` = result_unit,
+    `Result Qualifier` = result_qualifier,
+    `Result Weight Basis` = result_weight_basis,
+    `Statistical Base Code` = statistical_base_code,
     `Result Sample Fraction` = result_sample_fraction, 
-    `Result Value Type` = "Actual",
-    `Result Comment` = "",
-    `Sample Collection Method ID` = "",
-    `Equipment ID` = "Water Bottle",
+    `Result Value Type` = result_value_type,
+    `Result Comment` = result_comment,
+    `Sample Collection Method ID` = sample_collection_method_id,
+    `Equipment ID` = equipment_id,
     `Result Detection Condition` = result_detection_condition,
-    `Result Detection Limit Type 1` = "Limit of Quantitation",
+    
+    ### WORKING HERE!
+    
+    
+    `Result Detection Limit Type 1` = result_detec,
     `Result Detection Limit Value 1` = loq,
     `Result Detection Limit Unit 1` = units,
    # note: lod = "limit of detection"; equivalent to "method detection level"
