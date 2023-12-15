@@ -2568,6 +2568,7 @@ z <- export_dat %>%  mutate(
     `Result Detection Condition` = result_detection_condition,
     
     ### WORKING HERE!
+    # question - can we have mre than one result detection condition column
     
     
     `Result Detection Limit Type 1` = result_detec,
