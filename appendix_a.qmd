@@ -2447,7 +2447,7 @@ On 12/5/2023 we downloaded the KWF Agency Baseline project description datafile 
 
 ```{r echo = F}
 
-embed_file("other/input/WQX_downloads/project/project.csv")
+embed_file("other/input/WQX_downloads/project/project.csv", text = "Kenai River Baseline Water Quality Monitoring project details for EPA WQP")
 
 ```
 
