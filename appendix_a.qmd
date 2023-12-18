@@ -2406,26 +2406,7 @@ On the summer 2021 SGS chain of custody documents, BTEX trip blanks are specifie
 
 In this case, all hydrocarbon results in the Trip Blank are reported as below detection limit, suggesting there is not a need to flag summer 2021 hydrocarbon results.
 
-Work in progress here as of `r Sys.Date()`
 
-```{r echo = F}
-
-# next steps
-
-# Current task - take the dataframe at the end of this long script, make so column names/structure conforms to the ADEC example. In the QA/QC process, it went through the janitor::clean_names process, thus names need to be fixed again at the end.
-
-## 1.) see that column name structure in EPA WQX matches that of adec aqwms example
-## 2.) ensure that df export from here matches EPA WQX column names
-
-# projects
-# monitoring locations
-# results & activities
-
-
-
-
-knitr::knit_exit()
-```
 
 <br>
 
@@ -2461,18 +2442,22 @@ On 12/5/2023 we downloaded the KWF Agency Baseline project monitoring locations 
 
 ```{r echo = F}
 
-embed_file("other/input/WQX_downloads/station/station.csv")
+embed_file("other/input/WQX_downloads/station/station.csv", text = "Download Kenai River Baseline Water Quality Monitoring Sites 2021")
 
 ```
 
 We retained all sites whose column description for "MonitoringLocationName" contained the prefix "KBL" (Kenai Baseline).
 
-We plotted locations on a map using the leaflet package, and confirmed that existing site names in the database matched those used in the 2021 dataset. 
+We plotted locations on a map using the leaflet package, and confirmed that existing site names in the database matched those used in the 2021 dataset.
+
+In the EPA WQX Central Data Exchange, we created a custom import configuration to accommodate importing the list of existing sites.
 
 ```{r echo = F, message=FALSE}
 
 # import csv of sites downloaded from EPA Water Quality Portal
 wqp_sites <- read.csv("other/input/WQX_downloads/station/station.csv")
+
+# --> TO DO::: dveelop import config to accommodate this csv
 
 # read in locations from exported data (export_dat)
 wqp_sites %<>%
@@ -2485,8 +2470,6 @@ leaflet(wqp_sites) %>%
   addMarkers(~LongitudeMeasure,~LatitudeMeasure,
              popup = ~as.character(MonitoringLocationName),
              label = ~as.character(MonitoringLocationName))
-
-
 
 # It appears that the "monitoring location id" site names provided by ADEC are not in the existing project dataset on the EPA WQX. (Example: ADEC template calls the No Name Creek site "KR RM 0 NNC", whereas the existing name in the EPA database for this site is "KBL_t_00.0", indicating "Kenai River Baseline, tributary, river mile 0.00")
 
@@ -2501,60 +2484,91 @@ leaflet(wqp_sites) %>%
 
 #### Results and Activities
 
-Within Kenai Watershed Forum's EPA Water Quality Portal web account, we developed an import configuration that accomodated all relevant columns and data types for this project. We based the configuration primarily on the template provided by the Alaska Dept of Environmental Conservation.
+Within Kenai Watershed Forum's EPA Water Quality Portal web account, we developed an import configuration that accommodated all relevant columns and data types for this project. We based the configuration primarily on the template provided by the Alaska Dept of Environmental Conservation.
+
+For this export, we removed all observations that had been "flagged" throughout the QA/QC process described above. Flagged observations will not be uploaded to the EPA WQX.
+
+
+
+```{r echo = F}
+# remove all flagged observations from 2021 dataset
+export_dat %<>%
+  filter(flag == "N")
+
+```
+
+
 
 ```{r echo = F}
 
-# Re-develop the "export_dat" dataframe to match desired import configuration for EPA WQP; modify import config as needed
+# here, we will re-develop the "export_dat" dataframe to match desired import configuration for EPA WQP; modify import config as needed. 
 
-# rejoin WQP site info to export_dat
+# before we prepare the dataframe, we need to re-prepare some columns in order to correctly create the "Activity ID". In the future we can avaoid this step by using desired site names in earlier step
+
+# --> site names
+# rejoin WQP site location info (site names) to export_dat
 ## use matched data at "other/input/AQWMS/AQWMS_matching_table.xlsx
 site_name_match <- read_excel("other/input/AQWMS/AQWMS_template_matching_table.xlsx", sheet = "adec_site_names") %>%
   remove_empty()
-
 export_dat <- left_join(export_dat, site_name_match)
+
+# --> characteristic names
+# rejoin edited list of analyte abbreviation names, then append to dataframe. Use in creating Activity IDs.
+analyte_abbrev <- read.csv("other/input/AQWMS/analytes_list_manual_edit.csv") 
+colnames(analyte_abbrev) <- c("characteristic_name","analyte_abbreviation")
+analyte_abbrev %<>% select(characteristic_name, analyte_abbreviation)
+export_dat %<>%
+  left_join(analyte_abbrev)
+
+# --> sample_condition names (dup or field blank)
+# this column is not present, so we will extract the info from the existing activity_id column
+export_dat %<>%
+  mutate(sample_condition_abbrv = case_when(
+    grepl("DUP",activity_id) ~ "DUP",
+    grepl("Blank", activity_id) ~ "Blank"
+  ))
 
 # working here 12/6/23 - modify/adapt/delete code below to accomplish above 2 goals
 # rename as "export_dat" once script successful & complete
 
 
-# dat %<>%
-  # Proceeding left to right across columns of AWQMS template
-  # Mutate new column or rename existing column as needed
-  
-z <- export_dat %>%  mutate(
+# --> finalize dataframe
+# Proceeding left to right across columns of AWQMS template
+# Mutated new column or rename existing column as needed
+export_dat %<>%  
+   mutate(
     `Project ID` = 10000007,
     `Monitoring Location ID` = MonitoringLocationName,
-    `Activity Media Name` = "Water",
-    `Activity Media Subdivision Name` = "Surface Water",
+    `Activity Media Name` = activity_media_name,
+    `Activity Media Subdivision Name` = activity_media_subdivision_name,
     # create activity ID name conditionally if condition(s) present
     `Activity ID` = case_when(
-      is.na(sample_condition) ~ paste0(`MonitoringLocationName`,"-",collect_date,"-",analyte_abbreviation),
-      !is.na(sample_condition) ~ paste0(`MonitoringLocationName`,"-",collect_date,"-",analyte_abbreviation,"-",sample_condition_abbrv)),
+      is.na(sample_condition_abbrv) ~ paste0(`MonitoringLocationName`,"-",activity_start_date,"-",analyte_abbreviation),
+      !is.na(sample_condition_abbrv) ~ paste0(`MonitoringLocationName`,"-",activity_start_date,"-",analyte_abbreviation,"-",sample_condition_abbrv)),
     `Activity Start Date` = activity_start_date,
     `Activity Start Time` = activity_start_time,
     `Activity Start Time Zone` = "AKDT",
-    `Activity End Date` = "",
-    `Activity End Time` = "",
+    `Activity End Date` = activity_end_date,
+    `Activity End Time` = activity_end_time,
     `Activity End Time Zone` = "AKDT",
     `Activity Latitude` = activity_latitude, 
     `Activity Longitude` = activity_longitude, 
-    `Activity Source Map Scale` = "",
+    `Activity Source Map Scale` = activity_source_map_scale,
     `Activity Type` = activity_type,
     # All samples are surface grab samples. Depths are assigned across the board here as 6 inches (~15 cm) 
     `Activity Depth/Height Measure` = activity_depth_height_measure,
     `Activity Depth/Height Unit` = activity_depth_height_unit,
     # Next three columns not applicable for surface grab samples
-    `Activity Top Depth/Height Measure` = "",
-    `Activity Top Depth/Height Unit` = "",
-    `Activity Bottom Depth/Height Measure` = "",
-    `Activity Bottom Depth/Height Unit` = "",
-    `Activity Relative Depth Name` = "",
+    `Activity Top Depth/Height Measure` = activity_top_depth_height_measure,
+    `Activity Top Depth/Height Unit` = activity_top_depth_height_unit,
+    `Activity Bottom Depth/Height Measure` = activity_bottom_depth_height_measure,
+    `Activity Bottom Depth/Height Unit` = activity_bottom_depth_height_unit,
+    `Activity Relative Depth Name` = activity_relative_depth_name,
     `Activity Comment` = activity_comment,
     `Characteristic Name` = characteristic_name,
     `Result Analytical Method ID` = result_analytical_method_id,
     `Result Analytical Method Context` = result_analytical_method_context,
-    `Method Speciation` = "",
+    `Method Speciation` = method_speciation,
     `Result Value` =  result_value,
     `Result Unit` = result_unit,
     `Result Qualifier` = result_qualifier,
@@ -2567,33 +2581,31 @@ z <- export_dat %>%  mutate(
     `Equipment ID` = equipment_id,
     `Result Detection Condition` = result_detection_condition,
     
-    ### WORKING HERE!
+    ### answer in progress here 12/15/23
     # question - can we have mre than one result detection condition column
+    # in the CDX import configuration, it appears that multiple columns can have the identical name. This will not work in R. Try: in export_dat, create detection limit columns designated as "1" and "2", then remove these for the import/upload
     
-    
-    `Result Detection Limit Type 1` = result_detec,
-    `Result Detection Limit Value 1` = loq,
-    `Result Detection Limit Unit 1` = units,
+    `Result Detection Limit Type 1` = result_detection_limit_type_1,        
+    `Result Detection Limit Value 1` = result_detection_limit_value_1,
+    `Result Detection Limit Unit 1` = result_detection_limit_unit_1,
    # note: lod = "limit of detection"; equivalent to "method detection level"
-    `Result Detection Limit Type 2` = "Method Detection Level",
-    `Result Detection Limit Value 2` = lod,
-    `Result Detection Limit Unit 2` = units,
-    `Laboratory Accreditation Indicator` = "",
-    `Laboratory Name` = lab_name,
-    `Laboratory Sample ID` = lab_sample,
-    `Analysis Start Date` = run_date,
-    `Analysis Start Time` = run_time,
-    `Biological Intent` = "",
-    `Subject Taxonomic Name` = "",
-    `Thermal Preservative` = "Cold packs",
+    `Result Detection Limit Type 2` = result_detection_limit_type_2,
+    `Result Detection Limit Value 2` = result_detection_limit_value_2,
+    `Result Detection Limit Unit 2` = result_detection_limit_unit_2,
+    `Laboratory Accreditation Indicator` = laboratory_accreditation_indicator,
+    `Laboratory Name` = laboratory_name,
+    `Laboratory Sample ID` = laboratory_sample_id,
+    `Analysis Start Date` = analysis_start_date,
+    `Analysis Start Time` = analysis_start_time,
+    `Biological Intent` = biological_intent,
+    `Subject Taxonomic Name` = subject_taxonomic_name,
+    `Thermal Preservative` = thermal_preservative,
     `Sample Container Type` = sample_container_type,
     `Sample Container Color` = sample_container_color,
-    `Chemical Preservative` = preservative
+    `Chemical Preservative` = chemical_preservative
     # remove columns that were mutated to a new name
     ,.keep = "unused")
 
-# Save a copy of the whole dataframe with all results and parameters prior to reducing it to just the column subset. We will use this later in QA/QC analyses.
-all_dat <- dat
 
 # next, for our AQWMS export, we want to retain just those columns listed in the AQWMS template
 # found solution to this problem here: https://gist.github.com/djhocking/62c76e63543ba9e94ebe
@@ -2603,24 +2615,54 @@ aqwms_colnames <- read_excel("other/input/AQWMS/AWQMS_KWF_Baseline_2021.xlsx", s
   colnames()
 
 # select from subset of column in aqwms template
- dat %<>%
+ export_dat %<>%
   select(one_of(aqwms_colnames))
  
 # export final formatted AQWMS results to external csv
-write.csv(dat,"other/output/aqwms_formatted_results/2021_kwf_baseline_results_aqwms.csv",row.names = F)
-
-
-
-
-
-
-
-
+write.csv(export_dat,"other/output/aqwms_formatted_results/results_activities.csv",row.names = F)
 
 
 ```
 
+```{r echo = F}
 
+# assemble all components of upload to one folder location
+
+# project (hashtagged out for now becuase we modified the csv to prep for upload; changed QAPP status to Y and added website)
+#project <- read.csv("other/input/WQX_downloads/project/project.csv")
+#write.csv(project,"other/output/aqwms_formatted_results/project.csv", row.names = F)
+
+# stations
+station <- read.csv("other/input/WQX_downloads/station/station.csv")
+write.csv(project,"other/output/aqwms_formatted_results/station.csv", row.names = F)
+```
+
+
+
+Work in progress here as of `r Sys.Date()`
+
+```{r echo = F}
+
+# 12/15/2023
+# We have three files prepared to upload through CDX. The one most likley to snag is "results_activities.csv". Experiment with this last...
+
+
+
+# next steps
+
+# for next years::: take the dataframe at the end of this long script, make so column names/structure conforms to the ADEC example. In the 2021 QA/QC process, it went through the janitor::clean_names process, thus names needed to be fixed again at the end.
+
+## 1.) see that column name structure in EPA WQX matches that of adec aqwms example
+## 2.) ensure that df export from here matches EPA WQX column names
+
+# projects
+# monitoring locations
+# results & activities
+
+
+
+knitr::knit_exit()
+```
 
 
 
