@@ -1179,7 +1179,7 @@ aqwms_colnames <- read_excel("other/input/AQWMS/AWQMS_KWF_Baseline_2021.xlsx", s
   colnames()
 
 # select from subset of column in aqwms template
- dat %<>%
+dat %<>%
   select(one_of(aqwms_colnames))
  
 # export final formatted AQWMS results to external csv
@@ -1218,8 +1218,6 @@ Prior to upload to the EPA WQX, all water quality data must be checked against a
 ```{r, echo = F}
 xfun::embed_file('other/documents/AQWMS_documents/Kenai_Baseline_Data_Evaluation_Checklist_20230331.xlsx', text = "Download Draft Kenai Baseline Data Evaluation Checklist Template")
 
-# show example ADEC template also here
-
 ```
 
 #### Pre-Database
@@ -1228,12 +1226,6 @@ xfun::embed_file('other/documents/AQWMS_documents/Kenai_Baseline_Data_Evaluation
 
 Note: the sequence of questions is structured such that data will be gradually flagged at each step based on the criteria described.
 
-```{r, echo = F, message = F}
-
-# [NOTE 10/5/2023 IS THIS ABOVE STATEMENT TRUE???]
-
-# work with excel file Kenai_Baseline_Data_Evaluation_Checklist_20230331.xlsx and resequence evaluation to logical order
-```
 
 **1.) Were the appropriate analytical methods used for all parameters?**
 
@@ -2432,7 +2424,9 @@ embed_file("other/input/WQX_downloads/project/project.csv", text = "Kenai River 
 
 ```
 
-We found that the project file listed the QAPP (Quality Assurance Project Plan) as "not yet approved." It is possible that this designation is listed as such because previously approved versions of the QAPP (versions 1.0 and 2.0) do not include signatures from an EPA staff on the Title & Approval page, but were instead approved by Alaska Department of Environment Conservation Staff. For the [QAPP approved on 5/9/2023](https://www.kenaiwatershed.org/news-media/qapp-revisions-completed-2023/) (version 3.0), two EPA staff signed as approvers on the Title & Approval page.
+<br>
+
+We found that the project file listed the QAPP (Quality Assurance Project Plan) as "not yet approved." It is possible that this designation is listed as such because previously approved versions of the QAPP (versions 1.0 and 2.0) do not include signatures from an EPA staff on the Title & Approval page, but were instead approved by Alaska Department of Environment Conservation Staff. For the [QAPP approved on 5/9/2023](https://www.kenaiwatershed.org/news-media/qapp-revisions-completed-2023/) (version 3.0), two Region 10 EPA staff signed as approvers on the Title & Approval page.
 
 To apply this correction, in the "Project" spreadsheet we modified "QAPP Approval Status" from "N" to "Y" and re-uploaded to the EPA Water Quality Exchange in Winter 2023.
 
@@ -2445,6 +2439,8 @@ On 12/5/2023 we downloaded the KWF Agency Baseline project monitoring locations 
 embed_file("other/input/WQX_downloads/station/station.csv", text = "Download Kenai River Baseline Water Quality Monitoring Sites 2021")
 
 ```
+
+<br>
 
 We retained all sites whose column description for "MonitoringLocationName" contained the prefix "KBL" (Kenai Baseline).
 
@@ -2633,13 +2629,15 @@ write.csv(export_dat,"other/output/aqwms_formatted_results/results_activities.cs
 #write.csv(project,"other/output/aqwms_formatted_results/project.csv", row.names = F)
 
 # stations
-station <- read.csv("other/input/WQX_downloads/station/station.csv")
-write.csv(project,"other/output/aqwms_formatted_results/station.csv", row.names = F)
+station <- read.csv("other/input/WQX_downloads/station/station.csv") %>%
+  # remove all non-KWF sites
+  filter(grepl("KBL", MonitoringLocationName))
+write.csv(station,"other/output/aqwms_formatted_results/station.csv", row.names = F)
 ```
 
 
-
 Work in progress here as of `r Sys.Date()`
+
 
 ```{r echo = F}
 
