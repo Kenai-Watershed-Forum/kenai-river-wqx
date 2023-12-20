@@ -2467,12 +2467,20 @@ leaflet(wqp_sites) %>%
              popup = ~as.character(MonitoringLocationName),
              label = ~as.character(MonitoringLocationName))
 
+# Notes on ADEC Site Names
 # It appears that the "monitoring location id" site names provided by ADEC are not in the existing project dataset on the EPA WQX. (Example: ADEC template calls the No Name Creek site "KR RM 0 NNC", whereas the existing name in the EPA database for this site is "KBL_t_00.0", indicating "Kenai River Baseline, tributary, river mile 0.00")
 
 # For the next step, "Results & Activities," we need to use the existing EPA site names for MonitoringLocationID, and also integrate these into the Activity ID names, and also make sure other relevant columns like MonitoringLocationDescriptionText are included.
 
 # we can perform the join by lat/long if we convert to character and have the same number of decimal places in both dataframes
 # this issue will be avoidable in the future!
+
+# Notes on "station.csv" download from EPA WQX
+# The download contain extensive column info about well characteristics. No wells are included as part of this study, but we kept them in the import configuration for consistency's sake. TBD if this is necessary.
+
+# 12/19/23
+# 1st attempt to upload station.csv riddled with errors.
+# 1.) claims that MonitoringLocationIDs do not already exist in system. Double check.
 
 ```
 
