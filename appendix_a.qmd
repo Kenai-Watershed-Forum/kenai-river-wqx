@@ -2493,7 +2493,6 @@ Within Kenai Watershed Forum's EPA Water Quality Portal web account, we develope
 For this export, we removed all observations that had been "flagged" throughout the QA/QC process described above. Flagged observations will not be uploaded to the EPA WQX.
 
 
-
 ```{r echo = F}
 # remove all flagged observations from 2021 dataset
 export_dat %<>%
@@ -2507,7 +2506,7 @@ export_dat %<>%
 
 # here, we will re-develop the "export_dat" dataframe to match desired import configuration for EPA WQP; modify import config as needed. 
 
-# before we prepare the dataframe, we need to re-prepare some columns in order to correctly create the "Activity ID". In the future we can avaoid this step by using desired site names in earlier step
+# before we prepare the dataframe, we need to re-prepare some columns in order to correctly create the "Activity ID". In the future we can avoid this step by using desired site names in earlier step
 
 # --> site names
 # rejoin WQP site location info (site names) to export_dat
@@ -2542,7 +2541,7 @@ export_dat %<>%
 export_dat %<>%  
    mutate(
     `Project ID` = 10000007,
-    `Monitoring Location ID` = MonitoringLocationName,
+    `Monitoring Location ID` = MonitoringLocationIdentifier,
     `Activity Media Name` = activity_media_name,
     `Activity Media Subdivision Name` = activity_media_subdivision_name,
     # create activity ID name conditionally if condition(s) present
@@ -2615,6 +2614,8 @@ export_dat %<>%
 # found solution to this problem here: https://gist.github.com/djhocking/62c76e63543ba9e94ebe
 
 # get all column names from AQWMS template
+
+# need to modify this to include MonitoringLocationIdentifier
 aqwms_colnames <- read_excel("other/input/AQWMS/AWQMS_KWF_Baseline_2021.xlsx", sheet = "KWF Baseline AWQMS Template") %>%
   colnames()
 
@@ -2632,15 +2633,17 @@ write.csv(export_dat,"other/output/aqwms_formatted_results/results_activities.cs
 
 # assemble all components of upload to one folder location
 
+# renew this code for future years; this is manually edited for now.
+
 # project (hashtagged out for now becuase we modified the csv to prep for upload; changed QAPP status to Y and added website)
 #project <- read.csv("other/input/WQX_downloads/project/project.csv")
 #write.csv(project,"other/output/aqwms_formatted_results/project.csv", row.names = F)
 
 # stations
-station <- read.csv("other/input/WQX_downloads/station/station.csv") %>%
+#station <- read.csv("other/input/WQX_downloads/station/station.csv") %>%
   # remove all non-KWF sites
-  filter(grepl("KBL", MonitoringLocationName))
-write.csv(station,"other/output/aqwms_formatted_results/station.csv", row.names = F)
+#  filter(grepl("KBL", MonitoringLocationName))
+# write.csv(station,"other/output/aqwms_formatted_results/station.csv", row.names = F)
 ```
 
 
@@ -2649,9 +2652,8 @@ Work in progress here as of `r Sys.Date()`
 
 ```{r echo = F}
 
-# 12/15/2023
-# We have three files prepared to upload through CDX. The one most likley to snag is "results_activities.csv". Experiment with this last...
-
+# 1/4/24
+# next step: re-start (delete old) EPA CDX import config for results_activities. Somehow I duplicated a bunch of column names. Consider removing all irrelevant columns with no info (all NA) from results_activities, make import config to reflect this
 
 
 # next steps
