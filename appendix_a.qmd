@@ -2478,9 +2478,6 @@ leaflet(wqp_sites) %>%
 # Notes on "station.csv" download from EPA WQX
 # The download contain extensive column info about well characteristics. No wells are included as part of this study, but we kept them in the import configuration for consistency's sake. TBD if this is necessary.
 
-# 12/19/23
-# 1st attempt to upload station.csv riddled with errors.
-# 1.) claims that MonitoringLocationIDs do not already exist in system. Double check.
 
 ```
 
@@ -2490,13 +2487,19 @@ leaflet(wqp_sites) %>%
 
 Within Kenai Watershed Forum's EPA Water Quality Portal web account, we developed an import configuration that accommodated all relevant columns and data types for this project. We based the configuration primarily on the template provided by the Alaska Dept of Environmental Conservation.
 
-For this export, we removed all observations that had been "flagged" throughout the QA/QC process described above. Flagged observations will not be uploaded to the EPA WQX.
+For this export, we identified as "Rejected" all observations that had been "flagged" throughout the QA/QC process described above. Flagged observations will be uploaded to the EPA WQX labeled as "Rejected" under the column "Result Status ID."
 
 
 ```{r echo = F}
 # remove all flagged observations from 2021 dataset
+
+# label all flagged observations as "Rejected" and non-flagged as "Final."
+
 export_dat %<>%
-  filter(flag == "N")
+  mutate(`Result Status ID` = case_when(
+    flag == "Y" ~ "Rejected",
+    flag == "N" ~ "Accepted"
+  ))
 
 ```
 
