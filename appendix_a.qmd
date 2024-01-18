@@ -2642,6 +2642,10 @@ write.csv(export_dat,"other/output/aqwms_formatted_results/results_activities.cs
 #  filter(grepl("KBL", MonitoringLocationName))
 # write.csv(station,"other/output/aqwms_formatted_results/station.csv", row.names = F)
 ```
+Other notes for final 2021 data upload to EPA CDX
+
+- Phosphorus from EPA Method 200.8 (Dissloved Metals by ICP/MS) requires a "method speciation". (This does not apply to "Total Phosphorus", method SM21 4500P-B,E). However this method does not distinguish speciation. Result Status ID was designated "as P" for this test/parameter. Regardless, this parameter was not included in the QAPP, so is designated as "Rejected" in "Result Status ID".
+
 
 Work in progress here as of `r Sys.Date()`
 
