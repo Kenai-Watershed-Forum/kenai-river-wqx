@@ -1226,7 +1226,6 @@ xfun::embed_file('other/documents/AQWMS_documents/Kenai_Baseline_Data_Evaluation
 
 Note: the sequence of questions is structured such that data will be gradually flagged at each step based on the criteria described.
 
-
 **1.) Were the appropriate analytical methods used for all parameters?**
 
 Yes. Analytical methods from the approved 2020 QAPP were employed.
@@ -2398,8 +2397,6 @@ On the summer 2021 SGS chain of custody documents, BTEX trip blanks are specifie
 
 In this case, all hydrocarbon results in the Trip Blank are reported as below detection limit, suggesting there is not a need to flag summer 2021 hydrocarbon results.
 
-
-
 <br>
 
 ### Uploading 2021 data to the EPA Water Quality Exchange (EPA WQX)
@@ -2489,7 +2486,6 @@ Within Kenai Watershed Forum's EPA Water Quality Portal web account, we develope
 
 For this export, we identified as "Rejected" all observations that had been "flagged" throughout the QA/QC process described above. Flagged observations will be uploaded to the EPA WQX labeled as "Rejected" under the column "Result Status ID."
 
-
 ```{r echo = F}
 # remove all flagged observations from 2021 dataset
 
@@ -2502,8 +2498,6 @@ export_dat %<>%
   ))
 
 ```
-
-
 
 ```{r echo = F}
 
@@ -2648,10 +2642,12 @@ write.csv(export_dat,"other/output/aqwms_formatted_results/results_activities.cs
 #  filter(grepl("KBL", MonitoringLocationName))
 # write.csv(station,"other/output/aqwms_formatted_results/station.csv", row.names = F)
 ```
+Other notes for final 2021 data upload to EPA CDX
+
+- Phosphorus from EPA Method 200.8 (Dissloved Metals by ICP/MS) requires a "method speciation". (This does not apply to "Total Phosphorus", method SM21 4500P-B,E). However this method does not distinguish speciation. Result Status ID was designated "as P" for this test/parameter. Regardless, this parameter was not included in the QAPP, so is designated as "Rejected" in "Result Status ID".
 
 
 Work in progress here as of `r Sys.Date()`
-
 
 ```{r echo = F}
 
@@ -2674,7 +2670,5 @@ Work in progress here as of `r Sys.Date()`
 
 knitr::knit_exit()
 ```
-
-
 
 \newpage
