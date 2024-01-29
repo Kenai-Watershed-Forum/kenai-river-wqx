@@ -101,6 +101,9 @@ krbwqm_dates <- read_excel("other/input/sample_dates_tides.xlsx") %>%
   mutate(julian_day = yday(activity_start_date),
          year = year(activity_start_date))
 
+z <- krbwqm_dates %>%
+  arrange(season,julian_day)
+
 
 ```
 
