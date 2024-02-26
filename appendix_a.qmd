@@ -1216,7 +1216,7 @@ xfun::embed_file('other/output/aqwms_formatted_results/2021_kwf_baseline_results
 Prior to upload to the EPA WQX, all water quality data must be checked against a series of standard questions in order to evaluate how quality assurance / quality check (QA/QC) requirements are met. The draft Data Evaluation Checklist Template (available for download below) outlines these questions:
 
 ```{r, echo = F}
-xfun::embed_file('other/documents/AQWMS_documents/Kenai_Baseline_Data_Evaluation_Checklist_20230331.xlsx', text = "Download Draft Kenai Baseline Data Evaluation Checklist Template")
+xfun::embed_file('other/documents/AQWMS_documents/Kenai_Baseline_Data_Evaluation_Checklist_20230331.xlsx', text = "Download 2021 Draft Kenai Baseline Data Evaluation Checklist Template")
 
 ```
 
