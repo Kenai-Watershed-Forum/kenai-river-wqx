@@ -28,6 +28,8 @@ Water quality data from this project is ultimately destined for the Environmenta
 
 The Quality Assurance Project Plan (QAPP) for this project describes data management details and responsible parties for each step of the data pipeline from observation to repository. The 2021 data preparation and review process is published here as an appendix as an example of the process applied annually to each year's data.
 
+Year 2021 QA/QC is included here as an example. Other project years QA/QC may be accessed at <https://kenai-watershed-forum.github.io/kenai-river-wqx-qaqc/>. 
+
 ### Year 2021 Water Quality Data
 
 In this appendix we will collate 2021 laboratory data from several sources into a single spreadsheet document with a consistent format. The desired end format is a spreadsheet template provided by the EPA Water Quality Exchange. These template files are available to download from the EPA at <https://www.epa.gov/waterdata/water-quality-exchange-web-template-files>.
