@@ -151,15 +151,8 @@ make_boxplot <- function(param) {
 
 
 
-
-
-
 # make geom_point geometry different for exceedences
 # make plotly appear on html render, jpg on docx render
-
-
-
-
 
 
 
