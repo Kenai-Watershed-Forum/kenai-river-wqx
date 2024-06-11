@@ -2,8 +2,6 @@
 
 We calculated regulatory limits based on freshwater quality standards listed from state and federal regulatory agencies...
 
-
-
 ## Metals
 
 ### Static Regulatory Threshold Values for Metals
@@ -40,7 +38,6 @@ embed_file(dir, text = "Metals with Static Regulatory Threshold Values")
 ```
 
 <br>
-
 
 ### Metals with Hardness-Dependent Regulatory Values
 
@@ -95,8 +92,7 @@ https://dec.alaska.gov/water/water-quality/standards/
 
 Hardness-dependent criteria may be calculated from the following for freshwater metals:
 
-Acute (dissolved) = exp{mA[ln(hardness)]+ bA} (CF)
-Chronic (dissolved) = exp{mC [ln(hardness)] + bC} (CF)
+Acute (dissolved) = exp{mA\[ln(hardness)\]+ bA} (CF) Chronic (dissolved) = exp{mC \[ln(hardness)\] + bC} (CF)
 
 where mA, bA, mC, and bC are numerical parameters specific to each substance, and CF is the conversion factor for acute vs. chronic criteria.
 
@@ -177,9 +173,6 @@ embed_file(dir, text = "Hardness Dependent Regulatory Thresholds for Metals - Ke
 
 ## Hydrocarbons
 
-
-
-
 ```{r echo = F}
 
 ### Diesel Range Organics 
@@ -192,8 +185,7 @@ embed_file(dir, text = "Hardness Dependent Regulatory Thresholds for Metals - Ke
 
 ```
 
-
-### Total BTEX 
+### Total BTEX
 
 Total aromatic hydrocarbons (TAH) means the sum of the following volatile monoaromatic hydrocarbon compounds: benzene, toluene, ethylbenzene, and the xylene isomers, commonly called BTEX.
 
@@ -205,9 +197,6 @@ For each sampling event with available data, we calculated the sum of the parame
 # does value for sum of "Benzene, toluene, ethyl benzene, xylenes mix" match value for sum of individual parameters? Are there events where both formats are reported?
 
 ```
-
-
-
 
 <br>
 
@@ -223,7 +212,6 @@ For each sampling event with available data, we calculated the sum of the parame
 
 ```
 
-
 <br>
 
 ## Bacteria
@@ -238,7 +226,6 @@ For each sampling event with available data, we calculated the sum of the parame
 
 ```
 
-
 <br>
 
 ## Total Suspended Solids
@@ -247,7 +234,6 @@ For each sampling event with available data, we calculated the sum of the parame
 
 # pg 22 https://www.epa.gov/system/files/documents/2023-05/akwqs-chapter70-2023.pdf
 ```
-
 
 <br>
 
@@ -258,6 +244,3 @@ For each sampling event with available data, we calculated the sum of the parame
 # pH, conductivity, temp, turb, DO
 
 ```
-
-
-
