@@ -92,4 +92,3 @@ ggsave("other/output/financial/2005_2023_inflation_adjsuted_income_plot1.jpg", w
 
 
 ```
-
