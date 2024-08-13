@@ -1854,7 +1854,7 @@ xfun::embed_file("other/documents/QAPP/memos/KWF Memo to ADEC August 2023.pdf", 
 
     -   TO DO: Calculate and visualize RPD values for 2014-2022 and compare, also compare to RPD values in previous comprehensive report.
 
--   *Selected Metals (As, Cd, Cr, Cu, Pb, Zn)*
+-   *Selected Dissolved Metals (As, Cd, Cr, Cu, Pb, Zn)*
 
     -   Because these parameters do not have an associated RPD value from 2021 field data, they will be submitted to EPA WQX as "flagged."
     -   Note: beginning in Summer 2022, KWF initiated a series of changes to the QAPP that will better facilitate QA/QC decisions regarding Total Metals and Dissolved metals results. These changes include use of a dissolved metals field blank, and changing from field filtration to lab filtration as standard practice.
