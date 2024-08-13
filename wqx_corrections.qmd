@@ -1,0 +1,66 @@
+---
+title: Kenai Watershed Forum WQX Corrections
+execute:
+  echo: false
+---
+
+```{r echo = F}
+
+# clear environment
+rm(list=ls())
+
+# load packages
+library(tidyverse)
+library(readxl)
+library(openxlsx)
+library(data.table)
+library(stringr)
+library(magrittr)
+library(janitor)
+library(hms)
+library(lubridate)
+library(anytime)
+
+```
+
+# Introduction
+
+In August 2024 Kenai Watershed Forum identified a potential issue with existing data uploaded to the EPA Water Quality Exchange. In communications with ADEC and EPA, it was identified that some sampling locations may have multiple distinct monitoring locations IDs and monitoring location names.
+
+In a discussion in 8/9/2024, we identified the following highlights and issues:
+
+-   KWF's existing data uploaded to the EPA WQX is largely not synchronized to display in the How's My Waterway app
+
+-   Of 158 site locations associated with KENAI_WQX, only 37 have data associated
+
+-   Some site locations have duplicate names for the same physical location
+
+We discussed a plan of action going forward to resolve these issues, which includes:
+
+1.  Identify and correct cases where multiple site names are associated with the same physical location
+
+    -   We can delete duplicate IDs that don't have any data safely
+
+    -   For cases where duplicate site IDs exist but existing data is associated, it may be necessary to update the "results" download first
+
+2.  Identify which KENAI_WQX sites have data associated
+
+    -   For sites where no data is associated, delete if duplicate, retain if data should be assocaited (e.g. temp logger sites)
+
+3.  Diagnose why KENAI_WQX data is not synchronizing to the How's My Waterway app
+
+    -   Initial investigation suggest that this is an issue on the EPA programming side; where HUC boundaries are not correctly including all WQX locations within the boundary.
+
+```{r echo = F}
+
+# import site data
+unique_site_dat <- read_csv("other/input/WQX_downloads/station/station.csv") %>%
+  # retain only Kenai Baseline sites (contains "KBL")
+  filter(OrganizationIdentifier == "KENAI_WQX") %>%
+  filter(grepl("KBL", MonitoringLocationName)) %>%
+  # remove empty columns
+  select_if(~!(all(is.na(.))))
+
+```
+
+KENAIWF_WQX returns no data

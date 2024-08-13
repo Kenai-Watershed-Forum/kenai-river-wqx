@@ -2,7 +2,6 @@
 title: "test"
 ---
 
-
 test2
 
 ```{r}
@@ -99,4 +98,3 @@ make_boxplot(param = parameter)
 
 
 ```
-

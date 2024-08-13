@@ -2,9 +2,7 @@
 title: Baseline Financial History
 execute:
   echo: false
-  
 ---
-
 
 Plot and summarise KWF Baseline Water Quality Financial Income History
 
@@ -26,7 +24,6 @@ library(lubridate)
 library(anytime)
 
 ```
-
 
 ```{r echo = F}
 # read in and restructure data to long format
@@ -64,3 +61,34 @@ ggsave("other/output/financial/2005_2023_income_plot2.jpg", width = 10, height =
 
 ```
 
+<br>
+
+Plot and summarise Inflation-Adjusted KWF Baseline Water Quality Financial Income History
+
+```{r}
+# read in annual inflation percentages, 2005 - 2023
+
+# read in and join annual inflation multiplier values
+inflation_dat <- read_excel("other/input/financial/usd_annual_inflation.xlsx") %>%
+  select(year,inflation_value) %>%
+  mutate(inflation_multiplier = 1-inflation_value,
+         year = as.character(year)) %>%
+  select(-inflation_value)
+
+# join
+dat <- left_join(dat,inflation_dat) %>%
+  mutate(inflation_adj_value = value*inflation_multiplier)
+
+# inflation adjusted plot 1
+dat %>%
+  ggplot(aes(x = year, y = inflation_adj_value, label = value, fill = org)) +
+  geom_bar(stat = "identity") +
+  scale_y_continuous(labels = scales::dollar_format()) +
+  xlab("") +
+  ylab("") +
+  ggtitle("Inflation Adjusted Baseline Income History 2005-2023")
+
+ggsave("other/output/financial/2005_2023_inflation_adjsuted_income_plot1.jpg", width = 10, height = 8)
+
+
+```
