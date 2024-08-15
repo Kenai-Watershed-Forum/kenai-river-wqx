@@ -13,7 +13,7 @@ format:
 ---
 
 ::: {.content-visible when-format="html"}
-This document is the online work-in-progress version of the Water Quality Assessment of the Kenai River Watershed, 2000 - 2023. When completed, it will be an update to historical reports summarising available data to date for this project [@mccard2007; @guerronorejuela2016].
+This document is the online work-in-progress version of the Water Quality Assessment of the Kenai River Watershed, 2000 - 2021. When completed, it will be an update to historical reports summarising available data to date for this project [@mccard2007; @guerronorejuela2016].
 
 To see a ten-minute presentation introducing this project and it's history, watch the following YouTube video below:
 
@@ -35,7 +35,7 @@ All project files and source code are hosted in a public GitHub repository, whic
 :::
 
 ::: {.content-visible when-format="docx"}
-This document is a report on the project, "Water Quality Assessment of the Kenai River Watershed, 2000 - 2022." It is an update to historical reports summarising available data to date [@mccard2007; @guerronorejuela2016].
+This document is a report on the project, "Water Quality Assessment of the Kenai River Watershed, 2000 - 2021." It is an update to historical reports summarising available data to date [@mccard2007; @guerronorejuela2016].
 
 This draft report is best accessed as an online interactive document at https://kenai-watershed-forum.github.io/kenai-river-wqx-report-v2/, where it can also be downloaded as an Microsoft Word document.
 
