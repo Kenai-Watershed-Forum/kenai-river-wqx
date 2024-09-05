@@ -1,0 +1,18 @@
+{
+  "hash": "d07e2e9aab19214312678e826da124f6",
+  "result": {
+    "markdown": "# Water Quality Parameters Results\n\n\n\n---\nexecute:\n  echo: false\ndate: \"2023-11-20\"\nformat:\n  html:\n    code-fold: true\n    code-tools: true\n    code-summary: \"Show the code\"\n---\n\n\n\n## Interpreting Box Plots\n\nEach of the following graphs display the sampling results for a specific parameter, such as arsenic. Within these graphs, a box and extending lines represent the results reported at each sampling site. A horizontal line within the box corresponds to the median of the data. The box contains 50% of the data and the vertical lines display the minimum and maximum values. Any data points that fall outside of the acceptable range are outliers and are portrayed as small circles (@fig-boxplot1).\n\n![Components of a box plot](other/documents/images/boxplots.jpg){#fig-boxplot1}\n\n<br>\n\n\n\n::: {.cell hash='parameters_cache/docx/unnamed-chunk-1_e9784f089d34f2d4d09c06123288243b'}\n\n:::\n\n::: {.cell hash='parameters_cache/docx/unnamed-chunk-2_c11e58a8a8ac1ae8396e05786fea2de1'}\n\n:::\n\n::: {.cell hash='parameters_cache/docx/unnamed-chunk-3_d1599d2e25c393c1cf10a8e596e6b103'}\n\n:::\n\n::: {.cell hash='parameters_cache/docx/unnamed-chunk-4_5502a0c32ac49f65298184ec8f29d698'}\n\n:::\n\n::: {.cell hash='parameters_cache/docx/unnamed-chunk-5_fcb0d75687389a525fe0b215b01bec76'}\n\n:::\n\n::: {.cell hash='parameters_cache/docx/unnamed-chunk-6_7d6c94e117727c380f1c16c64358e77c'}\n\n:::\n\n::: {.cell hash='parameters_cache/docx/unnamed-chunk-7_810ac3f28d84d20b410ebd9bcf12a93e'}\n\n:::\n\n::: {.cell hash='parameters_cache/docx/unnamed-chunk-8_281ed9ec552ca43f91c04255b2df3a72'}\n\n:::\n",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {
+      "knitr": [
+        "{\"type\":\"list\",\"attributes\":{},\"value\":[]}"
+      ]
+    },
+    "preserve": null,
+    "postProcess": false
+  }
+}
