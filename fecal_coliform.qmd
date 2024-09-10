@@ -1,0 +1,36 @@
+# Fecal Coliform Bacteria
+
+---
+execute:
+  echo: false
+date: "`r Sys.Date()`"
+format:
+  html:
+    code-fold: true
+    code-tools: true
+    code-summary: "Show the code"
+---
+
+The presence of fecal coliform bacteria in surface water indicates fecal contamination from warm-blooded animals, which is linked to disease-causing viruses and bacteria (Glass, 1999). Sources of fecal coliform bacteria include waste from septic systems, domestic animals, waterfowl, and other wildlife (Glass, 1999). The ADEC and USEPA standards for fecal coliform bacteria have two types of critera, a 30-day geometric mean and a no more than 10% of the samples can exceed a specified value criteira. The geometric mean criterian was not evaluated in this study because not enough samples were collected during any 30-day period. For reference, the ADEC fecal coliform drinking water standard states that in a 30-day period, the geometric mean of samples may not exceed 20 CFU/100ml and not more than 10% of the total samples may exceed 40 CFU/100ml (ADEC’s single sample limit). The ADEC fecal coliform secondary recreation standard states that in a 30-day period, the geometric mean of samples may not exceed 200 CFU/100ml and not more than 10% of the total samples may exceed 400 CFU/100ml (see Appendix X) (ADEC, 2002).
+
+The highest level of fecal coliform recorded was 2980 CFU/100ml at Mile 6.5 during the summer 2002, however this sample may be unreliable because the duplicate sample was below the MDL of 1 CFU/100ml. The next highest recorded concentration in the mainstem was 580 CFU/100ml at Mile 6.5 during the summer of 2003, and the lowest levels were 0 CFU/100ml at several locations (Table 26). The highest median in the mainstem occurred at Mile 6.5 in the spring and at Mile 1.5 in the summer. The other medians along the mainstem were all below 10 CFU/100ml for the summer and the spring. The concentration of fecal coliform was generally higher in the summer than in the spring in the mainstem and the tributaries (Figures X - X).
+
+In the tributaries, the concentration of fecal coliform ranged from a high of 520 CFU/100ml in Soldotna Creek during spring 2001 to 0 CFU/100ml at multiple sites (Table 52). During the spring, Beaver Creek had the highest median, and during the summer, No Name Creek had the highest median. In the summer, the median concentrations were relatively high in Slikok Creek and Beaver Creek, in addition to No Name Creek. Juneau Creek, Russian River, Killey River, and Moose River all had relatively low medians during the spring and the summer. In the summer, the tributaries had higher median concentrations of fecal coliform than the mainstem, but in the spring, the levels in the tributaries and the mainstem were more similar. (Figures X - X)
+
+```{r echo = F, warning=FALSE, message=FALSE,fig.height=10}
+
+# set parameter
+parameter <- "Fecal Coliform"
+
+# source static regulatory criteria boxplot function
+source("functions/static_boxplot_function.R")
+make_boxplot(param = parameter)
+
+# source calculated regulatory criteria plot(s) function
+
+
+# source table download function
+source("functions/table_download.R")
+download_tbl(param = parameter)
+
+```

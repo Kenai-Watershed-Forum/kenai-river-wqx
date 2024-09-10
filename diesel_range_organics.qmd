@@ -1,0 +1,45 @@
+# Diesel Range Organics
+
+---
+execute:
+  echo: false
+date: "`r Sys.Date()`"
+format:
+  html:
+    code-fold: true
+    code-tools: true
+    code-summary: "Show the code"
+---
+
+Diesel range organics (DRO) consist of diesel fuels and associated byproducts, and include the n-alkane range from C10 to C25 (ADEC, 2007). Although the ADEC and the USEPA do not have a standard for the chronic exposure of freshwater aquatic life to DRO, it was included in this study to cover a broad range of hydrocarbons and narrow down potential sources.
+
+In the mainstem, DRO concentrations ranged from a high of 0.29 mg/L that occurred at Mile 1.5 and Mile 31 during spring 2001 to the lowest levels that occurred at multiple locations at concentrations below the MDL of 0.0060 mg/L (Table X). In the spring, DRO was reported only in 2001 at Mile 1.5, Mile 10.1, and Mile 31, and the reported levels were only slightly higher than the MRLs. The summer samples in the mainstem were all below the MDL or MRL, and therefore, more DRO was detected in the spring than in the summer (Figure X).
+
+The highest level of diesel range organics was 0.37 mg/L at Soldotna Creek in summer 2000, and the lowest levels occurred in multiple instances below the MDL of 0.0060 mg/L (Table X). In the spring, DRO was reported only in 2001 at Slikok Creek, Soldotna Creek, and Moose River, while during the summer, the only tributary to report DRO was Soldotna Creek in 2000. In the tributaries, there were also more instances of detection in the spring than in the summer. The concentrations observed in the tributaries were higher than those detected in the mainstem (Figure X).
+
+```{r echo = F, warning=FALSE, message=FALSE,fig.height=10, eval = F}
+
+# task: identify if existing results in WQX contain results used un 2016 report. It is unclear if DRO refers to a combination of aromatic parameters already present, or if these results are absent from the WQX data set as of 9/10/2024. 
+
+#Same question applies to other aromatics parameters used in 2016 report including gas range organics and residual range organics.
+
+# Additionally, BTEX results are inconsistently catgeorized in the characteritic_name column. In some cases the idividual molecules are individually quantified, and in some cases they are presented as an aggregate sum; all under the same analytical method(s) (602 and 624)
+
+# experiment: compare sum of actual vs calculated total of voltiles from same day/site, do they match?
+
+
+# set parameter
+parameter <- "Phosphorus"
+
+# source static regulatory criteria boxplot function
+source("functions/static_boxplot_function.R")
+make_boxplot(param = parameter)
+
+# source calculated regulatory criteria plot(s) function
+
+
+# source table download function
+source("functions/table_download.R")
+download_tbl(param = parameter)
+
+```

@@ -1,0 +1,37 @@
+# Total Suspended Solids
+
+---
+execute:
+  echo: false
+date: "`r Sys.Date()`"
+format:
+  html:
+    code-fold: true
+    code-tools: true
+    code-summary: "Show the code"
+---
+
+The concentration of total suspended solids is a way of measuring the amount of mineral and organic particles that are transported in the water column (Bash and others, 2001). Erosion increases the amount of suspended sediment in surface water and can be naturally caused by glaciers, fires, and floods (Glass, 1999). In the Cook Inlet Basin, glaciers are the main cause of erosion, but mining, logging, construction, and recreation can also contribute to elevated levels of suspended sediment (Glass, 1999). High concentrations of suspended sediment can be lethal to post-larval fish, and incubating eggs can suffer severe mortality rates because settled sediment prevents the exchange of oxygen (Glass, 1999). As such, the ADEC standard requires that fine sediment in the range of 0.1 mm to 4.0 mm cannot increase over 5% by weight higher than natural conditions in gravel beds used by anadromous or resident fish for spawning, and the sediment can never exceed a maximum of 30% by weight in freshwater for the growth and propagation of fish, shellfish, other aquatic life, and wildlife (see Appendix 2) (ADEC, 2012). More generally, the ADEC standard also states that the amount of deposited or suspended sediment cannot cause adverse effects on aquatic life, including their habitat and reproduction (ADEC, 2012).
+
+The concentration of 2073 mg/L at Mile 6.5 during spring 2006 was the highest level of total suspended solids recorded in the mainstem, and the lowest concentration was less than the MDL of 0.48 mg/L during spring and summer sampling events (Table X). The estuary had much higher medians than the rest of the mainstem in both the summer and the spring. The medians were lowest in the spring and the summer in the Upper River from Mile 82 to Mile 50. Between Mile 50 and Mile 43, the concentration of total suspended solids increased, possibly due to the influence of the Killey River, which had higher levels of total suspended solids than the mainstem, especially in the summer. From Mile 43 to Mile 18, the medians in the spring and the summer for total suspended solids decreased relatively, and then there was an increase in the medians from Mile 12.5 to the estuary. During the spring, the concentrations in the estuary were significantly higher than in the summer, but this pattern was not as clear in the remainder of the mainstem (Figure X).
+
+In the tributaries, the concentration of total suspended solids ranged from a high of 748 mg/L in Beaver Creek in spring 2009 to a low of less than the MDL of 0.48 mg/L (Table X). The Killey River had the highest median and largest variance by far in the summer. Funny River also had a relatively large degree of variance, but had a similar median to the other tributaries, excluding the Killey River in the summer. During the spring, Beaver Creek had the highest median and a relatively large degree of variance. Russian River had the lowest median of total suspended solids in the spring and Juneau Creek in the summer. Excluding Russian River and Killey River, the tributaries had higher medians during the spring rather than the summer. (Figures X)
+
+
+```{r echo = F, warning=FALSE, message=FALSE,fig.height=10}
+
+# set parameter
+parameter <- "Total suspended solids"
+
+# source static regulatory criteria boxplot function
+source("functions/static_boxplot_function.R")
+make_boxplot(param = parameter)
+
+# source calculated regulatory criteria plot(s) function
+
+
+# source table download function
+source("functions/table_download.R")
+download_tbl(param = parameter)
+
+```
