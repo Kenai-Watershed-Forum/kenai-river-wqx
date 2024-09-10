@@ -1,0 +1,37 @@
+# Temperature
+
+---
+execute:
+  echo: false
+date: "`r Sys.Date()`"
+format:
+  html:
+    code-fold: true
+    code-tools: true
+    code-summary: "Show the code"
+---
+
+Water temperature varies seasonally and as a result of glacial activity and anthropogenic sources. Low water temperatures between 0°C and 4°C can result in low growth rates for fish, but much higher water temperatures can encourage disease, competitors, predators, mortality, and an oxygen-deprived habitat (Kyle and Brabets, 2001). The ADEC has five temperature standards for the growth and propagation of fish, shellfish, other aquatic life, and wildlife in freshwater; the water temperature must remain below 20°C in all areas, below 15°C in rearing areas and migration routes, and below 13°C in egg and fry incubation and spawning areas (see Appendix X) (ADEC, 2012).
+
+The highest temperature recorded on the mainstem occurred at Mile 1.5 in the summer of 2014 with a value of 17.02°C, and the lowest recorded temperature along the mainstem was –0.15°C at Mile 12.5 in spring 2002 (Table X). In the spring, two of the temperatures exceeded the standard for rearing areas and migration routes. There was a general upward trend from Mile 82 to Mile 1.5. It is important to notice that during the sampling event of the spring 2014, twelve out of thirteen sites exceeded the standard for egg and fry incubation and spawning areas. During the summer, the medians at Mile 1.5, Mile 6.5 and Mile 50 were very close to exceeding the standards for egg and fry incubation and spawning areas, and no medians exceeded the other standards. There was a general upward trend from Mile 82 to Mile 1.5, with an upward jump in the median at Mile 50, the outlet of Skilak Lake (Figure X).
+
+In the tributaries, the highest temperature was 19°C in the Moose River during summer 2003, and the lowest temperature was –0.21°C in the Killey River during spring 2002 (Table X). In the spring, No Name Creek, Soldotna Creek and Russian River exceeded the standards for rearing areas and migration routes. Also, Slikok Creek, Funny River and Moose River exceeded the standard for egg and fry incubation and spawning areas. All tributaries had medians below 5°C, with the highest at Russian River and the lowest at Funny River. During the summer, the medians of Beaver Creek, Soldotna Creek, and Moose River exceeded the standards for egg and fry incubation and spawning areas, and the median at Moose River also exceeded the standards for rearing areas and migration routes. The coldest tributary in the summer was the Killey River, followed by Juneau Creek, Funny River and then Slikok Creek. The median water temperatures were higher in the summer than in the spring for all sampling locations in both the mainstem and the tributaries. For this analysis there were no values available for temperature during the sampling event of spring 2012 (Figure X).
+
+
+```{r echo = F, warning=FALSE, message=FALSE,fig.height=10}
+
+# set parameter
+parameter <- "Temperature, water"
+
+# source static regulatory criteria boxplot function
+source("functions/static_boxplot_function.R")
+make_boxplot(param = parameter)
+
+# source calculated regulatory criteria plot(s) function
+
+
+# source table download function
+source("functions/table_download.R")
+download_tbl(param = parameter)
+
+```

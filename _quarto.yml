@@ -34,18 +34,18 @@ book:
       - iron.qmd
       - magnesium.qmd
       - nitrate.qmd
-      #- phosphorus.qmd
-      #- diesel_range_organics.qmd
+      - phosphorus.qmd
+      # diesel_range_organics.qmd
       #- gas_range_organics.qmd
       #- residual_range_organics.qmd
       #- total_btex.qmd
       - benzene.qmd
-      #- fecal_coliform.qmd
-      #- pH.qmd
-      #- specific_conductance.qmd
-      #- tss.qmd
-      #- turbidity.qmd
-      #- water_temp.qmd
+      - fecal_coliform.qmd
+      - pH.qmd
+      - specific_conductance.qmd
+      - tss.qmd
+      - turbidity.qmd
+      - water_temp.qmd
       - summary.qmd
       - references.qmd
 

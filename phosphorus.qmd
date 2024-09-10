@@ -1,0 +1,37 @@
+# Phosphorus
+
+---
+execute:
+  echo: false
+date: "`r Sys.Date()`"
+format:
+  html:
+    code-fold: true
+    code-tools: true
+    code-summary: "Show the code"
+---
+
+Plants and animals require the essential element phosphorus for growth, and most concentrations are not toxic to aquatic or human life (Glass, 1999). As a nutrient, phosphorus is significant to water quality because in high concentrations, it can lead to excessive algal growth and eutrophic conditions (Glass, 1999). The ADEC and the USEPA do not have a standard for phosphorus for chronic exposure to aquatic life in freshwater.
+
+The highest level of phosphorus ever recorded occurred at Mile 1.5 in spring 2005 with a concentration of 4 mg/L, and the lowest levels occurred on many occasions below the MDL of 0.0020 mg/L in the spring and the summer (Table X). The estuary had significantly higher medians and variance than the rest of the mainstem in the summer and the spring. The lowest concentrations of phosphorus occurred between Mile 40 and Mile 82. In the mainstem, there was a general upward trend in phosphorus concentration from Kenai Lake to the estuary (Figures X & X).
+
+In the tributaries, phosphorus ranged from 64 mg/L in Slikok Creek during May 2013 to below the MDL of 0.0020 mg/L at many locations in the spring and the summer (Table X) Beaver Creek had the highest median in the spring but dropped to the second highest in the summer, after the Killey River. Funny River had relatively high medians during both the spring and the summer. In contrast, Russian River displayed the lowest median in both the spring and the summer (Figures X & X).
+
+
+```{r echo = F, warning=FALSE, message=FALSE,fig.height=10}
+
+# set parameter
+parameter <- "Phosphorus"
+
+# source static regulatory criteria boxplot function
+source("functions/static_boxplot_function.R")
+make_boxplot(param = parameter)
+
+# source calculated regulatory criteria plot(s) function
+
+
+# source table download function
+source("functions/table_download.R")
+download_tbl(param = parameter)
+
+```
