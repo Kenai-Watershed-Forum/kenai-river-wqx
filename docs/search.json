@@ -82,67 +82,43 @@
     "objectID": "reg_limits.html#metals",
     "href": "reg_limits.html#metals",
     "title": "6  Regulatory Limits",
-    "section": "",
-    "text": "6.1.1 Static Regulatory Threshold Values for Metals\nSome regulatory threshold values for metals are static and do not depend on additional environmental parameters. The metals parameters in the downloadable table below have static thresholds assigned.\n\n\n── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──\n✔ dplyr     1.1.4     ✔ readr     2.1.5\n✔ forcats   1.0.0     ✔ stringr   1.5.1\n✔ ggplot2   3.5.1     ✔ tibble    3.2.1\n✔ lubridate 1.9.3     ✔ tidyr     1.3.1\n✔ purrr     1.0.2     \n── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──\n✖ dplyr::filter() masks stats::filter()\n✖ dplyr::lag()    masks stats::lag()\nℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors\n\nAttaching package: 'janitor'\n\n\nThe following objects are masked from 'package:stats':\n\n    chisq.test, fisher.test\n\n\n\nAttaching package: 'xfun'\n\n\nThe following objects are masked from 'package:base':\n\n    attr, isFALSE\n\n\nvalue for \"which\" not specified, defaulting to c(\"rows\", \"cols\")\n\nNew names:\n\n\nMetals with Static Regulatory Threshold Values\n\n\n\n\n\n6.1.2 Metals with Hardness-Dependent Regulatory Values\nSome regulatory values for metals are not simple static values, and are instead hardness-dependent. Hardness varies by site, by season, and with hydrologic conditions. We calculated hardness according to the following formula:\n:::{.callout-note appearance = “simple}\nHardness = 2.497(Total Calcium in mg/L) + 4.119(Total Magnesium in mg/L)\n:::\nFor sampling events with duplicate samples, we calculated average hardness.\n\n\n`summarise()` has grouped output by 'activity_identifier',\n'activity_start_date'. You can override using the `.groups` argument.\nJoining with `by = join_by(activity_identifier, activity_start_date)`\n\n\nDownload Kenai River Baseline Hardness Data\n\n\n\nWe calculated hardness-dependent regulatory criteria based on formulas published on the Alaska Department of Environmental Conservation’s Water Quality Standards Section website. The “Alaska Water Quality Criteria Manual for Toxic and other Deleterious Organic and Inorganic Substances” (2022) document, along with the “Inorganic Toxics Criteria Worksheet” provide parameter-specific formulas for many substances.\nhttps://dec.alaska.gov/water/water-quality/standards/\nHardness-dependent criteria may be calculated from the following for freshwater metals:\nAcute (dissolved) = exp{mA[ln(hardness)]+ bA} (CF) Chronic (dissolved) = exp{mC [ln(hardness)] + bC} (CF)\nwhere mA, bA, mC, and bC are numerical parameters specific to each substance, and CF is the conversion factor for acute vs. chronic criteria.\nThese values are graphically displayed in the following chapters not juxtaposed against static horizontal lines, but instead they are highlighted by shape or color when the calculated threshold is exceeded.\n\n\nvalue for \"which\" not specified, defaulting to c(\"rows\", \"cols\")\n\n\nNew names:\nJoining with `by = join_by(characteristic_name)`\n• `` -&gt; `...9`\n• `` -&gt; `...10`\n• `` -&gt; `...11`\n• `` -&gt; `...12`\n\n\nHardness Dependent Regulatory Thresholds for Metals - Kenai River Baseline Water Quality",
-    "crumbs": [
-      "Results",
-      "<span class='chapter-number'>6</span>  <span class='chapter-title'>Regulatory Limits</span>"
-    ]
+    "section": "6.1 Metals",
+    "text": "6.1 Metals\n\n6.1.1 Static Regulatory Threshold Values for Metals\nSome regulatory threshold values for metals are static and do not depend on additional environmental parameters. The metals parameters in the downloadable table below have static thresholds assigned.\n\n\nDownload Regulatory Limits for Metals with Static Regulatory Threshold Values\n\n\nStatic regulatory values are represented as horizontal lines in the following parameter-specific chapters.\n\n\n\n6.1.2 Metals with Hardness-Dependent Regulatory Values\nSome regulatory values for metals are not simple static values, and are instead hardness-dependent. Hardness varies by site, by season, and with hydrologic conditions. We calculated hardness according to the following formula:\n\n\n\n\n\n\nHardness = 2.497(Total Calcium in mg/L) + 4.119(Total Magnesium in mg/L)\n\n\n\nFor sampling events with duplicate samples, we calculated average hardness.\n\n\nDownload Kenai River Baseline Hardness Data\n\n\n\n\n6.1.2.1 Acute Regulatory Threshold Values\nWe calculated hardness-dependent regulatory criteria based on formulas published on the Alaska Department of Environmental Conservation’s Water Quality Standards Section website (https://dec.alaska.gov/water/water-quality/standards/). The “Alaska Water Quality Criteria Manual for Toxic and other Deleterious Organic and Inorganic Substances” (2022) document, along with the “Inorganic Toxics Criteria Worksheet” provide parameter-specific formulas for many substances.\nHardness-dependent criteria may be calculated from the following for freshwater metals:\n\n\n\n\n\n\nAcute (dissolved) = exp{mA[ln(hardness)]+ bA} (CF) Chronic (dissolved) = exp{mC [ln(hardness)] + bC} (CF)\n\n\n\nwhere mA, bA, mC, and bC are numerical parameters specific to each substance, and CF is the conversion factor for acute vs. chronic criteria.\nThese values are graphically displayed in the following chapters not juxtaposed against static horizontal lines, but instead they are highlighted by shape or color when the calculated threshold is exceeded.\n\n\nvalue for \"which\" not specified, defaulting to c(\"rows\", \"cols\")\n\n\nNew names:\nJoining with `by = join_by(characteristic_name)`\n• `` -&gt; `...9`\n• `` -&gt; `...10`\n• `` -&gt; `...11`\n• `` -&gt; `...12`\n\n\nHardness Dependent Regulatory Thresholds for Metals - Kenai River Baseline Water Quality"
   },
   {
     "objectID": "reg_limits.html#hydrocarbons",
     "href": "reg_limits.html#hydrocarbons",
     "title": "6  Regulatory Limits",
     "section": "6.2 Hydrocarbons",
-    "text": "6.2 Hydrocarbons\n\n6.2.1 Total BTEX\nTotal aromatic hydrocarbons (TAH) means the sum of the following volatile monoaromatic hydrocarbon compounds: benzene, toluene, ethylbenzene, and the xylene isomers, commonly called BTEX.\nFor each sampling event with available data, we calculated the sum of the parameters that compose BTEX and compared them to a static threshold value.",
-    "crumbs": [
-      "Results",
-      "<span class='chapter-number'>6</span>  <span class='chapter-title'>Regulatory Limits</span>"
-    ]
+    "text": "6.2 Hydrocarbons\n\n6.2.1 Total BTEX\nTotal aromatic hydrocarbons (TAH) means the sum of the following volatile monoaromatic hydrocarbon compounds: benzene, toluene, ethylbenzene, and the xylene isomers, commonly called BTEX.\nFor each sampling event with available data, we calculated the sum of the parameters that compose BTEX and compared them to a static threshold value."
   },
   {
     "objectID": "reg_limits.html#nutrients-nitrogen-and-phosphorus",
     "href": "reg_limits.html#nutrients-nitrogen-and-phosphorus",
     "title": "6  Regulatory Limits",
     "section": "6.3 Nutrients (Nitrogen and Phosphorus)",
-    "text": "6.3 Nutrients (Nitrogen and Phosphorus)",
-    "crumbs": [
-      "Results",
-      "<span class='chapter-number'>6</span>  <span class='chapter-title'>Regulatory Limits</span>"
-    ]
+    "text": "6.3 Nutrients (Nitrogen and Phosphorus)"
   },
   {
     "objectID": "reg_limits.html#bacteria",
     "href": "reg_limits.html#bacteria",
     "title": "6  Regulatory Limits",
     "section": "6.4 Bacteria",
-    "text": "6.4 Bacteria",
-    "crumbs": [
-      "Results",
-      "<span class='chapter-number'>6</span>  <span class='chapter-title'>Regulatory Limits</span>"
-    ]
+    "text": "6.4 Bacteria"
   },
   {
     "objectID": "reg_limits.html#total-suspended-solids",
     "href": "reg_limits.html#total-suspended-solids",
     "title": "6  Regulatory Limits",
     "section": "6.5 Total Suspended Solids",
-    "text": "6.5 Total Suspended Solids",
-    "crumbs": [
-      "Results",
-      "<span class='chapter-number'>6</span>  <span class='chapter-title'>Regulatory Limits</span>"
-    ]
+    "text": "6.5 Total Suspended Solids"
   },
   {
     "objectID": "reg_limits.html#other-parameters",
     "href": "reg_limits.html#other-parameters",
     "title": "6  Regulatory Limits",
     "section": "6.6 Other Parameters",
-    "text": "6.6 Other Parameters",
-    "crumbs": [
-      "Results",
-      "<span class='chapter-number'>6</span>  <span class='chapter-title'>Regulatory Limits</span>"
-    ]
+    "text": "6.6 Other Parameters"
   },
   {
     "objectID": "appendix_a.html#introduction",
@@ -299,5 +275,89 @@
     "title": "24  Temperature",
     "section": "",
     "text": "Water temperature varies seasonally and as a result of glacial activity and anthropogenic sources. Low water temperatures between 0°C and 4°C can result in low growth rates for fish, but much higher water temperatures can encourage disease, competitors, predators, mortality, and an oxygen-deprived habitat (Kyle and Brabets, 2001). The ADEC has five temperature standards for the growth and propagation of fish, shellfish, other aquatic life, and wildlife in freshwater; the water temperature must remain below 20°C in all areas, below 15°C in rearing areas and migration routes, and below 13°C in egg and fry incubation and spawning areas (see Appendix X) (ADEC, 2012).\nThe highest temperature recorded on the mainstem occurred at Mile 1.5 in the summer of 2014 with a value of 17.02°C, and the lowest recorded temperature along the mainstem was –0.15°C at Mile 12.5 in spring 2002 (Table X). In the spring, two of the temperatures exceeded the standard for rearing areas and migration routes. There was a general upward trend from Mile 82 to Mile 1.5. It is important to notice that during the sampling event of the spring 2014, twelve out of thirteen sites exceeded the standard for egg and fry incubation and spawning areas. During the summer, the medians at Mile 1.5, Mile 6.5 and Mile 50 were very close to exceeding the standards for egg and fry incubation and spawning areas, and no medians exceeded the other standards. There was a general upward trend from Mile 82 to Mile 1.5, with an upward jump in the median at Mile 50, the outlet of Skilak Lake (Figure X).\nIn the tributaries, the highest temperature was 19°C in the Moose River during summer 2003, and the lowest temperature was –0.21°C in the Killey River during spring 2002 (Table X). In the spring, No Name Creek, Soldotna Creek and Russian River exceeded the standards for rearing areas and migration routes. Also, Slikok Creek, Funny River and Moose River exceeded the standard for egg and fry incubation and spawning areas. All tributaries had medians below 5°C, with the highest at Russian River and the lowest at Funny River. During the summer, the medians of Beaver Creek, Soldotna Creek, and Moose River exceeded the standards for egg and fry incubation and spawning areas, and the median at Moose River also exceeded the standards for rearing areas and migration routes. The coldest tributary in the summer was the Killey River, followed by Juneau Creek, Funny River and then Slikok Creek. The median water temperatures were higher in the summer than in the spring for all sampling locations in both the mainstem and the tributaries. For this analysis there were no values available for temperature during the sampling event of spring 2012 (Figure X).\n\n\n\n\n\nDownload Temperature, water Kenai River Baseline Data.csv"
+  },
+  {
+    "objectID": "fecal_coliform.html",
+    "href": "fecal_coliform.html",
+    "title": "19  Fecal Coliform Bacteria",
+    "section": "",
+    "text": "The presence of fecal coliform bacteria in surface water indicates fecal contamination from warm-blooded animals, which is linked to disease-causing viruses and bacteria (Glass, 1999). Sources of fecal coliform bacteria include waste from septic systems, domestic animals, waterfowl, and other wildlife (Glass, 1999). The ADEC and USEPA standards for fecal coliform bacteria have two types of critera, a 30-day geometric mean and a no more than 10% of the samples can exceed a specified value criteira. The geometric mean criterian was not evaluated in this study because not enough samples were collected during any 30-day period. For reference, the ADEC fecal coliform drinking water standard states that in a 30-day period, the geometric mean of samples may not exceed 20 CFU/100ml and not more than 10% of the total samples may exceed 40 CFU/100ml (ADEC’s single sample limit). The ADEC fecal coliform secondary recreation standard states that in a 30-day period, the geometric mean of samples may not exceed 200 CFU/100ml and not more than 10% of the total samples may exceed 400 CFU/100ml (see Appendix X) (ADEC, 2002).\nThe highest level of fecal coliform recorded was 2980 CFU/100ml at Mile 6.5 during the summer 2002, however this sample may be unreliable because the duplicate sample was below the MDL of 1 CFU/100ml. The next highest recorded concentration in the mainstem was 580 CFU/100ml at Mile 6.5 during the summer of 2003, and the lowest levels were 0 CFU/100ml at several locations (Table 26). The highest median in the mainstem occurred at Mile 6.5 in the spring and at Mile 1.5 in the summer. The other medians along the mainstem were all below 10 CFU/100ml for the summer and the spring. The concentration of fecal coliform was generally higher in the summer than in the spring in the mainstem and the tributaries (Figures X - X).\nIn the tributaries, the concentration of fecal coliform ranged from a high of 520 CFU/100ml in Soldotna Creek during spring 2001 to 0 CFU/100ml at multiple sites (Table 52). During the spring, Beaver Creek had the highest median, and during the summer, No Name Creek had the highest median. In the summer, the median concentrations were relatively high in Slikok Creek and Beaver Creek, in addition to No Name Creek. Juneau Creek, Russian River, Killey River, and Moose River all had relatively low medians during the spring and the summer. In the summer, the tributaries had higher median concentrations of fecal coliform than the mainstem, but in the spring, the levels in the tributaries and the mainstem were more similar. (Figures X - X)\n\n\n\n\n\nDownload Fecal Coliform Kenai River Baseline Data.csv"
+  },
+  {
+    "objectID": "pH.html",
+    "href": "pH.html",
+    "title": "20  pH",
+    "section": "",
+    "text": "The concentration of hydrogen-ion activity is represented by a pH measurement on a logarithmic scale ranging from 0 to 14 with acidic conditions closer to 0 and alkaline conditions closer to 14 (Glass, 1999). Values of pH ranging from 6.5 to 8.0 are typical in unpolluted river water, and these values can be affected by both natural and human processes (Glass, 1999). The ADEC standard for pH maintains that freshwater may not have a pH less than 6.5 or greater than 8.5 for the growth and propagation of fish, shellfish, other aquatic life and wildlife (see Appendix 2) (ADEC, 2012). Additionally, the standard stipulates that the pH may not vary more than 0.5 pH units from natural conditions and that in any water with a pH naturally outside the specified range, variation of pH must be toward the specified range (ADEC, 2012).\nIn the mainstem, the pH ranged from a high of 8.52 at Mile 50 in summer 2002 to a low of 6.16 at Mile 10.1 in summer of 2010 (Table 27). All the medians along the mainstem were between 7 and 8 for the spring and the summer, so they did not exceed the upper and lower limits. Individual samples exceeded the lower limit once at Mile 12.5 and Mile 43 in the spring and Mile 10.1 in the summer, and the upper limit was exceeded by a single sample at Mile 50 in the summer. The pH was generally lower in the spring in comparison to the summer in both the mainstem and the tributaries (Figures X & X).\nThe highest pH ever sampled was 9.03 at Moose River during summer 2002, and the lowest was 6.2 at No Name Creek in spring 2005 (Table 53). The medians of the tributaries did not exceed either the upper or lower pH limit. The lower limit was exceeded on one occasion each in No Name Creek, Beaver Creek, and Slikok Creek in the spring, and three samples from the Moose River exceeded the upper limit in the summer. The Moose River had the highest median pH in the summer, followed by the Russian River. From spring to the summer, the Killey River median remained near 7, while the other tributaries increased toward 7.5. Excluding the Moose River, the spring samples from the tributaries and the mainstem displayed greater variability than the summer samples (Figures X & X).\n\n\n\n\n\nDownload pH Kenai River Baseline Data.csv"
+  },
+  {
+    "objectID": "specific_conductance.html",
+    "href": "specific_conductance.html",
+    "title": "21  Specific Conductance",
+    "section": "",
+    "text": "The capacity of water to conduct electricity is measured by specific conductance, and the level of specific conductance also correlates with the concentration of calcium, dissolved solids, and the water’s hardness (Glass, 1999). There is not currently an ADEC or USEPA standard for specific conductance for aquatic life in freshwater.\nThe highest level of specific conductance in the mainstem was 29398 µS/cm, which was sampled at Mile 1.5 in spring 2011, and the lowest level was 37.7 µS/cm at Mile 50 in spring 2004 (Table X). Mile 1.5 had the greatest variance and the highest median in both the spring and the summer, followed by Mile 6.5 in the spring and Mile 70 in the summer. From Mile 10.1 to Mile 50, the specific conductivity medians only varied within a span of 15 µS/cm in both spring and summer, with the lowest median at Mile 43. Above Skilak Lake at Mile 70 and Mile 80, specific conductivity was higher relative to the rest of the mainstem, excluding the estuary. Specific conductivity was higher in the spring than in the summer throughout the mainstem, except at Mile 50 where specific conductance was higher during the summer (Figures X & X).\nIn the tributaries, specific conductance ranged from a high of 1088 µS/cm in No Name Creek during spring 2010 to the lowest level of 18 µS/cm in the Killey River during summer 2004 (Table X). The Killey River maintained the lowest median during the spring and the summer, while the highest median was in No Name Creek for both the spring and Soldotna Creek for the summer. The tributaries had higher levels of specific conductance in the summert, except for the Killey River, Russian River and Juneau Creek. In the summer, the tributaries generally had higher medians than the mainstem, but a corresponding trend was not apparent in the spring data (Figures X & X).\n\n\n\n\n\nDownload Specific conductance Kenai River Baseline Data.csv"
+  },
+  {
+    "objectID": "turbidity.html",
+    "href": "turbidity.html",
+    "title": "23  Turbidity",
+    "section": "",
+    "text": "Turbidity measures the degree to which suspended and dissolved materials cause light to scatter instead of being transmitted in straight lines, and these materials consist of silt, clay, chemicals, microscopic organisms, and fine organic or inorganic matter (Bash and others, 2001). Turbidity varies naturally; higher turbidities are typically found in watersheds fed by glacial melt water, and turbidity generally increases from headwater tributaries to mainstems and estuaries (Bash and others, 2001). Even though salmonids can naturally live in turbid water systems, they do not always cope well with increases in suspended sediments, and these high levels in suspended sediments can cause fatalities, while lower levels can result in difficulty finding food, reduced growth, increased stress, and difficulty migrating (Bash and others, 2001). The ADEC standard states that turbidity may not exceed 25 NTU above natural conditions in freshwater or 5 NTU above natural conditions in lakes for the growth and propagation of fish, shellfish, other aquatic life, and wildlife (see Appendix X) (ADEC, 2012).\nThe highest level of turbidity occurred at Mile 6.5 in spring 2006 and was detected at 3200 NTU, and the lowest level in the mainstem was 1 NTU at Mile 70 in spring 2009 (Table 30). The highest medians and degree of variance for turbidity were in the estuary for both the spring and the summer, and the lowest median occurred at Mile 50. In the summer, from Mile 43 to Mile 1.5, the median level of turbidity generally increased. The spring medians in the estuary and Upper River were higher than the summer medians, but the rest of the mainstem had higher medians in the summer (Figure X).\nIn the tributaries, the highest level of turbidity was 336 NTU at Beaver Creek in spring 2010, and the lowest level was at Russian River with the level of 0.02 NTU from summer 2006 (Table X). During the summer, the Killey River had the highest median at 41 NTU, while the other tributaries all had medians less than 20 NTU. In the spring, Beaver Creek had the highest median, followed by No Name Creek and then Funny River. Russian River had the lowest turbidity median in both the summer and the spring. Killey River exhibited the largest seasonal difference in medians by increasing around 35 NTU from the spring to the summer. In contrast, Beaver Creek decreased approximately 13.3 NTU during the summer. The tributaries did not display a clear seasonal trend for increased or decreased turbidity (Figure X).\n\n\n\n\n\nDownload Turbidity Kenai River Baseline Data.csv"
+  },
+  {
+    "objectID": "methods.html#footnotes",
+    "href": "methods.html#footnotes",
+    "title": "3  Methods",
+    "section": "",
+    "text": "https://www.kenaiwatershed.org/science-in-action/research-information/water-quality/↩︎"
+  },
+  {
+    "objectID": "study_area.html",
+    "href": "study_area.html",
+    "title": "2  Study Area",
+    "section": "",
+    "text": "3"
+  },
+  {
+    "objectID": "study_area.html#description",
+    "href": "study_area.html#description",
+    "title": "2  Study Area",
+    "section": "2.1 Description",
+    "text": "2.1 Description\nLocated in southcentral Alaska, the Kenai River is part of the Cook Inlet Basin and is linked to the surrounding communities through sport and commercial fishing, tourism, recreation, and the propagation of fish and wildlife (Figure 4.1). Five species of Pacific salmon flourish in the Kenai River Watershed, with sockeye (red) and Chinook (king) salmon as the primary species of interest for harvest in subsistence, sport, commercial, and personal use fisheries (Schoen et al. 2017). The Kenai River his historically produced 80% of the sockeye harvested in Cook Inlet (Dorava and Milner 2000).\nSurface runoff, groundwater composition, natural minerals, aquatic plants and animals, and human activities can affect water quality in this area. Potential sources of pollution from humans include gasoline powered boat engines, agriculture, mining, street runoff, and perforated septic tanks (Glass, RL 1999; Reeves et al. 2018; EPA 2011)."
+  },
+  {
+    "objectID": "study_area.html#figuresmaps",
+    "href": "study_area.html#figuresmaps",
+    "title": "2  Study Area",
+    "section": "2.2 Figures/maps",
+    "text": "2.2 Figures/maps\n\n2.2.1 Online Map of Sample Sites\nAccess ArcGIS Online map at https://arcg.is/0LXGSf\n\n\n\nFigure 2.1: Location in Alaska of Kenai River Watershed\n\n\n\n\n\n\nFigure 2.2: Location of water quality sampling sites"
+  },
+  {
+    "objectID": "study_area.html#sampling-sites-descriptionsphotos",
+    "href": "study_area.html#sampling-sites-descriptionsphotos",
+    "title": "2  Study Area",
+    "section": "2.3 Sampling sites descriptions/photos",
+    "text": "2.3 Sampling sites descriptions/photos\nField sampling sites described in Figure 4.2 are introduced below with a photo a coordinates for each location.\n\n2.3.1 Tributary Sites\nA brief description of each of the tributary stem field sampling sites, along with coordinates and a photo.\n\n\n2.3.2 Main Stem Sites\nThis section will include a brief description of each of the main stem field sampling sites, along with coordinates and a photo."
+  },
+  {
+    "objectID": "study_area.html#description-1",
+    "href": "study_area.html#description-1",
+    "title": "2  Study Area",
+    "section": "4.1 Description",
+    "text": "4.1 Description\nLocated in southcentral Alaska, the Kenai River is part of the Cook Inlet Basin and is linked to the surrounding communities through sport and commercial fishing, tourism, recreation, and the propagation of fish and wildlife (Figure 4.1). Five species of Pacific salmon flourish in the Kenai River Watershed, with sockeye (red) and Chinook (king) salmon as the primary species of interest for harvest in subsistence, sport, commercial, and personal use fisheries (Schoen et al. 2017). The Kenai River his historically produced 80% of the sockeye harvested in Cook Inlet (Dorava and Milner 2000).\nSurface runoff, groundwater composition, natural minerals, aquatic plants and animals, and human activities can affect water quality in this area. Potential sources of pollution from humans include gasoline powered boat engines, agriculture, mining, street runoff, and perforated septic tanks (Glass, RL 1999; Reeves et al. 2018; EPA 2011)."
+  },
+  {
+    "objectID": "study_area.html#figuresmaps-1",
+    "href": "study_area.html#figuresmaps-1",
+    "title": "2  Study Area",
+    "section": "4.2 Figures/maps",
+    "text": "4.2 Figures/maps\n\n4.2.1 Online Map of Sample Sites\nAccess ArcGIS Online map at https://arcg.is/0LXGSf\n\n\n\nFigure 4.1: Location in Alaska of Kenai River Watershed\n\n\n\n\n\n\nFigure 4.2: Location of water quality sampling sites"
+  },
+  {
+    "objectID": "study_area.html#sampling-sites-descriptionsphotos-1",
+    "href": "study_area.html#sampling-sites-descriptionsphotos-1",
+    "title": "2  Study Area",
+    "section": "4.3 Sampling sites descriptions/photos",
+    "text": "4.3 Sampling sites descriptions/photos\nField sampling sites described in Figure 4.2 are introduced below with a photo a coordinates for each location.\n\n4.3.1 Tributary Sites\nA brief description of each of the tributary stem field sampling sites, along with coordinates and a photo.\n\n\n4.3.2 Main Stem Sites\nThis section will include a brief description of each of the main stem field sampling sites, along with coordinates and a photo.\n\n\n\n\n\n\n\ncb4283d25c8f6f21c969c7895136d6d68bddc50e\n\n\n\n\n\n\n\n\n\n\n\nDorava, Joseph M, and Alexander M Milner. 2000. “Role of Lake Regulation on Glacier-Fed Rivers in Enhancing Salmon Productivity: The Cook Inlet Watershed, South-Central Alaska, USA.” Hydrol. Process. 14 (16-17): 3149–59. https://doi.org/10.1002/1099-1085(200011/12)14:16/17&lt;3149::aid-hyp139&gt;3.0.co;2-y.\n\n\nEPA. 2011. “Nonpoint Source Program Success Story, Alaska: Upgrading Boat Motors Reduces Hydrocarbon Pollution.” https://19january2017snapshot.epa.gov/sites/production/files/2015-10/documents/ak_kenai.pdf.\n\n\nGlass, RL. 1999. “Water-Quality Assessment of the Cook Inlet Basin, Alaska  Summary of Data Through 1997.” https://doi.org/10.3133/wri994116.\n\n\nReeves, Mari Kathryn, Margaret Perdue, Lee Ann Munk, and Birgit Hagedorn. 2018. “Predicting Risk of Trace Element Pollution from Municipal Roads Using Site-Specific Soil Samples and Remotely Sensed Data.” Sci. Total Environ. 630 (July): 578–86. https://doi.org/10.1016/j.scitotenv.2018.02.171.\n\n\nSchoen, Erik R, Mark S Wipfli, E Jamie Trammell, Daniel J Rinella, Angelica L Floyd, Jess Grunblatt, Molly D McCarthy, et al. 2017. “Future of Pacific Salmon in the Face of Environmental Change: Lessons from One of the World’s Remaining Productive Salmon Regions.” Fisheries 42 (10): 538–53. https://doi.org/10.1080/03632415.2017.1374251."
   }
 ]

@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # Study Area
 
 ## Description
@@ -32,38 +31,3 @@ A brief description of each of the tributary stem field sampling sites, along wi
 This section will include a brief description of each of the main stem field sampling sites, along with coordinates and a photo.
 
 \newpage
-=======
-# Study Area
-
-## Description
-
-Located in southcentral Alaska, the Kenai River is part of the Cook Inlet Basin and is linked to the surrounding communities through sport and commercial fishing, tourism, recreation, and the propagation of fish and wildlife (@fig-map1). Five species of Pacific salmon flourish in the Kenai River Watershed, with sockeye (red) and Chinook (king) salmon as the primary species of interest for harvest in subsistence, sport, commercial, and personal use fisheries [@schoen2017]. The Kenai River his historically produced 80% of the sockeye harvested in Cook Inlet [@dorava2000].
-
-Surface runoff, groundwater composition, natural minerals, aquatic plants and animals, and human activities can affect water quality in this area. Potential sources of pollution from humans include gasoline powered boat engines, agriculture, mining, street runoff, and perforated septic tanks [@glassrl1999; @reeves2018; @epa2011].
-
-## Figures/maps
-
-### Online Map of Sample Sites
-
-Access ArcGIS Online map at <https://arcg.is/0LXGSf>
-
-![Location in Alaska of Kenai River Watershed](other/documents/images/kenai_watershed_map.jpg){#fig-map1}
-
-<br>
-
-![Location of water quality sampling sites](other/documents/images/kenai_river_map_bw.png){#fig-map2}
-
-## Sampling sites descriptions/photos
-
-Field sampling sites described in @fig-map2 are introduced below with a photo a coordinates for each location.
-
-### Tributary Sites
-
-A brief description of each of the tributary stem field sampling sites, along with coordinates and a photo.
-
-### Main Stem Sites
-
-This section will include a brief description of each of the main stem field sampling sites, along with coordinates and a photo.
-
-\newpage
->>>>>>> cb4283d25c8f6f21c969c7895136d6d68bddc50e

@@ -6,7 +6,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="dcterms.date" content="2024-09-10">
+<meta name="dcterms.date" content="2024-09-11">
 
 <title>Water Quality Assessment of the Kenai River Watershed from 2000 to 2021 [DRAFT] - 11&nbsp; Lead</title>
 <style>
@@ -286,14 +286,56 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="./phosphorus.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Phosphorus</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="./benzene.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Benzene</span></span></a>
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Benzene</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./fecal_coliform.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Fecal Coliform Bacteria</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./pH.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">pH</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./specific_conductance.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Specific Conductance</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./tss.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Total Suspended Solids</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./turbidity.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Turbidity</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./water_temp.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Temperature</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./summary.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Summary</span></span></a>
+ <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Summary</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -353,7 +395,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">September 10, 2024</p>
+      <p class="date">September 11, 2024</p>
     </div>
   </div>
   
@@ -690,63 +732,31 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>    code-summary: "Show the code"</span>
 <span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>---</span>
 <span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>Metallic lead and lead minerals are not classified as soluble in water, but they can</span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>be solubilized by certain acids, and a selection of industrial lead compounds are water</span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>soluble upon production (USEPA, 1980b). Lead is a component in electroplating,</span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>metallurgy, construction materials, plastic, and electronic equipment, and it can enter</span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>surface water through precipitation, dust, street runoff, and wastewater discharges</span>
-<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>(USEPA, 1980b). Exposure to lead can cause delayed embryonic development, reduced</span>
-<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>growth, and suppressed reproduction in fish, and spinal deformities in rainbow trout fry</span>
-<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>(USEPA, 1980b). Determined by the ADEC and the USEPA, the standard for lead ranges</span>
-<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>from 0.300 to 10.94 μg/L, depending on hardness, for the chronic exposure of aquatic life</span>
-<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>in freshwater (Appendix X) (ADEC, 2008; USEPA, 2014).</span>
-<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>The highest concentration of lead in the mainstem was 468 μg/L and was sampled</span>
-<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>at Mile 31 during summer 2005, and the lowest levels occurred below the MDL of 0.030</span>
-<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>μg/L at many locations in the spring and the summer of the sampling years. Exceedances</span>
-<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>occurred mainly in the summer, when lead exceeded the criteria twice at Mile 21, and</span>
-<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>once at Mile 1.5, Mile 6.5, Mile 10.1, Mile 12.5, Mile 31, and Mile 82, Mile 1.5 and Mile</span>
-<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>6.5 exhibited the most instances of detection in the spring and the summer. At Mile 40,</span>
-<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>Mile 43 and Mile 74 (Russian River) no concentrations of lead were ever reported. Only</span>
-<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>two exceedances where recorded during the spring sampling events, once at Mile 6.5 and</span>
-<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>once at Mile 10 (Beaver Creek) (Table X).</span>
-<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a>The concentration of lead in the tributaries ranged from a high of 3.92 μg/L at</span>
-<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a>Beaver Creek in summer 2006, and the lowest levels were below the MDL of 0.030 μg/L</span>
-<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a>at many locations in the spring and summer sampling events. The Killey River and</span>
-<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a>Juneau Creek each exceeded the criteria on one occasion in the summer of 2004 and 2013</span>
-<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a>respectively. Beaver Creek had two exceedances, one in the spring of 2011 and one in the</span>
-<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a>summer of 2006. No lead was ever reported in Russian River. The MDLs were higher</span>
-<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a>than the standard from summer 2000 through summer 2003 and summer 2005, so it is</span>
-<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a>unknown whether exceedances occurred in many of these samples (Table X).</span>
-<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a>A trend analysis was conducted using the average and median values for all data</span>
-<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a>collected during the time period between years 2000-2014. The concentrations of lead</span>
-<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a>throughout the entire Kenai River are relatively high in the lower river and decrease as</span>
-<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a>you move towards the upper river (Figure X and Figure X). A similar analysis was done</span>
-<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a>for each sampling station at the Kenai River with results showing that no lead was found</span>
-<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a>in most of the sampling stations before year 2005, after year 2005 when lead has been</span>
-<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a>found it shows a decrease in concentration through time. It is important to note that not</span>
-<span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a>every station has an actual reading and in many cases there are very few readings or non-</span>
-<span id="cb1-52"><a href="#cb1-52" aria-hidden="true" tabindex="-1"></a>at all.</span>
-<span id="cb1-53"><a href="#cb1-53" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-54"><a href="#cb1-54" aria-hidden="true" tabindex="-1"></a><span class="in">```{r echo = F, warning=FALSE, message=FALSE,fig.height=10}</span></span>
-<span id="cb1-55"><a href="#cb1-55" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-56"><a href="#cb1-56" aria-hidden="true" tabindex="-1"></a><span class="co"># set parameter</span></span>
-<span id="cb1-57"><a href="#cb1-57" aria-hidden="true" tabindex="-1"></a>parameter <span class="ot">&lt;-</span> <span class="st">"Lead"</span></span>
-<span id="cb1-58"><a href="#cb1-58" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-59"><a href="#cb1-59" aria-hidden="true" tabindex="-1"></a><span class="co"># source static regulatory criteria boxplot function</span></span>
-<span id="cb1-60"><a href="#cb1-60" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="st">"functions/static_boxplot_function.R"</span>)</span>
-<span id="cb1-61"><a href="#cb1-61" aria-hidden="true" tabindex="-1"></a><span class="fu">make_boxplot</span>(<span class="at">param =</span> parameter)</span>
-<span id="cb1-62"><a href="#cb1-62" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-63"><a href="#cb1-63" aria-hidden="true" tabindex="-1"></a><span class="co"># source calculated regulatory criteria plot(s) function</span></span>
-<span id="cb1-64"><a href="#cb1-64" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-65"><a href="#cb1-65" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-66"><a href="#cb1-66" aria-hidden="true" tabindex="-1"></a><span class="co"># source table download function</span></span>
-<span id="cb1-67"><a href="#cb1-67" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="st">"functions/table_download.R"</span>)</span>
-<span id="cb1-68"><a href="#cb1-68" aria-hidden="true" tabindex="-1"></a><span class="fu">download_tbl</span>(<span class="at">param =</span> parameter)</span>
-<span id="cb1-69"><a href="#cb1-69" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-70"><a href="#cb1-70" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>Metallic lead and lead minerals are not classified as soluble in water, but they can be solubilized by certain acids, and a selection of industrial lead compounds are water soluble upon production (USEPA, 1980b). Lead is a component in electroplating, metallurgy, construction materials, plastic, and electronic equipment, and it can enter surface water through precipitation, dust, street runoff, and wastewater discharges (USEPA, 1980b). Exposure to lead can cause delayed embryonic development, reduced growth, and suppressed reproduction in fish, and spinal deformities in rainbow trout fry (USEPA, 1980b). Determined by the ADEC and the USEPA, the standard for lead ranges from 0.300 to 10.94 μg/L, depending on hardness, for the chronic exposure of aquatic life in freshwater (Appendix X) (ADEC, 2008; USEPA, 2014).</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>The highest concentration of lead in the mainstem was 468 μg/L and was sampled at Mile 31 during summer 2005, and the lowest levels occurred below the MDL of 0.030 μg/L at many locations in the spring and the summer of the sampling years. Exceedances occurred mainly in the summer, when lead exceeded the criteria twice at Mile 21, and once at Mile 1.5, Mile 6.5, Mile 10.1, Mile 12.5, Mile 31, and Mile 82, Mile 1.5 and Mile 6.5 exhibited the most instances of detection in the spring and the summer. At Mile 40, Mile 43 and Mile 74 (Russian River) no concentrations of lead were ever reported. Only two exceedances where recorded during the spring sampling events, once at Mile 6.5 and once at Mile 10 (Beaver Creek) (Table X).</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>The concentration of lead in the tributaries ranged from a high of 3.92 μg/L at Beaver Creek in summer 2006, and the lowest levels were below the MDL of 0.030 μg/L at many locations in the spring and summer sampling events. The Killey River and Juneau Creek each exceeded the criteria on one occasion in the summer of 2004 and 2013 respectively. Beaver Creek had two exceedances, one in the spring of 2011 and one in the summer of 2006. No lead was ever reported in Russian River. The MDLs were higher than the standard from summer 2000 through summer 2003 and summer 2005, so it is unknown whether exceedances occurred in many of these samples (Table X).</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>A trend analysis was conducted using the average and median values for all data collected during the time period between years 2000-2014. The concentrations of lead throughout the entire Kenai River are relatively high in the lower river and decrease as you move towards the upper river (Figure X and Figure X). A similar analysis was done for each sampling station at the Kenai River with results showing that no lead was found in most of the sampling stations before year 2005, after year 2005 when lead has been found it shows a decrease in concentration through time. It is important to note that not every station has an actual reading and in many cases there are very few readings or non- at all.</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="in">```{r echo = F, warning=FALSE, message=FALSE,fig.height=10}</span></span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a><span class="co"># set parameter</span></span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>parameter <span class="ot">&lt;-</span> <span class="st">"Lead"</span></span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a><span class="co"># source static regulatory criteria boxplot function</span></span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="st">"functions/static_boxplot_function.R"</span>)</span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a><span class="fu">make_boxplot</span>(<span class="at">param =</span> parameter)</span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a><span class="co"># source calculated regulatory criteria plot(s) function</span></span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a><span class="co"># source table download function</span></span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="st">"functions/table_download.R"</span>)</span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a><span class="fu">download_tbl</span>(<span class="at">param =</span> parameter)</span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 
