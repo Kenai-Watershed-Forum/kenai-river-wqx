@@ -8,7 +8,7 @@ We calculated regulatory limits based on freshwater quality standards listed fro
 
 Some regulatory threshold values for metals are static and do not depend on additional environmental parameters. The metals parameters in the downloadable table below have static thresholds assigned.
 
-```{r echo = F}
+```{r echo = F, warning=FALSE, message=FALSE}
 
 library(tidyverse)
 library(janitor)
@@ -33,9 +33,11 @@ dir <- "other/input/regulatory_limits/formatted_reg_vals/static_metals_reg_vals.
 write.csv(static_metals_reg_vals, dir, row.names = F)
 
 # make viewable
-embed_file(dir, text = "Metals with Static Regulatory Threshold Values")
+embed_file(dir, text = "Download Regulatory Limits for Metals with Static Regulatory Threshold Values")
 
 ```
+
+Static regulatory values are represented as horizontal lines in the following parameter-specific chapters.
 
 <br>
 
@@ -43,18 +45,13 @@ embed_file(dir, text = "Metals with Static Regulatory Threshold Values")
 
 Some regulatory values for metals are not simple static values, and are instead hardness-dependent. Hardness varies by site, by season, and with hydrologic conditions. We calculated hardness according to the following formula:
 
-:::{.callout-note appearance = "simple}
-
+::: {.callout-note appearance="simple"}
 Hardness = 2.497(Total Calcium in mg/L) + 4.119(Total Magnesium in mg/L)
-
 :::
 
 For sampling events with duplicate samples, we calculated average hardness.
 
-```{r echo = F}
-library(tidyverse)
-library(readxl)
-library(janitor)
+```{r echo = F, warning=FALSE, message=FALSE}
 
 # calculate hardness for all sample events in project history with available data
 
@@ -86,13 +83,15 @@ xfun::embed_file(dir, name = "Kenai River Baseline Hardness Data")
 
 <br>
 
-We calculated hardness-dependent regulatory criteria based on formulas published on the Alaska Department of Environmental Conservation's Water Quality Standards Section website. The "Alaska Water Quality Criteria Manual for Toxic and other Deleterious Organic and Inorganic Substances" (2022) document, along with the "Inorganic Toxics Criteria Worksheet" provide parameter-specific formulas for many substances.
+#### Acute and Chronic Hardness-Dependent Regulatory Threshold Values
 
-https://dec.alaska.gov/water/water-quality/standards/
+We calculated hardness-dependent regulatory criteria based on formulas published on the Alaska Department of Environmental Conservation's Water Quality Standards Section website (<https://dec.alaska.gov/water/water-quality/standards/>). The "Alaska Water Quality Criteria Manual for Toxic and other Deleterious Organic and Inorganic Substances" (2022) document, along with the "Inorganic Toxics Criteria Worksheet" provide parameter-specific formulas for many substances.
 
 Hardness-dependent criteria may be calculated from the following for freshwater metals:
 
+::: {.callout-note appearance="simple"}
 Acute (dissolved) = exp{mA\[ln(hardness)\]+ bA} (CF) Chronic (dissolved) = exp{mC \[ln(hardness)\] + bC} (CF)
+:::
 
 where mA, bA, mC, and bC are numerical parameters specific to each substance, and CF is the conversion factor for acute vs. chronic criteria.
 
