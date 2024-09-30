@@ -84,11 +84,14 @@ dat %>%
   ggplot(aes(x = year, y = inflation_adj_value, label = value, fill = org)) +
   geom_bar(stat = "identity") +
   scale_y_continuous(labels = scales::dollar_format()) +
+  scale_fill_brewer(palette = "Paired",name = "Organization") +
   xlab("") +
   ylab("") +
-  ggtitle("Inflation Adjusted Baseline Income History 2005-2023")
+  ggtitle("Inflation Adjusted Baseline Income History 2005-2023") +
+  theme(plot.title = element_text(size = 16, face = "bold"),
+        axis.text.y = element_text(size = 10))
 
-ggsave("other/output/financial/2005_2023_inflation_adjsuted_income_plot1.jpg", width = 10, height = 8)
+ggsave("other/output/financial/2005_2023_inflation_adjusted_income_plot1.jpg", width = 10, height = 8)
 
 
 ```
