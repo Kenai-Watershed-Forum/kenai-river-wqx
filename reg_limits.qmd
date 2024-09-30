@@ -1,12 +1,12 @@
 # Regulatory Limits
 
-We calculated regulatory limits based on freshwater quality standards listed from state and federal regulatory agencies...
+We calculated regulatory limits based on freshwater quality standards listed from state and federal regulatory agencies. Some regulatory threshold values are static and do not depend on additional environmental parameters, while some threshold values depend on local conditions like hardness, temperature, or pH.
 
 ## Metals
 
 ### Static Regulatory Threshold Values for Metals
 
-Some regulatory threshold values for metals are static and do not depend on additional environmental parameters. The metals parameters in the downloadable table below have static thresholds assigned.
+ The metals parameters in the downloadable table below have static thresholds assigned.
 
 ```{r echo = F, warning=FALSE, message=FALSE}
 
@@ -37,7 +37,7 @@ embed_file(dir, text = "Download Regulatory Limits for Metals with Static Regula
 
 ```
 
-Static regulatory values are represented as horizontal lines in the following parameter-specific chapters.
+Static regulatory values are represented as solid horizontal lines in the parameter-specific chapters that follow.
 
 <br>
 
@@ -60,9 +60,9 @@ dat <- read.csv("other/output/analysis_format/baseline_analysis_format.csv")
 
 # calculate hardness column
 hard <- dat %>%
-  select(activity_identifier, activity_start_date, characteristic_name, result_measure_value) %>%
+  select(activity_identifier, activity_start_date, characteristic_name, result_measure_value, result_measure_measure_unit_code) %>%
   filter(characteristic_name %in% (c("Magnesium","Calcium"))) %>%
-  group_by(activity_identifier, activity_start_date, characteristic_name) %>%
+  group_by(activity_identifier, activity_start_date, characteristic_name, result_measure_measure_unit_code) %>%
   # get mean of duplicate samples
   summarise(avg_value = mean(result_measure_value)) %>%
   pivot_wider(names_from = "characteristic_name", values_from = "avg_value") %>%
@@ -108,9 +108,17 @@ diss_metals_hard_param <- read_excel("other/input/regulatory_limits/master_reg_l
   select(-parameter_agency_name) %>%
   filter(!is.na(characteristic_name))
 
-# join calculation parameters to overall dataset
 
-hardness_dependent_metals_thresholds <- inner_join(dat, diss_metals_hard_param) %>%
+# WORKING HERE!!!!
+# 9/30/24 the join below causes hardness values to convert to NA
+# spent an hour with chatcpt trying to diagnose why hardness values are converted to NA in the join. this step is essential to we can calculate hardness-dependent values. next: try performing join(s) one parameter at a time to see if the issue is parameter specific?!?!?!?!?!??
+
+
+
+
+
+# join calculation parameters to overall dataset
+hardness_dependent_metals_thresholds <- inner_join(dat, diss_metals_hard_param, by = "characteristic_name") %>%
   
   # Calculate hardness dependent criteria values
   
