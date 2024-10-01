@@ -3,9 +3,6 @@ title: Baseline Financial History
 execute:
   echo: false
 ---
-
-Plot and summarise KWF Baseline Water Quality Financial Income History
-
 ```{r echo = F}
 
 # clear environment
@@ -22,12 +19,59 @@ library(janitor)
 library(hms)
 library(lubridate)
 library(anytime)
+library(xfun)
 
 ```
 
+
+# Introduction
+
+The Kenai River Baseline Water Quality Monitoring project is supported by both financial and in-kind support from a broad suite of partners. Costs consist primarily of contractual laboratory expenses, along with Kenai Watershed Forum staff personnel time, equipment, and other smaller expense categories.
+
+Partners are invoiced on an annual basis. While contribution levels have remained relatively stable since 2005, 56% inflation of the U.S. dollar since the year 2005 has substantially reduced the real value of resources available to the project. As of 2024, in order to continue the same level of service as seen throughout the project's history, project managers must either seek additional sources of funding or de-prioritize certain sampling sites or parameters.
+
+## Expense history
+
+```{r}
+# read in expense history data
+expense_dat <- read_excel("other/input/financial/Agency Baseline_expenses_timeline.xlsx",
+                          sheet = "Sheet1", range = "D1:W32") %>%
+  select(-TOTAL) %>%
+  rename( "expense" = `...1`) %>%
+  filter(expense != "Contractual",
+         expense != "Contributions Income",
+         expense != "Grants")
+write.csv(expense_dat,"other/output/financial/expense_dat.csv", row.names = F)
+embed_file("other/output/financial/expense_dat.csv", text = "Download Kenai River Baseline Water Quality Monitoring Project expense history 2005 - 2022")
+```
+
+```{r}
+# plot
+z <- expense_dat %>%
+  
+  # assign major or minor expense categories
+  mutate(expense_category = case_when(
+    expense %in% c("Contractual Expense","Personnel","Supplies", "Indirect Cost Expense")  ~ "major",
+    TRUE ~ "other"))
+  
+
+  
+  
+  pivot_longer(cols = "2005":"2022",names_to = "year")
+
+
+
+```
+
+
+
+## Income history
+
+Plot and summarise KWF Baseline Water Quality Financial Income History
+
 ```{r echo = F}
 # read in and restructure data to long format
-dat <- read_excel("other/input/financial/Baseline Income History.xlsx", 
+income_dat <- read_excel("other/input/financial/Baseline Income History.xlsx", 
                   sheet = "income_history", range = "D4:W17") %>%
   rename("org" = "...1") %>%
   filter(!is.na(org)) %>%
@@ -35,7 +79,7 @@ dat <- read_excel("other/input/financial/Baseline Income History.xlsx",
 
 
 # plot 1
-dat %>%
+income_dat %>%
   ggplot(aes(x = year, y = value, label = value, fill = org)) +
   geom_bar(stat = "identity") +
   scale_y_continuous(labels = scales::dollar_format()) +
@@ -47,7 +91,7 @@ ggsave("other/output/financial/2005_2023_income_plot1.jpg", width = 10, height =
 
   
 # plot 2
-dat %>%
+income_dat %>%
   ggplot(aes(x = year, y = value, label = value)) +
   geom_bar(stat = "identity", position = "dodge") +
   facet_grid(org ~ .) +
@@ -76,11 +120,11 @@ inflation_dat <- read_excel("other/input/financial/usd_annual_inflation.xlsx") %
   select(-inflation_value)
 
 # join
-dat <- left_join(dat,inflation_dat) %>%
+income_dat <- left_join(income_dat,inflation_dat) %>%
   mutate(inflation_adj_value = value*inflation_multiplier)
 
 # inflation adjusted plot 1
-dat %>%
+income_dat %>%
   ggplot(aes(x = year, y = inflation_adj_value, label = value, fill = org)) +
   geom_bar(stat = "identity") +
   scale_y_continuous(labels = scales::dollar_format()) +
