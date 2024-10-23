@@ -3,7 +3,7 @@ title: Baseline Financial History
 execute:
   echo: false
 ---
-```{r echo = F}
+```{r echo = F, message = F}
 
 # clear environment
 rm(list=ls())
@@ -45,7 +45,7 @@ write.csv(expense_dat,"other/output/financial/expense_dat.csv", row.names = F)
 embed_file("other/output/financial/expense_dat.csv", text = "Download Kenai River Baseline Water Quality Monitoring Project expense history 2005 - 2022")
 ```
 
-```{r}
+```{r eval = F}
 # plot
 z <- expense_dat %>%
   

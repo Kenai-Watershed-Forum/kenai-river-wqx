@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.555">
+<meta name="generator" content="quarto-1.3.433">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -58,106 +58,50 @@ ul.task-list li input[type="checkbox"] {
   </div>
   
 
-
 </header>
 
-
-<p>Plot and summarise KWF Baseline Water Quality Financial Income History</p>
+<section id="introduction" class="level1">
+<h1>Introduction</h1>
+<p>The Kenai River Baseline Water Quality Monitoring project is supported by both financial and in-kind support from a broad suite of partners. Costs consist primarily of contractual laboratory expenses, along with Kenai Watershed Forum staff personnel time, equipment, and other smaller expense categories.</p>
+<p>Partners are invoiced on an annual basis. While contribution levels have remained relatively stable since 2005, 56% inflation of the U.S. dollar since the year 2005 has substantially reduced the real value of resources available to the project. As of 2024, in order to continue the same level of service as seen throughout the project’s history, project managers must either seek additional sources of funding or de-prioritize certain sampling sites or parameters.</p>
+<section id="expense-history" class="level2">
+<h2 class="anchored" data-anchor-id="expense-history">Expense history</h2>
 <div class="cell">
 <div class="cell-output cell-output-stderr">
-<pre><code>── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
-✔ dplyr     1.1.4     ✔ readr     2.1.5
-✔ forcats   1.0.0     ✔ stringr   1.5.1
-✔ ggplot2   3.5.1     ✔ tibble    3.2.1
-✔ lubridate 1.9.3     ✔ tidyr     1.3.1
-✔ purrr     1.0.2     
-── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
-✖ dplyr::filter() masks stats::filter()
-✖ dplyr::lag()    masks stats::lag()
-ℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors
-
-Attaching package: 'data.table'
-
-
-The following objects are masked from 'package:lubridate':
-
-    hour, isoweek, mday, minute, month, quarter, second, wday, week,
-    yday, year
-
-
-The following objects are masked from 'package:dplyr':
-
-    between, first, last
-
-
-The following object is masked from 'package:purrr':
-
-    transpose
-
-
-
-Attaching package: 'magrittr'
-
-
-The following object is masked from 'package:purrr':
-
-    set_names
-
-
-The following object is masked from 'package:tidyr':
-
-    extract
-
-
-
-Attaching package: 'janitor'
-
-
-The following objects are masked from 'package:stats':
-
-    chisq.test, fisher.test
-
-
-
-Attaching package: 'hms'
-
-
-The following object is masked from 'package:lubridate':
-
-    hms</code></pre>
+<pre><code>New names:
+• `` -&gt; `...1`</code></pre>
+</div>
+<div class="cell-output-display">
+<a href="data:text/csv;base64,ImV4cGVuc2UiLCIyMDA1IiwiMjAwNiIsIjIwMDciLCIyMDA4IiwiMjAwOSIsIjIwMTAiLCIyMDExIiwiMjAxMiIsIjIwMTMiLCIyMDE0IiwiMjAxNSIsIjIwMTYiLCIyMDE3IiwiMjAxOCIsIjIwMTkiLCIyMDIwIiwiMjAyMSIsIjIwMjIiDQoiQWR2ZXJ0aXNpbmciLDAsMy41NCwwLDAuMzUsMCw5MjEuNzUsNjY2LjYsMCwwLDAsMCwwLDAsMCwwLDAsMCwwDQoiQmFuayBTZXJ2aWNlIENoYXJnZXMiLDAsMCwwLDguNzIsMS40NywwLDAsMCwwLDAsMCwwLDAsMCwwLDAsMCwwDQoiQ29udHJhY3R1YWwgRXhwZW5zZSIsMTMwMzQuNiwxNTU3OS45OSwxNjgxNi42MSwxNTUxMy4xOCw4Mzg3Ljg2LDExMTI0LDg3MjYuNSw4NTM0LjUsMTE4NTMuMSw5OTcyLjYsOTI4Mi4yLDAsODg3MS44LDExMjk2LjMsMTAxMjAuMzUsMzU2NC40OCw4Nzk1LDEzMTM1DQoiQ29waWVyIEV4cGVuc2UiLDAsMCwxMC44NiwxMi4wOSwxMC40NywwLDAsMCwwLDAsMCwwLDAsMCwwLDAsMCwwDQoiRXF1aXBtZW50IiwwLDAsMCw1NS44Niw0Ljc3LDAsMCwwLDAsMCwwLDAsMCwwLDAsMCwwLDANCiJHYXNvbGluZSIsMCwwLDAsNS4xNSw1LjU1LDAsMCwwLDAsMzkuNywzNi4zMiwzMy40NCwxOS4zMSw4NC4zMywyMi4xMywwLDg4LjI1LDYuNzQNCiJIZWFsdGggUmVpbWJ1cnNlbWVudCIsMCwzMC4xOSw2NDcuOTIsNzc1LDQxNi42Niw4Ny41LDAsNTguMzMsMTMwLjIsMjYwLjQxLDU3NS41MiwyODEuMjUsOTM0LjYzLDYyMi45Miw2ODEuMjUsMzc3LjYsNTUuODMsMzAxLjU2DQoiSW5kaXJlY3QgQ29zdCBFeHBlbnNlIiwwLDAsMCwwLDAsMTI0LjMzLDY5LjgsMCwwLDE2NDAuOTksMTgxNi4yNCwyNTE1Ljc5LDQxMzguNjIsNDg3Ny43OCw0MzQ1Ljk3LDE4NDUuOTUsMzI3My44NSw2MTgwLjcyDQoiSW5zdXJhbmNlIiwwLDguMTMsNTAuNTYsOTEuNjUsNjYuMyw1Ljk3LDAsMTAuMzQsMTUuOTIsMjYuNDksNjUuNCw0MC4zNSw4MC43NiwxMTEuMDQsOTguNDEsMzcuODQsNi4zOSwxNS4wOQ0KIkxpY2Vuc2VzIGFuZCBQZXJtaXRzIiwwLDIuMSwwLDEuMSwxLjYyLDAsMCwwLDAsMCwwLDAsMCwwLDAsMCwwLDANCiJNZW1iZXJzaGlwL0R1ZXMvU3Vic2NyaXB0aW9ucyIsMCwwLDcuOCwwLjkxLDQuMTcsMCwwLDAsMCwwLDAsMCwwLDAsMCwwLDAsMA0KIk1pc2NlbGxhbmVvdXMiLDAsMCwtMTExLjQ3LDAsNy42MSwwLDAsMCwwLDAsMCwwLDAsMCwwLDAsMCwwDQoiUGVyc29ubmVsIiwwLDY5OC40OCwzNjI0LjU2LDQwNTUuMjIsMjQxOC44NSw2MDMuNjUsMCwxMDA2Ljk1LDE1MzQuNzEsMjYxNi41Niw2NTIyLjYyLDM5NTguNDcsNzk2MS40NCw1OTMyLjQxLDY4MDAuOTMsMzg3MS43MSw3NjMuMDYsMzcxNC41OA0KIlBvc3RhZ2UgYW5kIERlbGl2ZXJ5IiwwLDIuMjcsMy41NywxODMuODgsMS41OSwwLDAsMCwwLDAsMTIuNjUsMCwwLDU4LjI0LDExMi4yNywwLDg0LjcsMTAzDQoiUHJpbnRpbmcgYW5kIFJlcHJvZHVjdGlvbiIsMCw2LjQ0LDYuNjYsMTEuMTcsMCwwLDAsMCwwLDAsMCwwLDAsMCwwLDAsMCwwDQoiUmVudGFscyAtIFNlcnZlciIsMCwwLDAuMjcsMTQuMDcsNi43LDAsMCwwLDAsMCwwLDAsMCwwLDAsMCwwLDANCiJSZW50YWxzIC0gVmVoaWNsZS9Cb2F0cyIsMCwwLDAsMCwwLDAsMCwwLDAsMCwwLDAsMzAwLDc1LDI4OSw2NCwwLDc1DQoiUmVwYWlycyIsMCwwLDAuMzIsMy4xNCwwLDAsMCwwLDAsMCwwLDAsMCwwLDAsMCwwLDANCiJTb2Z0d2FyZSIsMCw1LjEsNDAuMzIsMTcuMjYsMy44MywwLDAsMTA2LjY2LDAsMCwwLDAsMCwwLDAsMCwwLDANCiJTdXBwbGllcyIsMzIuMDgsMTQxLjM1LDI5Ni42NCw1MDMuMjgsNDAxLjMsNTIyLjMxLDM1Mi42Nyw4MzcuMDEsNDk1LjgzLDMzNS44Nyw0MDcuMzMsNDg0LjM1LDY0OC4zNiw1MjIuOTgsNjA4LjQ0LDE4MCwxMTQxLjMsMjQ5My40OQ0KIlRyYWluaW5nICYgQ29udGludWluZyBFZHVjYXRpb24iLDAsMCwxMS41MiwwLDAsMCwwLDAsMCwwLDAsMCwwLDAsMCwwLDAsMA0KIlRyYW5zZmVyICBBY2NvdW50IiwwLDAsMCwwLDAsMjgwLjcyLDAsMCwwLDAsMCwwLDAsMCwwLDAsMCwwDQoiVHJhdmVsICYgRW50IiwxMS4zNCwzLjExLDQ0LjE4LDE1OS4wOCwxOC4wOCwxNzMuNSw2My43NSw2MS40LDAsMCwwLDQ1LjksNDcuMDgsMCwwLDE0Ljk1LDAsMTAwLjE3DQoiVXRpbGl0aWVzIiwwLDcuMTcsOTYuNzQsOTcuNjUsNTUuOTQsMTEwLjEyLDI5OS43MSwwLDAsMCwwLDAsMCwwLDAsMCwwLDANCg==" download="expense_dat.csv">Download Kenai River Baseline Water Quality Monitoring Project expense history 2005 - 2022</a>
 </div>
 </div>
+</section>
+<section id="income-history" class="level2">
+<h2 class="anchored" data-anchor-id="income-history">Income history</h2>
+<p>Plot and summarise KWF Baseline Water Quality Financial Income History</p>
 <div class="cell">
 <div class="cell-output cell-output-stderr">
 <pre><code>New names:
 • `` -&gt; `...1`</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>Warning: Removed 121 rows containing missing values or values outside the scale range
+<pre><code>Warning: Removed 122 rows containing missing values or values outside the scale range
 (`geom_bar()`).</code></pre>
 </div>
 <div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="income-history_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
+<p><img src="income-history_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid" width="672"></p>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>Warning: Removed 121 rows containing missing values or values outside the scale range
+<pre><code>Warning: Removed 122 rows containing missing values or values outside the scale range
 (`geom_bar()`).
-Removed 121 rows containing missing values or values outside the scale range
+Removed 122 rows containing missing values or values outside the scale range
 (`geom_bar()`).</code></pre>
 </div>
 <div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="income-history_files/figure-html/unnamed-chunk-2-2.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
+<p><img src="income-history_files/figure-html/unnamed-chunk-4-2.png" class="img-fluid" width="672"></p>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>Warning: Removed 121 rows containing missing values or values outside the scale range
+<pre><code>Warning: Removed 122 rows containing missing values or values outside the scale range
 (`geom_bar()`).</code></pre>
 </div>
 </div>
@@ -168,21 +112,19 @@ Removed 121 rows containing missing values or values outside the scale range
 <pre><code>Joining with `by = join_by(year)`</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>Warning: Removed 121 rows containing missing values or values outside the scale range
+<pre><code>Warning: Removed 122 rows containing missing values or values outside the scale range
 (`geom_bar()`).</code></pre>
 </div>
 <div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="income-history_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
+<p><img src="income-history_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid" width="672"></p>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>Warning: Removed 121 rows containing missing values or values outside the scale range
+<pre><code>Warning: Removed 122 rows containing missing values or values outside the scale range
 (`geom_bar()`).</code></pre>
 </div>
 </div>
+</section>
+</section>
 
 </main>
 <!-- /main column -->
@@ -265,27 +207,10 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     // clear code selection
     e.clearSelection();
   });
-    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
-    var mailtoRegex = new RegExp(/^mailto:/);
-      var filterRegex = new RegExp('/' + window.location.host + '/');
-    var isInternal = (href) => {
-        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
-    }
-    // Inspect non-navigation links and adorn them if external
- 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
-    for (var i=0; i<links.length; i++) {
-      const link = links[i];
-      if (!isInternal(link.href)) {
-        // undo the damage that might have been done by quarto-nav.js in the case of
-        // links that we want to consider external
-        if (link.dataset.originalHref !== undefined) {
-          link.href = link.dataset.originalHref;
-        }
-      }
-    }
-  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+  function tippyHover(el, contentFn) {
     const config = {
       allowHTML: true,
+      content: contentFn,
       maxWidth: 500,
       delay: 100,
       arrow: false,
@@ -295,17 +220,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       interactive: true,
       interactiveBorder: 10,
       theme: 'quarto',
-      placement: 'bottom-start',
+      placement: 'bottom-start'
     };
-    if (contentFn) {
-      config.content = contentFn;
-    }
-    if (onTriggerFn) {
-      config.onTrigger = onTriggerFn;
-    }
-    if (onUntriggerFn) {
-      config.onUntrigger = onUntriggerFn;
-    }
     window.tippy(el, config); 
   }
   const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
@@ -317,130 +233,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       try { href = new URL(href).hash; } catch {}
       const id = href.replace(/^#\/?/, "");
       const note = window.document.getElementById(id);
-      if (note) {
-        return note.innerHTML;
-      } else {
-        return "";
-      }
-    });
-  }
-  const xrefs = window.document.querySelectorAll('a.quarto-xref');
-  const processXRef = (id, note) => {
-    // Strip column container classes
-    const stripColumnClz = (el) => {
-      el.classList.remove("page-full", "page-columns");
-      if (el.children) {
-        for (const child of el.children) {
-          stripColumnClz(child);
-        }
-      }
-    }
-    stripColumnClz(note)
-    if (id === null || id.startsWith('sec-')) {
-      // Special case sections, only their first couple elements
-      const container = document.createElement("div");
-      if (note.children && note.children.length > 2) {
-        container.appendChild(note.children[0].cloneNode(true));
-        for (let i = 1; i < note.children.length; i++) {
-          const child = note.children[i];
-          if (child.tagName === "P" && child.innerText === "") {
-            continue;
-          } else {
-            container.appendChild(child.cloneNode(true));
-            break;
-          }
-        }
-        if (window.Quarto?.typesetMath) {
-          window.Quarto.typesetMath(container);
-        }
-        return container.innerHTML
-      } else {
-        if (window.Quarto?.typesetMath) {
-          window.Quarto.typesetMath(note);
-        }
-        return note.innerHTML;
-      }
-    } else {
-      // Remove any anchor links if they are present
-      const anchorLink = note.querySelector('a.anchorjs-link');
-      if (anchorLink) {
-        anchorLink.remove();
-      }
-      if (window.Quarto?.typesetMath) {
-        window.Quarto.typesetMath(note);
-      }
-      // TODO in 1.5, we should make sure this works without a callout special case
-      if (note.classList.contains("callout")) {
-        return note.outerHTML;
-      } else {
-        return note.innerHTML;
-      }
-    }
-  }
-  for (var i=0; i<xrefs.length; i++) {
-    const xref = xrefs[i];
-    tippyHover(xref, undefined, function(instance) {
-      instance.disable();
-      let url = xref.getAttribute('href');
-      let hash = undefined; 
-      if (url.startsWith('#')) {
-        hash = url;
-      } else {
-        try { hash = new URL(url).hash; } catch {}
-      }
-      if (hash) {
-        const id = hash.replace(/^#\/?/, "");
-        const note = window.document.getElementById(id);
-        if (note !== null) {
-          try {
-            const html = processXRef(id, note.cloneNode(true));
-            instance.setContent(html);
-          } finally {
-            instance.enable();
-            instance.show();
-          }
-        } else {
-          // See if we can fetch this
-          fetch(url.split('#')[0])
-          .then(res => res.text())
-          .then(html => {
-            const parser = new DOMParser();
-            const htmlDoc = parser.parseFromString(html, "text/html");
-            const note = htmlDoc.getElementById(id);
-            if (note !== null) {
-              const html = processXRef(id, note);
-              instance.setContent(html);
-            } 
-          }).finally(() => {
-            instance.enable();
-            instance.show();
-          });
-        }
-      } else {
-        // See if we can fetch a full url (with no hash to target)
-        // This is a special case and we should probably do some content thinning / targeting
-        fetch(url)
-        .then(res => res.text())
-        .then(html => {
-          const parser = new DOMParser();
-          const htmlDoc = parser.parseFromString(html, "text/html");
-          const note = htmlDoc.querySelector('main.content');
-          if (note !== null) {
-            // This should only happen for chapter cross references
-            // (since there is no id in the URL)
-            // remove the first header
-            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
-              note.children[0].remove();
-            }
-            const html = processXRef(null, note);
-            instance.setContent(html);
-          } 
-        }).finally(() => {
-          instance.enable();
-          instance.show();
-        });
-      }
-    }, function(instance) {
+      return note.innerHTML;
     });
   }
       let selectedAnnoteEl;
@@ -484,7 +277,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
             }
             div.style.top = top - 2 + "px";
             div.style.height = height + 4 + "px";
-            div.style.left = 0;
             let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
             if (gutterDiv === null) {
               gutterDiv = window.document.createElement("div");
@@ -510,32 +302,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
         });
         selectedAnnoteEl = undefined;
       };
-        // Handle positioning of the toggle
-    window.addEventListener(
-      "resize",
-      throttle(() => {
-        elRect = undefined;
-        if (selectedAnnoteEl) {
-          selectCodeLines(selectedAnnoteEl);
-        }
-      }, 10)
-    );
-    function throttle(fn, ms) {
-    let throttle = false;
-    let timer;
-      return (...args) => {
-        if(!throttle) { // first call gets through
-            fn.apply(this, args);
-            throttle = true;
-        } else { // all the others get throttled
-            if(timer) clearTimeout(timer); // cancel #2
-            timer = setTimeout(() => {
-              fn.apply(this, args);
-              timer = throttle = false;
-            }, ms);
-        }
-      };
-    }
       // Attach click handler to the DT
       const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
       for (const annoteDlNode of annoteDls) {
@@ -596,7 +362,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 });
 </script>
 </div> <!-- /content -->
-
 
 
 
