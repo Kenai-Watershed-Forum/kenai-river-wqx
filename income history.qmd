@@ -1,8 +1,9 @@
 ---
-title: Baseline Financial History
+title: Kenai River Baseline Water Quality Monitoring Project Financial History
 execute:
   echo: false
 ---
+
 ```{r echo = F, message = F}
 
 # clear environment
@@ -20,19 +21,23 @@ library(hms)
 library(lubridate)
 library(anytime)
 library(xfun)
+library(plotly)
 
 ```
 
-
 # Introduction
 
-The Kenai River Baseline Water Quality Monitoring project is supported by both financial and in-kind support from a broad suite of partners. Costs consist primarily of contractual laboratory expenses, along with Kenai Watershed Forum staff personnel time, equipment, and other smaller expense categories.
+The Kenai River Baseline Water Quality Monitoring project is supported by both financial and in-kind support from a broad suite of partners. Costs include contractual laboratory expenses, research staff personnel time, equipment, and other smaller expense categories. Partners are invoiced on an annual basis. 
 
-Partners are invoiced on an annual basis. While contribution levels have remained relatively stable since 2005, 56% inflation of the U.S. dollar since the year 2005 has substantially reduced the real value of resources available to the project. As of 2024, in order to continue the same level of service as seen throughout the project's history, project managers must either seek additional sources of funding or de-prioritize certain sampling sites or parameters.
+**While contribution levels have remained relatively stable since 2005, 56% inflation of the U.S. dollar since the year 2005 has substantially reduced the real value of resources available to the project. As of 2024, in order to continue the same level of service as seen throughout the project's history, the project must either seek additional sources of funding or de-prioritize certain sampling sites or parameters.**
 
-## Expense history
+## Project Expense history
 
-```{r}
+Project expense trends from years 2005 - 2022 are detailed in figure @fig-expense-history and source data is available in the link below.
+
+<br>
+
+```{r echo = F, message = F}
 # read in expense history data
 expense_dat <- read_excel("other/input/financial/Agency Baseline_expenses_timeline.xlsx",
                           sheet = "Sheet1", range = "D1:W32") %>%
@@ -41,56 +46,69 @@ expense_dat <- read_excel("other/input/financial/Agency Baseline_expenses_timeli
   filter(expense != "Contractual",
          expense != "Contributions Income",
          expense != "Grants")
+
+# group by expense categories
+expense_dat_cat <- read.csv("other/input/financial/expense_categories_dat.csv") %>%
+  remove_empty("cols")
+expense_dat <- left_join(expense_dat,expense_dat_cat)
+```
+
+```{r echo = F, message = F, warning = F, fig.width = 14, fig.height = 10}
+#| label: fig-expense-history
+#| fig-cap: "Kenai River Baseline Water Quality Monitoring Expenses 2005 - 2022"
+
+
+# summarize & reformat
+expense_dat_long <- expense_dat %>%
+  pivot_longer(cols = "2005":"2022",names_to = "year") %>%
+  group_by(expense_category,year)  %>%
+  summarise("total_expenses" = sum(value)) 
+write.csv(expense_dat_long,"other/temp.csv")
+
+#plot 
+  expense_dat_long %>%
+  ggplot(aes(year,total_expenses, fill = expense_category)) +
+  geom_bar(stat = "identity") +
+  facet_grid(expense_category~.) +
+  theme(strip.text.y = element_text(angle = 360),
+        plot.title = element_text(size = 20, face = "bold"),
+        axis.text.x = element_text(size =12, face = "bold"),
+        axis.text.y = element_text(size = 14),
+        axis.title.x = element_blank(),
+        axis.title.y = element_blank(),
+        strip.text = element_text(size = 14),
+        legend.position = "none") +
+  scale_y_continuous(labels = scales::dollar_format()) +
+    labs(fill = "Expense\nCategory") + 
+    ggtitle("Kenai River Baseline Water Quality Monitoring Expenses 2005 - 2022")
+
+```
+
+```{r echo = F}
+# write csv
 write.csv(expense_dat,"other/output/financial/expense_dat.csv", row.names = F)
-embed_file("other/output/financial/expense_dat.csv", text = "Download Kenai River Baseline Water Quality Monitoring Project expense history 2005 - 2022")
+embed_file("other/output/financial/expense_dat.csv", text = "Download Kenai River Baseline Water Quality Monitoring Project expense data 2005 - 2022")
 ```
 
-```{r eval = F}
-# plot
-z <- expense_dat %>%
-  
-  # assign major or minor expense categories
-  mutate(expense_category = case_when(
-    expense %in% c("Contractual Expense","Personnel","Supplies", "Indirect Cost Expense")  ~ "major",
-    TRUE ~ "other"))
-  
-
-  
-  
-  pivot_longer(cols = "2005":"2022",names_to = "year")
-
-
-
-```
-
-
+<br>
 
 ## Income history
 
-Plot and summarise KWF Baseline Water Quality Financial Income History
+Project income history fluctuates annually as partner contributions vary. Figure @fig-income-a displays
 
-```{r echo = F}
+```{r echo = F, message = F}
 # read in and restructure data to long format
 income_dat <- read_excel("other/input/financial/Baseline Income History.xlsx", 
                   sheet = "income_history", range = "D4:W17") %>%
   rename("org" = "...1") %>%
   filter(!is.na(org)) %>%
   pivot_longer(cols = "2005":"2023",names_to = "year")
+```
 
-
-# plot 1
-income_dat %>%
-  ggplot(aes(x = year, y = value, label = value, fill = org)) +
-  geom_bar(stat = "identity") +
-  scale_y_continuous(labels = scales::dollar_format()) +
-  xlab("") +
-  ylab("") +
-  ggtitle("Baseline Income History 2005-2023")
-
-ggsave("other/output/financial/2005_2023_income_plot1.jpg", width = 10, height = 8)
-
-  
-# plot 2
+```{r echo = F, message = F, warning = F, fig.width = 14, fig.height = 10}
+#| label: fig-income-a
+#| fig-cap: "Income by partner organization"
+# plot year vs amount by org, faceted bar chart
 income_dat %>%
   ggplot(aes(x = year, y = value, label = value)) +
   geom_bar(stat = "identity", position = "dodge") +
@@ -102,6 +120,25 @@ income_dat %>%
   ggtitle("Baseline Income History 2005-2023")
 
 ggsave("other/output/financial/2005_2023_income_plot2.jpg", width = 10, height = 8)
+```
+
+```{r echo = F}
+
+
+
+# plot year vs income by org, stacked bar chart
+income_dat %>%
+  ggplot(aes(x = year, y = value, label = value, fill = org)) +
+  geom_bar(stat = "identity") +
+  scale_y_continuous(labels = scales::dollar_format()) +
+  xlab("") +
+  ylab("") +
+  ggtitle("Baseline Income History 2005-2023")
+
+ggsave("other/output/financial/2005_2023_income_plot1.jpg", width = 10, height = 8)
+
+  
+
 
 ```
 
