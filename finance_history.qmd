@@ -27,7 +27,7 @@ library(plotly)
 
 # Introduction
 
-The Kenai River Baseline Water Quality Monitoring project is supported by both financial and in-kind support from a broad suite of partners. Costs include contractual laboratory expenses, research staff personnel time, equipment, and other smaller expense categories. Partners are invoiced on an annual basis. 
+The Kenai River Baseline Water Quality Monitoring project is supported by both financial and in-kind support from a broad suite of partners. Costs include contractual laboratory expenses, research staff personnel time, equipment, and other smaller expense categories. Partners are invoiced on an annual basis.
 
 **While contribution levels have remained relatively stable since 2005, 56% inflation of the U.S. dollar since the year 2005 has substantially reduced the real value of resources available to the project. As of 2024, in order to continue the same level of service as seen throughout the project's history, the project must either seek additional sources of funding or de-prioritize certain sampling sites or parameters.**
 
@@ -39,7 +39,7 @@ Project expense trends from years 2005 - 2022 are detailed in figure @fig-expens
 
 ```{r echo = F, message = F}
 # read in expense history data
-expense_dat <- read_excel("other/input/financial/Agency Baseline_expenses_timeline.xlsx",
+expense_dat <- read_excel("other/input/financial/Agency Baseline_expenses timeline.xlsx",
                           sheet = "Sheet1", range = "D1:W32") %>%
   select(-TOTAL) %>%
   rename( "expense" = `...1`) %>%
@@ -51,6 +51,7 @@ expense_dat <- read_excel("other/input/financial/Agency Baseline_expenses_timeli
 expense_dat_cat <- read.csv("other/input/financial/expense_categories_dat.csv") %>%
   remove_empty("cols")
 expense_dat <- left_join(expense_dat,expense_dat_cat)
+
 ```
 
 ```{r echo = F, message = F, warning = F, fig.width = 14, fig.height = 10}
