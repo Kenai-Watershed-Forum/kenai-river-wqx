@@ -15,7 +15,6 @@ book:
     - acronyms.qmd
     - part: "Introduction & Methods"
       chapters:
-
       - intro.qmd
       - study_area.qmd
       - methods.qmd
@@ -48,10 +47,11 @@ book:
       - water_temp.qmd
       - summary.qmd
       - references.qmd
-
   appendices:
     - appendix_a.qmd
     - appendix_b.qmd
+    - finance_history.qmd
+    
 
   repo-url: https://github.com/Kenai-Watershed-Forum/kenai-river-wqx
   search:
