@@ -1,7 +1,8 @@
 ---
-title: Kenai River Baseline Water Quality Monitoring Project Financial History
+title: Project Financial History
 execute:
   echo: false
+  date: today
 ---
 
 ```{r echo = F, message = F}
@@ -25,19 +26,30 @@ library(plotly)
 
 ```
 
-# Introduction
+*Updated `r Sys.Date()`, Benjamin Meyer, Kenai Watershed Forum (ben\@kenaiwatershed.org)*
 
-The Kenai River Baseline Water Quality Monitoring project is supported by both financial and in-kind support from a broad suite of partners. Costs include contractual laboratory expenses, research staff personnel time, equipment, and other smaller expense categories. Partners are invoiced on an annual basis.
+# Summary
 
-**While contribution levels have remained relatively stable since 2005, 56% inflation of the U.S. dollar since the year 2005 has substantially reduced the real value of resources available to the project. As of 2024, in order to continue the same level of service as seen throughout the project's history, the project must either seek additional sources of funding or de-prioritize certain sampling sites or parameters.**
+-   The Kenai River Baseline Water Quality Monitoring project is funded both direct as well as in-kind financial support from community partners.
 
-## Project Expense history
+-   Costs include contractual laboratory expenses, research staff personnel time, equipment, and other smaller expense categories. Partners are invoiced on an annual basis.
 
-Project expense trends from years 2005 - 2022 are detailed in figure @fig-expense-history and source data is available in the link below.
+-   Since 2005, 56% inflation of the U.S. dollar has reduced the value of resources available to the project.
+
+-   **In order to continue Kenai River water quality monitoring efforts, the project must either seek additional sources of funding or de-prioritize certain sampling sites or parameters.**
+
+-   **Read the Partner Request Letter Here [Writing In Progress 10/28/2024]**
+
+## Inflation and Declining Project Income
+
+Since the year 2005, inflation of the US dollar has reduced it's value by 56%[^finance_history-1]. @fig-inflation-history plots this trend from 2005 - 2023.
+
+[^finance_history-1]: <https://www.usinflationcalculator.com/>
 
 <br>
 
-```{r echo = F, message = F}
+```{r echo = F, message = F, warning = F}
+# EXPENSES
 # read in expense history data
 expense_dat <- read_excel("other/input/financial/Agency Baseline_expenses timeline.xlsx",
                           sheet = "Sheet1", range = "D1:W32") %>%
@@ -51,13 +63,7 @@ expense_dat <- read_excel("other/input/financial/Agency Baseline_expenses timeli
 expense_dat_cat <- read.csv("other/input/financial/expense_categories_dat.csv") %>%
   remove_empty("cols")
 expense_dat <- left_join(expense_dat,expense_dat_cat)
-
-```
-
-```{r echo = F, message = F, warning = F, fig.width = 14, fig.height = 10}
-#| label: fig-expense-history
-#| fig-cap: "Kenai River Baseline Water Quality Monitoring Expenses 2005 - 2022"
-
+rm(expense_dat_cat)
 
 # summarize & reformat
 expense_dat_long <- expense_dat %>%
@@ -65,6 +71,185 @@ expense_dat_long <- expense_dat %>%
   group_by(expense_category,year)  %>%
   summarise("total_expenses" = sum(value)) 
 write.csv(expense_dat_long,"other/temp.csv")
+
+```
+
+```{r echo = F, message = F, warning = F}
+# INCOME
+# read in and restructure income data to long format
+income_dat <- read_excel("other/input/financial/Baseline Income History.xlsx", 
+                  sheet = "income_history", range = "D4:W17") %>%
+  rename("org" = "...1") %>%
+  filter(!is.na(org)) %>%
+  pivot_longer(cols = "2005":"2023",names_to = "year") %>%
+  rename("income" = "value")
+```
+
+```{r echo = F, message = F, warning = F}
+# INFLATION
+# read in table of inflation history
+inflation_dat <- read_excel("other/input/financial/usd_annual_inflation.xlsx") %>%
+  select(year,inflation_value) %>%
+  mutate(inflation_multiplier = 1-inflation_value,
+         year = as.character(year)) %>%
+  select(-inflation_value)
+
+# join inflation history to income history
+income_dat_annual <- left_join(income_dat,inflation_dat) %>%
+  # calculate inflation adjusted income values
+  mutate(inflation_adj_income = income*inflation_multiplier) %>%
+  # summarise by year
+  group_by(year) %>%
+  summarise(income = sum(income, na.rm = T),
+            inflation_adj_income = sum(inflation_adj_income, na.rm = T))
+
+# join table of total annual expenses to income and inflation history
+expense_dat_annual <- expense_dat_long %>%
+  group_by(year) %>%
+  summarise(total_expenses = sum(total_expenses))
+
+annual_inf_exp_inc <- left_join(income_dat_annual,expense_dat_annual, by = "year") %>%
+  filter(!is.na(total_expenses))
+
+```
+
+```{r echo = F, message = F, warning = F}
+#| label: fig-inflation-history
+#| fig-cap: "Inflation Adjusted Value of $1.00, Years 2005 - 2023"
+
+# plot
+inflation_dat %>%
+  ggplot(aes(year,inflation_multiplier, group = inflation_multiplier)) +
+  geom_point() +
+  xlab("") +
+  ylab("") +
+  scale_y_continuous(labels = scales::dollar_format()) +
+  ggtitle("Inflation Adjusted Value of $1.00, Years 2005 - 2023")
+
+
+
+```
+
+```{r echo = F}
+# download inflation history
+embed_file("other/input/financial/usd_annual_inflation.xlsx", text = "Download figure source data, Inflation History data of US Dollar 2005 - 2023")
+```
+
+<br>
+
+Adjusted for inflation, project income has seen a steady decline from 2005 - 2022. @fig-inf-adj-inc displays project income history.
+
+```{r echo = F, message = F, warning = F}
+#| label: fig-inf-adj-inc
+#| fig-cap: "Inflation Adjusted Project Income 2005 - 2022"
+
+# plot
+annual_inf_exp_inc %>%
+  pivot_longer(cols = c("income","inflation_adj_income","total_expenses"), names_to = "category") %>%
+  filter(category %in% c("inflation_adj_income")) %>%
+  ggplot(aes(year,value, color = category, group = category)) +
+  geom_line() +
+  xlab("") +
+  ylab("") +
+  theme(legend.position = "none") +
+  scale_y_continuous(labels = scales::dollar_format()) +
+  ggtitle("Project Income, Inflation Adjusted Years 2005 - 2022")
+
+```
+
+## Income Detail
+
+Project income history fluctuates annually as partner contributions vary. @fig-income-a displays annual cash contributions by individual partner organizations.
+
+Note that in 2022, the project received a lump sum contribution from Kenaitze Indian Tribe that had been intended to be dispersed annually over years 2018 - 2022. Similar levels of annual contribution are not anticipated for future years. Additionally, in 2023 the project received a contribution from Salamatof Tribe via it's IGAP[^finance_history-2] program. As of 2024, the IGAP program is no longer active with Salamatof Tribe, thus further cash contributions are not anticipated.
+
+[^finance_history-2]: <https://www.epa.gov/general-assistance-program-gap>
+
+```{r echo = F, message = F, warning = F, fig.width = 12, fig.height = 12}
+#| label: fig-income-a
+#| fig-cap: "Income by partner organization"
+
+# plot year vs amount by org, faceted bar chart
+income_dat %>%
+  ggplot(aes(x = year, y = income, label = income)) +
+  geom_bar(stat = "identity", position = "dodge") +
+  facet_grid(org ~ .) +
+  theme(strip.text.y = element_text(angle = 360)) +
+  scale_y_continuous(labels = scales::dollar_format()) +
+  xlab("") +
+  ylab("") +
+  theme(plot.title = element_text(size = 16, face = "bold"),
+        axis.text.y = element_text(size = 10),
+        strip.text = element_text(size = 12)) +
+  ggtitle("Project  Income History 2005-2023")
+
+ggsave("other/output/financial/2005_2023_income_plot2.jpg", width = 10, height = 8)
+```
+
+With the atypical timing and receipt of funds from Kenaitze and Salamatof, the project saw increased income in 2022 and 2023; see @fig-income-b. However as seen in @fig-income-c, when adjusted for inflation, even these two high-income years are lower than typical total annual income received through year 2014.
+
+```{r echo = F, message = F, warning = F, fig.height=6, fig.width=10}
+#| label: fig-income-b
+#| fig-cap: "Project income by partner organization"
+
+
+# plot year vs income by org, stacked bar chart
+income_dat %>%
+  ggplot(aes(x = year, y = income, label = income, fill = org)) +
+  geom_bar(stat = "identity") +
+  scale_y_continuous(labels = scales::dollar_format()) +
+  scale_fill_brewer(palette = "Paired", name = "Organization") +
+  xlab("") +
+  ylab("") +
+  theme(plot.title = element_text(size = 16, face = "bold"),
+        axis.text.y = element_text(size = 10)) +
+  ggtitle("Project Income History 2005-2023")
+
+ggsave("other/output/financial/2005_2023_income_plot1.jpg", width = 10, height = 8)
+
+```
+
+
+```{r echo = F, message = F,warning = F, fig.height=6, fig.width=10}
+#| label: fig-income-c
+#| fig-cap: "Project income by partner organization, adjusted for inflation relative from 2005 - 2023"
+
+# read in annual inflation percentages, 2005 - 2023
+# read in and join annual inflation multiplier values
+inflation_dat <- read_excel("other/input/financial/usd_annual_inflation.xlsx") %>%
+  select(year,inflation_value) %>%
+  mutate(inflation_multiplier = 1-inflation_value,
+         year = as.character(year)) %>%
+  select(-inflation_value)
+
+# join
+income_dat <- left_join(income_dat,inflation_dat) %>%
+  mutate(inflation_adj_value = income*inflation_multiplier)
+
+# inflation adjusted plot 1
+income_dat %>%
+  ggplot(aes(x = year, y = inflation_adj_value, label = income, fill = org)) +
+  geom_bar(stat = "identity") +
+  scale_y_continuous(labels = scales::dollar_format()) +
+  scale_fill_brewer(palette = "Paired", name = "Organization") +
+  xlab("") +
+  ylab("") +
+  ggtitle("Inflation Adjusted Project Income History 2005-2023") +
+  theme(plot.title = element_text(size = 16, face = "bold"),
+        axis.text.y = element_text(size = 10))
+
+ggsave("other/output/financial/2005_2023_inflation_adjusted_income_plot1.jpg", width = 10, height = 8)
+
+
+```
+
+# Expenses History
+
+Project expense trends from years 2005 - 2022 are detailed in figure @fig-expense-history and source data is available in the link below the figure.
+
+```{r echo = F, message = F, warning = F, fig.width = 14, fig.height = 10}
+#| label: fig-expense-history
+#| fig-cap: "Kenai River Baseline Water Quality Monitoring Expenses 2005 - 2022"
 
 #plot 
   expense_dat_long %>%
@@ -91,89 +276,8 @@ write.csv(expense_dat,"other/output/financial/expense_dat.csv", row.names = F)
 embed_file("other/output/financial/expense_dat.csv", text = "Download Kenai River Baseline Water Quality Monitoring Project expense data 2005 - 2022")
 ```
 
-<br>
-
-## Income history
-
-Project income history fluctuates annually as partner contributions vary. Figure @fig-income-a displays
-
-```{r echo = F, message = F}
-# read in and restructure data to long format
-income_dat <- read_excel("other/input/financial/Baseline Income History.xlsx", 
-                  sheet = "income_history", range = "D4:W17") %>%
-  rename("org" = "...1") %>%
-  filter(!is.na(org)) %>%
-  pivot_longer(cols = "2005":"2023",names_to = "year")
-```
-
-```{r echo = F, message = F, warning = F, fig.width = 14, fig.height = 10}
-#| label: fig-income-a
-#| fig-cap: "Income by partner organization"
-# plot year vs amount by org, faceted bar chart
-income_dat %>%
-  ggplot(aes(x = year, y = value, label = value)) +
-  geom_bar(stat = "identity", position = "dodge") +
-  facet_grid(org ~ .) +
-  theme(strip.text.y = element_text(angle = 360)) +
-  scale_y_continuous(labels = scales::dollar_format()) +
-  xlab("") +
-  ylab("") +
-  ggtitle("Baseline Income History 2005-2023")
-
-ggsave("other/output/financial/2005_2023_income_plot2.jpg", width = 10, height = 8)
-```
-
-```{r echo = F}
+In general, laboratory analysis expenses and staff scientist time are the largest expense categories. In years where little to no staff time was is recorded for the project, staff were funded by similar related projects.
 
 
-
-# plot year vs income by org, stacked bar chart
-income_dat %>%
-  ggplot(aes(x = year, y = value, label = value, fill = org)) +
-  geom_bar(stat = "identity") +
-  scale_y_continuous(labels = scales::dollar_format()) +
-  xlab("") +
-  ylab("") +
-  ggtitle("Baseline Income History 2005-2023")
-
-ggsave("other/output/financial/2005_2023_income_plot1.jpg", width = 10, height = 8)
-
-  
-
-
-```
-
-<br>
-
-Plot and summarise Inflation-Adjusted KWF Baseline Water Quality Financial Income History
-
-```{r}
-# read in annual inflation percentages, 2005 - 2023
-
-# read in and join annual inflation multiplier values
-inflation_dat <- read_excel("other/input/financial/usd_annual_inflation.xlsx") %>%
-  select(year,inflation_value) %>%
-  mutate(inflation_multiplier = 1-inflation_value,
-         year = as.character(year)) %>%
-  select(-inflation_value)
-
-# join
-income_dat <- left_join(income_dat,inflation_dat) %>%
-  mutate(inflation_adj_value = value*inflation_multiplier)
-
-# inflation adjusted plot 1
-income_dat %>%
-  ggplot(aes(x = year, y = inflation_adj_value, label = value, fill = org)) +
-  geom_bar(stat = "identity") +
-  scale_y_continuous(labels = scales::dollar_format()) +
-  scale_fill_brewer(palette = "Paired",name = "Organization") +
-  xlab("") +
-  ylab("") +
-  ggtitle("Inflation Adjusted Baseline Income History 2005-2023") +
-  theme(plot.title = element_text(size = 16, face = "bold"),
-        axis.text.y = element_text(size = 10))
-
-ggsave("other/output/financial/2005_2023_inflation_adjusted_income_plot1.jpg", width = 10, height = 8)
-
-
-```
+## Source Data
+All source data not linked at this page is available in the project GitHub repository at <https://github.com/Kenai-Watershed-Forum/kenai-river-wqx>
