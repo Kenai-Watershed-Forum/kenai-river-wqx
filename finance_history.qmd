@@ -5,7 +5,11 @@ execute:
   date: today
 ---
 
-```{r echo = F, message = F}
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(warning = FALSE, message = FALSE) 
+```
+
+```{r packages, echo = F, message = F}
 
 # clear environment
 rm(list=ls())
@@ -30,7 +34,7 @@ library(plotly)
 
 # Summary
 
--   The Kenai River Baseline Water Quality Monitoring project is funded both direct as well as in-kind financial support from community partners.
+-   The [Kenai River Baseline Water Quality Monitoring project](https://www.kenaiwatershed.org/kenai-river-baseline-water-quality-monitoring/)[^finance_history-1] is funded both direct as well as in-kind financial support from project partners.
 
 -   Costs include contractual laboratory expenses, research staff personnel time, equipment, and other smaller expense categories. Partners are invoiced on an annual basis.
 
@@ -38,13 +42,15 @@ library(plotly)
 
 -   **In order to continue Kenai River water quality monitoring efforts, the project must either seek additional sources of funding or de-prioritize certain sampling sites or parameters.**
 
--   **Read the Partner Request Letter Here [Writing In Progress 10/28/2024]**
+-   *Read the Partner Request Letter Here \[Writing In Progress 10/28/2024\]*
 
-## Inflation and Declining Project Income
+[^finance_history-1]: <https://www.kenaiwatershed.org/kenai-river-baseline-water-quality-monitoring/>
 
-Since the year 2005, inflation of the US dollar has reduced it's value by 56%[^finance_history-1]. @fig-inflation-history plots this trend from 2005 - 2023.
+## Inflation leads to declining project income
 
-[^finance_history-1]: <https://www.usinflationcalculator.com/>
+Since the year 2005, inflation of the US dollar has reduced it's value by 56%[^finance_history-2]. @fig-inflation-history plots this trend from 2005 - 2023.
+
+[^finance_history-2]: <https://www.usinflationcalculator.com/>
 
 <br>
 
@@ -137,7 +143,7 @@ embed_file("other/input/financial/usd_annual_inflation.xlsx", text = "Download f
 
 <br>
 
-Adjusted for inflation, project income has seen a steady decline from 2005 - 2022. @fig-inf-adj-inc displays project income history.
+Adjusted for inflation, project income has seen a steady decline from 2005 - 2022. @fig-inf-adj-inc displays inflation adjusted project income history.
 
 ```{r echo = F, message = F, warning = F}
 #| label: fig-inf-adj-inc
@@ -146,24 +152,24 @@ Adjusted for inflation, project income has seen a steady decline from 2005 - 202
 # plot
 annual_inf_exp_inc %>%
   pivot_longer(cols = c("income","inflation_adj_income","total_expenses"), names_to = "category") %>%
-  filter(category %in% c("inflation_adj_income")) %>%
+  filter(category %in% c("inflation_adj_income","total_expenses")) %>%
   ggplot(aes(year,value, color = category, group = category)) +
   geom_line() +
   xlab("") +
   ylab("") +
-  theme(legend.position = "none") +
+#  theme(legend.position = "none") +
   scale_y_continuous(labels = scales::dollar_format()) +
-  ggtitle("Project Income, Inflation Adjusted Years 2005 - 2022")
+  ggtitle("Project Income, Inflation Adjusted, Years 2005 - 2022")
 
 ```
 
 ## Income Detail
 
-Project income history fluctuates annually as partner contributions vary. @fig-income-a displays annual cash contributions by individual partner organizations.
+Project income history fluctuates annually as partner contributions vary. @fig-income-a displays annual cash contributions by individual partner organizations. Most partner organizations have continued to contribute a constant annual amount once the original agreement was established.
 
-Note that in 2022, the project received a lump sum contribution from Kenaitze Indian Tribe that had been intended to be dispersed annually over years 2018 - 2022. Similar levels of annual contribution are not anticipated for future years. Additionally, in 2023 the project received a contribution from Salamatof Tribe via it's IGAP[^finance_history-2] program. As of 2024, the IGAP program is no longer active with Salamatof Tribe, thus further cash contributions are not anticipated.
+Note that in 2022, the project received a lump sum contribution from Kenaitze Indian Tribe that had been intended to be dispersed annually over years 2018 - 2022. Similar levels of annual contribution are not anticipated for future years. Additionally, in 2023 the project received a contribution from Salamatof Tribe via it's IGAP[^finance_history-3] program. As of 2024, the IGAP program is no longer active with Salamatof Tribe, thus further cash contributions are not anticipated.
 
-[^finance_history-2]: <https://www.epa.gov/general-assistance-program-gap>
+[^finance_history-3]: <https://www.epa.gov/general-assistance-program-gap>
 
 ```{r echo = F, message = F, warning = F, fig.width = 12, fig.height = 12}
 #| label: fig-income-a
@@ -186,7 +192,7 @@ income_dat %>%
 ggsave("other/output/financial/2005_2023_income_plot2.jpg", width = 10, height = 8)
 ```
 
-With the atypical timing and receipt of funds from Kenaitze and Salamatof, the project saw increased income in 2022 and 2023; see @fig-income-b. However as seen in @fig-income-c, when adjusted for inflation, even these two high-income years are lower than typical total annual income received through year 2014.
+With the atypical timing and receipt of funds from Kenaitze and Salamatof, the project saw increased income in 2022 and 2023; see @fig-income-b. However as seen in @fig-income-c, when adjusted for inflation, even these two high-income years are lower than typical total annual project income received through year 2014.
 
 ```{r echo = F, message = F, warning = F, fig.height=6, fig.width=10}
 #| label: fig-income-b
@@ -209,8 +215,7 @@ ggsave("other/output/financial/2005_2023_income_plot1.jpg", width = 10, height =
 
 ```
 
-
-```{r echo = F, message = F,warning = F, fig.height=6, fig.width=10}
+```{r echo = F, message = F,warning = F, fig.height=6, fig.width=16}
 #| label: fig-income-c
 #| fig-cap: "Project income by partner organization, adjusted for inflation relative from 2005 - 2023"
 
@@ -240,14 +245,13 @@ income_dat %>%
 
 ggsave("other/output/financial/2005_2023_inflation_adjusted_income_plot1.jpg", width = 10, height = 8)
 
-
 ```
 
 # Expenses History
 
 Project expense trends from years 2005 - 2022 are detailed in figure @fig-expense-history and source data is available in the link below the figure.
 
-```{r echo = F, message = F, warning = F, fig.width = 14, fig.height = 10}
+```{r echo = F, message = F, warning = F, fig.width = 16, fig.height = 10}
 #| label: fig-expense-history
 #| fig-cap: "Kenai River Baseline Water Quality Monitoring Expenses 2005 - 2022"
 
@@ -276,8 +280,20 @@ write.csv(expense_dat,"other/output/financial/expense_dat.csv", row.names = F)
 embed_file("other/output/financial/expense_dat.csv", text = "Download Kenai River Baseline Water Quality Monitoring Project expense data 2005 - 2022")
 ```
 
+<br>
+
 In general, laboratory analysis expenses and staff scientist time are the largest expense categories. In years where little to no staff time was is recorded for the project, staff were funded by similar related projects.
 
+## Recommendations
+
+-   Project manager will continue to seek new sources of income and efficiency
+
+-   Project partners may be asked to annually adjust contributions based on inflation
 
 ## Source Data
-All source data not linked at this page is available in the project GitHub repository at <https://github.com/Kenai-Watershed-Forum/kenai-river-wqx>
+
+All source data not linked at this page is available in the project GitHub repository at <https://github.com/Kenai-Watershed-Forum/kenai-river-wqx> in the following directories:
+
+-   other/input/financial
+
+-   other/output/financial
