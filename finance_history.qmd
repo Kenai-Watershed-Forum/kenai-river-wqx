@@ -34,15 +34,23 @@ library(plotly)
 
 # Summary
 
--   The [Kenai River Baseline Water Quality Monitoring project](https://www.kenaiwatershed.org/kenai-river-baseline-water-quality-monitoring/)[^finance_history-1] is funded both direct as well as in-kind financial support from project partners.
+-   The [Kenai River Baseline Water Quality Monitoring project](https://www.kenaiwatershed.org/kenai-river-baseline-water-quality-monitoring/) is funded both direct as well as in-kind financial support from project partners[^finance_history-1].
 
--   Costs include contractual laboratory expenses, research staff personnel time, equipment, and other smaller expense categories. Partners are invoiced on an annual basis.
+-   Project costs include contractual laboratory expenses, research staff personnel time, equipment, and other smaller expense categories. Partners are invoiced on an annual basis.
 
--   Since 2005, 56% inflation of the U.S. dollar has reduced the value of resources available to the project.
+-   While project support has remained mostly steady, 56% inflation of the U.S. dollar since 2005 has reduced the value of resources available to the project.
 
--   **In order to continue Kenai River water quality monitoring efforts, the project must either seek additional sources of funding or de-prioritize certain sampling sites or parameters.**
+-   **In order to continue Kenai River water quality monitoring efforts, the project must sustain necessary funding levels.**
 
--   *Read the Partner Request Letter Here \[Writing In Progress 10/28/2024\]*
+-   *Read the Partner Request Letter Here
+
+```{r echo = F}
+# download partner request letter
+embed_file("other/documents/financial/2024 Kenai River Water Quality Monitoring MOU Signature Request Letter.docx", text = "Download Kenai River Water Quality Monitoring Project Partner Request Letter (Draft)")
+```
+
+
+*[Draft; writing In Progress 10/28/2024. This will summarise information about both the incoming Memorandum of Understanding renewal and financial needs\]*
 
 [^finance_history-1]: <https://www.kenaiwatershed.org/kenai-river-baseline-water-quality-monitoring/>
 
@@ -145,9 +153,9 @@ embed_file("other/input/financial/usd_annual_inflation.xlsx", text = "Download f
 
 Adjusted for inflation, project income has seen a steady decline from 2005 - 2022. @fig-inf-adj-inc displays inflation adjusted project income history.
 
-```{r echo = F, message = F, warning = F}
+```{r echo = F, message = F, warning = F, fig.width=10, fig.height=8}
 #| label: fig-inf-adj-inc
-#| fig-cap: "Inflation Adjusted Project Income 2005 - 2022"
+#| fig-cap: "Project Income (Inflation Adjusted) and Expenses, 2005 - 2022"
 
 # plot
 annual_inf_exp_inc %>%
@@ -157,9 +165,13 @@ annual_inf_exp_inc %>%
   geom_line() +
   xlab("") +
   ylab("") +
-#  theme(legend.position = "none") +
+  scale_color_discrete(name = "Legend",
+                       breaks = c("inflation_adj_income","total_expenses","income"),
+                       labels = c("Income, Inflation Adjusted","Total Expenses","Income")) +
+  theme(legend.text = element_text(size = 12),
+        legend.title = element_text(size = 14)) +
   scale_y_continuous(labels = scales::dollar_format()) +
-  ggtitle("Project Income, Inflation Adjusted, Years 2005 - 2022")
+  ggtitle("Project Income (Inflation Adjusted) and Expenses, Years 2005 - 2022")
 
 ```
 
@@ -194,10 +206,9 @@ ggsave("other/output/financial/2005_2023_income_plot2.jpg", width = 10, height =
 
 With the atypical timing and receipt of funds from Kenaitze and Salamatof, the project saw increased income in 2022 and 2023; see @fig-income-b. However as seen in @fig-income-c, when adjusted for inflation, even these two high-income years are lower than typical total annual project income received through year 2014.
 
-```{r echo = F, message = F, warning = F, fig.height=6, fig.width=10}
+```{r echo = F, message = F, warning = F, fig.height=7, fig.width=10}
 #| label: fig-income-b
 #| fig-cap: "Project income by partner organization"
-
 
 # plot year vs income by org, stacked bar chart
 income_dat %>%
@@ -215,7 +226,7 @@ ggsave("other/output/financial/2005_2023_income_plot1.jpg", width = 10, height =
 
 ```
 
-```{r echo = F, message = F,warning = F, fig.height=6, fig.width=16}
+```{r echo = F, message = F,warning = F, fig.height=7, fig.width=10}
 #| label: fig-income-c
 #| fig-cap: "Project income by partner organization, adjusted for inflation relative from 2005 - 2023"
 
@@ -247,7 +258,9 @@ ggsave("other/output/financial/2005_2023_inflation_adjusted_income_plot1.jpg", w
 
 ```
 
-# Expenses History
+# Expenses
+
+## Expenses History
 
 Project expense trends from years 2005 - 2022 are detailed in figure @fig-expense-history and source data is available in the link below the figure.
 
@@ -284,7 +297,17 @@ embed_file("other/output/financial/expense_dat.csv", text = "Download Kenai Rive
 
 In general, laboratory analysis expenses and staff scientist time are the largest expense categories. In years where little to no staff time was is recorded for the project, staff were funded by similar related projects.
 
-## Recommendations
+## Projected 2025 Expenses
+
+-   Projected 2025 income and expenses are detailed in this Google Sheet: <https://docs.google.com/spreadsheets/d/1VbYnY4f8eyhQwbgrpnDrOTIJEsu7pkg_uMbVN5kecKA/edit?gid=1388741346#gid=1388741346>
+
+-   As of November 2024, a projected income gap of \$25,045.84 exists
+
+# Recommendations
+
+(This section in progress)
+
+-   Ensure that project income matches project needs
 
 -   Project manager will continue to seek new sources of income and efficiency
 
