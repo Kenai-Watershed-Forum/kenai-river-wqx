@@ -301,7 +301,7 @@ In general, laboratory analysis expenses and staff scientist time are the larges
 
 -   Projected 2025 income and expenses are detailed in this Google Sheet: <https://docs.google.com/spreadsheets/d/1VbYnY4f8eyhQwbgrpnDrOTIJEsu7pkg_uMbVN5kecKA/edit?gid=1388741346#gid=1388741346>
 
--   As of November 2024, a projected income gap of \$25,045.84 exists
+-   As of November 2024, a projected income gap of \$20,045.84 exists
 
 # Recommendations
 
