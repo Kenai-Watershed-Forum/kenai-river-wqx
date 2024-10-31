@@ -1,1 +1,7 @@
 # Data QA/QC
+
+See the following:
+
+-   Appendix A of this report
+
+-   <https://github.com/Kenai-Watershed-Forum/kenai-river-wqx-qaqc>
