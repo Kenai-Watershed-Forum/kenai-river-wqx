@@ -1,5 +1,21 @@
 # Regulatory Limits
 
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(warning = FALSE, message = FALSE) 
+```
+
+```{r packages, echo = F, warning=FALSE, message=FALSE}
+
+# clear environment
+rm(list=ls())
+
+# load packages
+library(tidyverse)
+library(janitor)
+library(readxl)
+library(xfun)
+```
+
 We calculated regulatory limits based on freshwater quality standards listed from state and federal regulatory agencies. Some regulatory threshold values are static and do not depend on additional environmental parameters, while some threshold values depend on local conditions like hardness, temperature, or pH.
 
 ## Metals
@@ -8,13 +24,7 @@ We calculated regulatory limits based on freshwater quality standards listed fro
 
  The metals parameters in the downloadable table below have static thresholds assigned.
 
-```{r echo = F, warning=FALSE, message=FALSE}
-
-library(tidyverse)
-library(janitor)
-library(readxl)
-library(xfun)
- 
+```{r echo = F}
 # read in reg threshold values for metals with static values
 static_metals_reg_vals <- read_xlsx("other/input/regulatory_limits/master_reg_limits.xlsx", sheet = "static_regulatory_values") %>%
   filter(!is.na(agency),
@@ -32,18 +42,18 @@ dir <- "other/input/regulatory_limits/formatted_reg_vals/static_metals_reg_vals.
 # export csv
 write.csv(static_metals_reg_vals, dir, row.names = F)
 
-# make viewable
+# make table viewable
 embed_file(dir, text = "Download Regulatory Limits for Metals with Static Regulatory Threshold Values")
-
 ```
-
-Static regulatory values are represented as solid horizontal lines in the parameter-specific chapters that follow.
 
 <br>
 
+Static regulatory values are represented as solid horizontal lines in the parameter-specific chapters that follow.
+
+
 ### Metals with Hardness-Dependent Regulatory Values
 
-Some regulatory values for metals are not simple static values, and are instead hardness-dependent. Hardness varies by site, by season, and with hydrologic conditions. We calculated hardness according to the following formula:
+Some regulatory values for metals are not simple static values, and are instead hardness-dependent (i.e. calcium and magnesium concentrations). Hardness varies by site, by season, and with hydrologic conditions. We calculated hardness according to the following formula:
 
 ::: {.callout-note appearance="simple"}
 Hardness = 2.497(Total Calcium in mg/L) + 4.119(Total Magnesium in mg/L)
@@ -63,20 +73,20 @@ hard <- dat %>%
   select(activity_identifier, activity_start_date, characteristic_name, result_measure_value, result_measure_measure_unit_code) %>%
   filter(characteristic_name %in% (c("Magnesium","Calcium"))) %>%
   group_by(activity_identifier, activity_start_date, characteristic_name, result_measure_measure_unit_code) %>%
-  # get mean of duplicate samples
+  # get mean of all duplicate samples
   summarise(avg_value = mean(result_measure_value)) %>%
   pivot_wider(names_from = "characteristic_name", values_from = "avg_value") %>%
   mutate(hardness = 2.497*(Calcium) + 4.119*(Magnesium)) %>%
   select(-Calcium, -Magnesium)
 
 # join hardness back to overall dataset
-dat <- left_join(dat,hard) 
+dat <- full_join(dat,hard,by = "activity_identifier") 
 
-# export hardness results
+# export hardness joined to overall data results
 dir <- "other/output/hardness/dat_hardness.csv"
 write.csv(dat, dir, row.names = F)
 
-# make data downloadable
+# make hardness data downloadable
 xfun::embed_file(dir, name = "Kenai River Baseline Hardness Data")
 
 ```
@@ -87,7 +97,7 @@ xfun::embed_file(dir, name = "Kenai River Baseline Hardness Data")
 
 We calculated hardness-dependent regulatory criteria based on formulas published on the Alaska Department of Environmental Conservation's Water Quality Standards Section website (<https://dec.alaska.gov/water/water-quality/standards/>). The "Alaska Water Quality Criteria Manual for Toxic and other Deleterious Organic and Inorganic Substances" (2022) document, along with the "Inorganic Toxics Criteria Worksheet" provide parameter-specific formulas for many substances.
 
-Hardness-dependent criteria may be calculated from the following for freshwater metals:
+Hardness-dependent criteria is calculated from the following formula for metals in freshwater:
 
 ::: {.callout-note appearance="simple"}
 Acute (dissolved) = exp{mA\[ln(hardness)\]+ bA} (CF) Chronic (dissolved) = exp{mC \[ln(hardness)\] + bC} (CF)
@@ -95,7 +105,9 @@ Acute (dissolved) = exp{mA\[ln(hardness)\]+ bA} (CF) Chronic (dissolved) = exp{m
 
 where mA, bA, mC, and bC are numerical parameters specific to each substance, and CF is the conversion factor for acute vs. chronic criteria.
 
-These values are graphically displayed in the following chapters not juxtaposed against static horizontal lines, but instead they are highlighted by shape or color when the calculated threshold is exceeded.
+These values are graphically displayed in the following chapters not juxtaposed against static horizontal lines, but instead they are highlighted by shape or color when the calculated threshold is exceeded; specific that sampling event's hardness conditions.
+
+**(to do: show graphic example of values above threshold here)**
 
 ```{r echo = F}
 
@@ -108,19 +120,25 @@ diss_metals_hard_param <- read_excel("other/input/regulatory_limits/master_reg_l
   select(-parameter_agency_name) %>%
   filter(!is.na(characteristic_name))
 
-
-# WORKING HERE!!!!
-# 9/30/24 the join below causes hardness values to convert to NA
-# spent an hour with chatcpt trying to diagnose why hardness values are converted to NA in the join. this step is essential to we can calculate hardness-dependent values. next: try performing join(s) one parameter at a time to see if the issue is parameter specific?!?!?!?!?!??
-
-
-
-
+# reduce overall dataset to just metals with hardness-dependent parameters
+dat_metals_hard_dept <- dat %>%
+  filter(characteristic_name %in% c("Arsenic","Cadmium","Chromium","Copper","Lead","Nickel","Silver","Zinc"))
 
 # join calculation parameters to overall dataset
-hardness_dependent_metals_thresholds <- inner_join(dat, diss_metals_hard_param, by = "characteristic_name") %>%
+hardness_dependent_metals_thresholds <- full_join(dat_metals_hard_dept, diss_metals_hard_param, by = "characteristic_name") 
+
+# join eliminates hardness values
+# troubleshooting here
+write.csv(dat_metals_hard_dept,"other/temp_dat.csv", row.names = F)
+write.csv(diss_metals_hard_param,"other/temp_diss_hard.csv", row.names = F)
+  
+  
+  
   
   # Calculate hardness dependent criteria values
+  
+  
+# no threshold values calculated
   
   ## ACUTE ##
   mutate(fw_acute_std = case_when(

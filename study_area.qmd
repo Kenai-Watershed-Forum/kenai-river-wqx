@@ -10,7 +10,7 @@ Surface runoff, groundwater composition, natural minerals, aquatic plants and an
 
 ### Online Map of Sample Sites
 
-Access ArcGIS Online map at <https://arcg.is/0LXGSf>
+Access ArcGIS Online project map at <https://arcg.is/0LXGSf>
 
 ![Location in Alaska of Kenai River Watershed](other/documents/images/kenai_watershed_map.jpg){#fig-map1}
 

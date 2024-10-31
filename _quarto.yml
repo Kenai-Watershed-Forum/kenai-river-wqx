@@ -5,7 +5,7 @@ project:
 book:
   title: "Water Quality Assessment of the Kenai River Watershed from 2000 to 2021 [DRAFT]"
   author: "Benjamin Meyer, Kenai Watershed Forum"
-  date: "1/20/2023"
+  date: "`r Sys.Date()`"
   page-navigation: true
   chapters:
     - index.qmd

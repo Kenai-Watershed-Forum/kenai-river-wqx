@@ -42,17 +42,16 @@ library(plotly)
 
 -   **In order to continue Kenai River water quality monitoring efforts, the project must sustain necessary funding levels.**
 
--   *Read the Partner Request Letter Here
+-   \*Read the Partner Request Letter Here
+
+[^finance_history-1]: <https://www.kenaiwatershed.org/kenai-river-baseline-water-quality-monitoring/>
 
 ```{r echo = F}
 # download partner request letter
 embed_file("other/documents/financial/2024 Kenai River Water Quality Monitoring MOU Signature Request Letter.docx", text = "Download Kenai River Water Quality Monitoring Project Partner Request Letter (Draft)")
 ```
 
-
-*[Draft; writing In Progress 10/28/2024. This will summarise information about both the incoming Memorandum of Understanding renewal and financial needs\]*
-
-[^finance_history-1]: <https://www.kenaiwatershed.org/kenai-river-baseline-water-quality-monitoring/>
+*\[Draft; writing In Progress 10/28/2024. This will summarise information about both the incoming Memorandum of Understanding renewal and financial needs\]*
 
 ## Inflation leads to declining project income
 
