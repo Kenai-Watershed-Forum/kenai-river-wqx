@@ -1,7 +1,7 @@
 # Regulatory Limits
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(warning = FALSE, message = FALSE) 
+knitr::opts_chunk$set(warning = FALSE, message = FALSE, eval = F) 
 ```
 
 ```{r packages, echo = F, warning=FALSE, message=FALSE}
@@ -70,9 +70,9 @@ dat <- read.csv("other/output/analysis_format/baseline_analysis_format.csv")
 
 # calculate hardness column
 hard <- dat %>%
-  select(activity_identifier, activity_start_date, characteristic_name, result_measure_value, result_measure_measure_unit_code) %>%
+  select(activity_identifier, activity_start_date, characteristic_name, result_measure_value, result_measure_measure_unit_code,monitoring_location_name) %>%
   filter(characteristic_name %in% (c("Magnesium","Calcium"))) %>%
-  group_by(activity_identifier, activity_start_date, characteristic_name, result_measure_measure_unit_code) %>%
+  group_by(activity_identifier, activity_start_date, characteristic_name, result_measure_measure_unit_code,monitoring_location_name) %>%
   # get mean of all duplicate samples
   summarise(avg_value = mean(result_measure_value)) %>%
   pivot_wider(names_from = "characteristic_name", values_from = "avg_value") %>%
@@ -80,7 +80,13 @@ hard <- dat %>%
   select(-Calcium, -Magnesium)
 
 # join hardness back to overall dataset
-dat <- full_join(dat,hard,by = "activity_identifier") 
+datz <- inner_join(dat,hard,by = c("activity_identifier","activity_start_date","result_measure_measure_unit_code","monitoring_location_name")) 
+
+
+
+
+## WORKING HERE. current output here matches hardness for only SOME parameters rather than all. Diagnosing here 10/31/2024
+
 
 # export hardness joined to overall data results
 dir <- "other/output/hardness/dat_hardness.csv"
@@ -125,20 +131,9 @@ dat_metals_hard_dept <- dat %>%
   filter(characteristic_name %in% c("Arsenic","Cadmium","Chromium","Copper","Lead","Nickel","Silver","Zinc"))
 
 # join calculation parameters to overall dataset
-hardness_dependent_metals_thresholds <- full_join(dat_metals_hard_dept, diss_metals_hard_param, by = "characteristic_name") 
+hardness_dependent_metals_thresholds <- full_join(dat_metals_hard_dept, diss_metals_hard_param, by = "characteristic_name") %>%
 
-# join eliminates hardness values
-# troubleshooting here
-write.csv(dat_metals_hard_dept,"other/temp_dat.csv", row.names = F)
-write.csv(diss_metals_hard_param,"other/temp_diss_hard.csv", row.names = F)
-  
-  
-  
-  
   # Calculate hardness dependent criteria values
-  
-  
-# no threshold values calculated
   
   ## ACUTE ##
   mutate(fw_acute_std = case_when(
@@ -160,7 +155,9 @@ write.csv(diss_metals_hard_param,"other/temp_diss_hard.csv", row.names = F)
     .default = exp(m_c*log(hardness) + b_c))) %>%
   
     # retain and rename needed columns
-  select(characteristic_name, activity_start_date, result_sample_fraction_text, result_measure_value, result_measure_measure_unit_code, trib_mainstem, tributary_name, site_name, season, fw_acute_std, fw_chronic_std) %>%
+  select(characteristic_name, activity_start_date,result_sample_fraction_text,result_measure_value,result_measure_measure_unit_code)
+
+#trib_mainstem, tributary_name, site_name, season, fw_acute_std, fw_chronic_std) %>%
   
   # calculate when exceedances occur
   ## acute
