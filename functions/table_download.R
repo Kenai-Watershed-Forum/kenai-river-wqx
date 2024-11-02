@@ -1,3 +1,6 @@
+# point to source of parameter data for download tables
+dat <- read.csv("other/output/analysis_format/baseline_analysis_format.csv")
+
 # Define table download function
 download_tbl <- function(param){
 
