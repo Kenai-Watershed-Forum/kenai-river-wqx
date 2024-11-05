@@ -1,0 +1,91 @@
+"","expense_category","year","total_expenses"
+"1","Indirect","2005",0
+"2","Indirect","2006",0
+"3","Indirect","2007",0
+"4","Indirect","2008",0
+"5","Indirect","2009",0
+"6","Indirect","2010",124.33
+"7","Indirect","2011",69.8
+"8","Indirect","2012",0
+"9","Indirect","2013",0
+"10","Indirect","2014",1640.99
+"11","Indirect","2015",1816.24
+"12","Indirect","2016",2515.79
+"13","Indirect","2017",4138.62
+"14","Indirect","2018",4877.78
+"15","Indirect","2019",4345.97
+"16","Indirect","2020",1845.95
+"17","Indirect","2021",3273.85
+"18","Indirect","2022",6180.72
+"19","Laboratory Analyses","2005",13034.6
+"20","Laboratory Analyses","2006",15579.99
+"21","Laboratory Analyses","2007",16816.61
+"22","Laboratory Analyses","2008",15513.18
+"23","Laboratory Analyses","2009",8387.86
+"24","Laboratory Analyses","2010",11124
+"25","Laboratory Analyses","2011",8726.5
+"26","Laboratory Analyses","2012",8534.5
+"27","Laboratory Analyses","2013",11853.1
+"28","Laboratory Analyses","2014",9972.6
+"29","Laboratory Analyses","2015",9282.2
+"30","Laboratory Analyses","2016",0
+"31","Laboratory Analyses","2017",8871.8
+"32","Laboratory Analyses","2018",11296.3
+"33","Laboratory Analyses","2019",10120.35
+"34","Laboratory Analyses","2020",3564.48
+"35","Laboratory Analyses","2021",8795
+"36","Laboratory Analyses","2022",13135
+"37","Other","2005",11.34
+"38","Other","2006",37.86
+"39","Other","2007",149.49
+"40","Other","2008",603.08
+"41","Other","2009",183.33
+"42","Other","2010",1492.06
+"43","Other","2011",1030.06
+"44","Other","2012",178.4
+"45","Other","2013",15.92
+"46","Other","2014",66.19
+"47","Other","2015",114.37
+"48","Other","2016",119.69
+"49","Other","2017",447.15
+"50","Other","2018",328.61
+"51","Other","2019",521.81
+"52","Other","2020",116.79
+"53","Other","2021",179.34
+"54","Other","2022",300
+"55","Staff","2005",0
+"56","Staff","2006",728.67
+"57","Staff","2007",4284
+"58","Staff","2008",4830.22
+"59","Staff","2009",2835.51
+"60","Staff","2010",691.15
+"61","Staff","2011",0
+"62","Staff","2012",1065.28
+"63","Staff","2013",1664.91
+"64","Staff","2014",2876.97
+"65","Staff","2015",7098.14
+"66","Staff","2016",4239.72
+"67","Staff","2017",8896.07
+"68","Staff","2018",6555.33
+"69","Staff","2019",7482.18
+"70","Staff","2020",4249.31
+"71","Staff","2021",818.89
+"72","Staff","2022",4016.14
+"73","Supplies and Equipment","2005",32.08
+"74","Supplies and Equipment","2006",141.35
+"75","Supplies and Equipment","2007",296.96
+"76","Supplies and Equipment","2008",562.28
+"77","Supplies and Equipment","2009",406.07
+"78","Supplies and Equipment","2010",522.31
+"79","Supplies and Equipment","2011",352.67
+"80","Supplies and Equipment","2012",837.01
+"81","Supplies and Equipment","2013",495.83
+"82","Supplies and Equipment","2014",335.87
+"83","Supplies and Equipment","2015",407.33
+"84","Supplies and Equipment","2016",484.35
+"85","Supplies and Equipment","2017",648.36
+"86","Supplies and Equipment","2018",522.98
+"87","Supplies and Equipment","2019",608.44
+"88","Supplies and Equipment","2020",180
+"89","Supplies and Equipment","2021",1141.3
+"90","Supplies and Equipment","2022",2493.49

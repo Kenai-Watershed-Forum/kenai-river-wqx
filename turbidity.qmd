@@ -1,4 +1,4 @@
-# Turbidity 
+# Turbidity
 
 ---
 execute:
@@ -16,7 +16,6 @@ Turbidity measures the degree to which suspended and dissolved materials cause l
 The highest level of turbidity occurred at Mile 6.5 in spring 2006 and was detected at 3200 NTU, and the lowest level in the mainstem was 1 NTU at Mile 70 in spring 2009 (Table 30). The highest medians and degree of variance for turbidity were in the estuary for both the spring and the summer, and the lowest median occurred at Mile 50. In the summer, from Mile 43 to Mile 1.5, the median level of turbidity generally increased. The spring medians in the estuary and Upper River were higher than the summer medians, but the rest of the mainstem had higher medians in the summer (Figure X).
 
 In the tributaries, the highest level of turbidity was 336 NTU at Beaver Creek in spring 2010, and the lowest level was at Russian River with the level of 0.02 NTU from summer 2006 (Table X). During the summer, the Killey River had the highest median at 41 NTU, while the other tributaries all had medians less than 20 NTU. In the spring, Beaver Creek had the highest median, followed by No Name Creek and then Funny River. Russian River had the lowest turbidity median in both the summer and the spring. Killey River exhibited the largest seasonal difference in medians by increasing around 35 NTU from the spring to the summer. In contrast, Beaver Creek decreased approximately 13.3 NTU during the summer. The tributaries did not display a clear seasonal trend for increased or decreased turbidity (Figure X).
-
 
 ```{r echo = F, warning=FALSE, message=FALSE,fig.height=10}
 
