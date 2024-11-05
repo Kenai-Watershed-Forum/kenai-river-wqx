@@ -51,14 +51,32 @@ embed_file(dir, text = "Download Regulatory Limits for Metals with Static Regula
 Static regulatory values are represented as solid horizontal lines in the parameter-specific chapters that follow.
 
 ```{r}
-# join static regulatory values to parameter results, and identify where exceedences occur
+# read in static reg values in wide format
+static_metals_reg_vals <- read_xlsx("other/input/regulatory_limits/master_reg_limits.xlsx", sheet = "static_regulatory_values") %>%
+  filter(!is.na(agency),
+         standard_type %in% c("drinking_water","irrigation_water","stock_water")) %>%
+  remove_empty() %>%
+  select(parameter_baseline_name,standard_type,reg_value,reg_unit) %>%
+  pivot_wider(names_from = standard_type, values_from = reg_value) %>%
+  rename(characteristic_name = parameter_baseline_name) 
+
+# source formatted data
+dat <- read.csv("other/output/analysis_format/baseline_analysis_format.csv")
+  
+
+# join static regulatory values to parameter results, and identify when/where exceedences occur
+static_metals_thresholds <- left_join(dat,static_metals_reg_vals) %>%
+  mutate(drinking_water_exceed = case_when(
+    drinking_water >= result_measure_value ~ "Y")) |>
+  mutate(stock_water_exceed = case_when(
+    stock_water >= result_measure_value ~ "Y")) |>
+  mutate(irrigation_water_exceed = case_when(
+    irrigation_water >= result_measure_value ~ "Y")) 
 
 
 ```
 
-
-
-Download sheet of all static threshold calculations for metals here
+Static-value metals thresholds: download sheet of all static threshold values and their exceedences here
 
 ### Metals with Hardness-Dependent Regulatory Values
 
@@ -104,6 +122,7 @@ xfun::embed_file(dir, name = "Kenai River Baseline Hardness Data")
 ```
 
 The metals parameters in the downloadable table below have *hardness-dependent* thresholds assigned.
+
 ```{r}
 
 # hardness-dependent criteria
@@ -122,8 +141,6 @@ write.csv(diss_metals_hard_param,dir, row.names = F)
 embed_file(dir, text = "Download List of Metals with Hardness-Dependent Regulatory Threshold Values")
 
 ```
-
-
 
 <br>
 
@@ -213,12 +230,11 @@ embed_file(dir, text = "Hardness Dependent Regulatory Thresholds for Metals - Ke
   
 ```
 
-Download sheet of all calculated threshold values for metals here
+Hardness-dependent metals thresholds: download sheet of all calculated threshold values and their exceedences here
 
 ```{r}
 # general approach: export sheets of static and hardness-dependent results; use this to intake for all figures
 ```
-
 
 <br>
 
@@ -284,6 +300,8 @@ For each sampling event with available data, we calculated the sum of the parame
 ```{r echo = F}
 
 # pg 22 https://www.epa.gov/system/files/documents/2023-05/akwqs-chapter70-2023.pdf
+
+
 ```
 
 <br>
@@ -292,7 +310,36 @@ For each sampling event with available data, we calculated the sum of the parame
 
 ```{r echo = F}
 
-# pH, conductivity, temp, turb, DO
+# pH
+# conductivity: no fixed standard
+# temp: replace with discussion/reference to AKTEMP and modern literature
+# turbidity: no fixed standard
+# DO: not analysed in 2016 report
+
+
+
+# following the template flow below , read in parameter thresholds FROM master sheet and format them to match existing column names (characteristic_name,	reg_unit,	Standard,	value)
+# once there, join thresholds std tabel toble to reg_vals table in static plot fxn
+# re-render to confirm working order
+
+
+# read in pH threshold values
+ph_reg_vals <- read_excel("other/input/regulatory_limits/master_reg_limits.xlsx", sheet = "static_regulatory_values") %>%
+  remove_empty() %>%
+  select(-parameter_agency_name) %>%
+  filter(parameter_baseline_name == "pH") %>%
+  select(-agency,-source,-special_note,-data_entry) %>%
+  rename("characteristic_name" = "parameter_baseline_name",
+         "value" = "reg_value",
+         "Standard" = "standard_type")
+
+# make downloadable list metals which have calculated parameters
+dir <- "other/input/regulatory_limits/formatted_reg_vals/ph_reg_vals.csv"
+write.csv(ph_reg_vals,dir, row.names = F)
+embed_file(dir, text = "Download List of pH Regulatory Threshold Values")
+
+
+
 
 ```
 
@@ -300,11 +347,20 @@ For each sampling event with available data, we calculated the sum of the parame
 # end of script task: combine dataframes from all parameters evaluated against regulatory thresholds. export into "other/output/analysis_format", then source this table for the boxplot and table download functions
 
 # Metals with Static Regulatory Threshold Values
-# Metals with Hardness-Dependent Regulatory Threshold Values
-# Hydrocarbons
-# Nutrients
-# Bacteria
-# Total suspended solids
-# Field parameters
-```
+## static_metals_thresholds
 
+# Metals with Hardness-Dependent Regulatory Threshold Values
+## hardness_dependent_metals_thresholds
+
+# Hydrocarbons
+## 
+
+# Nutrients
+
+# Bacteria
+
+# Total suspended solids
+
+# Field parameters
+
+```

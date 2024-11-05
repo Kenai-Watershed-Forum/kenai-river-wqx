@@ -42,8 +42,13 @@ dat <- read.csv("other/output/analysis_format/baseline_analysis_format.csv")
 # static metals threshold values
 static_metals_reg_vals <- read.csv("other/input/regulatory_limits/formatted_reg_vals/static_metals_reg_vals.csv")
 
-# join all regulatory value dataframes
-reg_vals <- static_metals_reg_vals
+# field parameters threshold values
+ph_reg_vals <- read.csv("other/input/regulatory_limits/formatted_reg_vals/ph_reg_vals.csv")
+
+# join all static regulatory value dataframes
+# old: reg_vals <- static_metals_reg_vals
+reg_vals <- bind_rows(static_metals_reg_vals,ph_reg_vals)
+
 
 
 #### PREPARE PLOT #####
@@ -151,7 +156,13 @@ make_boxplot <- function(param) {
 
 
 
-# make geom_point geometry different for exceedences
+# make geom_point symbology different for exceedences
+
+## metals:
+### acute exceedence: color A
+### chronic exceedence: color B
+### do we need different plot functions for this type of display vs where thresholds are just static?
+
 # make plotly appear on html render, jpg on docx render
 
 
