@@ -42,6 +42,8 @@ dat <- read.csv("other/output/analysis_format/baseline_analysis_format.csv")
 # static metals threshold values
 static_metals_reg_vals <- read.csv("other/input/regulatory_limits/formatted_reg_vals/static_metals_reg_vals.csv")
 
+# calculated metals threshold values (?)
+
 # field parameters threshold values
 ph_reg_vals <- read.csv("other/input/regulatory_limits/formatted_reg_vals/ph_reg_vals.csv")
 
