@@ -27,6 +27,7 @@ library(lubridate)
 library(anytime)
 library(xfun)
 library(plotly)
+library(ggpmisc)
 
 ```
 
@@ -38,11 +39,11 @@ library(plotly)
 
 -   Project costs include contractual laboratory expenses, research staff personnel time, equipment, and other smaller expense categories. Partners are invoiced on an annual basis.
 
--   While project support has remained mostly steady, 56% inflation of the U.S. dollar since 2005 has reduced the value of resources available to the project.
+-   While project support has remained mostly steady, inflation of the U.S. dollar since 2005 (56%) has reduced the value of resources available to the project since 2005.
 
 -   **In order to continue Kenai River water quality monitoring efforts, the project must sustain necessary funding levels.**
 
--   \*Read the Partner Request Letter Here
+-   **Read the Project Partner Update Letter Here**
 
 [^finance_history-1]: <https://www.kenaiwatershed.org/kenai-river-baseline-water-quality-monitoring/>
 
@@ -139,8 +140,6 @@ inflation_dat %>%
   scale_y_continuous(labels = scales::dollar_format()) +
   ggtitle("Inflation Adjusted Value of $1.00, Years 2005 - 2023")
 
-
-
 ```
 
 ```{r echo = F}
@@ -178,7 +177,9 @@ annual_inf_exp_inc %>%
 
 Project income history fluctuates annually as partner contributions vary. @fig-income-a displays annual cash contributions by individual partner organizations. Most partner organizations have continued to contribute a constant annual amount once the original agreement was established.
 
-Note that in 2022, the project received a lump sum contribution from Kenaitze Indian Tribe that had been intended to be dispersed annually over years 2018 - 2022. Similar levels of annual contribution are not anticipated for future years. Additionally, in 2023 the project received a contribution from Salamatof Tribe via it's IGAP[^finance_history-3] program. As of 2024, the IGAP program is no longer active with Salamatof Tribe, thus further cash contributions are not anticipated.
+### Notes on income history
+
+In 2022, the project received a lump sum contribution from Kenaitze Indian Tribe that had been intended to be dispersed annually over years 2018 - 2022. Similar levels of annual contribution are not anticipated for future years. Additionally, in 2023 the project received a contribution from Salamatof Tribe via it's IGAP[^finance_history-3] program. As of 2024, the IGAP program is no longer active with Salamatof Tribe, thus further cash contributions are not anticipated.
 
 [^finance_history-3]: <https://www.epa.gov/general-assistance-program-gap>
 
@@ -198,7 +199,7 @@ income_dat %>%
   theme(plot.title = element_text(size = 16, face = "bold"),
         axis.text.y = element_text(size = 10),
         strip.text = element_text(size = 12)) +
-  ggtitle("Project  Income History 2005-2023")
+  ggtitle("Project Income History 2005-2023")
 
 ggsave("other/output/financial/2005_2023_income_plot2.jpg", width = 10, height = 8)
 ```
@@ -249,13 +250,37 @@ income_dat %>%
   scale_fill_brewer(palette = "Paired", name = "Organization") +
   xlab("") +
   ylab("") +
-  ggtitle("Inflation Adjusted Project Income History 2005-2023") +
+  ggtitle("Inflation Adjusted Project Income 2005-2023") +
   theme(plot.title = element_text(size = 16, face = "bold"),
         axis.text.y = element_text(size = 10))
 
 ggsave("other/output/financial/2005_2023_inflation_adjusted_income_plot1.jpg", width = 10, height = 8)
 
 ```
+
+
+```{r}
+#| label: fig-income-d
+#| fig-cap: "Total annual project income, adjusted for inflation relative from 2005 - 2023. Accounting for inflation, year 2023 annual project income is 31% lower (~$6,619 less) than year 2005."
+
+income_dat_annual |>
+  ggplot(aes(as.numeric(year),inflation_adj_income)) +
+  geom_point() +
+  geom_smooth(method = "lm", fill = NA) +
+  #stat_poly_eq(use_label(c("eq", "R2"))) +
+  xlab("") +
+  ylab("Inflation Adjusted Income") +
+  scale_y_continuous(labels = scales::dollar_format()) +
+  theme(plot.title = element_text(size = 16, face = "bold"),
+        axis.text.y = element_text(size = 10)) +
+  ggtitle("Project Income History 2005-2023") +
+  ggtitle("Inflation Adjusted Project Income 2005-2023")
+
+```
+
+
+
+
 
 # Expenses
 
