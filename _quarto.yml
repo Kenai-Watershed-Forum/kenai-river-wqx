@@ -67,12 +67,12 @@ format:
 
   #pdf:
   #  documentclass: scrreprt
-  docx:
-    toc: true
-    toc-depth: 2
-    toc-title: Table of contents
-    number-sections: true
-    highlight-style: github
+  #docx:
+  #  toc: true
+  #  toc-depth: 2
+  #  toc-title: Table of contents
+  #  number-sections: true
+  #  highlight-style: github
 
 editor: visual
 
