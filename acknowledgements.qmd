@@ -4,4 +4,11 @@ This study could not have been completed without the assistance and cooperation 
 
 Thank you to all the staff at the Kenai Watershed Forum that made this project possible. Special thanks to ...
 
+```{r echo = F}
+
+# update this with all current participants before finalizing
+
+```
+
+
 \newpage

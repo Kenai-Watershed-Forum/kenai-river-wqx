@@ -9,7 +9,7 @@ format:
     code-summary: "Show the code"
 ---
 
-# Appendix: Data Review and Upload
+# Appendix: Data Review and Upload {#appendix_a}
 
 ```{r echo = F, message = F}
 
@@ -28,7 +28,7 @@ Water quality data from this project is ultimately destined for the Environmenta
 
 The Quality Assurance Project Plan (QAPP) for this project describes data management details and responsible parties for each step of the data pipeline from observation to repository. The 2021 data preparation and review process is published here as an appendix as an example of the process applied annually to each year's data.
 
-Year 2021 QA/QC is included here as an example. Other project years QA/QC may be accessed at <https://kenai-watershed-forum.github.io/kenai-river-wqx-qaqc/>. 
+Year 2021 QA/QC is included here as an example. Other project years QA/QC may be accessed at <https://kenai-watershed-forum.github.io/kenai-river-wqx-qaqc/>.
 
 ### Year 2021 Water Quality Data
 
@@ -2644,10 +2644,10 @@ write.csv(export_dat,"other/output/aqwms_formatted_results/results_activities.cs
 #  filter(grepl("KBL", MonitoringLocationName))
 # write.csv(station,"other/output/aqwms_formatted_results/station.csv", row.names = F)
 ```
+
 Other notes for final 2021 data upload to EPA CDX
 
-- Phosphorus from EPA Method 200.8 (Dissloved Metals by ICP/MS) requires a "method speciation". (This does not apply to "Total Phosphorus", method SM21 4500P-B,E). However this method does not distinguish speciation. Result Status ID was designated "as P" for this test/parameter. Regardless, this parameter was not included in the QAPP, so is designated as "Rejected" in "Result Status ID".
-
+-   Phosphorus from EPA Method 200.8 (Dissloved Metals by ICP/MS) requires a "method speciation". (This does not apply to "Total Phosphorus", method SM21 4500P-B,E). However this method does not distinguish speciation. Result Status ID was designated "as P" for this test/parameter. Regardless, this parameter was not included in the QAPP, so is designated as "Rejected" in "Result Status ID".
 
 Work in progress here as of `r Sys.Date()`
 

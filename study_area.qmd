@@ -2,7 +2,7 @@
 
 ## Description
 
-Located in southcentral Alaska, the Kenai River is part of the Cook Inlet Basin and is linked to the surrounding communities through sport and commercial fishing, tourism, recreation, and the propagation of fish and wildlife (@fig-map1). Five species of Pacific salmon flourish in the Kenai River Watershed, with sockeye (red) and Chinook (king) salmon as the primary species of interest for harvest in subsistence, sport, commercial, and personal use fisheries [@schoen2017]. The Kenai River his historically produced 80% of the sockeye harvested in Cook Inlet [@dorava2000].
+Located in southcentral Alaska, the Kenai River is part of the Cook Inlet Basin and is linked to the surrounding communities through sport, commercial, personal use, and susbsistence fishing; as well as tourism, and recreation (@fig-map1). Six species of anadromous Pacific salmonids flourish in the Kenai River watershed, with sockeye (red) and Chinook (king) salmon as the primary species of interest for harvest and sport fisheries [@schoen2017]. The Kenai River his historically produced 80% of the sockeye harvested in Cook Inlet [@dorava2000].
 
 Surface runoff, groundwater composition, natural minerals, aquatic plants and animals, and human activities can affect water quality in this area. Potential sources of pollution from humans include gasoline powered boat engines, agriculture, mining, street runoff, and perforated septic tanks [@glassrl1999; @reeves2018; @epa2011].
 
