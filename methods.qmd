@@ -6,7 +6,7 @@ After a half‐day training session in the week prior, staff from governmental a
 
 [^methods-1]: https://www.kenaiwatershed.org/science-in-action/research-information/water-quality/
 
-We used the R programming language in Posit software for all analyses in this report, and generated this report using the Quarto publishing framework. It is hosted through Kenai Watershed Forum's GitHub account. The report is available both as an online report here and is also downloadable in PDF form [when draft is complete].
+We used the R programming language in Posit software for all analyses in this report, and generated this report using the Quarto publishing framework. It is hosted through Kenai Watershed Forum's GitHub account. The report is available both as an online report here and is also downloadable in PDF form \[when draft is complete\].
 
 In instances where data was reported as not detected the half of the method detection limit (MDL) or method reporting limit (MRL) was used to estimate the values and run the analysis. The MRL was used because during the early years of the project, the lab only provided this information and not the MDL.
 
