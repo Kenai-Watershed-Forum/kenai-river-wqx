@@ -243,27 +243,21 @@ embed_file(dir, text = "Hardness Dependent Regulatory Thresholds for Metals - Ke
 
 ## Hydrocarbons
 
-For total aromatic hydrocarbons, the Alaska Dept of Environmental Conversation describes a maximum static regulatory value of 10 ug/l.
+Note: the 2016 baseline report presents hydrocarbon data chapters structured as follows:
 
-To prepare our existing data to be assessed against this standard, we addressed the following issues:
+-   Diesel Range Organics
 
--   In some cases, BTEX is quantified as a total mixture. In other cases, the individual substances are quantified separately. In the latter case, we summed the total quantities of benzene, toluene, ethylbenzene, and xylene by unique sampling event (unique location/time).
+-   Gasoline Range Organics
 
--   In some cases, multiple isomers of the same hydrocarbon are quantified (e.g. o-xylene vs m,p-xylene). In these cases, we summed the total quantity of the substance for all isomers.
+-   Residual Range Organics
+
+However, as of `r Sys.Date()` it is unclear which specific hydrocarbon parameters, or grouped sums of parameters, have equivalent names in our data set downloaded from the EPA WQX. As a result, in this report we will structure data to simply assess BTEX values against the ADEC regulatory standard. There may be federal standards that also apply, to be addressed later.
 
 ```{r echo = F}
 
-# note: the 2016 baseline report presents hydrocarbon data chapters structured as follows:
-
-### Diesel Range Organics 
-### Gasoline Range Organics 
-### Residual Range Organics 
-
-# However, today it is unclear which specific parameters, or grouped sums of parameters, have equivalent names in our data set downloaded from the EPA WQX.
-
-# Here, we will structure data to simply assess BTEX values against the ADEC regulatory standard. There may be federal standards that also appy, to be addressed later.
-
 # WORKING HERE 1/7/2025
+# 1) summarise hydrocarbons
+# 2) modify boxplot to read in seperate data source for btex
 
 hydrocarbon_reg_vals <- read_xlsx("other/input/regulatory_limits/master_reg_limits.xlsx", sheet = "static_regulatory_values") %>%
   filter(static_category == "hydrocarbons") %>%
@@ -272,7 +266,9 @@ hydrocarbon_reg_vals <- read_xlsx("other/input/regulatory_limits/master_reg_limi
   pivot_wider(names_from = standard_type, values_from = reg_value) %>%
   rename(characteristic_name = parameter_baseline_name) %>%
   pivot_longer(cols = ends_with("water"), names_to = "standard", values_to = "value") %>%
-  rename("Standard" = "standard")
+  rename("Standard" = "standard") %>%
+  filter(!is.na(value)) %>%
+  select(-"NA")
 
 # define directory
 dir <- "other/input/regulatory_limits/formatted_reg_vals/static_metals_reg_vals.csv"
@@ -281,23 +277,61 @@ dir <- "other/input/regulatory_limits/formatted_reg_vals/static_metals_reg_vals.
 write.csv(static_metals_reg_vals, dir, row.names = F)
 
 # make table viewable
-embed_file(dir, text = "Download Regulatory Limits for Metals with Static Regulatory Threshold Values")
-
-
-# to read this data source in separately, try using case_when within read.csv to choose oneof two data sources
+embed_file(dir, text = "Download Regulatory Limits for Hydrocarbons with Static Regulatory Threshold Values")
 
 ```
 
 ### Total BTEX
 
-Total aromatic hydrocarbons (TAH) means the sum of the following volatile monoaromatic hydrocarbon compounds: benzene, toluene, ethylbenzene, and the xylene isomers, commonly called BTEX.
+Total aromatic hydrocarbons (TAH) means the sum of the following volatile monoaromatic hydrocarbon compounds: benzene, toluene, ethylbenzene, and the xylene isomers, commonly called BTEX. The Alaska Dept of Environmental Conversation describes a maximum static regulatory value of 10 ug/l BTEX..
 
 For each sampling event with available data, we calculated the sum of the parameters that compose BTEX and compared them to a static threshold value.
 
+To prepare our existing data to be assessed against this standard, we addressed the following issues:
+
+-   In some cases, BTEX is quantified as a total mixture. In other cases, the individual substances are quantified separately. In yet other cases, both the individual values and the total mixture values are reported separately. To create a consistent parameter, we summed the total quantities of benzene, toluene, ethylbenzene, and xylene by unique sampling event (unique location/time) when it had not already been reported as such.
+
+-   In some cases, multiple isomers of the same hydrocarbon are quantified (e.g. o-xylene vs m,p-xylene). In these cases, we summed the total quantity of the substance for all isomers.
+
 ```{r echo = F}
 
-# check
-# does value for sum of "Benzene, toluene, ethyl benzene, xylenes mix" match value for sum of individual parameters? Are there events where both formats are reported?
+xylene_isomers <- c("m,p-Xylene" = "Xylene","o-Xylene" = "Xylene")
+
+btex_dat <- dat %>%
+  filter(result_sample_fraction_text == "Volatile") %>%
+  select(activity_identifier,characteristic_name,result_measure_value) %>%
+  # round all values to two decimals
+  mutate(result_measure_value = round(result_measure_value,2)) %>%
+    # if duplicate samples exist, take their average
+  group_by(activity_identifier,characteristic_name) %>%
+  summarise(result_measure_value = mean(result_measure_value)) %>%
+    # simplify multiple xylene isomers to just one general xylene
+  #mutate(characteristic_name = str_replace_all(characteristic_name,xylene_isomers)) %>%
+  #group_by(activity_identifier,characteristic_name) %>%
+#  summarise(result_measure_value = mean(result_measure_value)) %>%
+  
+  # sum quantities of BTEX molecules for sampling instances where they are quantified separately
+ # group_by(activity_identifier,characteristic_name, .drop = F) %>%
+  #summarise(result_measure_value = sum(result_measure_value)) %>%
+  # # reviewing one of the above bullets: do all instances of the full BTEX value reflect the sum of individually reported parametres wihin??
+  pivot_wider(names_from = "characteristic_name", values_from = "result_measure_value") %>%
+  mutate(btex_sum = sum(Benzene,Ethylbenzene,Toluene,Xylene,`o-Xylene`,`m,p-Xylene`, na.rm = T)) %>%
+  # does the reported sum match the calculated sum?
+  mutate(match = case_when(
+    `Benzene, toluene, ethyl benzene, xylenes mix` == btex_sum ~ "Y",
+    TRUE ~ "N"
+    
+  ))
+
+  # types of issues to address
+# - btex_sums match, but Y/N column gives erroneous answer ("easy" fix)
+# - value exists only for provided sum column
+# - no provided value exists, only calculated
+
+
+# to read this data source in separately for boxplots, try using case_when within read.csv to choose one of two data sources
+  
+
 
 ```
 
