@@ -305,29 +305,29 @@ btex_dat <- dat %>%
     # if duplicate samples exist, take their average
   group_by(activity_identifier,characteristic_name) %>%
   summarise(result_measure_value = mean(result_measure_value)) %>%
-    # simplify multiple xylene isomers to just one general xylene
-  #mutate(characteristic_name = str_replace_all(characteristic_name,xylene_isomers)) %>%
-  #group_by(activity_identifier,characteristic_name) %>%
-#  summarise(result_measure_value = mean(result_measure_value)) %>%
-  
-  # sum quantities of BTEX molecules for sampling instances where they are quantified separately
- # group_by(activity_identifier,characteristic_name, .drop = F) %>%
-  #summarise(result_measure_value = sum(result_measure_value)) %>%
-  # # reviewing one of the above bullets: do all instances of the full BTEX value reflect the sum of individually reported parametres wihin??
+   # 
   pivot_wider(names_from = "characteristic_name", values_from = "result_measure_value") %>%
   mutate(btex_sum = sum(Benzene,Ethylbenzene,Toluene,Xylene,`o-Xylene`,`m,p-Xylene`, na.rm = T)) %>%
   # does the reported sum match the calculated sum?
   mutate(match = case_when(
-    `Benzene, toluene, ethyl benzene, xylenes mix` == btex_sum ~ "Y",
-    TRUE ~ "N"
-    
-  ))
+    as.character(`Benzene, toluene, ethyl benzene, xylenes mix`) == as.character(btex_sum) ~ "Y",
+    TRUE ~ "N")) %>%
+  # for instances where no provided value exists, use calculated value
+  mutate(`Benzene, toluene, ethyl benzene, xylenes mix` = case_when(
+    is.na(`Benzene, toluene, ethyl benzene, xylenes mix`) ~ sum(Benzene,Ethylbenzene,Toluene,Xylene,`o-Xylene`,`m,p-Xylene`, na.rm = T),
+    TRUE ~ `Benzene, toluene, ethyl benzene, xylenes mix`
+  )) %>%
+  select(activity_identifier,`Benzene, toluene, ethyl benzene, xylenes mix`) %>%
+  rename(result_measure_value = `Benzene, toluene, ethyl benzene, xylenes mix`) %>%
+  mutate(characteristic_name = "Benzene, toluene, ethyl benzene, xylenes mix")
 
-  # types of issues to address
-# - btex_sums match, but Y/N column gives erroneous answer ("easy" fix)
-# - value exists only for provided sum column
-# - no provided value exists, only calculated
+  # types of issues addressed in preparing hydrocarbon data
 
+# - value exists only for provided sum column (we left these as is)
+# - no provided value exists, only calculated (we used the calculated value)
+
+
+# next, replace old volatiles data with the dataframe above. rejoin to site info. task for 1/9/2025
 
 # to read this data source in separately for boxplots, try using case_when within read.csv to choose one of two data sources
   
