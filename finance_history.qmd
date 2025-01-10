@@ -39,20 +39,19 @@ library(ggpmisc)
 
 -   Project costs include contractual laboratory expenses, research staff personnel time, equipment, and other smaller expense categories. Partners are invoiced on an annual basis.
 
--   While project support has remained mostly steady, inflation of the U.S. dollar since 2005 (56%) has reduced the value of resources available to the project since 2005.
+-   While project support has remained mostly steady, inflation of the U.S. dollar since 2005 (56%) has reduced the purchasing power available to the project since 2005.
 
 -   **In order to continue Kenai River water quality monitoring efforts, the project must sustain necessary funding levels.**
 
--   **Read the Project Partner Update Letter Here**
+-   **Download the Project Partner Update Letter Below**
 
 [^finance_history-1]: <https://www.kenaiwatershed.org/kenai-river-baseline-water-quality-monitoring/>
 
 ```{r echo = F}
 # download partner request letter
-embed_file("other/documents/financial/2024 Kenai River Water Quality Monitoring MOU Signature Request Letter.docx", text = "Download Kenai River Water Quality Monitoring Project Partner Request Letter (Draft)")
+embed_file("other/documents/financial/2024 Kenai River Water Quality Monitoring MOU Signature Request Letter.docx", text = "Download Kenai River Water Quality Monitoring Project Partner Request Letter")
 ```
 
-*\[Draft; writing In Progress 10/28/2024. This will summarise information about both the incoming Memorandum of Understanding renewal and financial needs\]*
 
 ## Inflation leads to declining project income
 
@@ -129,7 +128,7 @@ annual_inf_exp_inc <- left_join(income_dat_annual,expense_dat_annual, by = "year
 
 ```{r echo = F, message = F, warning = F}
 #| label: fig-inflation-history
-#| fig-cap: "Inflation Adjusted Value of $1.00, Years 2005 - 2023"
+#| fig-cap: "Inflation Adjusted Value of $1.00, Years 2005 - 2023. Data from https://www.usinflationcalculator.com/."
 
 # plot
 inflation_dat %>%
@@ -149,7 +148,7 @@ embed_file("other/input/financial/usd_annual_inflation.xlsx", text = "Download f
 
 <br>
 
-Adjusted for inflation, project income has seen a steady decline from 2005 - 2022. @fig-inf-adj-inc displays inflation adjusted project income history.
+Adjusted for inflation, project income has seen a steady decline in purchasing power from 2005 - 2022. @fig-inf-adj-inc displays inflation adjusted project income and expenses history.
 
 ```{r echo = F, message = F, warning = F, fig.width=10, fig.height=8}
 #| label: fig-inf-adj-inc
@@ -175,11 +174,11 @@ annual_inf_exp_inc %>%
 
 ## Income Detail
 
-Project income history fluctuates annually as partner contributions vary. @fig-income-a displays annual cash contributions by individual partner organizations. Most partner organizations have continued to contribute a constant annual amount once the original agreement was established.
+Project income history fluctuates annually as partner contributions vary. @fig-income-a below displays annual cash contributions by individual partner organizations. Most partner organizations have continued to contribute a constant annual amount once the original agreement was established.
 
 ### Notes on income history
 
-In 2022, the project received a lump sum contribution from Kenaitze Indian Tribe that had been intended to be dispersed annually over years 2018 - 2022. Similar levels of annual contribution are not anticipated for future years. Additionally, in 2023 the project received a contribution from Salamatof Tribe via it's IGAP[^finance_history-3] program. As of 2024, the IGAP program is no longer active with Salamatof Tribe, thus further cash contributions are not anticipated.
+In 2022, the project received a lump sum contribution from Kenaitze Indian Tribe that had originally been intended to be dispersed annually over years 2018 - 2022. Similar levels of annual contribution are not anticipated for future years. Additionally, in 2023 the project received a contribution from Salamatof Tribe via it's IGAP[^finance_history-3] program. As of 2024, the IGAP program is no longer active with Salamatof Tribe, thus further cash contributions are not anticipated.
 
 [^finance_history-3]: <https://www.epa.gov/general-assistance-program-gap>
 
@@ -258,10 +257,9 @@ ggsave("other/output/financial/2005_2023_inflation_adjusted_income_plot1.jpg", w
 
 ```
 
-
 ```{r}
 #| label: fig-income-d
-#| fig-cap: "Total annual project income, adjusted for inflation relative from 2005 - 2023. Accounting for inflation, year 2023 annual project income is 31% lower (~$6,619 less) than year 2005."
+#| fig-cap: "Total annual project income, adjusted for inflation relative from 2005 - 2023. Accounting for inflation, year 2023 purchasing power is 31% lower (~$6,619 less) than year 2005."
 
 income_dat_annual |>
   ggplot(aes(as.numeric(year),inflation_adj_income)) +
@@ -277,10 +275,6 @@ income_dat_annual |>
   ggtitle("Inflation Adjusted Project Income 2005-2023")
 
 ```
-
-
-
-
 
 # Expenses
 
@@ -325,11 +319,9 @@ In general, laboratory analysis expenses and staff scientist time are the larges
 
 -   Projected 2025 income and expenses are detailed in this Google Sheet: <https://docs.google.com/spreadsheets/d/1VbYnY4f8eyhQwbgrpnDrOTIJEsu7pkg_uMbVN5kecKA/edit?gid=1388741346#gid=1388741346>
 
--   As of November 2024, a projected income gap of \$20,045.84 exists
+-   As of November 2024, a projected income gap of \$20,045.84 exists for year 2025.
 
 # Recommendations
-
-(This section in progress)
 
 -   Ensure that project income matches project needs
 

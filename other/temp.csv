@@ -1,255 +1,91 @@
-"","activity_identifier","characteristic_name","result_measure_value"
-"1","KENAI_WQX-10000002_07/16/2002_13:45:00","Benzene",2.2
-"2","KENAI_WQX-10000002_07/16/2002_13:45:00","Benzene, toluene, ethyl benzene, xylenes mix",15.2
-"3","KENAI_WQX-10000002_07/16/2002_13:45:00","Ethylbenzene",1.09
-"4","KENAI_WQX-10000002_07/16/2002_13:45:00","Toluene",6.39
-"5","KENAI_WQX-10000002_07/16/2002_13:45:00","Xylene",2.76
-"6","KENAI_WQX-10000002_07/16/2002_13:45:00","Xylene",2.76
-"7","KENAI_WQX-10000002_07/17/2007_11:30:00","Benzene, toluene, ethyl benzene, xylenes mix",2.2
-"8","KENAI_WQX-10000002_07/17/2007_11:30:00","Toluene",2.2
-"9","KENAI_WQX-10000002_07/17/2007_12:24:00","Benzene, toluene, ethyl benzene, xylenes mix",2.3
-"10","KENAI_WQX-10000002_07/17/2007_12:24:00","Toluene",2.3
-"11","KENAI_WQX-10000002_07/18/2000_10:48:00","Benzene",1.22
-"12","KENAI_WQX-10000002_07/18/2000_10:48:00","Benzene, toluene, ethyl benzene, xylenes mix",10.1
-"13","KENAI_WQX-10000002_07/18/2000_10:48:00","Ethylbenzene",0.56
-"14","KENAI_WQX-10000002_07/18/2000_10:48:00","Toluene",4.77
-"15","KENAI_WQX-10000002_07/18/2000_10:48:00","Xylene",1.775
-"16","KENAI_WQX-10000002_07/18/2000_10:48:00","Xylene",1.775
-"17","KENAI_WQX-10000002_07/20/2004_13:20:00","Benzene",2.2
-"18","KENAI_WQX-10000002_07/20/2004_13:20:00","Benzene, toluene, ethyl benzene, xylenes mix",14.4
-"19","KENAI_WQX-10000002_07/20/2004_13:20:00","Ethylbenzene",1
-"20","KENAI_WQX-10000002_07/20/2004_13:20:00","Toluene",5.9
-"21","KENAI_WQX-10000002_07/20/2004_13:20:00","Xylene",2.65
-"22","KENAI_WQX-10000002_07/20/2004_13:20:00","Xylene",2.65
-"23","KENAI_WQX-10000002_07/26/2005_14:50:00","Benzene",1.4
-"24","KENAI_WQX-10000002_07/26/2005_14:50:00","Benzene, toluene, ethyl benzene, xylenes mix",7.3
-"25","KENAI_WQX-10000002_07/26/2005_14:50:00","Toluene",3.5
-"26","KENAI_WQX-10000002_07/26/2005_14:50:00","Xylene",2.4
-"27","KENAI_WQX-10000002_2001-07-24_11:18:00","Benzene",1.28
-"28","KENAI_WQX-10000002_2001-07-24_11:18:00","Benzene, toluene, ethyl benzene, xylenes mix",9.24
-"29","KENAI_WQX-10000002_2001-07-24_11:18:00","Ethylbenzene",0.5
-"30","KENAI_WQX-10000002_2001-07-24_11:18:00","Toluene",4.2
-"31","KENAI_WQX-10000002_2001-07-24_11:18:00","Xylene",1.63
-"32","KENAI_WQX-10000002_2001-07-24_11:18:00","Xylene",1.63
-"33","KENAI_WQX-10000002_2006-07-25_09:05:00","Benzene, toluene, ethyl benzene, xylenes mix",1.5
-"34","KENAI_WQX-10000005_07/16/2002_14:15:00","Benzene",1.31
-"35","KENAI_WQX-10000005_07/16/2002_14:15:00","Benzene, toluene, ethyl benzene, xylenes mix",9.12
-"36","KENAI_WQX-10000005_07/16/2002_14:15:00","Ethylbenzene",0.65
-"37","KENAI_WQX-10000005_07/16/2002_14:15:00","Toluene",3.75
-"38","KENAI_WQX-10000005_07/16/2002_14:15:00","Xylene",1.705
-"39","KENAI_WQX-10000005_07/16/2002_14:15:00","Xylene",1.705
-"40","KENAI_WQX-10000005_07/16/2002_14:25:00","Benzene",1.18
-"41","KENAI_WQX-10000005_07/16/2002_14:25:00","Benzene, toluene, ethyl benzene, xylenes mix",7.95
-"42","KENAI_WQX-10000005_07/16/2002_14:25:00","Ethylbenzene",0.57
-"43","KENAI_WQX-10000005_07/16/2002_14:25:00","Toluene",3.37
-"44","KENAI_WQX-10000005_07/16/2002_14:25:00","Xylene",1.415
-"45","KENAI_WQX-10000005_07/16/2002_14:25:00","Xylene",1.415
-"46","KENAI_WQX-10000005_07/17/2007_12:05:00","Benzene",1.1
-"47","KENAI_WQX-10000005_07/17/2007_12:05:00","Benzene, toluene, ethyl benzene, xylenes mix",6.1
-"48","KENAI_WQX-10000005_07/17/2007_12:05:00","Toluene",2.8
-"49","KENAI_WQX-10000005_07/17/2007_12:05:00","Xylene",2.2
-"50","KENAI_WQX-10000005_07/18/2000_11:30:00","Benzene",1.56
-"51","KENAI_WQX-10000005_07/18/2000_11:30:00","Benzene, toluene, ethyl benzene, xylenes mix",12.11
-"52","KENAI_WQX-10000005_07/18/2000_11:30:00","Ethylbenzene",0.51
-"53","KENAI_WQX-10000005_07/18/2000_11:30:00","Toluene",5.91
-"54","KENAI_WQX-10000005_07/18/2000_11:30:00","Xylene",2.065
-"55","KENAI_WQX-10000005_07/18/2000_11:30:00","Xylene",2.065
-"56","KENAI_WQX-10000005_07/20/2004_10:30:00","Benzene",1.1
-"57","KENAI_WQX-10000005_07/20/2004_10:30:00","Benzene, toluene, ethyl benzene, xylenes mix",6.3
-"58","KENAI_WQX-10000005_07/20/2004_10:30:00","Toluene",3.2
-"59","KENAI_WQX-10000005_07/20/2004_10:30:00","Xylene",2
-"60","KENAI_WQX-10000005_07/20/2004_10:40:00","Benzene",1.2
-"61","KENAI_WQX-10000005_07/20/2004_10:40:00","Benzene, toluene, ethyl benzene, xylenes mix",6.4
-"62","KENAI_WQX-10000005_07/20/2004_10:40:00","Toluene",3.2
-"63","KENAI_WQX-10000005_07/20/2004_10:40:00","Xylene",2
-"64","KENAI_WQX-10000005_07/22/2003_07:30:00","Benzene",0.65
-"65","KENAI_WQX-10000005_07/22/2003_07:30:00","Benzene, toluene, ethyl benzene, xylenes mix",4.06
-"66","KENAI_WQX-10000005_07/22/2003_07:30:00","Toluene",1.78
-"67","KENAI_WQX-10000005_07/22/2003_07:30:00","Xylene",0.815
-"68","KENAI_WQX-10000005_07/22/2003_07:30:00","Xylene",0.815
-"69","KENAI_WQX-10000005_07/25/2006_11:00:00","Benzene",1.7
-"70","KENAI_WQX-10000005_07/25/2006_11:00:00","Benzene, toluene, ethyl benzene, xylenes mix",8.1
-"71","KENAI_WQX-10000005_07/25/2006_11:00:00","Toluene",3.9
-"72","KENAI_WQX-10000005_07/25/2006_11:00:00","Xylene",2.5
-"73","KENAI_WQX-10000005_07/26/2005_14:48:00","Benzene",1
-"74","KENAI_WQX-10000005_07/26/2005_14:48:00","Benzene, toluene, ethyl benzene, xylenes mix",3.5
-"75","KENAI_WQX-10000005_07/26/2005_14:48:00","Toluene",2.5
-"76","KENAI_WQX-10000005_07/29/2008_09:30:00","Benzene, toluene, ethyl benzene, xylenes mix",1.3
-"77","KENAI_WQX-10000005_07/29/2008_09:30:00","Toluene",1.3
-"78","KENAI_WQX-10000005_2001-07-24_10:40:00","Benzene",1.7
-"79","KENAI_WQX-10000005_2001-07-24_10:40:00","Benzene, toluene, ethyl benzene, xylenes mix",11.85
-"80","KENAI_WQX-10000005_2001-07-24_10:40:00","Ethylbenzene",0.66
-"81","KENAI_WQX-10000005_2001-07-24_10:40:00","Toluene",5.45
-"82","KENAI_WQX-10000005_2001-07-24_10:40:00","Xylene",2.02
-"83","KENAI_WQX-10000005_2001-07-24_10:40:00","Xylene",2.02
-"84","KENAI_WQX-10000005_2009-07-21_10:45:00","Benzene, toluene, ethyl benzene, xylenes mix",0.75
-"85","KENAI_WQX-10000005_2009-07-21_10:45:00","Toluene",0.75
-"86","KENAI_WQX-10000015_07/16/2002_13:46:00","Benzene, toluene, ethyl benzene, xylenes mix",0.47
-"87","KENAI_WQX-10000015_07/16/2002_13:46:00","Toluene",0.47
-"88","KENAI_WQX-10000015_07/16/2002_14:06:00","Benzene, toluene, ethyl benzene, xylenes mix",0.63
-"89","KENAI_WQX-10000015_07/16/2002_14:06:00","Toluene",0.63
-"90","KENAI_WQX-10000015_07/26/2005_14:02:00","Benzene, toluene, ethyl benzene, xylenes mix",1.3
-"91","KENAI_WQX-10000015_07/26/2005_14:02:00","Toluene",1.3
-"92","KENAI_WQX-10000016_07/16/2002_13:02:00","Benzene",1.33
-"93","KENAI_WQX-10000016_07/16/2002_13:02:00","Benzene, toluene, ethyl benzene, xylenes mix",9.07
-"94","KENAI_WQX-10000016_07/16/2002_13:02:00","Ethylbenzene",0.66
-"95","KENAI_WQX-10000016_07/16/2002_13:02:00","Toluene",3.77
-"96","KENAI_WQX-10000016_07/16/2002_13:02:00","Xylene",1.655
-"97","KENAI_WQX-10000016_07/16/2002_13:02:00","Xylene",1.655
-"98","KENAI_WQX-10000016_07/17/2007_11:30:00","Benzene, toluene, ethyl benzene, xylenes mix",2.6
-"99","KENAI_WQX-10000016_07/17/2007_11:30:00","Toluene",2.6
-"100","KENAI_WQX-10000016_07/18/2000_12:00:00","Benzene",1.09
-"101","KENAI_WQX-10000016_07/18/2000_12:00:00","Benzene, toluene, ethyl benzene, xylenes mix",8.59
-"102","KENAI_WQX-10000016_07/18/2000_12:00:00","Ethylbenzene",0.31
-"103","KENAI_WQX-10000016_07/18/2000_12:00:00","Toluene",4.35
-"104","KENAI_WQX-10000016_07/18/2000_12:00:00","Xylene",1.42
-"105","KENAI_WQX-10000016_07/18/2000_12:00:00","Xylene",1.42
-"106","KENAI_WQX-10000016_07/20/2004_11:15:00","Benzene, toluene, ethyl benzene, xylenes mix",2.8
-"107","KENAI_WQX-10000016_07/20/2004_11:15:00","Toluene",2.8
-"108","KENAI_WQX-10000016_07/20/2004_11:25:00","Benzene",1.3
-"109","KENAI_WQX-10000016_07/20/2004_11:25:00","Benzene, toluene, ethyl benzene, xylenes mix",7.2
-"110","KENAI_WQX-10000016_07/20/2004_11:25:00","Toluene",3.6
-"111","KENAI_WQX-10000016_07/20/2004_11:25:00","Xylene",2.3
-"112","KENAI_WQX-10000016_07/22/2003_09:25:00","Benzene",1.15
-"113","KENAI_WQX-10000016_07/22/2003_09:25:00","Benzene, toluene, ethyl benzene, xylenes mix",7.47
-"114","KENAI_WQX-10000016_07/22/2003_09:25:00","Ethylbenzene",0.5
-"115","KENAI_WQX-10000016_07/22/2003_09:25:00","Toluene",3.23
-"116","KENAI_WQX-10000016_07/22/2003_09:25:00","Xylene",1.295
-"117","KENAI_WQX-10000016_07/22/2003_09:25:00","Xylene",1.295
-"118","KENAI_WQX-10000016_07/22/2003_09:40:00","Benzene",1.14
-"119","KENAI_WQX-10000016_07/22/2003_09:40:00","Benzene, toluene, ethyl benzene, xylenes mix",7.77
-"120","KENAI_WQX-10000016_07/22/2003_09:40:00","Ethylbenzene",0.52
-"121","KENAI_WQX-10000016_07/22/2003_09:40:00","Toluene",3.33
-"122","KENAI_WQX-10000016_07/22/2003_09:40:00","Xylene",1.39
-"123","KENAI_WQX-10000016_07/22/2003_09:40:00","Xylene",1.39
-"124","KENAI_WQX-10000016_07/25/2006_10:35:00","Benzene",1
-"125","KENAI_WQX-10000016_07/25/2006_10:35:00","Benzene, toluene, ethyl benzene, xylenes mix",3.6
-"126","KENAI_WQX-10000016_07/25/2006_10:35:00","Toluene",2.6
-"127","KENAI_WQX-10000016_07/26/2005_13:28:00","Benzene, toluene, ethyl benzene, xylenes mix",2.3
-"128","KENAI_WQX-10000016_07/26/2005_13:28:00","Toluene",2.3
-"129","KENAI_WQX-10000016_2001-07-24_12:05:00","Benzene",1.12
-"130","KENAI_WQX-10000016_2001-07-24_12:05:00","Benzene, toluene, ethyl benzene, xylenes mix",7.9
-"131","KENAI_WQX-10000016_2001-07-24_12:05:00","Ethylbenzene",0.43
-"132","KENAI_WQX-10000016_2001-07-24_12:05:00","Toluene",3.67
-"133","KENAI_WQX-10000016_2001-07-24_12:05:00","Xylene",1.34
-"134","KENAI_WQX-10000016_2001-07-24_12:05:00","Xylene",1.34
-"135","KENAI_WQX-10000016_2009-07-21_11:50:00","Benzene, toluene, ethyl benzene, xylenes mix",0.61
-"136","KENAI_WQX-10000016_2009-07-21_11:50:00","Toluene",0.61
-"137","KENAI_WQX-10000016_2012/07/31_09:59:00","Ethylbenzene",1.5
-"138","KENAI_WQX-10000016_2012/07/31_09:59:00","Xylene",4.9
-"139","KENAI_WQX-10000016_2012/07/31_09:59:00","Xylene",4.9
-"140","KENAI_WQX-10000016_2012/07/31_09:59:00","Xylene",4.9
-"141","KENAI_WQX-10000017_07/16/2002_12:30:00","Benzene",0.9
-"142","KENAI_WQX-10000017_07/16/2002_12:30:00","Benzene, toluene, ethyl benzene, xylenes mix",6.34
-"143","KENAI_WQX-10000017_07/16/2002_12:30:00","Ethylbenzene",0.46
-"144","KENAI_WQX-10000017_07/16/2002_12:30:00","Toluene",2.58
-"145","KENAI_WQX-10000017_07/16/2002_12:30:00","Xylene",1.2
-"146","KENAI_WQX-10000017_07/16/2002_12:30:00","Xylene",1.2
-"147","KENAI_WQX-10000017_07/17/2007_10:20:00","Benzene, toluene, ethyl benzene, xylenes mix",1.8
-"148","KENAI_WQX-10000017_07/17/2007_10:20:00","Toluene",1.8
-"149","KENAI_WQX-10000017_07/18/2000_12:25:00","Benzene",1.06
-"150","KENAI_WQX-10000017_07/18/2000_12:25:00","Benzene, toluene, ethyl benzene, xylenes mix",8.44
-"151","KENAI_WQX-10000017_07/18/2000_12:25:00","Ethylbenzene",0.31
-"152","KENAI_WQX-10000017_07/18/2000_12:25:00","Toluene",4.27
-"153","KENAI_WQX-10000017_07/18/2000_12:25:00","Xylene",1.4
-"154","KENAI_WQX-10000017_07/18/2000_12:25:00","Xylene",1.4
-"155","KENAI_WQX-10000017_07/20/2004_10:50:00","Benzene, toluene, ethyl benzene, xylenes mix",1.8
-"156","KENAI_WQX-10000017_07/20/2004_10:50:00","Toluene",1.8
-"157","KENAI_WQX-10000017_07/22/2003_10:10:00","Benzene",0.76
-"158","KENAI_WQX-10000017_07/22/2003_10:10:00","Benzene, toluene, ethyl benzene, xylenes mix",4.72
-"159","KENAI_WQX-10000017_07/22/2003_10:10:00","Toluene",2.14
-"160","KENAI_WQX-10000017_07/22/2003_10:10:00","Xylene",0.91
-"161","KENAI_WQX-10000017_07/22/2003_10:10:00","Xylene",0.91
-"162","KENAI_WQX-10000017_07/25/2006_09:20:00","Benzene, toluene, ethyl benzene, xylenes mix",2.2
-"163","KENAI_WQX-10000017_07/25/2006_09:20:00","Toluene",2.2
-"164","KENAI_WQX-10000017_07/26/2005_13:02:00","Benzene, toluene, ethyl benzene, xylenes mix",2.1
-"165","KENAI_WQX-10000017_07/26/2005_13:02:00","Toluene",2.1
-"166","KENAI_WQX-10000017_2001-07-24_10:00:00","Benzene",0.87
-"167","KENAI_WQX-10000017_2001-07-24_10:00:00","Benzene, toluene, ethyl benzene, xylenes mix",6.18
-"168","KENAI_WQX-10000017_2001-07-24_10:00:00","Ethylbenzene",0.33
-"169","KENAI_WQX-10000017_2001-07-24_10:00:00","Toluene",2.86
-"170","KENAI_WQX-10000017_2001-07-24_10:00:00","Xylene",1.06
-"171","KENAI_WQX-10000017_2001-07-24_10:00:00","Xylene",1.06
-"172","KENAI_WQX-10000017_2009-07-21_10:00:00","Benzene, toluene, ethyl benzene, xylenes mix",0.59
-"173","KENAI_WQX-10000017_2009-07-21_10:00:00","Toluene",0.59
-"174","KENAI_WQX-10000018_07/16/2002_11:49:00","Benzene, toluene, ethyl benzene, xylenes mix",1.23
-"175","KENAI_WQX-10000018_07/16/2002_11:49:00","Toluene",1.23
-"176","KENAI_WQX-10000018_07/18/2000_13:10:00","Benzene",0.2
-"177","KENAI_WQX-10000018_07/18/2000_13:10:00","Benzene, toluene, ethyl benzene, xylenes mix",1.48
-"178","KENAI_WQX-10000018_07/18/2000_13:10:00","Toluene",1.28
-"179","KENAI_WQX-10000018_07/20/2004_10:18:00","Benzene, toluene, ethyl benzene, xylenes mix",1.5
-"180","KENAI_WQX-10000018_07/20/2004_10:18:00","Toluene",1.5
-"181","KENAI_WQX-10000018_07/22/2003_10:30:00","Benzene, toluene, ethyl benzene, xylenes mix",0.71
-"182","KENAI_WQX-10000018_07/22/2003_10:30:00","Toluene",0.71
-"183","KENAI_WQX-10000018_2001-07-24_09:40:00","Benzene",0.49
-"184","KENAI_WQX-10000018_2001-07-24_09:40:00","Benzene, toluene, ethyl benzene, xylenes mix",3.25
-"185","KENAI_WQX-10000018_2001-07-24_09:40:00","Toluene",1.56
-"186","KENAI_WQX-10000018_2001-07-24_09:40:00","Xylene",0.6
-"187","KENAI_WQX-10000018_2001-07-24_09:40:00","Xylene",0.6
-"188","KENAI_WQX-10000021_07/16/2002_12:49:00","Benzene, toluene, ethyl benzene, xylenes mix",0.93
-"189","KENAI_WQX-10000021_07/16/2002_12:49:00","Toluene",0.93
-"190","KENAI_WQX-10000021_07/18/2000_09:30:00","Benzene, toluene, ethyl benzene, xylenes mix",0.62
-"191","KENAI_WQX-10000021_07/18/2000_09:30:00","Toluene",0.62
-"192","KENAI_WQX-10000021_07/22/2003_11:30:00","Benzene, toluene, ethyl benzene, xylenes mix",0.4
-"193","KENAI_WQX-10000021_07/22/2003_11:30:00","Toluene",0.4
-"194","KENAI_WQX-10000021_07/29/2008_10:15:00","Benzene, toluene, ethyl benzene, xylenes mix",3.6
-"195","KENAI_WQX-10000021_07/29/2008_10:15:00","Xylene",3.1
-"196","KENAI_WQX-10000021_07/29/2008_10:15:00","Xylene",3.1
-"197","KENAI_WQX-10000021_2001-07-24_12:03:00","Benzene, toluene, ethyl benzene, xylenes mix",0.84
-"198","KENAI_WQX-10000021_2001-07-24_12:03:00","Toluene",0.84
-"199","KENAI_WQX-10000022_07/29/2008_10:56:00","Benzene",1.4
-"200","KENAI_WQX-10000022_07/29/2008_10:56:00","Benzene, toluene, ethyl benzene, xylenes mix",2.7
-"201","KENAI_WQX-10000022_07/29/2008_10:56:00","Toluene",1.3
-"202","KENAI_WQX-10000022_2009-07-21_12:45:00","Benzene",0.66
-"203","KENAI_WQX-10000022_2009-07-21_12:45:00","Benzene, toluene, ethyl benzene, xylenes mix",0.66
-"204","KENAI_WQX-10000023_07/16/2002_13:25:00","Benzene, toluene, ethyl benzene, xylenes mix",0.85
-"205","KENAI_WQX-10000023_07/16/2002_13:25:00","Toluene",0.85
-"206","KENAI_WQX-10000023_07/22/2003_09:40:00","Benzene, toluene, ethyl benzene, xylenes mix",0.46
-"207","KENAI_WQX-10000023_07/22/2003_09:40:00","Toluene",0.46
-"208","KENAI_WQX-10000023_2001-07-24_12:28:00","Benzene, toluene, ethyl benzene, xylenes mix",0.67
-"209","KENAI_WQX-10000023_2001-07-24_12:28:00","Toluene",0.67
-"210","KENAI_WQX-10000025_07/16/2002_10:52:00","Benzene, toluene, ethyl benzene, xylenes mix",0.66
-"211","KENAI_WQX-10000025_07/16/2002_10:52:00","Toluene",0.66
-"212","KENAI_WQX-10000025_07/29/2008_11:05:00","Benzene, toluene, ethyl benzene, xylenes mix",3.8
-"213","KENAI_WQX-10000025_07/29/2008_11:05:00","Xylene",3.4
-"214","KENAI_WQX-10000025_07/29/2008_11:05:00","Xylene",3.4
-"215","KENAI_WQX-10000025_2001-07-24_10:00:00","Benzene, toluene, ethyl benzene, xylenes mix",0.63
-"216","KENAI_WQX-10000025_2001-07-24_10:00:00","Toluene",0.63
-"217","KENAI_WQX-10000026_07/16/2002_09:45:00","Benzene",0.88
-"218","KENAI_WQX-10000026_07/16/2002_09:45:00","Benzene, toluene, ethyl benzene, xylenes mix",6.65
-"219","KENAI_WQX-10000026_07/16/2002_09:45:00","Ethylbenzene",0.5
-"220","KENAI_WQX-10000026_07/16/2002_09:45:00","Toluene",2.83
-"221","KENAI_WQX-10000026_07/16/2002_09:45:00","Xylene",1.22
-"222","KENAI_WQX-10000026_07/16/2002_09:45:00","Xylene",1.22
-"223","KENAI_WQX-10000026_07/20/2004_09:39:00","Benzene, toluene, ethyl benzene, xylenes mix",1.6
-"224","KENAI_WQX-10000026_07/20/2004_09:39:00","Benzene, toluene, ethyl benzene, xylenes mix",1.6
-"225","KENAI_WQX-10000026_07/20/2004_09:39:00","Toluene",1.6
-"226","KENAI_WQX-10000026_07/22/2003_10:00:00","Benzene, toluene, ethyl benzene, xylenes mix",0.52
-"227","KENAI_WQX-10000026_07/22/2003_10:00:00","Toluene",0.52
-"228","KENAI_WQX-10000027_07/16/2002_13:09:00","Benzene, toluene, ethyl benzene, xylenes mix",2.04
-"229","KENAI_WQX-10000027_07/16/2002_13:09:00","Toluene",1
-"230","KENAI_WQX-10000027_07/16/2002_13:09:00","Xylene",1.04
-"231","KENAI_WQX-10000027_07/26/2005_12:15:00","Benzene, toluene, ethyl benzene, xylenes mix",1.8
-"232","KENAI_WQX-10000027_07/26/2005_12:15:00","Toluene",1.8
-"233","KENAI_WQX-10000027_2001-07-24_10:05:00","Benzene",0.3
-"234","KENAI_WQX-10000027_2001-07-24_10:05:00","Benzene, toluene, ethyl benzene, xylenes mix",1
-"235","KENAI_WQX-10000027_2001-07-24_10:05:00","Toluene",0.7
-"236","KENAI_WQX-10000028_07/16/2002_12:24:00","Benzene, toluene, ethyl benzene, xylenes mix",0.84
-"237","KENAI_WQX-10000028_07/16/2002_12:24:00","Toluene",0.84
-"238","KENAI_WQX-10000028_07/18/2000_07:35:00","Benzene, toluene, ethyl benzene, xylenes mix",1.08
-"239","KENAI_WQX-10000028_07/18/2000_07:35:00","Toluene",1.08
-"240","KENAI_WQX-10000028_2001-07-24_09:40:00","Benzene",0.3
-"241","KENAI_WQX-10000028_2001-07-24_09:40:00","Benzene, toluene, ethyl benzene, xylenes mix",0.95
-"242","KENAI_WQX-10000028_2001-07-24_09:40:00","Toluene",0.65
-"243","KENAI_WQX-10000029_07/16/2002_11:53:00","Benzene, toluene, ethyl benzene, xylenes mix",0.82
-"244","KENAI_WQX-10000029_07/16/2002_11:53:00","Toluene",0.82
-"245","KENAI_WQX-10000029_07/29/2008_10:09:00","Benzene, toluene, ethyl benzene, xylenes mix",3.7
-"246","KENAI_WQX-10000029_07/29/2008_10:09:00","Toluene",1.6
-"247","KENAI_WQX-10000029_07/29/2008_10:09:00","Xylene",2.1
-"248","KENAI_WQX-10000030_07/29/2008_09:08:00","Benzene, toluene, ethyl benzene, xylenes mix",1.2
-"249","KENAI_WQX-10000030_07/29/2008_09:08:00","Toluene",1.2
-"250","KENAI_WQX-10000032_07/29/2008_08:53:00","Benzene, toluene, ethyl benzene, xylenes mix",3
-"251","KENAI_WQX-10000032_07/29/2008_08:53:00","Xylene",2.6
-"252","KENAI_WQX-10000032_07/29/2008_08:53:00","Xylene",2.6
-"253","KENAI_WQX-10000425_07/22/2003_07:10:00","Benzene, toluene, ethyl benzene, xylenes mix",0.49
-"254","KENAI_WQX-10000425_07/22/2003_07:10:00","Toluene",0.49
+"","expense_category","year","total_expenses"
+"1","Indirect","2005",0
+"2","Indirect","2006",0
+"3","Indirect","2007",0
+"4","Indirect","2008",0
+"5","Indirect","2009",0
+"6","Indirect","2010",124.33
+"7","Indirect","2011",69.8
+"8","Indirect","2012",0
+"9","Indirect","2013",0
+"10","Indirect","2014",1640.99
+"11","Indirect","2015",1816.24
+"12","Indirect","2016",2515.79
+"13","Indirect","2017",4138.62
+"14","Indirect","2018",4877.78
+"15","Indirect","2019",4345.97
+"16","Indirect","2020",1845.95
+"17","Indirect","2021",3273.85
+"18","Indirect","2022",6180.72
+"19","Laboratory Analyses","2005",13034.6
+"20","Laboratory Analyses","2006",15579.99
+"21","Laboratory Analyses","2007",16816.61
+"22","Laboratory Analyses","2008",15513.18
+"23","Laboratory Analyses","2009",8387.86
+"24","Laboratory Analyses","2010",11124
+"25","Laboratory Analyses","2011",8726.5
+"26","Laboratory Analyses","2012",8534.5
+"27","Laboratory Analyses","2013",11853.1
+"28","Laboratory Analyses","2014",9972.6
+"29","Laboratory Analyses","2015",9282.2
+"30","Laboratory Analyses","2016",0
+"31","Laboratory Analyses","2017",8871.8
+"32","Laboratory Analyses","2018",11296.3
+"33","Laboratory Analyses","2019",10120.35
+"34","Laboratory Analyses","2020",3564.48
+"35","Laboratory Analyses","2021",8795
+"36","Laboratory Analyses","2022",13135
+"37","Other","2005",11.34
+"38","Other","2006",37.86
+"39","Other","2007",149.49
+"40","Other","2008",603.08
+"41","Other","2009",183.33
+"42","Other","2010",1492.06
+"43","Other","2011",1030.06
+"44","Other","2012",178.4
+"45","Other","2013",15.92
+"46","Other","2014",66.19
+"47","Other","2015",114.37
+"48","Other","2016",119.69
+"49","Other","2017",447.15
+"50","Other","2018",328.61
+"51","Other","2019",521.81
+"52","Other","2020",116.79
+"53","Other","2021",179.34
+"54","Other","2022",300
+"55","Staff","2005",0
+"56","Staff","2006",728.67
+"57","Staff","2007",4284
+"58","Staff","2008",4830.22
+"59","Staff","2009",2835.51
+"60","Staff","2010",691.15
+"61","Staff","2011",0
+"62","Staff","2012",1065.28
+"63","Staff","2013",1664.91
+"64","Staff","2014",2876.97
+"65","Staff","2015",7098.14
+"66","Staff","2016",4239.72
+"67","Staff","2017",8896.07
+"68","Staff","2018",6555.33
+"69","Staff","2019",7482.18
+"70","Staff","2020",4249.31
+"71","Staff","2021",818.89
+"72","Staff","2022",4016.14
+"73","Supplies and Equipment","2005",32.08
+"74","Supplies and Equipment","2006",141.35
+"75","Supplies and Equipment","2007",296.96
+"76","Supplies and Equipment","2008",562.28
+"77","Supplies and Equipment","2009",406.07
+"78","Supplies and Equipment","2010",522.31
+"79","Supplies and Equipment","2011",352.67
+"80","Supplies and Equipment","2012",837.01
+"81","Supplies and Equipment","2013",495.83
+"82","Supplies and Equipment","2014",335.87
+"83","Supplies and Equipment","2015",407.33
+"84","Supplies and Equipment","2016",484.35
+"85","Supplies and Equipment","2017",648.36
+"86","Supplies and Equipment","2018",522.98
+"87","Supplies and Equipment","2019",608.44
+"88","Supplies and Equipment","2020",180
+"89","Supplies and Equipment","2021",1141.3
+"90","Supplies and Equipment","2022",2493.49

@@ -516,7 +516,7 @@
     "href": "finance_history.html",
     "title": "Appendix C — Project Financial History",
     "section": "",
-    "text": "D Summary\nDownload Kenai River Water Quality Monitoring Project Partner Request Letter (Draft)\n[Draft; writing In Progress 10/28/2024. This will summarise information about both the incoming Memorandum of Understanding renewal and financial needs]",
+    "text": "D Summary\nDownload Kenai River Water Quality Monitoring Project Partner Request Letter",
     "crumbs": [
       "Appendices",
       "<span class='chapter-number'>C</span>  <span class='chapter-title'>Project Financial History</span>"
@@ -527,7 +527,7 @@
     "href": "finance_history.html#inflation-leads-to-declining-project-income",
     "title": "Appendix C — Project Financial History",
     "section": "D.1 Inflation leads to declining project income",
-    "text": "D.1 Inflation leads to declining project income\nSince the year 2005, inflation of the US dollar has reduced it’s value by 56%2. Figure D.1 plots this trend from 2005 - 2023.\n\n\n\n\n\n\n\n\n\nFigure D.1: Inflation Adjusted Value of $1.00, Years 2005 - 2023\n\n\n\n\n\n\n\nDownload figure source data, Inflation History data of US Dollar 2005 - 2023\n\n\n\nAdjusted for inflation, project income has seen a steady decline from 2005 - 2022. Figure D.2 displays inflation adjusted project income history.\n\n\n\n\n\n\n\n\nFigure D.2: Project Income (Inflation Adjusted) and Expenses, 2005 - 2022",
+    "text": "D.1 Inflation leads to declining project income\nSince the year 2005, inflation of the US dollar has reduced it’s value by 56%2. Figure D.1 plots this trend from 2005 - 2023.\n\n\n\n\n\n\n\n\n\nFigure D.1: Inflation Adjusted Value of $1.00, Years 2005 - 2023. Data from https://www.usinflationcalculator.com/.\n\n\n\n\n\n\n\nDownload figure source data, Inflation History data of US Dollar 2005 - 2023\n\n\n\nAdjusted for inflation, project income has seen a steady decline in purchasing power from 2005 - 2022. Figure D.2 displays inflation adjusted project income and expenses history.\n\n\n\n\n\n\n\n\nFigure D.2: Project Income (Inflation Adjusted) and Expenses, 2005 - 2022",
     "crumbs": [
       "Appendices",
       "<span class='chapter-number'>C</span>  <span class='chapter-title'>Project Financial History</span>"
@@ -538,7 +538,7 @@
     "href": "finance_history.html#income-detail",
     "title": "Appendix C — Project Financial History",
     "section": "D.2 Income Detail",
-    "text": "D.2 Income Detail\nProject income history fluctuates annually as partner contributions vary. Figure D.3 displays annual cash contributions by individual partner organizations. Most partner organizations have continued to contribute a constant annual amount once the original agreement was established.\n\nD.2.1 Notes on income history\nIn 2022, the project received a lump sum contribution from Kenaitze Indian Tribe that had been intended to be dispersed annually over years 2018 - 2022. Similar levels of annual contribution are not anticipated for future years. Additionally, in 2023 the project received a contribution from Salamatof Tribe via it’s IGAP3 program. As of 2024, the IGAP program is no longer active with Salamatof Tribe, thus further cash contributions are not anticipated.\n\n\n\n\n\n\n\n\nFigure D.3: Income by partner organization\n\n\n\n\n\nWith the atypical timing and receipt of funds from Kenaitze and Salamatof, the project saw increased income in 2022 and 2023; see Figure D.4. However as seen in Figure D.5, when adjusted for inflation, even these two high-income years are lower than typical total annual project income received through year 2014.\n\n\n\n\n\n\n\n\nFigure D.4: Project income by partner organization\n\n\n\n\n\n\n\n\n\n\n\n\n\nFigure D.5: Project income by partner organization, adjusted for inflation relative from 2005 - 2023\n\n\n\n\n\n\n\n\n\n\n\n\n\nFigure D.6: Total annual project income, adjusted for inflation relative from 2005 - 2023. Accounting for inflation, year 2023 annual project income is 31% lower (~$6,619 less) than year 2005.",
+    "text": "D.2 Income Detail\nProject income history fluctuates annually as partner contributions vary. Figure D.3 below displays annual cash contributions by individual partner organizations. Most partner organizations have continued to contribute a constant annual amount once the original agreement was established.\n\nD.2.1 Notes on income history\nIn 2022, the project received a lump sum contribution from Kenaitze Indian Tribe that had originally been intended to be dispersed annually over years 2018 - 2022. Similar levels of annual contribution are not anticipated for future years. Additionally, in 2023 the project received a contribution from Salamatof Tribe via it’s IGAP3 program. As of 2024, the IGAP program is no longer active with Salamatof Tribe, thus further cash contributions are not anticipated.\n\n\n\n\n\n\n\n\nFigure D.3: Income by partner organization\n\n\n\n\n\nWith the atypical timing and receipt of funds from Kenaitze and Salamatof, the project saw increased income in 2022 and 2023; see Figure D.4. However as seen in Figure D.5, when adjusted for inflation, even these two high-income years are lower than typical total annual project income received through year 2014.\n\n\n\n\n\n\n\n\nFigure D.4: Project income by partner organization\n\n\n\n\n\n\n\n\n\n\n\n\n\nFigure D.5: Project income by partner organization, adjusted for inflation relative from 2005 - 2023\n\n\n\n\n\n\n\n\n\n\n\n\n\nFigure D.6: Total annual project income, adjusted for inflation relative from 2005 - 2023. Accounting for inflation, year 2023 purchasing power is 31% lower (~$6,619 less) than year 2005.",
     "crumbs": [
       "Appendices",
       "<span class='chapter-number'>C</span>  <span class='chapter-title'>Project Financial History</span>"
@@ -560,7 +560,7 @@
     "href": "finance_history.html#projected-2025-expenses",
     "title": "Appendix C — Project Financial History",
     "section": "E.2 Projected 2025 Expenses",
-    "text": "E.2 Projected 2025 Expenses\n\nProjected 2025 income and expenses are detailed in this Google Sheet: https://docs.google.com/spreadsheets/d/1VbYnY4f8eyhQwbgrpnDrOTIJEsu7pkg_uMbVN5kecKA/edit?gid=1388741346#gid=1388741346\nAs of November 2024, a projected income gap of $20,045.84 exists",
+    "text": "E.2 Projected 2025 Expenses\n\nProjected 2025 income and expenses are detailed in this Google Sheet: https://docs.google.com/spreadsheets/d/1VbYnY4f8eyhQwbgrpnDrOTIJEsu7pkg_uMbVN5kecKA/edit?gid=1388741346#gid=1388741346\nAs of November 2024, a projected income gap of $20,045.84 exists for year 2025.",
     "crumbs": [
       "Appendices",
       "<span class='chapter-number'>C</span>  <span class='chapter-title'>Project Financial History</span>"
