@@ -1,18 +1,55 @@
-"characteristic_name","reg_unit","reg_agency","reg_agency_source","drinking_water","stock_water","irrigation_water"
-"Antimony","ug/l","ADEC","2010 toxicsbook.xls",6,NA,NA
-"Arsenic","ug/l","ADEC","2010 toxicsbook.xls",10,50,100
-"Barium","ug/l","ADEC","2010 toxicsbook.xls",2000,NA,NA
-"Beryllium","ug/l","ADEC","2010 toxicsbook.xls",4,NA,100
-"Boron","ug/l","ADEC","2010 toxicsbook.xls",NA,NA,750
-"Cadmium","ug/l","ADEC","2010 toxicsbook.xls",5,10,10
-"Chromium","ug/l","ADEC","2010 toxicsbook.xls",100,NA,100
-"Cobalt","ug/l","ADEC","2010 toxicsbook.xls",NA,NA,50
-"Copper","ug/l","ADEC","2010 toxicsbook.xls",NA,NA,200
-"Iron","ug/l","ADEC","2010 toxicsbook.xls",NA,NA,5000
-"Lead","ug/l","ADEC","2010 toxicsbook.xls",NA,50,5000
-"Molybdenum","ug/l","ADEC","2010 toxicsbook.xls",NA,NA,10
-"Nickel","ug/l","ADEC","2010 toxicsbook.xls",100,NA,200
-"Selenium","ug/l","ADEC","2010 toxicsbook.xls",50,10,20
-"Thallium","ug/l","ADEC","2010 toxicsbook.xls",2,NA,NA
-"Vanadium","ug/l","ADEC","2010 toxicsbook.xls",NA,NA,100
-"Zinc","ug/l","ADEC","2010 toxicsbook.xls",NA,NA,2000
+"characteristic_name","reg_unit","Standard","value"
+"Antimony","ug/l","drinking_water",6
+"Antimony","ug/l","stock_water",NA
+"Antimony","ug/l","irrigation_water",NA
+"Arsenic","ug/l","drinking_water",10
+"Arsenic","ug/l","stock_water",50
+"Arsenic","ug/l","irrigation_water",100
+"Barium","ug/l","drinking_water",2000
+"Barium","ug/l","stock_water",NA
+"Barium","ug/l","irrigation_water",NA
+"Beryllium","ug/l","drinking_water",4
+"Beryllium","ug/l","stock_water",NA
+"Beryllium","ug/l","irrigation_water",100
+"Boron","ug/l","drinking_water",NA
+"Boron","ug/l","stock_water",NA
+"Boron","ug/l","irrigation_water",750
+"Cadmium","ug/l","drinking_water",5
+"Cadmium","ug/l","stock_water",10
+"Cadmium","ug/l","irrigation_water",10
+"Chromium","ug/l","drinking_water",100
+"Chromium","ug/l","stock_water",NA
+"Chromium","ug/l","irrigation_water",100
+"Cobalt","ug/l","drinking_water",NA
+"Cobalt","ug/l","stock_water",NA
+"Cobalt","ug/l","irrigation_water",50
+"Copper","ug/l","drinking_water",NA
+"Copper","ug/l","stock_water",NA
+"Copper","ug/l","irrigation_water",200
+"Iron","ug/l","drinking_water",NA
+"Iron","ug/l","stock_water",NA
+"Iron","ug/l","irrigation_water",5000
+"Lead","ug/l","drinking_water",NA
+"Lead","ug/l","stock_water",50
+"Lead","ug/l","irrigation_water",5000
+"Molybdenum","ug/l","drinking_water",NA
+"Molybdenum","ug/l","stock_water",NA
+"Molybdenum","ug/l","irrigation_water",10
+"Nickel","ug/l","drinking_water",100
+"Nickel","ug/l","stock_water",NA
+"Nickel","ug/l","irrigation_water",200
+"Selenium","ug/l","drinking_water",50
+"Selenium","ug/l","stock_water",10
+"Selenium","ug/l","irrigation_water",20
+"Thallium","ug/l","drinking_water",2
+"Thallium","ug/l","stock_water",NA
+"Thallium","ug/l","irrigation_water",NA
+"Total Nitrate/Nitrite-N","ug/l","drinking_water",10000
+"Total Nitrate/Nitrite-N","ug/l","stock_water",NA
+"Total Nitrate/Nitrite-N","ug/l","irrigation_water",NA
+"Vanadium","ug/l","drinking_water",NA
+"Vanadium","ug/l","stock_water",NA
+"Vanadium","ug/l","irrigation_water",100
+"Zinc","ug/l","drinking_water",NA
+"Zinc","ug/l","stock_water",NA
+"Zinc","ug/l","irrigation_water",2000

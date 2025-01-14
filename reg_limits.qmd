@@ -255,10 +255,7 @@ However, as of `r Sys.Date()` it is unclear which specific hydrocarbon parameter
 
 ```{r echo = F}
 
-# WORKING HERE 1/7/2025
-# 1) summarise hydrocarbons
-# 2) modify boxplot to read in seperate data source for btex
-
+# prepare static threshold reg value for BTEX
 hydrocarbon_reg_vals <- read_xlsx("other/input/regulatory_limits/master_reg_limits.xlsx", sheet = "static_regulatory_values") %>%
   filter(static_category == "hydrocarbons") %>%
   remove_empty() %>%
@@ -271,10 +268,10 @@ hydrocarbon_reg_vals <- read_xlsx("other/input/regulatory_limits/master_reg_limi
   select(-"NA")
 
 # define directory
-dir <- "other/input/regulatory_limits/formatted_reg_vals/static_metals_reg_vals.csv"
+dir <- "other/input/regulatory_limits/formatted_reg_vals/hydrocarbon_reg_vals.csv"
 
 # export csv
-write.csv(static_metals_reg_vals, dir, row.names = F)
+write.csv(hydrocarbon_reg_vals, dir, row.names = F)
 
 # make table viewable
 embed_file(dir, text = "Download Regulatory Limits for Hydrocarbons with Static Regulatory Threshold Values")
@@ -289,13 +286,43 @@ For each sampling event with available data, we calculated the sum of the parame
 
 To prepare our existing data to be assessed against this standard, we addressed the following issues:
 
--   In some cases, BTEX is quantified as a total mixture. In other cases, the individual substances are quantified separately. In yet other cases, both the individual values and the total mixture values are reported separately. To create a consistent parameter, we summed the total quantities of benzene, toluene, ethylbenzene, and xylene by unique sampling event (unique location/time) when it had not already been reported as such.
+-   In some cases, BTEX is quantified as a total mixture. In other cases, the individual substances are quantified separately. 
+
+-   In yet other cases, both the individual values and the total mixture values are reported separately. 
+
+-   To create a consistent parameter, we summed the total quantities of benzene, toluene, ethylbenzene, and xylene by unique sampling event (unique location/time) when it had not already been reported as such.
 
 -   In some cases, multiple isomers of the same hydrocarbon are quantified (e.g. o-xylene vs m,p-xylene). In these cases, we summed the total quantity of the substance for all isomers.
 
 ```{r echo = F}
 
 xylene_isomers <- c("m,p-Xylene" = "Xylene","o-Xylene" = "Xylene")
+
+
+# reconsider the approach below, as it it removes all associated info. try something that grepl select for containing "xylene"?
+
+
+# Step 1: Aggregate "Volatile" rows
+volatile_summary <- dat %>%
+  filter(result_sample_fraction_text == "Volatile") %>%
+  group_by(activity_identifier, result_sample_fraction_text) %>%
+  summarise(
+    result_measure_value = sum(result_measure_value, na.rm = TRUE),
+    .groups = "drop"
+  )
+
+# Step 2: Combine with non-volatile rows
+z <- dat %>%
+  filter(result_sample_fraction_text != "Volatile") %>%
+  bind_rows(volatile_summary)
+
+
+
+
+
+
+
+
 
 btex_dat <- dat %>%
   filter(result_sample_fraction_text == "Volatile") %>%
@@ -312,7 +339,7 @@ btex_dat <- dat %>%
   mutate(match = case_when(
     as.character(`Benzene, toluene, ethyl benzene, xylenes mix`) == as.character(btex_sum) ~ "Y",
     TRUE ~ "N")) %>%
-  # for instances where no provided value exists, use calculated value
+  # for instances where no provided sum of volatiles exists, use the calculated value
   mutate(`Benzene, toluene, ethyl benzene, xylenes mix` = case_when(
     is.na(`Benzene, toluene, ethyl benzene, xylenes mix`) ~ sum(Benzene,Ethylbenzene,Toluene,Xylene,`o-Xylene`,`m,p-Xylene`, na.rm = T),
     TRUE ~ `Benzene, toluene, ethyl benzene, xylenes mix`
@@ -321,15 +348,19 @@ btex_dat <- dat %>%
   rename(result_measure_value = `Benzene, toluene, ethyl benzene, xylenes mix`) %>%
   mutate(characteristic_name = "Benzene, toluene, ethyl benzene, xylenes mix")
 
-  # types of issues addressed in preparing hydrocarbon data
+# types of issues addressed in preparing BTEX data
 
 # - value exists only for provided sum column (we left these as is)
-# - no provided value exists, only calculated (we used the calculated value)
+# - no provided sum value exists, only calculated (we used the calculated value)
 
 
-# next, replace old volatiles data with the dataframe above. rejoin to site info. task for 1/9/2025
+# next, replace old volatiles data in the overall dataframe with the dataframe above. rejoin to site info. 
 
-# to read this data source in separately for boxplots, try using case_when within read.csv to choose one of two data sources
+## filter out old volatiles data from overall data
+
+
+
+# next, to read this data source in separately for boxplots, try using case_when within read.csv to choose one of two data sources
   
 
 
