@@ -319,11 +319,11 @@ z <- dat %>%
 
 
 
+# junk above here
 
 
 
-
-
+# 1.) aggregate all volatiles data to sum into "`Benzene, toluene, ethyl benzene, xylenes mix"
 btex_dat <- dat %>%
   filter(result_sample_fraction_text == "Volatile") %>%
   select(activity_identifier,characteristic_name,result_measure_value) %>%
@@ -347,6 +347,14 @@ btex_dat <- dat %>%
   select(activity_identifier,`Benzene, toluene, ethyl benzene, xylenes mix`) %>%
   rename(result_measure_value = `Benzene, toluene, ethyl benzene, xylenes mix`) %>%
   mutate(characteristic_name = "Benzene, toluene, ethyl benzene, xylenes mix")
+
+
+## WORKING HERE 1/14/2025
+
+
+# 2.) create seperate dataframe of volatiles only from overal dataset
+all_volatiles <- dat %>%
+  filter(result_sample_Fraction_text == "Volatile")
 
 # types of issues addressed in preparing BTEX data
 
