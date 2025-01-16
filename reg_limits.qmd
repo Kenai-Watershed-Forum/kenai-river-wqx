@@ -167,9 +167,12 @@ These values are graphically displayed in the following chapters. Rather than ju
 
 ```{r echo = F}
 
+# define metals with hardness dependent criteria
+metals_hcrit <- c("Cadmium","Chromium","Copper","Lead","Nickel","Silver","Zinc")
+
 # reduce overall dataset to just metals with hardness-dependent parameters
 dat_metals_hard_dependent <- dat %>%
-  filter(characteristic_name %in% c("Cadmium","Chromium","Copper","Lead","Nickel","Silver","Zinc"))
+  filter(characteristic_name %in% metals_hcrit)
 
 # join calculation parameters to overall dataset
 hardness_dependent_metals_thresholds <- full_join(dat_metals_hard_dependent, diss_metals_hard_param, by = "characteristic_name") %>%
@@ -201,7 +204,7 @@ hardness_dependent_metals_thresholds <- full_join(dat_metals_hard_dependent, dis
 #trib_mainstem, tributary_name, site_name, season, fw_acute_std, fw_chronic_std) %>%
   
   
-  # note that all dissolved metals units are in ug/l, and all hardness units are in mg/l; as provided in the ADEC spreadsheet referenced earlier in this document (toxicsbook-adec-wqstandards-01-11-24)
+# note that all dissolved metals units are in ug/l, and all hardness units are in mg/l; as provided in the ADEC spreadsheet referenced earlier in this document (toxicsbook-adec-wqstandards-01-11-24)
   
   # calculate when exceedences occur
   ## acute
@@ -226,12 +229,10 @@ embed_file(dir, text = "Hardness Dependent Regulatory Thresholds for Metals - Ke
 
 # it appears that export from EPA WQX of 2000 - 2014 data does not include status of samples as DUP or Trip Blank. Are results included at all? Also note that from Summer 2022 - present we are also using field blanks
 
-# 11/16/23 working here to set up formulas for calculated criteria, see spreadsheet other/input/regulatory_limits
+# join hardness info and calculations and results back to verall dataframe
+dat <- left_join(dat,hardness_dependent_metals_thresholds)
 
-# 1.) read in static reg values
-# 2.) calculate acute values
-# 3.) calculate chronic values
-# 4.) calculate other condition-dependent values (e.g. temp)
+
   
 ```
 
@@ -302,6 +303,8 @@ To prepare our existing data to be assessed against this standard, we addressed 
 
 # specify isomers to be aggregaed into single compound
 xylene_isomers <- c("m,p-Xylene" = "Xylene","o-Xylene" = "Xylene")
+
+# summarise btex characteristic_name because it is long and cumbsersome
 
 # 1.) aggregate all volatiles data to sum into "`Benzene, toluene, ethyl benzene, xylenes mix"
 btex_dat <- dat %>%
@@ -420,6 +423,9 @@ A variety of fecal coliform standards are described in ADEC standards ([18 AAC 7
 -   Geometic mean within a 30-day period
 
 In this project, we collect only single samples on single days for each site. Thus, data are not structured to be assessed against existing state standards. In this report, we display two fixed threshold values for a) harvesting aquatic life and b) secondary recreation (contact with water), but it should be notes that single values above these lines do not represent regulatory exceedences.
+
+- helpful data to understand where/when more monitoring is needed
+- important to help understand spatial trends
 
 Additional sampling beyond this project is needed to reasonably characterize bacteria conditions int he Kenai River, and several major efforts between 2010 - 2020 better achieved this. For more information and detailed reports on Kenai River bacteria monitoring, visit https://www.kenaiwatershed.org/other-water-research/ and click on "Bacteria Monitoring."
 
