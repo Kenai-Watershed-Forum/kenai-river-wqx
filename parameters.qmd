@@ -243,6 +243,23 @@ site_tbl <- read_csv("other/input/baseline_sites.csv") %>%
 
 ```{r echo = F, warning=FALSE, message=FALSE}
 
+# make corrections where known errors exist from wqx import
+
+# UNITS
+
+# bacteria - fecal coliform should all be "cfu/100ml"
+dat <- dat %>%
+  mutate(`ResultMeasure/MeasureUnitCode` = case_when(
+    CharacteristicName == "Fecal Coliform" ~ "cfu/100ml",
+    TRUE ~ `ResultMeasure/MeasureUnitCode`))
+
+
+
+```
+
+
+```{r echo = F, warning=FALSE, message=FALSE}
+
 ## Miscellaneous tasks
 
 ### Additional site info
@@ -321,16 +338,16 @@ dat <- anti_join(dat,outliers)
 ```
 
 ```{r echo = F, warning=FALSE, message=FALSE}
-# write finalized data that will be used for graphing and analysis to external location so it can be sourced by other qmd docs
-write.csv(dat,"other/output/analysis_format/baseline_analysis_format.csv",row.names = F)
+# write finalized data that will be used for graphing and analysis to external location 
+# this export format represents the most granular presentation, nothing has been aggregated. The "reg_limits.qmd" script aggregates volatiles, for example
+write.csv(dat,"other/output/analysis_format/baseline_export_format.csv",row.names = F)
 
-z <- read.csv("other/output/analysis_format/baseline_analysis_format.csv")
+z <- read.csv("other/output/analysis_format/baseline_export_format.csv")
 z1 <- data.frame(unique(z$characteristic_name))
 
 
 # https://stackoverflow.com/questions/40350230/variable-hline-in-ggplot-with-facet
 # possibly a useful approach, but maybe simpler because in our example the lines don't need to vary by panel
 
-# working here 2/20/23
 
 ```

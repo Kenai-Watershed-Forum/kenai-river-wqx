@@ -35,17 +35,9 @@ trib_order <- c("No Name Creek",
 # read in prepared data from local directory.
 # for most parameter types, read in data directly downloaded from EPA WQX.
 
-# For hydrocarbons, we want to read in a separate data source, because we had to modify the parameter names 
-# and summarise data from individual isomers into general BTEX (see "Regulatory Limits" chapter)
-
-# To address this, reference a function that reads in the summarised hydrocarbon data source separately 
-# from the overall raw results.
-
-# (function goes here, replaces line below)
-
-# source("functions/data_source_function.R")
-# read_csv_based_on_condition()
-
+# note that we are reading in "analysis_format" rather than "export_format", which is in the same directory
+# the "export_format" dataframe has been made less granular and is thus not uploaded to EPA WQX. The following was performed on the
+# "analysis_format" version: 1) Aggregate all organic volatiles to BTEX in cases where individual volatiles data was provided
 dat <- read.csv("other/output/analysis_format/baseline_analysis_format.csv")
 
 
