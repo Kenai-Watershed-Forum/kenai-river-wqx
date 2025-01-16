@@ -37,8 +37,8 @@ book:
       # diesel_range_organics.qmd
       #- gas_range_organics.qmd
       #- residual_range_organics.qmd
-      #- total_btex.qmd
-      - benzene.qmd
+      - btex.qmd
+      #- benzene.qmd
       - fecal_coliform.qmd
       - pH.qmd
       - specific_conductance.qmd

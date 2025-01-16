@@ -11,8 +11,6 @@ format:
     code-summary: "Show the code"
 ---
 
-
-
 ```{r echo = F, warning=FALSE, message=FALSE,fig.height=10}
 
 # set parameter

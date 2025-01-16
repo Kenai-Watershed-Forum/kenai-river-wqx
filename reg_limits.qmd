@@ -64,7 +64,7 @@ static_metals_reg_vals <- read_xlsx("other/input/regulatory_limits/master_reg_li
          reg_agency_source = source) 
 
 # source formatted data
-dat <- read.csv("other/output/analysis_format/baseline_analysis_format.csv")
+dat <- read.csv("other/output/analysis_format/baseline_export_format.csv")
   
 
 # join static regulatory values to parameter results, and identify when/where exceedences occur
@@ -117,7 +117,7 @@ For sampling events with duplicate samples, we calculated average hardness.
 # calculate hardness for all sample events in project history with available data
 
 # source formatted data
-dat <- read.csv("other/output/analysis_format/baseline_analysis_format.csv")
+dat <- read.csv("other/output/analysis_format/baseline_export_format.csv")
 
 # calculate hardness column  
 hard <- dat %>%
@@ -251,7 +251,7 @@ Note: the 2016 baseline report presents hydrocarbon data chapters structured as 
 
 -   Residual Range Organics
 
-However, as of `r Sys.Date()` it is unclear which specific hydrocarbon parameters, or grouped sums of parameters, have equivalent names in our data set downloaded from the EPA WQX. As a result, in this report we will structure data to simply assess BTEX values against the ADEC regulatory standard. There may be federal standards that also apply, to be addressed later.
+However, as of `r Sys.Date()` it is unclear which specific hydrocarbon parameters, or grouped sums of hydrocarbon parameters, have equivalent names in our data set downloaded from the EPA WQX. As a result, in this report we will structure data to simply assess BTEX values against the ADEC regulatory standard. There may be federal standards that also apply to hydrocarbons, to be addressed later.
 
 ```{r echo = F}
 
@@ -282,13 +282,13 @@ embed_file(dir, text = "Download Regulatory Limits for Hydrocarbons with Static 
 
 Total aromatic hydrocarbons (TAH) means the sum of the following volatile monoaromatic hydrocarbon compounds: benzene, toluene, ethylbenzene, and the xylene isomers, commonly called BTEX. The Alaska Dept of Environmental Conversation describes a maximum static regulatory value of 10 ug/l BTEX..
 
-For each sampling event with available data, we calculated the sum of the parameters that compose BTEX and compared them to a static threshold value.
+For each sampling event with available hydrocarbons data, we calculated the sum of the parameters that compose BTEX and compared them to a static threshold value.
 
 To prepare our existing data to be assessed against this standard, we addressed the following issues:
 
--   In some cases, BTEX is quantified as a total mixture. In other cases, the individual substances are quantified separately. 
+-   In some cases, BTEX is quantified as a total mixture. In other cases, the individual substances are instead quantified separately.
 
--   In yet other cases, both the individual values and the total mixture values are reported separately. 
+-   In yet other cases, both the values of individual components of BTEX and the total mixture values are reported separately.
 
 -   To create a consistent parameter, we summed the total quantities of benzene, toluene, ethylbenzene, and xylene by unique sampling event (unique location/time) when it had not already been reported as such.
 
@@ -296,32 +296,12 @@ To prepare our existing data to be assessed against this standard, we addressed 
 
 ```{r echo = F}
 
+# 1/15/2025: Consider moving this code chunk to "parameters.qmd". It could be logical to have it there along with the read-in of original data. I think this is the only code chunk in this .qmd that manages the original data; all other code chunks just have to do with the regulatory limits
+
+# Goal here: replace old volatiles data in the overall dataframe with the aggregagated btex data we discussed above. 
+
+# specify isomers to be aggregaed into single compound
 xylene_isomers <- c("m,p-Xylene" = "Xylene","o-Xylene" = "Xylene")
-
-
-# reconsider the approach below, as it it removes all associated info. try something that grepl select for containing "xylene"?
-
-
-# Step 1: Aggregate "Volatile" rows
-volatile_summary <- dat %>%
-  filter(result_sample_fraction_text == "Volatile") %>%
-  group_by(activity_identifier, result_sample_fraction_text) %>%
-  summarise(
-    result_measure_value = sum(result_measure_value, na.rm = TRUE),
-    .groups = "drop"
-  )
-
-# Step 2: Combine with non-volatile rows
-z <- dat %>%
-  filter(result_sample_fraction_text != "Volatile") %>%
-  bind_rows(volatile_summary)
-
-
-
-
-# junk above here
-
-
 
 # 1.) aggregate all volatiles data to sum into "`Benzene, toluene, ethyl benzene, xylenes mix"
 btex_dat <- dat %>%
@@ -345,32 +325,33 @@ btex_dat <- dat %>%
     TRUE ~ `Benzene, toluene, ethyl benzene, xylenes mix`
   )) %>%
   select(activity_identifier,`Benzene, toluene, ethyl benzene, xylenes mix`) %>%
-  rename(result_measure_value = `Benzene, toluene, ethyl benzene, xylenes mix`) %>%
+  rename(MEAN_result_measure_value = `Benzene, toluene, ethyl benzene, xylenes mix`) %>%
   mutate(characteristic_name = "Benzene, toluene, ethyl benzene, xylenes mix")
 
 
-## WORKING HERE 1/14/2025
-
-
-# 2.) create seperate dataframe of volatiles only from overal dataset
+# 2.) extract a seperate dataframe of only volatiles from overall dataset
 all_volatiles <- dat %>%
-  filter(result_sample_Fraction_text == "Volatile")
+  filter(result_sample_fraction_text == "Volatile")
 
-# types of issues addressed in preparing BTEX data
+# 3.) Use this extracted dataset to match up with the aggregated dataset of volatiles only
+mean_volatiles <- left_join(all_volatiles,btex_dat, by = c("activity_identifier","characteristic_name")) %>%
+  # keep only the values from step 1
+  filter(!is.na(MEAN_result_measure_value)) %>%
+  select(-result_measure_value) %>%
+  rename(result_measure_value = MEAN_result_measure_value)
 
+# 4.) Use complete aggregated volatiles dataset to replace other volatiles info in overall dataset
+dat <- dat %>%
+  filter(is.na(result_sample_fraction_text) | result_sample_fraction_text != "Volatile") %>%
+  # bind aggregated volatiles values back to verall dataset
+  bind_rows(mean_volatiles)
+  
+# types of issues we addressed in preparing BTEX data
 # - value exists only for provided sum column (we left these as is)
 # - no provided sum value exists, only calculated (we used the calculated value)
 
 
-# next, replace old volatiles data in the overall dataframe with the dataframe above. rejoin to site info. 
-
-## filter out old volatiles data from overall data
-
-
-
 # next, to read this data source in separately for boxplots, try using case_when within read.csv to choose one of two data sources
-  
-
 
 ```
 
@@ -379,26 +360,68 @@ all_volatiles <- dat %>%
 ## Nutrients (Nitrogen and Phosphorus)
 
 ```{r echo = F}
+# exploring nutrients data structure
 
-# The parameters in the existing dataset cover two names: 1.) "Inorganic nitrogen (nitrate and nitrite)" and 2.) "Nitrate"
+# specify nutrients parameter names
+nutrients_parameters <- c("Phosphorus","Inorganic nitrogen (nitrate and nitrite)","Nitrate")
 
-# 2016 report: "inorganic nitrogen is generally present in well-aerated, natural streams in the form of nitrate (Glass, 1999)."
+# create nutrients dataframe
+nutrients <- dat %>%
+  filter(characteristic_name %in% nutrients_parameters)
 
-# just different names for the same parameter?
+# nitrogen only
+nitrogen <- nutrients %>%
+  filter(characteristic_name %in% c("Inorganic nitrogen (nitrate and nitrite)","Nitrate"))
+
+# how many observations of "Nitrate"?
+nitrate_count <- dat %>%
+  filter(characteristic_name == "Nitrate") %>%
+  count() %>%
+  as.character()
+
+# how many observations of "Inorganic nitrogen (nitrate and nitrite)"
+inorganic_n_count <- dat %>%
+  filter(characteristic_name == "Inorganic nitrogen (nitrate and nitrite)") %>%
+  count() %>%
+  as.character()
+
+# note: there appears to be one instance where the analytical method for nitrogen is reported as 200.7(W). Obviously an error, fix it.
 
 ```
 
+The following nurtient parameters names are present in the dataset:
+
+-   "Phosphorus"
+-   "Inorganic nitrogen (nitrate and nitrite)"
+-   "Nitrate"
+
+The previous reports on these data (Guerron Orejuela 2016 and McCard 2007) use only the terms "Nitrate" and "Phosphorus" to describe nutrients.
+
+In our dataset, we have `r nitrate_count` observations of "Nitrate" and `r inorganic_n_count` observations of "Inorganic nitrogen (nitrate and nitrite)." Both of these parameters are reported to use the identical lab analytical method (4500-NO3(E)). For this report, will treat the two parameter names as indistinguishable, and data appears in the figure as such.
+
+
+
 <br>
 
-## Bacteria
+## Fecal Coliform Bacteria
+
+A variety of fecal coliform standards are described in ADEC standards ([18 AAC 70](https://dec.alaska.gov/water/water-quality/standards/)). Fecal coliform bacteria may be assessed against criteria in two ways:
+
+-   Instantaneous point values, where criteria are exceeded if 10% of samples are above threshold within a 30 day period
+-   Geometic mean within a 30-day period
+
+In this project, we collect only single samples on single days for each site. Thus, data are not structured to be assessed against existing state standards. In this report, we display two fixed threshold values for a) harvesting aquatic life and b) secondary recreation (contact with water), but it should be notes that single values above these lines do not represent regulatory exceedences.
+
+Additional sampling beyond this project is needed to reasonably characterize bacteria conditions int he Kenai River, and several major efforts between 2010 - 2020 better achieved this. For more information and detailed reports on Kenai River bacteria monitoring, visit https://www.kenaiwatershed.org/other-water-research/ and click on "Bacteria Monitoring."
 
 ```{r echo = F}
+
 
 # page 15 18 AAC https://www.epa.gov/system/files/documents/2023-05/akwqs-chapter70-2023.pdf
 
 # see description/code for beach project: https://dec.alaska.gov/media/23091/kenai-river-beach-2020-final-report.pdf
 
-
+# the horizontal lines are not appearing in the fecal coliform chapter for some reason, diagnose
 
 ```
 
@@ -407,8 +430,8 @@ all_volatiles <- dat %>%
 ## Total Suspended Solids
 
 ```{r echo = F}
-
 # pg 22 https://www.epa.gov/system/files/documents/2023-05/akwqs-chapter70-2023.pdf
+
 
 
 ```
@@ -471,5 +494,7 @@ embed_file(dir, text = "Download List of pH Regulatory Threshold Values")
 # Total suspended solids
 
 # Field parameters
+
+write.csv(dat,"other/output/analysis_format/baseline_analysis_format.csv", row.names = F)
 
 ```
