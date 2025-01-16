@@ -387,6 +387,13 @@ inorganic_n_count <- dat %>%
   count() %>%
   as.character()
 
+# make all N observations in to just "Nitrate" for characteristics name; see discussion below
+dat <- dat %>%
+  mutate(characteristic_name = case_when(
+    characteristic_name == "Nitrate" ~ "Inorganic nitrogen (nitrate and nitrite)",
+    TRUE ~ characteristic_name))
+
+
 # note: there appears to be one instance where the analytical method for nitrogen is reported as 200.7(W). Obviously an error, fix it.
 
 ```
@@ -435,7 +442,6 @@ Additional sampling beyond this project is needed to reasonably characterize bac
 # pg 22 https://www.epa.gov/system/files/documents/2023-05/akwqs-chapter70-2023.pdf
 
 
-
 ```
 
 <br>
@@ -471,8 +477,6 @@ ph_reg_vals <- read_excel("other/input/regulatory_limits/master_reg_limits.xlsx"
 dir <- "other/input/regulatory_limits/formatted_reg_vals/ph_reg_vals.csv"
 write.csv(ph_reg_vals,dir, row.names = F)
 embed_file(dir, text = "Download List of pH Regulatory Threshold Values")
-
-
 
 
 ```

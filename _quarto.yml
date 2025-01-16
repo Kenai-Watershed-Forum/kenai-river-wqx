@@ -67,6 +67,8 @@ format:
     code-fold: true
     code-summary: "Show the code"
     prefer-html: true
+    
+output-dir: docs
 
   #pdf:
   #  documentclass: scrreprt
