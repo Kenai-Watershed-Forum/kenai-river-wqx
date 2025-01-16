@@ -360,6 +360,8 @@ dat <- dat %>%
 ## Nutrients (Nitrogen and Phosphorus)
 
 ```{r echo = F}
+# TO DO - combine nitrogen names into single parameter!
+
 # exploring nutrients data structure
 
 # specify nutrients parameter names
