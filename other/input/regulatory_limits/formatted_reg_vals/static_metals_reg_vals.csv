@@ -26,9 +26,6 @@
 "Copper","ug/l","drinking_water",NA
 "Copper","ug/l","stock_water",NA
 "Copper","ug/l","irrigation_water",200
-"Iron","ug/l","drinking_water",NA
-"Iron","ug/l","stock_water",NA
-"Iron","ug/l","irrigation_water",5000
 "Lead","ug/l","drinking_water",NA
 "Lead","ug/l","stock_water",50
 "Lead","ug/l","irrigation_water",5000
