@@ -151,15 +151,15 @@ make_boxplot <- function(param) {
   
   
   # define language for plot titles
-  static_plot_type <- "\nStatic Regulatory Values"
+
 
   # tribs
   tribs <- p_trib %+% subset(parameter_dat, trib_mainstem %in% "t") +
-    ggtitle(paste(parameter,"in Kenai River Tributaries ",min_year,"to",max_year,static_plot_type))
+    ggtitle(paste(parameter,"in Kenai River Tributaries ",min_year,"to",max_year))
   
   # mainstem
   ms <- p_ms %+% subset(parameter_dat, trib_mainstem %in% "m") +
-    ggtitle(paste(parameter,"in Kenai River Mainstem ",min_year,"to",max_year,static_plot_type))
+    ggtitle(paste(parameter,"in Kenai River Mainstem ",min_year,"to",max_year))
   
   # place trib and mainstem plot images together
   plot_grid(ms,tribs, align = 'v', ncol = 1)
