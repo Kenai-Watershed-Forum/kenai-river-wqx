@@ -19,7 +19,7 @@ The concentration of lead in the tributaries ranged from a high of 3.92 μg/L at
 
 A trend analysis was conducted using the average and median values for all data collected during the time period between years 2000-2014. The concentrations of lead throughout the entire Kenai River are relatively high in the lower river and decrease as you move towards the upper river (Figure X and Figure X). A similar analysis was done for each sampling station at the Kenai River with results showing that no lead was found in most of the sampling stations before year 2005, after year 2005 when lead has been found it shows a decrease in concentration through time. It is important to note that not every station has an actual reading and in many cases there are very few readings or non- at all.
 
-```{r echo = F, warning=FALSE, message=FALSE,fig.height=10}
+```{r echo = F, warning=FALSE, message=FALSE,fig.height=8, fig.width = 10}
 
 # set parameter
 parameter <- "Lead"
@@ -27,8 +27,6 @@ parameter <- "Lead"
 # source static regulatory criteria boxplot function
 source("functions/static_boxplot_function.R")
 make_boxplot(param = parameter)
-
-# source calculated regulatory criteria plot(s) function
 
 
 # source table download function

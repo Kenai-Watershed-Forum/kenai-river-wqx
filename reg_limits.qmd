@@ -16,7 +16,7 @@ library(readxl)
 library(xfun)
 ```
 
-We calculated regulatory limits based on freshwater quality standards listed from state and federal regulatory agencies. Some regulatory threshold values are static and do not depend on additional environmental parameters, while some threshold values depend on local conditions like hardness, temperature, or pH.
+We calculated regulatory limits based on freshwater quality standards listed from state and/or federal regulatory agencies. Some regulatory threshold values are static and do not depend on additional environmental parameters, while some threshold values depend on local conditions like hardness, temperature, or pH.
 
 We discuss how various parameters are assessed against standards below.
 
@@ -26,7 +26,7 @@ We discuss how various parameters are assessed against standards below.
 
 The metals parameters in the downloadable table below have *static* thresholds assigned.
 
-[Static regulatory values are represented as solid horizontal lines in the parameter-specific chapters that follow.]{.underline} (to do: show graphic example of values above horizontal line here)
+[Static regulatory values are represented as solid horizontal lines in the chapters that follow.]{.underline} (to do: show graphic example of values above horizontal line here)
 
 ```{r echo = F}
 

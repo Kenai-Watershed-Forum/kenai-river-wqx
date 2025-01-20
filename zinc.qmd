@@ -11,49 +11,13 @@ format:
     code-summary: "Show the code"
 ---
 
-Zinc enters surface water naturally through the weathering of bedrock and is an
-essential micronutrient for all plants and animals (USEPA, 1987). Additional zinc can
-enter surface water because it is widely used for galvanizing steel, as an alloy, in rubber, and in paint (USEPA, 1987). More recent studies suggest that higher concentrations of Zinc in suburban areas can be caused by tire wear (USGS, 2012). The ADEC and the
-USEPA have set the standard for zinc ranging from 23.4 to 382.4 μg/L, depending on
-hardness, for the chronic exposure of freshwater aquatic life (see Appendix X) (ADEC,
-2008; USEPA, 2014).
+Zinc enters surface water naturally through the weathering of bedrock and is an essential micronutrient for all plants and animals (USEPA, 1987). Additional zinc can enter surface water because it is widely used for galvanizing steel, as an alloy, in rubber, and in paint (USEPA, 1987). More recent studies suggest that higher concentrations of Zinc in suburban areas can be caused by tire wear (USGS, 2012). The ADEC and the USEPA have set the standard for zinc ranging from 23.4 to 382.4 μg/L, depending on hardness, for the chronic exposure of freshwater aquatic life (see Appendix X) (ADEC, 2008; USEPA, 2014).
 
-The highest level recorded in the mainstem was 2900 μg/L in summer 2000 at
-Mile 21, and the lowest level occurred at Mile 31 in summer 2006 with a concentration of
-0.521 μg/L. In the spring, exceedances occurred at every sampling station except Mile 40
-and Mile 50. More exceedances in the mainstem occurred during the summer with eight
-exceedances at Mile 10.1, seven exceedances at Mile 18, five exceedances at both Mile
-6.5 and Mile 12.5. Mile 21 and Mile 23 present four exceedances. Mile 1.5 and Mile 31
-present three exceedances. Miles 40, 50, 70 and 82 all present two exceedances. Mile 40
-one exceedance (Table 11). The Kenai River estuary had higher median concentrations
-than the rest of the river in spring, during the summer events this pattern was not clear.
-Relatively higher medians also occurred at Mile 31, Mile 21, and Mile 10.1 in the
-summer (Figure X & X).
+The highest level recorded in the mainstem was 2900 μg/L in summer 2000 at Mile 21, and the lowest level occurred at Mile 31 in summer 2006 with a concentration of 0.521 μg/L. In the spring, exceedances occurred at every sampling station except Mile 40 and Mile 50. More exceedances in the mainstem occurred during the summer with eight exceedances at Mile 10.1, seven exceedances at Mile 18, five exceedances at both Mile 6.5 and Mile 12.5. Mile 21 and Mile 23 present four exceedances. Mile 1.5 and Mile 31 present three exceedances. Miles 40, 50, 70 and 82 all present two exceedances. Mile 40 one exceedance (Table 11). The Kenai River estuary had higher median concentrations than the rest of the river in spring, during the summer events this pattern was not clear. Relatively higher medians also occurred at Mile 31, Mile 21, and Mile 10.1 in the summer (Figure X & X).
 
-Zinc concentrations in the tributaries ranged from a high of 247 μg/L in Beaver
-Creek during spring 2011 to a low of 0.462 μg/L in Russian River during spring 2009. In
-the spring, exceedances of the criteria occurred eight times at No Name Creek, Beaver
-Creek and Slikok Creek. Seven times at Funny River, four at Soldotna Creek And Killey
-River one at Moose River and Russian River. In the other tributaries, exceedances
-occurred twice at Beaver Creek and Funny River and once at Soldotna Creek and the
-Killey River during the spring. In the summer, exceedances occurred six times at Killey
-River, four times at No Name Creek and Beaver Creek, once at Slikok Creek, Russian
-River and Juneau Creek. Beaver Creek had the highest median of all the tributaries, with
-No Name Creek and Funny River close behind in the spring (Table X). In the summer
-No Name Creek had the highest median of all the tributaries, with Beaver Creek and
-Soldotna Creek close behind. In the tributaries, zinc concentrations and the number of
-exceedances were greater in the spring. In the spring and the summer of 2003, the MRL
-of 50 μg/L was higher than most of the standards, so incidences of exceedance are
-unknown in many of these samples (Figure X & X).
+Zinc concentrations in the tributaries ranged from a high of 247 μg/L in Beaver Creek during spring 2011 to a low of 0.462 μg/L in Russian River during spring 2009. In the spring, exceedances of the criteria occurred eight times at No Name Creek, Beaver Creek and Slikok Creek. Seven times at Funny River, four at Soldotna Creek And Killey River one at Moose River and Russian River. In the other tributaries, exceedances occurred twice at Beaver Creek and Funny River and once at Soldotna Creek and the Killey River during the spring. In the summer, exceedances occurred six times at Killey River, four times at No Name Creek and Beaver Creek, once at Slikok Creek, Russian River and Juneau Creek. Beaver Creek had the highest median of all the tributaries, with No Name Creek and Funny River close behind in the spring (Table X). In the summer No Name Creek had the highest median of all the tributaries, with Beaver Creek and Soldotna Creek close behind. In the tributaries, zinc concentrations and the number of exceedances were greater in the spring. In the spring and the summer of 2003, the MRL of 50 μg/L was higher than most of the standards, so incidences of exceedance are unknown in many of these samples (Figure X & X).
 
-A trend analysis was conducted using the average and median values for all data
-collected during the time period between years 2000-2014. The concentrations of zinc
-throughout the entire Kenai River show a relative decrease from Mile 1.5 to Mile 50 and
-a relative increase at Mile 70 and Mile 82. This pattern is visible during both the spring
-and summer sampling events (Figure X-X). A similar analysis was run for each
-sampling station at the Kenai River. During the spring all the stations present a relative
-decrease in zinc concentrations until year 2008, after that a low increase is apparent at all stations. For the summer the same general trend is visible, with a stronger increase
-pattern after year 2008 (Figure X-X)
+A trend analysis was conducted using the average and median values for all data collected during the time period between years 2000-2014. The concentrations of zinc throughout the entire Kenai River show a relative decrease from Mile 1.5 to Mile 50 and a relative increase at Mile 70 and Mile 82. This pattern is visible during both the spring and summer sampling events (Figure X-X). A similar analysis was run for each sampling station at the Kenai River. During the spring all the stations present a relative decrease in zinc concentrations until year 2008, after that a low increase is apparent at all stations. For the summer the same general trend is visible, with a stronger increase pattern after year 2008 (Figure X-X)
 
 ```{r echo = F, warning=FALSE, message=FALSE,fig.height=10}
 

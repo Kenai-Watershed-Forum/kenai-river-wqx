@@ -11,32 +11,11 @@ format:
     code-summary: "Show the code"
 ---
 
-Naturally present in many rocks and soils, iron is required by plants and animals
-for metabolism (Glass, 2001). Sources of detrimental levels of iron are industrial waste,
-mining, and iron-rich groundwater, and when high concentrations of iron react with
-dissolved oxygen, precipitates form that can harm salmon eggs and other aquatic life
-(USEPA, 1976). The ADEC and the USEPA have set the iron standard for the chronic
-exposure of freshwater aquatic life at 1 mg/L (see Appendix X) (ADEC, 2008; USEPA,
-2014).
+Naturally present in many rocks and soils, iron is required by plants and animals for metabolism (Glass, 2001). Sources of detrimental levels of iron are industrial waste, mining, and iron-rich groundwater, and when high concentrations of iron react with dissolved oxygen, precipitates form that can harm salmon eggs and other aquatic life (USEPA, 1976). The ADEC and the USEPA have set the iron standard for the chronic exposure of freshwater aquatic life at 1 mg/L (see Appendix X) (ADEC, 2008; USEPA, 2014).
 
-In the mainstem, the highest concentration of iron was 128 mg/L, which occurred
-at Mile 6.5 during spring 2006, and 0.03 mg/L was the lowest concentration that occurred
-at Mile 70 during spring 2013 (Table X). Mile 1.5 and Mile 6.5 had the highest medians
-during the spring and the summer (Figures X & X). Mile 1.5 and Mile 6.5 both
-exceeded the standard in the majority of samples (Table 13). In the spring, the median at
-Mile 10.1 also exceeded the standard, but the medians from all other mainstem locations
-were below the standard in both the spring and the summer (Figures X & X). There was
-a general upward trend in iron concentration from Kenai Lake to the estuary, especially
-in the summer.
+In the mainstem, the highest concentration of iron was 128 mg/L, which occurred at Mile 6.5 during spring 2006, and 0.03 mg/L was the lowest concentration that occurred at Mile 70 during spring 2013 (Table X). Mile 1.5 and Mile 6.5 had the highest medians during the spring and the summer (Figures X & X). Mile 1.5 and Mile 6.5 both exceeded the standard in the majority of samples (Table 13). In the spring, the median at Mile 10.1 also exceeded the standard, but the medians from all other mainstem locations were below the standard in both the spring and the summer (Figures X & X). There was a general upward trend in iron concentration from Kenai Lake to the estuary, especially in the summer.
 
-The concentrations in the tributaries ranged from a high of 20.5 mg/L in Beaver
-Creek in spring 2006 to Russian River, which had the lowest concentration at below the
-MDL of 0.0027 mg/L (Table X). No Name Creek, Beaver Creek, Slikok Creek, Soldotna
-Creek, Funny River and Moose River all had medians exceeding the standard in Spring
-(Figure 94). No Name Creek and Beaver Creek had medians exceeding the standards
-during summer (Figure X). Russian River had the lowest iron levels with most of the
-samples reported below the MDL or MRL. In both the tributaries and the mainstem, iron
-levels were higher in the spring than in the summer (Figures X-X).
+The concentrations in the tributaries ranged from a high of 20.5 mg/L in Beaver Creek in spring 2006 to Russian River, which had the lowest concentration at below the MDL of 0.0027 mg/L (Table X). No Name Creek, Beaver Creek, Slikok Creek, Soldotna Creek, Funny River and Moose River all had medians exceeding the standard in Spring (Figure 94). No Name Creek and Beaver Creek had medians exceeding the standards during summer (Figure X). Russian River had the lowest iron levels with most of the samples reported below the MDL or MRL. In both the tributaries and the mainstem, iron levels were higher in the spring than in the summer (Figures X-X).
 
 ```{r echo = F, warning=FALSE, message=FALSE,fig.height=10}
 
@@ -45,9 +24,10 @@ parameter <- "Iron"
 
 # source static regulatory criteria boxplot function
 source("functions/static_boxplot_function.R")
-make_boxplot(param = parameter)
 
-# source calculated regulatory criteria plot(s) function
+# source static regulatory criteria boxplot function
+source("functions/static_boxplot_function.R")
+make_boxplot(param = parameter)
 
 
 # source table download function
