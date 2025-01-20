@@ -1,3 +1,13 @@
+# TO DO LIST
+# - symbology for exceedences of acute vs chronic hardness-dependent values
+# - reg values for hydrocarbons, N, P, others
+# - adjust text for referencing plotly objects in all chapters
+# - fix legends
+# - alter pop up windows for plotly
+# - address outliers
+# - make plotly appear on html render, jpg on docx render
+
+
 
 # load packages
 library(tidyverse)
@@ -89,85 +99,84 @@ hline_data <- reg_vals %>%
 
 make_boxplot <- function(param) {
   
- 
-  # create data table for a single parameter
-  paramter_dat <- paste0(parameter,"_dat")
+  # Create data table for a single parameter
   parameter_dat <- dat %>%
-    filter(characteristic_name == parameter) %>%
+    filter(characteristic_name == param) %>%
     mutate(tributary_name = factor(tributary_name, levels = trib_order)) %>%
-    
-    # join regulatory values
-    left_join(reg_vals, by = "characteristic_name" )
+    left_join(reg_vals, by = "characteristic_name")
   
-  # get unit for parameter
+  # Get unit for parameter
   unit <- unique(parameter_dat$result_measure_measure_unit_code)
   
-  # set  min time extent
-  min_year <- parameter_dat %>%
-    mutate(year = year(activity_start_date)) %>%
-    summarise(min_year = min(year))
-  min_year <- as.character(min_year$min_year)
+  # Set min and max time extent
+  min_year <- as.character(min(year(parameter_dat$activity_start_date)))
+  max_year <- as.character(max(year(parameter_dat$activity_start_date)))
   
-  # set  max time extent
-  max_year <- parameter_dat %>%
-    mutate(year = year(activity_start_date)) %>%
-    summarise(max_year = max(year))
-  max_year <- as.character(max_year$max_year)
+  # Calculate y-axis ranges for tributaries and mainstem separately
+  trib_data <- subset(parameter_dat, trib_mainstem == "t")
+  mainstem_data <- subset(parameter_dat, trib_mainstem == "m")
   
-  # trib general plot
-  p_trib <- parameter_dat %>%
-    ggplot() +
+  y_min_trib <- min(trib_data$result_measure_value, na.rm = TRUE)
+  y_max_trib <- max(trib_data$result_measure_value, na.rm = TRUE)
+  
+  y_min_mainstem <- min(mainstem_data$result_measure_value, na.rm = TRUE)
+  y_max_mainstem <- max(mainstem_data$result_measure_value, na.rm = TRUE)
+  
+  # Define a theme with 20% larger text
+  larger_text_theme <- theme(
+    axis.title = element_text(size = rel(1.2)),
+    axis.text = element_text(size = rel(1.2)),
+    strip.text = element_text(size = rel(1.2)),
+    legend.text = element_text(size = rel(1.2)),
+    legend.title = element_text(size = rel(1.2)),
+    plot.title = element_text(size = rel(1.2), hjust = 0.5)
+  )
+  
+  # Tribs plot
+  p_trib <- ggplot(trib_data, aes(x = factor(tributary_name), y = result_measure_value)) +
     facet_grid(.~season) +
-    geom_boxplot(aes(factor(tributary_name),result_measure_value)) +
-    geom_jitter(aes(factor(tributary_name),result_measure_value), width = 0.1) +
-    ylab(paste0(parameter," (",unit,")")) +
+    geom_boxplot() +
+    geom_jitter(aes(color = fw_acute_exceed), width = 0.1) +
+    ylab(paste0(param, " (", unit, ")")) +
+    xlab("Location") +
     theme(axis.text.x = element_text(angle = 90)) +
-    xlab("Site") +
-    # create horizontal threshold lines for STATIC regulatory values
     geom_hline(data = hline_data,
                aes(yintercept = value, linetype = Standard, color = Standard)) +
-    
-    # hide legend in white color
-    theme(
-      legend.text = element_text(color = "white"),
-      legend.title = element_text(color = "white"),
-      legend.key = element_rect(fill = "white")) + 
-    scale_color_discrete(
-      guide = guide_legend(override.aes = list(color = "white")))
+    coord_cartesian(ylim = c(y_min_trib, y_max_trib)) +
+    larger_text_theme
   
-  
-  # mainstem general plot
-  p_ms <- parameter_dat %>%
-    ggplot() +
+  # Mainstem plot
+  p_ms <- ggplot(mainstem_data, aes(x = factor(as.numeric(river_mile)), y = result_measure_value)) +
     facet_grid(.~season) +
-    geom_boxplot(aes(factor(as.numeric(river_mile)),result_measure_value)) +
-    geom_jitter(aes(factor(as.numeric(river_mile)),result_measure_value), width = 0.1) +
-    ylab(paste0(parameter," (",unit,")")) +
+    geom_boxplot() +
+    geom_jitter(aes(color = fw_acute_exceed), width = 0.1) +
+    ylab(paste0(param, " (", unit, ")")) +
     xlab("River Mile") +
-    
-    # create horizontal threshold lines for STATIC regulatory values
+    theme(axis.text.x = element_text(angle = 90)) +
     geom_hline(data = hline_data,
-               aes(yintercept = value, linetype = Standard, color = Standard)) 
+               aes(yintercept = value, linetype = Standard, color = Standard)) +
+    coord_cartesian(ylim = c(y_min_mainstem, y_max_mainstem)) +
+    larger_text_theme
   
+  # Define language for plot titles
+  tribs <- p_trib + ggtitle(paste(param, "in Kenai River Tributaries", min_year, "to", max_year))
+  ms <- p_ms + ggtitle(paste(param, "in Kenai River Mainstem", min_year, "to", max_year))
   
-  # define language for plot titles
-
-
-  # tribs
-  tribs <- p_trib %+% subset(parameter_dat, trib_mainstem %in% "t") +
-    ggtitle(paste(parameter,"in Kenai River Tributaries ",min_year,"to",max_year))
+  # Create a blank spacer plot
+  spacer <- ggplot() + theme_void() + theme(plot.margin = margin(50, 0, 50, 0)) # Adjust margins for spacing
   
-  # mainstem
-  ms <- p_ms %+% subset(parameter_dat, trib_mainstem %in% "m") +
-    ggtitle(paste(parameter,"in Kenai River Mainstem ",min_year,"to",max_year))
-  
-  # place trib and mainstem plot images together
-  plot_grid(ms,tribs, align = 'v', ncol = 1)
-
-  
-## plots completed ##
-  
+  # Combine plots with the blank spacer in between
+  plot_grid(
+    ms, 
+    spacer, 
+    tribs, 
+    ncol = 1, 
+    rel_heights = c(1, 0.2, 1) # Adjust the spacer height without affecting figure sizes
+  )
 }
+
+
+
 
 
 

@@ -6,7 +6,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="dcterms.date" content="2025-01-16">
+<meta name="dcterms.date" content="2025-01-20">
 
 <title>11&nbsp; Lead – Water Quality Assessment of the Kenai River Watershed from 2000 to 2021 [DRAFT]</title>
 <style>
@@ -387,7 +387,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar"><div class="quarto-margin-header"><div class="margin-header-item">
-<p><img src="other/documents/images/KWF_logo.jpg" class="img-fluid"></p>
+<p><img src="other/documents/images/KWF_logo_resized.png" class="img-fluid"></p>
 </div></div>
         
     </div>
@@ -407,7 +407,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">January 16, 2025</p>
+      <p class="date">January 20, 2025</p>
     </div>
   </div>
   
@@ -427,7 +427,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="lead_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="lead_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid figure-img" width="960"></p>
 </figure>
 </div>
 </div>
@@ -942,7 +942,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>A trend analysis was conducted using the average and median values for all data collected during the time period between years 2000-2014. The concentrations of lead throughout the entire Kenai River are relatively high in the lower river and decrease as you move towards the upper river (Figure X and Figure X). A similar analysis was done for each sampling station at the Kenai River with results showing that no lead was found in most of the sampling stations before year 2005, after year 2005 when lead has been found it shows a decrease in concentration through time. It is important to note that not every station has an actual reading and in many cases there are very few readings or non- at all.</span>
 <span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="in">```{r echo = F, warning=FALSE, message=FALSE,fig.height=10}</span></span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="in">```{r echo = F, warning=FALSE, message=FALSE,fig.height=8, fig.width = 10}</span></span>
 <span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a><span class="in"># set parameter</span></span>
 <span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a><span class="in">parameter &lt;- "Lead"</span></span>
@@ -951,14 +951,12 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a><span class="in">source("functions/static_boxplot_function.R")</span></span>
 <span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a><span class="in">make_boxplot(param = parameter)</span></span>
 <span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a><span class="in"># source calculated regulatory criteria plot(s) function</span></span>
-<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a><span class="in"># source table download function</span></span>
-<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a><span class="in">source("functions/table_download.R")</span></span>
-<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a><span class="in">download_tbl(param = parameter)</span></span>
-<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span></code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a><span class="in"># source table download function</span></span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a><span class="in">source("functions/table_download.R")</span></span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a><span class="in">download_tbl(param = parameter)</span></span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span></code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 

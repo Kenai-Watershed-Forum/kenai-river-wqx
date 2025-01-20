@@ -5,6 +5,7 @@ title: "boxplot_test"
 ```{r}
 # specify parameter
 parameter <- "Zinc"
+waterbody_type = "ms"
 
 # load packages
 library(tidyverse)
@@ -25,6 +26,7 @@ library(xfun)
 library(cowplot)
 library(forcats)
 library(magrittr)
+library(plotly)
 
 # Set longitudinal order for tributaries
 trib_order <- c("No Name Creek",
@@ -64,10 +66,6 @@ ph_reg_vals <- read.csv("other/input/regulatory_limits/formatted_reg_vals/ph_reg
 
 
 
-# calculated metals threshold values (?)
-
-
-
 # join all static regulatory value dataframes
 # old: reg_vals <- static_metals_reg_vals
 reg_vals <- bind_rows(static_metals_reg_vals,ph_reg_vals)
@@ -95,7 +93,7 @@ hline_data <- reg_vals %>%
 
 # Describe Overall Boxplot function
 
-make_boxplot1 <- function(param) {
+make_boxplot <- function(param) {
   
  
   # create data table for a single parameter
@@ -133,15 +131,15 @@ make_boxplot1 <- function(param) {
     xlab("Site") +
     # create horizontal threshold lines for STATIC regulatory values
     geom_hline(data = hline_data,
-               aes(yintercept = value, linetype = Standard, color = Standard)) +
+               aes(yintercept = value, linetype = Standard, color = Standard)) 
     
     # hide legend in white color
-    theme(
-      legend.text = element_text(color = "white"),
-      legend.title = element_text(color = "white"),
-      legend.key = element_rect(fill = "white")) + 
-    scale_color_discrete(
-      guide = guide_legend(override.aes = list(color = "white")))
+   # theme(
+  #    legend.text = element_text(color = "white"),
+    #  legend.title = element_text(color = "white"),
+    #  legend.key = element_rect(fill = "white")) + 
+  #  scale_color_discrete(
+    #  guide = guide_legend(override.aes = list(color = "white")))
   
   
   # mainstem general plot
@@ -171,8 +169,6 @@ make_boxplot1 <- function(param) {
   
   # place trib and mainstem plot images together
   #plot_grid(ms,tribs, align = 'v', ncol = 1)
-  ggplotly(tribs)
-  
   ggplotly(ms)
 
   
@@ -193,8 +189,19 @@ make_boxplot1 <- function(param) {
 # make plotly appear on html render, jpg on docx render
 
 
-
-
 make_boxplot1(param = parameter)
 
 ```
+
+
+```{r}
+
+
+```
+
+
+```{r}
+  
+ggplotly(ms)
+```
+
