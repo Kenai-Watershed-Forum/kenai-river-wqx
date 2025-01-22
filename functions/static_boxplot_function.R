@@ -96,19 +96,17 @@ hline_data <- reg_vals %>%
 # will need a step here to convert units to make reg value match parameter vals?
 
 # Describe Overall Boxplot function
-
 make_boxplot <- function(param) {
-  
   # Create data table for a single parameter
   parameter_dat <- dat %>%
     filter(characteristic_name == param) %>%
     mutate(
       tributary_name = factor(tributary_name, levels = trib_order),
-      acute_color = ifelse(is.na(fw_acute_exceed), "DarkGray", "Highlighted"), # Color: Dark Gray for NA, Highlighted for Y
+      acute_color = ifelse(is.na(fw_acute_exceed), "DarkGray", "Highlighted"),
       chronic_shape = case_when(
-        is.na(fw_acute_exceed) & is.na(fw_chronic_exceed) ~ "GrayCircle",  # Both NA: Gray Circle
-        fw_acute_exceed == "Y" & is.na(fw_chronic_exceed) ~ "ColoredCircle", # Acute Y, Chronic NA: Colored Circle
-        fw_acute_exceed == "Y" & fw_chronic_exceed == "Y" ~ "ColoredAsterisk" # Both Y: Colored Asterisk
+        is.na(fw_acute_exceed) & is.na(fw_chronic_exceed) ~ "GrayCircle",
+        fw_acute_exceed == "Y" & is.na(fw_chronic_exceed) ~ "ColoredCircle",
+        fw_acute_exceed == "Y" & fw_chronic_exceed == "Y" ~ "ColoredAsterisk"
       )
     ) %>%
     left_join(reg_vals, by = "characteristic_name")
@@ -116,37 +114,20 @@ make_boxplot <- function(param) {
   # Get unit for parameter
   unit <- unique(parameter_dat$result_measure_measure_unit_code)
   
-  # Set min and max time extent
-  min_year <- as.character(min(year(parameter_dat$activity_start_date)))
-  max_year <- as.character(max(year(parameter_dat$activity_start_date)))
-  
-  # Calculate y-axis ranges for tributaries and mainstem separately
+  # Calculate y-axis ranges
   trib_data <- subset(parameter_dat, trib_mainstem == "t")
   mainstem_data <- subset(parameter_dat, trib_mainstem == "m")
-  
   y_min_trib <- min(trib_data$result_measure_value, na.rm = TRUE)
   y_max_trib <- max(trib_data$result_measure_value, na.rm = TRUE)
-  
   y_min_mainstem <- min(mainstem_data$result_measure_value, na.rm = TRUE)
   y_max_mainstem <- max(mainstem_data$result_measure_value, na.rm = TRUE)
   
-  # Define a theme with 20% larger text
-  size <- 1.2
-  larger_text_theme <- theme(
-    axis.title = element_text(size = rel(size)),
-    axis.text = element_text(size = rel(size)),
-    strip.text = element_text(size = rel(size)),
-    legend.text = element_text(size = rel(size)),
-    legend.title = element_text(size = rel(size)),
-    plot.title = element_text(size = rel(size), hjust = 0.5)
-  )
-  
   # Define color and shape palettes
-  color_palette <- c("DarkGray" = "#555555", "Highlighted" = "#E69F00") # Darker Gray and Orange
+  color_palette <- c("DarkGray" = "#555555", "Highlighted" = "#E69F00")
   shape_palette <- c(
-    "GrayCircle" = 16,        # Filled circle for both NA
-    "ColoredCircle" = 16,     # Filled circle for Acute Y, Chronic NA
-    "ColoredAsterisk" = 8     # Asterisk for both Acute Y, Chronic Y
+    "GrayCircle" = 16,
+    "ColoredCircle" = 16,
+    "ColoredAsterisk" = 8
   )
   
   # Tribs plot
@@ -158,19 +139,21 @@ make_boxplot <- function(param) {
   )) +
     facet_grid(.~season) +
     geom_boxplot(outlier.shape = NA) +
-    geom_jitter(aes(size = chronic_shape), width = 0.2) + # Adjust size based on chronic_shape
-    scale_color_manual(values = color_palette) + # Apply color palette
-    scale_shape_manual(values = shape_palette) + # Apply shape palette
-    scale_size_manual(values = c("GrayCircle" = 2, "ColoredCircle" = 2, "ColoredAsterisk" = 4)) + # Smaller circles, larger asterisks
+    geom_jitter(width = 0.2) +
+    scale_color_manual(values = color_palette) +
+    scale_shape_manual(values = shape_palette) +
     geom_hline(data = hline_data,
                aes(yintercept = value, linetype = Standard),
                color = "darkred",
                size = 1.2) +
     ylab(paste0(param, " (", unit, ")")) +
     xlab("Location") +
-    theme(axis.text.x = element_text(angle = 90)) +
-    coord_cartesian(ylim = c(y_min_trib, y_max_trib)) +
-    larger_text_theme
+    ggtitle(paste(param, "in Kenai River Tributaries")) +
+    theme(
+      axis.text.x = element_text(angle = 90),
+      legend.position = "none"
+    ) +
+    coord_cartesian(ylim = c(y_min_trib, y_max_trib))
   
   # Mainstem plot
   p_ms <- ggplot(mainstem_data, aes(
@@ -181,36 +164,93 @@ make_boxplot <- function(param) {
   )) +
     facet_grid(.~season) +
     geom_boxplot(outlier.shape = NA) +
-    geom_jitter(aes(size = chronic_shape), width = 0.2) + # Adjust size based on chronic_shape
-    scale_color_manual(values = color_palette) + # Apply color palette
-    scale_shape_manual(values = shape_palette) + # Apply shape palette
-    scale_size_manual(values = c("GrayCircle" = 2, "ColoredCircle" = 2, "ColoredAsterisk" = 4)) + # Smaller circles, larger asterisks
+    geom_jitter(width = 0.2) +
+    scale_color_manual(values = color_palette) +
+    scale_shape_manual(values = shape_palette) +
     geom_hline(data = hline_data,
                aes(yintercept = value, linetype = Standard),
                color = "darkred",
                size = 1.2) +
     ylab(paste0(param, " (", unit, ")")) +
     xlab("River Mile") +
-    theme(axis.text.x = element_text(angle = 90)) +
-    coord_cartesian(ylim = c(y_min_mainstem, y_max_mainstem)) +
-    larger_text_theme
+    ggtitle(paste(param, "in Kenai River Mainstem")) +
+    theme(
+      axis.text.x = element_text(angle = 90),
+      legend.position = "none"
+    ) +
+    coord_cartesian(ylim = c(y_min_mainstem, y_max_mainstem))
   
-  # Define language for plot titles
-  tribs <- p_trib + ggtitle(paste(param, "in Kenai River Tributaries", min_year, "to", max_year))
-  ms <- p_ms + ggtitle(paste(param, "in Kenai River Mainstem", min_year, "to", max_year))
+  # Combined legend
+  legend_data <- trib_data %>%
+    bind_rows(mainstem_data) %>%
+    distinct(acute_color, chronic_shape) %>%
+    mutate(label = case_when(
+      chronic_shape == "GrayCircle" ~ "NA for Acute and Chronic",
+      chronic_shape == "ColoredCircle" ~ "Acute Y, Chronic NA",
+      chronic_shape == "ColoredAsterisk" ~ "Acute Y, Chronic Y"
+    ))
   
-  # Create a blank spacer plot
-  spacer <- ggplot() + theme_void() + theme(plot.margin = margin(50, 0, 50, 0)) # Adjust margins for spacing
+  hline_legend <- hline_data %>%
+    distinct(Standard) %>%
+    mutate(linetype = Standard)
   
-  # Combine plots with equal heights and a spacer
-  plot_grid(
-    ms, 
-    spacer, 
-    tribs, 
+  legend_plot <- ggplot() +
+    geom_point(data = legend_data, aes(x = 1, y = 1, color = acute_color, shape = chronic_shape), size = 4) +
+    scale_color_manual(values = color_palette) +
+    scale_shape_manual(values = shape_palette) +
+    geom_hline(data = hline_legend, aes(yintercept = -Inf, linetype = linetype), color = "darkred", size = 1.2) +
+    theme_void() +
+    theme(
+      legend.position = "right"
+    )
+  
+  # Combine plots with fixed widths and heights
+  combined_plot <- plot_grid(
+    p_ms, 
+    p_trib, 
     ncol = 1, 
-    rel_heights = c(1, 0.1, 1) # Equal heights for plots, smaller space for spacer
+    rel_heights = c(1, 1)
   )
+  
+  final_plot <- plot_grid(
+    combined_plot,
+    legend_plot,
+    ncol = 2,
+    rel_widths = c(4, 1) # Adjust space for legend visibility
+  )
+  
+  final_plot
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
