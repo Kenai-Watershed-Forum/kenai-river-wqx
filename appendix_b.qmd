@@ -13,7 +13,19 @@ format:
 
 ## Introduction
 
-Sample event timing for spring and summer events must be chosen with care each year. Sample date occurs on Tuesdays traditionally, and dates must be chosen such that the tide is incoming early in the morning.
+Sample event timing for spring and summer events must be chosen with care each year. Sample date traditionally occurs on Tuesdays, and dates must be chosen with the following considerations:
+
+-   Some sample types (e.g. fecal coliform) have limited holding periods; e.g., the maximum amount of time that can pass between when a sample is collected and when it must be delivered to the lab. Fecal coliform's holding time is six hours, for example.
+
+-   Water quality in both main stem and tributary sites of the lower Kenai River have the potential to be influenced by the tidal pulse. To minimize this influence, we intend to time sampling events with low tide such that potential saltwater influence is minimized. Throughout all analyses in this report, water hardness / salinity is taken into consideration where appropriate.
+
+-   Boat access is the preferred access method for some sites. However, water levels can sometimes be too low to use prop engines. The timing of both daily and seasonal water levels affects all project logistics choices.
+
+-   Sampling dates can not be chosen too early in the spring due to ice-out logistics, and the date in the summer can not be too late so as to remain comparable to the existing dataset.
+
+The above stipulations can never all be perfectly accommodated, so some compromise of all the above is typically the aim.
+
+For planning purposes, we use tide prediction values for the mouth of the Kenai River from the NOAA Tide Predictions page ([site TWC1983, Kenai River Entrance](https://tidesandcurrents.noaa.gov/noaatidepredictions.html?id=TWC1983))
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, warning = F, message = F)
@@ -30,7 +42,6 @@ library(writexl)
 library(hms)
 library(plotly)
 library(DT)
-#library(xlsx)
 library(readxl)
 library(openxlsx)
 library(leaflet)
@@ -39,7 +50,6 @@ library(ggpubr)
 library(plotrix)
 library(remotes)
 library(janitor)
-#install_github("USGS-R/EGRET")
 
 select <- dplyr::select
 
@@ -63,8 +73,6 @@ points_theme <- theme(axis.title = element_text(size = 14, face = "bold"),
 # function to exclude multiple items per column
 '%ni%' <- Negate('%in%')
 ```
-
-<br>
 
 <br>
 
@@ -92,7 +100,7 @@ Import data from local csv files
 
 ```{r}
 
-# read in table of known dates from Guerron Orejuela 2016
+# read in table of known dates from Guerron Orejuela 2016 and NOAA website
 krbwqm_dates <- read_excel("other/input/sample_dates_tides.xlsx") %>%
   rename(activity_start_date = date) %>%
   transform(time_max_tide = as.hms(time_max_tide),
@@ -104,30 +112,97 @@ krbwqm_dates <- read_excel("other/input/sample_dates_tides.xlsx") %>%
 z <- krbwqm_dates %>%
   arrange(season,julian_day)
 
-
 ```
 
 ## Dates
 
 ```{r}
 
-# dot plot
-krbwqm_dates %>%
-  ggplot(aes(year,julian_day)) +
+
+# Convert julian_day to date format
+krbwqm_dates <- krbwqm_dates %>%
+  mutate(
+    date_format = as.Date(julian_day - 1, origin = paste0(year, "-01-01"))
+  )
+
+# Define custom breaks for y-axis to reduce crowding
+custom_breaks <- seq(min(krbwqm_dates$julian_day), max(krbwqm_dates$julian_day), by = 30)
+
+# Create the ggplot with tooltip showing activity_start_date
+p <- krbwqm_dates %>%
+  ggplot(aes(
+    x = year, 
+    y = julian_day, 
+    text = paste("Activity Start Date:", activity_start_date)  # Tooltip content
+  )) +
   geom_point() +
+  scale_y_continuous(
+    breaks = custom_breaks,
+    labels = format(as.Date(custom_breaks - 1, origin = "2000-01-01"), "%m-%d")  # Example origin year
+  ) +
+  labs(
+    title = "Activity Dates by Year",
+    x = "Year",
+    y = "Date (Month-Day)"
+  ) +
+  theme_minimal() +
   ggtitle("Kenai River Baseline Water Quality Sampling Dates")
 
+# Make the plot interactive
+ggplotly(p, tooltip = "text")  # Specify to use the text aesthetic for tooltips
 
-# calculate spring and summer average days
-krbwqm_dates %>%
-  distinct(julian_day,season,year) %>%
+
+```
+
+<br>
+
+Summary statistics for timing of spring and summer sampling date below.
+
+```{r}
+
+library(kableExtra)
+
+# Calculate spring and summer average days with tide times
+summary_table <- krbwqm_dates %>%
+  distinct(julian_day, season, year, time_max_tide, time_min_tide) %>%
   group_by(season) %>%
-  summarise(avg_date = format(as.Date(round(mean(julian_day)), origin = as.Date("2024-01-01")), "%m-%d"),
-            stdev = round(sd(julian_day)),
-            n_years = n(),
-            min_year = min(year),
-            max_year = max(year))
-  
+  summarise(
+    avg_date = format(
+      as.Date(round(mean(julian_day)), origin = as.Date("2024-01-01")), "%m-%d"
+    ),
+    stdev = round(sd(julian_day)),
+    avg_time_max_tide = format(
+      as.POSIXct(mean(as.numeric(as.POSIXct(time_max_tide, format = "%H:%M:%S"))), origin = "1970-01-01"),
+      "%H:%M:%S"
+    ),
+    avg_time_min_tide = format(
+      as.POSIXct(mean(as.numeric(as.POSIXct(time_min_tide, format = "%H:%M:%S"))), origin = "1970-01-01"),
+      "%H:%M:%S"
+    ),
+    n_years = n(),
+    min_year = min(year),
+    max_year = max(year)
+  )
+
+# Create an attractive table
+summary_table %>%
+  kable(
+    format = "html",  # Use HTML for rich styling in Quarto
+    caption = "Spring and Summer Average Dates and Tide Times",
+    col.names = c(
+      "Season", "Average Date", "+/- Days (StDev)", "Avg Max Tide Time",
+      "Avg Min Tide Time", "Number of Years", "Earliest Year", "Latest Year"
+    ),
+    align = c("l", "c", "c", "c", "c", "c", "c", "c")
+  ) %>%
+  kable_styling(
+    bootstrap_options = c("striped", "hover", "condensed", "responsive"),
+    full_width = FALSE,
+    position = "center"
+  ) %>%
+  column_spec(2:8, width = "2cm")  # Adjust column widths
+
+
 ```
 
 <br>
@@ -150,15 +225,6 @@ krbwqm_dates %>%
   ggtitle("Kenai River Baseline Water Quality Sampling Times\nLow Tides")
 
 
-# calculate spring and summer average days
-krbwqm_dates %>%
-  distinct(julian_day,season,year) %>%
-  group_by(season) %>%
-  summarise(avg_date = format(as.Date(round(mean(julian_day)), origin = as.Date("2024-01-01")), "%m-%d"),
-            stdev = round(sd(julian_day)),
-            n_years = n(),
-            min_year = min(year),
-            max_year = max(year))
   
 ```
 
