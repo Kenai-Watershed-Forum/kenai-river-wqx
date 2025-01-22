@@ -1,5 +1,5 @@
 # TO DO LIST
-# - symbology for exceedences of acute vs chronic hardness-dependent values
+# - symbology for exceedences of acute vs chronic hardness-dependent values (example: cadmium; has both)
 # - reg values for hydrocarbons, N, P, others
 # - adjust text for referencing plotly objects in all chapters
 # - fix legends
@@ -102,7 +102,15 @@ make_boxplot <- function(param) {
   # Create data table for a single parameter
   parameter_dat <- dat %>%
     filter(characteristic_name == param) %>%
-    mutate(tributary_name = factor(tributary_name, levels = trib_order)) %>%
+    mutate(
+      tributary_name = factor(tributary_name, levels = trib_order),
+      acute_color = ifelse(is.na(fw_acute_exceed), "DarkGray", "Highlighted"), # Color: Dark Gray for NA, Highlighted for Y
+      chronic_shape = case_when(
+        is.na(fw_acute_exceed) & is.na(fw_chronic_exceed) ~ "GrayCircle",  # Both NA: Gray Circle
+        fw_acute_exceed == "Y" & is.na(fw_chronic_exceed) ~ "ColoredCircle", # Acute Y, Chronic NA: Colored Circle
+        fw_acute_exceed == "Y" & fw_chronic_exceed == "Y" ~ "ColoredAsterisk" # Both Y: Colored Asterisk
+      )
+    ) %>%
     left_join(reg_vals, by = "characteristic_name")
   
   # Get unit for parameter
@@ -123,38 +131,67 @@ make_boxplot <- function(param) {
   y_max_mainstem <- max(mainstem_data$result_measure_value, na.rm = TRUE)
   
   # Define a theme with 20% larger text
+  size <- 1.2
   larger_text_theme <- theme(
-    axis.title = element_text(size = rel(1.2)),
-    axis.text = element_text(size = rel(1.2)),
-    strip.text = element_text(size = rel(1.2)),
-    legend.text = element_text(size = rel(1.2)),
-    legend.title = element_text(size = rel(1.2)),
-    plot.title = element_text(size = rel(1.2), hjust = 0.5)
+    axis.title = element_text(size = rel(size)),
+    axis.text = element_text(size = rel(size)),
+    strip.text = element_text(size = rel(size)),
+    legend.text = element_text(size = rel(size)),
+    legend.title = element_text(size = rel(size)),
+    plot.title = element_text(size = rel(size), hjust = 0.5)
+  )
+  
+  # Define color and shape palettes
+  color_palette <- c("DarkGray" = "#555555", "Highlighted" = "#E69F00") # Darker Gray and Orange
+  shape_palette <- c(
+    "GrayCircle" = 16,        # Filled circle for both NA
+    "ColoredCircle" = 16,     # Filled circle for Acute Y, Chronic NA
+    "ColoredAsterisk" = 8     # Asterisk for both Acute Y, Chronic Y
   )
   
   # Tribs plot
-  p_trib <- ggplot(trib_data, aes(x = factor(tributary_name), y = result_measure_value)) +
+  p_trib <- ggplot(trib_data, aes(
+    x = factor(tributary_name), 
+    y = result_measure_value,
+    color = acute_color,
+    shape = chronic_shape
+  )) +
     facet_grid(.~season) +
-    geom_boxplot() +
-    geom_jitter(aes(color = fw_acute_exceed), width = 0.1) +
+    geom_boxplot(outlier.shape = NA) +
+    geom_jitter(aes(size = chronic_shape), width = 0.2) + # Adjust size based on chronic_shape
+    scale_color_manual(values = color_palette) + # Apply color palette
+    scale_shape_manual(values = shape_palette) + # Apply shape palette
+    scale_size_manual(values = c("GrayCircle" = 2, "ColoredCircle" = 2, "ColoredAsterisk" = 4)) + # Smaller circles, larger asterisks
+    geom_hline(data = hline_data,
+               aes(yintercept = value, linetype = Standard),
+               color = "darkred",
+               size = 1.2) +
     ylab(paste0(param, " (", unit, ")")) +
     xlab("Location") +
     theme(axis.text.x = element_text(angle = 90)) +
-    geom_hline(data = hline_data,
-               aes(yintercept = value, linetype = Standard, color = Standard)) +
     coord_cartesian(ylim = c(y_min_trib, y_max_trib)) +
     larger_text_theme
   
   # Mainstem plot
-  p_ms <- ggplot(mainstem_data, aes(x = factor(as.numeric(river_mile)), y = result_measure_value)) +
+  p_ms <- ggplot(mainstem_data, aes(
+    x = factor(as.numeric(river_mile)), 
+    y = result_measure_value,
+    color = acute_color,
+    shape = chronic_shape
+  )) +
     facet_grid(.~season) +
-    geom_boxplot() +
-    geom_jitter(aes(color = fw_acute_exceed), width = 0.1) +
+    geom_boxplot(outlier.shape = NA) +
+    geom_jitter(aes(size = chronic_shape), width = 0.2) + # Adjust size based on chronic_shape
+    scale_color_manual(values = color_palette) + # Apply color palette
+    scale_shape_manual(values = shape_palette) + # Apply shape palette
+    scale_size_manual(values = c("GrayCircle" = 2, "ColoredCircle" = 2, "ColoredAsterisk" = 4)) + # Smaller circles, larger asterisks
+    geom_hline(data = hline_data,
+               aes(yintercept = value, linetype = Standard),
+               color = "darkred",
+               size = 1.2) +
     ylab(paste0(param, " (", unit, ")")) +
     xlab("River Mile") +
     theme(axis.text.x = element_text(angle = 90)) +
-    geom_hline(data = hline_data,
-               aes(yintercept = value, linetype = Standard, color = Standard)) +
     coord_cartesian(ylim = c(y_min_mainstem, y_max_mainstem)) +
     larger_text_theme
   
@@ -165,15 +202,28 @@ make_boxplot <- function(param) {
   # Create a blank spacer plot
   spacer <- ggplot() + theme_void() + theme(plot.margin = margin(50, 0, 50, 0)) # Adjust margins for spacing
   
-  # Combine plots with the blank spacer in between
+  # Combine plots with equal heights and a spacer
   plot_grid(
     ms, 
     spacer, 
     tribs, 
     ncol = 1, 
-    rel_heights = c(1, 0.2, 1) # Adjust the spacer height without affecting figure sizes
+    rel_heights = c(1, 0.1, 1) # Equal heights for plots, smaller space for spacer
   )
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
