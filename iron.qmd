@@ -25,10 +25,6 @@ parameter <- "Iron"
 # source static regulatory criteria boxplot function
 source("functions/static_boxplot_function.R")
 
-# source static regulatory criteria boxplot function
-source("functions/static_boxplot_function.R")
-make_boxplot(param = parameter)
-
 
 # source table download function
 source("functions/table_download.R")
