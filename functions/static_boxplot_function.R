@@ -6,8 +6,10 @@
 # - alter pop up windows for plotly
 # - address outliers
 # - make plotly appear on html render, jpg on docx render
+# - some pllots appear to have multiple boxplots per site (zinc?)
 
-
+param <- "Copper"
+parameter <= "Copper"
 
 # load packages
 library(tidyverse)
@@ -28,6 +30,7 @@ library(xfun)
 library(cowplot)
 library(forcats)
 library(magrittr)
+library (patchwork)
 
 # Set longitudinal order for tributaries
 trib_order <- c("No Name Creek",
@@ -49,6 +52,7 @@ trib_order <- c("No Name Creek",
 # the "export_format" dataframe has been made less granular and is thus not uploaded to EPA WQX. The following was performed on the
 # "analysis_format" version: 1) Aggregate all organic volatiles to BTEX in cases where individual volatiles data was provided
 dat <- read.csv("other/output/analysis_format/baseline_analysis_format.csv")
+
 
 
 
@@ -80,7 +84,8 @@ reg_vals <- bind_rows(static_metals_reg_vals,ph_reg_vals)
 
 ## define horizontal line positions for regulatory limits
 hline_data <- reg_vals %>%
-  filter(characteristic_name == parameter) 
+  filter(characteristic_name == parameter) %>%
+  select(-static_category)
 
 # how to incorporate other reg vals here (N & P, bacteria, hydrocarbons, etc)
 
@@ -114,13 +119,30 @@ make_boxplot <- function(param) {
   # Get unit for parameter
   unit <- unique(parameter_dat$result_measure_measure_unit_code)
   
-  # Calculate y-axis ranges
+  # Set min and max time extent
+  min_year <- as.character(min(year(parameter_dat$activity_start_date)))
+  max_year <- as.character(max(year(parameter_dat$activity_start_date)))
+  
+  # Calculate y-axis ranges for tributaries and mainstem separately
   trib_data <- subset(parameter_dat, trib_mainstem == "t")
   mainstem_data <- subset(parameter_dat, trib_mainstem == "m")
+  
   y_min_trib <- min(trib_data$result_measure_value, na.rm = TRUE)
   y_max_trib <- max(trib_data$result_measure_value, na.rm = TRUE)
+  
   y_min_mainstem <- min(mainstem_data$result_measure_value, na.rm = TRUE)
   y_max_mainstem <- max(mainstem_data$result_measure_value, na.rm = TRUE)
+  
+  # Define a theme with 20% larger text
+  size <- 1.2
+  larger_text_theme <- theme(
+    axis.title = element_text(size = rel(size)),
+    axis.text = element_text(size = rel(size)),
+    strip.text = element_text(size = rel(size)),
+    legend.text = element_text(size = rel(size)),
+    legend.title = element_text(size = rel(size)),
+    plot.title = element_text(size = rel(size), hjust = 0.5)
+  )
   
   # Define color and shape palettes
   color_palette <- c("DarkGray" = "#555555", "Highlighted" = "#E69F00")
@@ -148,12 +170,13 @@ make_boxplot <- function(param) {
                size = 1.2) +
     ylab(paste0(param, " (", unit, ")")) +
     xlab("Location") +
-    ggtitle(paste(param, "in Kenai River Tributaries")) +
+    ggtitle(paste(param, "in Kenai River Tributaries", min_year, "to", max_year)) +
     theme(
       axis.text.x = element_text(angle = 90),
       legend.position = "none"
     ) +
-    coord_cartesian(ylim = c(y_min_trib, y_max_trib))
+    coord_cartesian(ylim = c(y_min_trib, y_max_trib)) +
+    larger_text_theme
   
   # Mainstem plot
   p_ms <- ggplot(mainstem_data, aes(
@@ -173,12 +196,13 @@ make_boxplot <- function(param) {
                size = 1.2) +
     ylab(paste0(param, " (", unit, ")")) +
     xlab("River Mile") +
-    ggtitle(paste(param, "in Kenai River Mainstem")) +
+    ggtitle(paste(param, "in Kenai River Mainstem", min_year, "to", max_year)) +
     theme(
       axis.text.x = element_text(angle = 90),
       legend.position = "none"
     ) +
-    coord_cartesian(ylim = c(y_min_mainstem, y_max_mainstem))
+    coord_cartesian(ylim = c(y_min_mainstem, y_max_mainstem)) +
+    larger_text_theme
   
   # Combined legend
   legend_data <- trib_data %>%
@@ -190,6 +214,7 @@ make_boxplot <- function(param) {
       chronic_shape == "ColoredAsterisk" ~ "Acute Y, Chronic Y"
     ))
   
+  # Add hline legend representation
   hline_legend <- hline_data %>%
     distinct(Standard) %>%
     mutate(linetype = Standard)
@@ -201,10 +226,17 @@ make_boxplot <- function(param) {
     geom_hline(data = hline_legend, aes(yintercept = -Inf, linetype = linetype), color = "darkred", size = 1.2) +
     theme_void() +
     theme(
-      legend.position = "right"
+      legend.position = "right",
+      legend.title = element_text(size = rel(size)),
+      legend.text = element_text(size = rel(size))
+    ) +
+    guides(
+      color = guide_legend("Legend", override.aes = list(size = 4)),
+      shape = guide_legend("Legend", override.aes = list(size = 4)),
+      linetype = guide_legend("Static Regulatory Standards", override.aes = list(color = "darkred", size = 1.2))
     )
   
-  # Combine plots with fixed widths and heights
+  # Combine plots without extra white space
   combined_plot <- plot_grid(
     p_ms, 
     p_trib, 
@@ -212,15 +244,24 @@ make_boxplot <- function(param) {
     rel_heights = c(1, 1)
   )
   
-  final_plot <- plot_grid(
-    combined_plot,
-    legend_plot,
-    ncol = 2,
-    rel_widths = c(4, 1) # Adjust space for legend visibility
-  )
+  # Add a precise white rectangle over extraneous symbols
+  white_overlay <- ggplot() +
+    annotate("rect", xmin = -Inf, xmax = Inf, ymin = -Inf, ymax = Inf, fill = "white", alpha = 1) +
+    theme_void()
+  
+  final_plot <- ggdraw() +
+    draw_plot(combined_plot, x = 0, y = 0, width = 0.75, height = 1) +
+    draw_plot(legend_plot, x = 0.75, y = 0, width = 0.25, height = 1) +
+    draw_plot(white_overlay, x = 0.72, y = 0, width = 0.03, height = 1) # Precise masking of symbols
   
   final_plot
 }
+
+
+
+
+
+
 
 
 
