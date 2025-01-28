@@ -9,7 +9,7 @@
 # - some pllots appear to have multiple boxplots per site (zinc?)
 
 param <- "Copper"
-parameter <= "Copper"
+parameter <- "Copper"
 
 # load packages
 library(tidyverse)

@@ -21,8 +21,11 @@ The highest concentration of copper in the mainstem was reported at \_\_\_\_\_ Î
 parameter <- "Copper"
 
 # source static regulatory criteria boxplot function
-source("functions/static_boxplot_function.R")
-make_boxplot(param = parameter)
+source("functions/static_boxplot_function_new.R")
+#make_boxplot(param = parameter)
+
+
+create_facet_plots(data,reg_vals,"Copper")
 
 # source calculated regulatory criteria plot(s) function
 
@@ -31,4 +34,125 @@ make_boxplot(param = parameter)
 source("functions/table_download.R")
 download_tbl(param = parameter)
 
+
+
+
+
+# working with variations here 1/28/2025
+# test
+library(ggplot2)
+library(dplyr)
+
+# Function to generate two separate ggplots
+create_facet_plots <- function(data, reg_vals, characteristic) {
+  
+  # Subset data for the characteristic
+  subset_data <- data %>% filter(characteristic_name == characteristic)
+
+  # Ensure result_measure_value is numeric and remove non-numeric rows
+  subset_data <- subset_data %>% mutate(result_measure_value = as.numeric(result_measure_value))
+  subset_data <- subset_data %>% filter(!is.na(result_measure_value))
+
+  # Add new columns for custom color and shape logic
+  subset_data <- subset_data %>% mutate(
+    acute_color = ifelse(is.na(fw_acute_exceed), "N", "Y"),
+    chronic_shape = ifelse(fw_chronic_exceed == "Y", "Y", "N")
+  )
+
+  # Subset regulatory values for the characteristic
+  reg_value <- reg_vals %>% filter(characteristic_name == characteristic)
+  hline_value <- ifelse(nrow(reg_value) > 0, reg_value$value, NA)
+  hline_label <- ifelse(nrow(reg_value) > 0, reg_value$Standard, "")
+
+  # Ensure geom_hline is always properly displayed
+  hline_data <- data.frame(yintercept = hline_value, linetype = hline_label)
+
+  # Safeguard dynamic range calculations
+  if (nrow(subset_data) == 0) {
+    y_min <- 0
+    y_max <- 1
+  } else {
+    y_min <- min(subset_data$result_measure_value, na.rm = TRUE)
+    y_max <- max(subset_data$result_measure_value, na.rm = TRUE)
+  }
+
+  # Common theme for both plots
+  common_theme <- theme_minimal() +
+    theme(axis.text.y = element_text(size = 14),
+          axis.title.x = element_text(size = 16),
+          axis.title.y = element_text(size = 16),
+          strip.text = element_text(size = 16),
+          legend.text = element_text(size = 14),
+          legend.title = element_text(size = 16),
+          plot.title = element_text(size = 18, face = "bold"))
+
+  # Plot 1: tributary_name vs. result_measure_value
+  plot1 <- ggplot(subset_data, aes(x = tributary_name, y = result_measure_value)) +
+    geom_boxplot() +
+    geom_jitter(aes(color = acute_color, shape = chronic_shape), width = 0.2) +
+    geom_hline(data = hline_data, aes(yintercept = yintercept, linetype = linetype), color = "red", show.legend = TRUE) +
+    facet_wrap(~season) +
+    labs(x = "Tributary Name", y = paste("Result Measure Value (", unique(subset_data$result_measure_unit_code), ")", sep = "")) +
+    scale_y_continuous(limits = c(y_min, y_max)) +
+    scale_color_manual(name = "Acute Exceedance", values = c("N" = "darkgray", "Y" = "orange")) +
+    scale_shape_manual(name = "Chronic Exceedance", values = c("N" = 16, "Y" = 8)) +
+    scale_linetype_manual(name = "Regulatory Standard", values = c("Regulatory Limit" = "dashed")) +
+    guides(
+      linetype = guide_legend(override.aes = list(color = "red")),
+      color = guide_legend(override.aes = list(size = 4)),
+      shape = guide_legend(override.aes = list(size = 4))
+    ) +
+    common_theme +
+    theme(axis.text.x = element_text(angle = 90, hjust = 1, size = 14))
+
+  # Plot 2: river_mile vs. result_measure_value
+  plot2 <- ggplot(subset_data, aes(x = river_mile, y = result_measure_value)) +
+    geom_boxplot() +
+    geom_jitter(aes(color = acute_color, shape = chronic_shape), width = 0.2) +
+    geom_hline(data = hline_data, aes(yintercept = yintercept, linetype = linetype), color = "red", show.legend = TRUE) +
+    facet_wrap(~season) +
+    labs(title = paste("Characteristic:", characteristic), x = "River Mile", y = paste("Result Measure Value (", unique(subset_data$result_measure_unit_code), ")", sep = "")) +
+    scale_y_continuous(limits = c(y_min, y_max)) +
+    scale_color_manual(name = "Acute Exceedance", values = c("N" = "darkgray", "Y" = "orange")) +
+    scale_shape_manual(name = "Chronic Exceedance", values = c("N" = 16, "Y" = 8)) +
+    scale_linetype_manual(name = "Regulatory Standard", values = c("Regulatory Limit" = "dashed")) +
+    guides(
+      linetype = guide_legend(override.aes = list(color = "red")),
+      color = guide_legend(override.aes = list(size = 4)),
+      shape = guide_legend(override.aes = list(size = 4))
+    ) +
+    common_theme +
+    theme(axis.text.x = element_text(size = 14))
+
+  # Handle cases with no valid data
+  if (nrow(subset_data) == 0) {
+    plot1 <- ggplot() +
+      annotate("text", x = 1, y = 1, label = "No valid data available", size = 6) +
+      theme_void()
+    plot2 <- plot1
+  }
+
+  # Return the two separate plots
+  return(list(plot1 = plot1, plot2 = plot2))
+}
+
+# Load datasets
+baseline_data <- read.csv("baseline_analysis_format.csv")
+reg_vals <- read.csv("reg_vals.csv")
+
+# Example usage
+plots <- create_facet_plots(baseline_data, reg_vals, "Copper")
+print(plots$plot1)
+print(plots$plot2)
+
+
+
+
+
 ```
+
+i would like to develop a function in r that generates and arranges two ggplots with two facets each, then displays them along with a single combined legend for everything. the function should be able to generate a seperate set of faceted ggplots for each unique string in the column "characteristic_name".
+
+an example dataset is attached as baseline_analysis_format.csv. the final graphic will have the following features: 1) each ggplot is faceted by the column "season". 2) for the first ggplot, the x axis is tributary_name and the y axis is result_measure_value. 3) for the 2nd ggplot, the x axis is river_mile and the y axis is result_measure_value. 4) the values will be visualized as geom_boxplot along with geom_jitter superimposed on the boxplots. 5) the plots will incorporate a geom_hline from a seperate dataset, and example of which is attached here (reg_vals.csv). 6) the color and shape of each point in geom_jitter will vary by other columns, to be later specified
+
+please help lead through the process slowly of designing this ggplot function. i have attempted this already, and successfully produced by desired outcome, with one critical exception: the legend displays extraneous symbols. i want to start over here, with the goal of making sure i do not end up in the same dead end again
