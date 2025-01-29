@@ -17,17 +17,16 @@ In the mainstem, the highest concentration of iron was 128 mg/L, which occurred 
 
 The concentrations in the tributaries ranged from a high of 20.5 mg/L in Beaver Creek in spring 2006 to Russian River, which had the lowest concentration at below the MDL of 0.0027 mg/L (Table X). No Name Creek, Beaver Creek, Slikok Creek, Soldotna Creek, Funny River and Moose River all had medians exceeding the standard in Spring (Figure 94). No Name Creek and Beaver Creek had medians exceeding the standards during summer (Figure X). Russian River had the lowest iron levels with most of the samples reported below the MDL or MRL. In both the tributaries and the mainstem, iron levels were higher in the spring than in the summer (Figures X-X).
 
-```{r echo = F, warning=FALSE, message=FALSE,fig.height=10}
+```{r echo = F, warning=FALSE, message=FALSE,fig.height=8, fig.width=10}
 
 # set parameter
-parameter <- "Iron"
+characteristic <- "Iron"
 
 # source static regulatory criteria boxplot function
 source("functions/static_boxplot_function.R")
 
-
 # source table download function
 source("functions/table_download.R")
-download_tbl(param = parameter)
+download_tbl(char = characteristic)
 
 ```

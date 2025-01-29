@@ -17,20 +17,16 @@ The highest level of fecal coliform recorded was 2980 CFU/100ml at Mile 6.5 duri
 
 In the tributaries, the concentration of fecal coliform ranged from a high of 520 CFU/100ml in Soldotna Creek during spring 2001 to 0 CFU/100ml at multiple sites (Table 52). During the spring, Beaver Creek had the highest median, and during the summer, No Name Creek had the highest median. In the summer, the median concentrations were relatively high in Slikok Creek and Beaver Creek, in addition to No Name Creek. Juneau Creek, Russian River, Killey River, and Moose River all had relatively low medians during the spring and the summer. In the summer, the tributaries had higher median concentrations of fecal coliform than the mainstem, but in the spring, the levels in the tributaries and the mainstem were more similar. (Figures X - X)
 
-```{r echo = F, warning=FALSE, message=FALSE,fig.height=10}
+```{r echo = F, warning=FALSE, message=FALSE,fig.height=8, fig.width=10}
 
 # set parameter
-parameter <- "Fecal Coliform"
+characteristic <- "Fecal Coliform"
 
 # source static regulatory criteria boxplot function
 source("functions/static_boxplot_function.R")
-make_boxplot(param = parameter)
-
-# source calculated regulatory criteria plot(s) function
-
 
 # source table download function
 source("functions/table_download.R")
-download_tbl(param = parameter)
+download_tbl(char = characteristic)
 
 ```

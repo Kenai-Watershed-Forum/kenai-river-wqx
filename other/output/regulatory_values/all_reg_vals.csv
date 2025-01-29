@@ -50,5 +50,5 @@
 "49","Zinc","ug/l","drinking_water",NA,NA
 "50","Zinc","ug/l","stock_water",NA,NA
 "51","Zinc","ug/l","irrigation_water",2000,NA
-"52","pH",NA,"aquaculture_minimum_water",6.5,"other"
-"53","pH",NA,"aquaculture_maximum_water",8.5,"other"
+"52","pH","none","aquaculture_minimum_water",6.5,"other"
+"53","pH","none","aquaculture_maximum_water",8.5,"other"

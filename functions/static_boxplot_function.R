@@ -1,17 +1,9 @@
 # TO DO LIST
-# - symbology for exceedences of acute vs chronic hardness-dependent values (example: cadmium; has both)
 # - reg values for hydrocarbons, N, P, others
-# - adjust text for referencing plotly objects in all chapters
-# - fix legends
-# - alter pop up windows for plotly
+
 # - address outliers
-# - make plotly appear on html render, jpg on docx render
-# - some pllots appear to have multiple boxplots per site (zinc?)
 
-param <- "Copper"
-parameter <- "Copper"
-
-# load packages
+# packages
 library(tidyverse)
 library(lubridate)
 library(readr)
@@ -32,29 +24,17 @@ library(forcats)
 library(magrittr)
 library (patchwork)
 
-# Set longitudinal order for tributaries
-trib_order <- c("No Name Creek",
-                "Beaver Creek",
-                "Slikok Creek",
-                "Soldotna Creek",
-                "Funny River",
-                "Moose River",
-                "Killey River",
-                "Russian River",
-                "Juneau Creek")
-
-
 #### READ IN WQX DATA #####
 # read in prepared data from local directory.
 # for most parameter types, read in data directly downloaded from EPA WQX.
 
+
+
+#### READ IN analysis format data ####
 # note that we are reading in "analysis_format" rather than "export_format", which is in the same directory
 # the "export_format" dataframe has been made less granular and is thus not uploaded to EPA WQX. The following was performed on the
 # "analysis_format" version: 1) Aggregate all organic volatiles to BTEX in cases where individual volatiles data was provided
-dat <- read.csv("other/output/analysis_format/baseline_analysis_format.csv")
-
-
-
+data_path <- "other/output/analysis_format/baseline_analysis_format.csv"
 
 
 #### READ IN Regulatory Threshold Values ####
@@ -64,262 +44,196 @@ dat <- read.csv("other/output/analysis_format/baseline_analysis_format.csv")
 static_metals_reg_vals <- read.csv("other/input/regulatory_limits/formatted_reg_vals/static_metals_reg_vals.csv")
 
 # hydrocarbons reg vals
+# HERE
 
 # field parameters threshold values
 ph_reg_vals <- read.csv("other/input/regulatory_limits/formatted_reg_vals/ph_reg_vals.csv")
-
-
-
-# calculated metals threshold values (?)
-
 
 
 # join all static regulatory value dataframes
 # old: reg_vals <- static_metals_reg_vals
 reg_vals <- bind_rows(static_metals_reg_vals,ph_reg_vals)
 
+# write combined csv of all static regulatory values
+reg_vals_path <- "other/output/regulatory_values/all_reg_vals.csv"
+write.csv(reg_vals, reg_vals_path)
+
 
 
 #### PREPARE PLOT #####
 
-## define horizontal line positions for regulatory limits
-hline_data <- reg_vals %>%
-  filter(characteristic_name == parameter) %>%
-  select(-static_category)
-
-# how to incorporate other reg vals here (N & P, bacteria, hydrocarbons, etc)
-
-# plan
-# 1.) develop lists of all STATIC reg limits. gather together into same DF here, w/ column for name type of limit
-# 2.) re-knit doc each time new category is added
-# 3.) develop separate calculated box plot for all non-static values
-
-# WORKING HERE 11/27/23
-
-
-
-# will need a step here to convert units to make reg value match parameter vals?
-
-# Describe Overall Boxplot function
-make_boxplot <- function(param) {
-  # Create data table for a single parameter
-  parameter_dat <- dat %>%
-    filter(characteristic_name == param) %>%
-    mutate(
-      tributary_name = factor(tributary_name, levels = trib_order),
-      acute_color = ifelse(is.na(fw_acute_exceed), "DarkGray", "Highlighted"),
-      chronic_shape = case_when(
-        is.na(fw_acute_exceed) & is.na(fw_chronic_exceed) ~ "GrayCircle",
-        fw_acute_exceed == "Y" & is.na(fw_chronic_exceed) ~ "ColoredCircle",
-        fw_acute_exceed == "Y" & fw_chronic_exceed == "Y" ~ "ColoredAsterisk"
+# Function to dynamically generate two ggplots
+create_facet_plots <- function(data_path, reg_vals_path, characteristic) {
+  # Read the datasets
+  data <- read.csv(data_path, stringsAsFactors = FALSE)
+  reg_vals <- read.csv(reg_vals_path, stringsAsFactors = FALSE)
+  
+  # Dynamically filter regulatory values for the given characteristic_name
+  reg_values <- reg_vals %>% filter(characteristic_name == characteristic)
+  
+  # Handle case where characteristic_name is not found
+  if (nrow(reg_values) == 0) {
+    hline_data <- data.frame(yintercept = numeric(0), linetype = character(0))
+  } else {
+    hline_data <- reg_values %>%
+      filter(!is.na(value)) %>%  # Ensure regulatory values are not NA
+      mutate(yintercept = as.numeric(value)) %>%  # Ensure numeric conversion
+      select(yintercept, linetype = Standard)
+  }
+  
+  # Prepare hline data for multiple standards
+  hline_data <- reg_values %>%
+    mutate(value = ifelse(is.na(value), NA, as.numeric(value))) %>%  # Ensure numeric values, even if NA
+    select(yintercept = value, linetype = Standard)
+  
+  # Get unique river_mile values
+  unique_river_miles <- unique(data$river_mile)
+  
+  # Filter and preprocess the main data
+  preprocess_data <- function(x_var_filter) {
+    data <- data %>%
+      mutate(activity_start_date = as.Date(activity_start_date, format = "%Y-%m-%d"),
+             year = as.numeric(format(activity_start_date, "%Y")))
+    data %>%
+      filter((x_var_filter == "tributary_name" & trib_mainstem != "m") | (x_var_filter == "river_mile" & trib_mainstem != "t")) %>%
+      mutate(
+        tributary_name = factor(
+          tributary_name,
+          levels = c(
+            "No Name Creek",
+            "Beaver Creek",
+            "Slikok Creek",
+            "Soldotna Creek",
+            "Funny River",
+            "Moose River",
+            "Killey River",
+            "Russian River",
+            "Juneau Creek"
+          )
+        ),
+        river_mile = factor(river_mile, levels = sort(unique_river_miles))
+      ) %>%
+      filter(characteristic_name == characteristic) %>%
+      mutate(
+        result_measure_value = as.numeric(result_measure_value),  # Ensure numeric
+        fw_acute_exceed = ifelse(is.na(fw_acute_exceed), NA, fw_acute_exceed),
+        fw_chronic_exceed = ifelse(is.na(fw_chronic_exceed), NA, fw_chronic_exceed),
+        season = as.factor(season)  # Ensure season is categorical
+      ) %>%
+      filter(!is.na(result_measure_value))  # Remove rows with NA values
+  }
+  
+  # Create plots for tributary_name and river_mile
+  create_plot <- function(subset_data, x_var) {
+    min_year <- as.character(min(subset_data$year, na.rm = TRUE))
+    max_year <- as.character(max(subset_data$year, na.rm = TRUE))
+    y_min <- min(subset_data$result_measure_value, na.rm = TRUE) * 0.9
+    y_max <- max(subset_data$result_measure_value, na.rm = TRUE) * 1.1
+    
+    ggplot(subset_data, aes(x = get(x_var), y = result_measure_value)) +
+      geom_boxplot(aes(group = get(x_var)), outlier.shape = NA) +
+      geom_jitter(aes(
+        color = factor(case_when(
+          is.na(fw_acute_exceed) & is.na(fw_chronic_exceed) ~ "gray",
+          
+          is.na(fw_acute_exceed) & fw_chronic_exceed == "Y" ~ "orange",
+          
+          fw_acute_exceed == "Y" & fw_chronic_exceed == "Y" ~ "blue"
+          
+        )),
+        shape = factor(case_when(
+          
+          is.na(fw_acute_exceed) & is.na(fw_chronic_exceed) ~ "gray",
+          is.na(fw_acute_exceed) & fw_chronic_exceed == "Y" ~ "orange",
+          fw_acute_exceed == "Y" & fw_chronic_exceed == "Y" ~ "blue"
+          
+        ))
+      ), width = 0.2, size = 3, show.legend = TRUE) +
+      geom_hline(data = hline_data, aes(yintercept = yintercept, linetype = linetype), color = "#D55E00", size = 1.2, show.legend = TRUE) +
+      facet_wrap(~season) +
+      scale_y_continuous(limits = c(y_min, y_max)) +
+      scale_color_manual(
+        name = "Hardness Dependent\nExceedance Type",
+        breaks = c("gray", "orange", "blue"),
+        labels = c("gray" = "None", "orange" = "Chronic", "blue" = "Acute"),
+        values = c(
+          "gray" = "#7F7F7F",    # Gray for None (colorblind-friendly neutral gray)
+          "orange" = "#E69F00",  # Orange for Acute (colorblind-friendly orange)
+          "blue" = "#0072B2"      # Blue for Chronic (colorblind-friendly blue)
+        )
+      ) +
+      scale_shape_manual(
+        name = "Hardness Dependent\nExceedance Type",
+        breaks = c("gray", "orange", "blue"),
+        labels = c("gray" = "None", "orange" = "Chronic", "blue" = "Acute"),
+        values = c(
+          "gray" = 16,    # Acute: NA, Chronic: NA
+          "orange" = 16,    # Acute: NA, Chronic: Y
+          "blue" = 8      # Acute: Y, Chronic: Y
+        )
+      ) +
+      scale_linetype_manual(
+        name = "Regulatory Standard",
+        values = c(
+          "drinking_water" = "solid",
+          "irrigation_water" = "longdash",
+          "stock_water" = "dotted",
+          "wildlife" = "twodash",
+          "recreation" = "dotdash"
+        )
+      ) +
+      guides(
+        linetype = guide_legend(override.aes = list(color = "red", size = 1.2)),
+        color = guide_legend(override.aes = list(size = 4, linetype = 0)),
+        shape = guide_legend(override.aes = list(size = 4, linetype = 0))
+      ) +
+      
+      labs(
+        title = paste(
+          "Kenai River",
+          ifelse(x_var == "tributary_name", "Tributaries", "Mainstem"), ",",
+          characteristic, ",",
+          min_year, "-", max_year
+        )
+      ) +
+      xlab("") +
+      ylab(paste0(characteristic, " (",subset_data$result_measure_measure_unit_code,")")) +
+      
+      #theme_minimal() +
+      theme(
+        axis.text.x = element_text(angle = 60, hjust = 1, size = 14),
+        axis.text.y = element_text(size = 14),
+        axis.title = element_text(size = 16),
+        strip.text = element_text(size = 16, face = "bold"),
+        legend.text = element_text(size = 14),
+        legend.title = element_text(size = 16),
+        title = element_text(size = 16),
+        legend.position = "right"
       )
-    ) %>%
-    left_join(reg_vals, by = "characteristic_name")
+  }
   
-  # Get unit for parameter
-  unit <- unique(parameter_dat$result_measure_measure_unit_code)
+  # Generate plots
+  tributary_data <- preprocess_data("tributary_name")
+  river_mile_data <- preprocess_data("river_mile")
   
-  # Set min and max time extent
-  min_year <- as.character(min(year(parameter_dat$activity_start_date)))
-  max_year <- as.character(max(year(parameter_dat$activity_start_date)))
+  plot_tributary <- create_plot(tributary_data, "tributary_name")
+  plot_river_mile <- create_plot(river_mile_data, "river_mile")
   
-  # Calculate y-axis ranges for tributaries and mainstem separately
-  trib_data <- subset(parameter_dat, trib_mainstem == "t")
-  mainstem_data <- subset(parameter_dat, trib_mainstem == "m")
-  
-  y_min_trib <- min(trib_data$result_measure_value, na.rm = TRUE)
-  y_max_trib <- max(trib_data$result_measure_value, na.rm = TRUE)
-  
-  y_min_mainstem <- min(mainstem_data$result_measure_value, na.rm = TRUE)
-  y_max_mainstem <- max(mainstem_data$result_measure_value, na.rm = TRUE)
-  
-  # Define a theme with 20% larger text
-  size <- 1.2
-  larger_text_theme <- theme(
-    axis.title = element_text(size = rel(size)),
-    axis.text = element_text(size = rel(size)),
-    strip.text = element_text(size = rel(size)),
-    legend.text = element_text(size = rel(size)),
-    legend.title = element_text(size = rel(size)),
-    plot.title = element_text(size = rel(size), hjust = 0.5)
-  )
-  
-  # Define color and shape palettes
-  color_palette <- c("DarkGray" = "#555555", "Highlighted" = "#E69F00")
-  shape_palette <- c(
-    "GrayCircle" = 16,
-    "ColoredCircle" = 16,
-    "ColoredAsterisk" = 8
-  )
-  
-  # Tribs plot
-  p_trib <- ggplot(trib_data, aes(
-    x = factor(tributary_name), 
-    y = result_measure_value,
-    color = acute_color,
-    shape = chronic_shape
-  )) +
-    facet_grid(.~season) +
-    geom_boxplot(outlier.shape = NA) +
-    geom_jitter(width = 0.2) +
-    scale_color_manual(values = color_palette) +
-    scale_shape_manual(values = shape_palette) +
-    geom_hline(data = hline_data,
-               aes(yintercept = value, linetype = Standard),
-               color = "darkred",
-               size = 1.2) +
-    ylab(paste0(param, " (", unit, ")")) +
-    xlab("Location") +
-    ggtitle(paste(param, "in Kenai River Tributaries", min_year, "to", max_year)) +
-    theme(
-      axis.text.x = element_text(angle = 90),
-      legend.position = "none"
-    ) +
-    coord_cartesian(ylim = c(y_min_trib, y_max_trib)) +
-    larger_text_theme
-  
-  # Mainstem plot
-  p_ms <- ggplot(mainstem_data, aes(
-    x = factor(as.numeric(river_mile)), 
-    y = result_measure_value,
-    color = acute_color,
-    shape = chronic_shape
-  )) +
-    facet_grid(.~season) +
-    geom_boxplot(outlier.shape = NA) +
-    geom_jitter(width = 0.2) +
-    scale_color_manual(values = color_palette) +
-    scale_shape_manual(values = shape_palette) +
-    geom_hline(data = hline_data,
-               aes(yintercept = value, linetype = Standard),
-               color = "darkred",
-               size = 1.2) +
-    ylab(paste0(param, " (", unit, ")")) +
-    xlab("River Mile") +
-    ggtitle(paste(param, "in Kenai River Mainstem", min_year, "to", max_year)) +
-    theme(
-      axis.text.x = element_text(angle = 90),
-      legend.position = "none"
-    ) +
-    coord_cartesian(ylim = c(y_min_mainstem, y_max_mainstem)) +
-    larger_text_theme
-  
-  # Combined legend
-  legend_data <- trib_data %>%
-    bind_rows(mainstem_data) %>%
-    distinct(acute_color, chronic_shape) %>%
-    mutate(label = case_when(
-      chronic_shape == "GrayCircle" ~ "NA for Acute and Chronic",
-      chronic_shape == "ColoredCircle" ~ "Acute Y, Chronic NA",
-      chronic_shape == "ColoredAsterisk" ~ "Acute Y, Chronic Y"
-    ))
-  
-  # Add hline legend representation
-  hline_legend <- hline_data %>%
-    distinct(Standard) %>%
-    mutate(linetype = Standard)
-  
-  legend_plot <- ggplot() +
-    geom_point(data = legend_data, aes(x = 1, y = 1, color = acute_color, shape = chronic_shape), size = 4) +
-    scale_color_manual(values = color_palette) +
-    scale_shape_manual(values = shape_palette) +
-    geom_hline(data = hline_legend, aes(yintercept = -Inf, linetype = linetype), color = "darkred", size = 1.2) +
-    theme_void() +
-    theme(
-      legend.position = "right",
-      legend.title = element_text(size = rel(size)),
-      legend.text = element_text(size = rel(size))
-    ) +
-    guides(
-      color = guide_legend("Legend", override.aes = list(size = 4)),
-      shape = guide_legend("Legend", override.aes = list(size = 4)),
-      linetype = guide_legend("Static Regulatory Standards", override.aes = list(color = "darkred", size = 1.2))
-    )
-  
-  # Combine plots without extra white space
-  combined_plot <- plot_grid(
-    p_ms, 
-    p_trib, 
-    ncol = 1, 
-    rel_heights = c(1, 1)
-  )
-  
-  # Add a precise white rectangle over extraneous symbols
-  white_overlay <- ggplot() +
-    annotate("rect", xmin = -Inf, xmax = Inf, ymin = -Inf, ymax = Inf, fill = "white", alpha = 1) +
-    theme_void()
-  
-  final_plot <- ggdraw() +
-    draw_plot(combined_plot, x = 0, y = 0, width = 0.75, height = 1) +
-    draw_plot(legend_plot, x = 0.75, y = 0, width = 0.25, height = 1) +
-    draw_plot(white_overlay, x = 0.72, y = 0, width = 0.03, height = 1) # Precise masking of symbols
-  
-  final_plot
+  return(list(
+    tributary_plot = plot_tributary,
+    river_mile_plot = plot_river_mile
+  ))
 }
 
 
+# print plots
+plots <- create_facet_plots(data_path, reg_vals_path, characteristic)
+print(plots$tributary_plot)
+print(plots$river_mile_plot)
 
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-# make geom_point symbology different for exceedences
-
-## metals:
-### acute exceedence: color A
-### chronic exceedence: color B
-### do we need different plot functions for this type of display vs where thresholds are just static?
-
-# make plotly appear on html render, jpg on docx render
 
 
 

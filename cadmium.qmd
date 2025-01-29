@@ -13,20 +13,16 @@ format:
 
 test
 
-```{r echo = F, warning=FALSE, message=FALSE,fig.height=8, fig.width = 10}
+```{r echo = F, warning=FALSE, message=FALSE,fig.height=8, fig.width=10}
 
 # set parameter
-parameter <- "Cadmium"
+characteristic <- "Cadmium"
 
 # source static regulatory criteria boxplot function
 source("functions/static_boxplot_function.R")
-make_boxplot(param = parameter)
-
 
 # source table download function
 source("functions/table_download.R")
-download_tbl(param = parameter)
-
-
+download_tbl(char = characteristic)
 
 ```
