@@ -11,42 +11,22 @@ format:
     code-summary: "Show the code"
 ---
 
-As an essential element, magnesium concentrations can significantly impact
-plants and animals, and magnesium also influences water quality because it contributes to
-hardness (Glass, 2001). Neither the USEPA nor the ADEC has set a water quality
-standard for magnesium concentrations in freshwater for chronically exposed aquatic life.
+As an essential element, magnesium concentrations can significantly impact plants and animals, and magnesium also influences water quality because it contributes to hardness (Glass, 2001). Neither the USEPA nor the ADEC has set a water quality standard for magnesium concentrations in freshwater for chronically exposed aquatic life.
 
-In the mainstem, the highest concentration of magnesium was 582 mg/L and
-occurred at Mile 1.5 during spring 2011, while the lowest level was 0.729 mg/L at Mile
-50 in summer 2001 (Table X). In both the spring and the summer, Mile 1.5 had the
-highest median followed by Mile 6.5. There was a general upward trend in magnesium
-levels from Kenai Lake to the estuary in both the spring and the summer. Magnesium
-levels were higher upstream of Skilak Lake, and at the outlet, magnesium dropped to the
-lowest levels recorded in the watershed. In the mainstem, magnesium concentrations
-were higher in the spring than in the summer (Figures X & X).
+In the mainstem, the highest concentration of magnesium was 582 mg/L and occurred at Mile 1.5 during spring 2011, while the lowest level was 0.729 mg/L at Mile 50 in summer 2001 (Table X). In both the spring and the summer, Mile 1.5 had the highest median followed by Mile 6.5. There was a general upward trend in magnesium levels from Kenai Lake to the estuary in both the spring and the summer. Magnesium levels were higher upstream of Skilak Lake, and at the outlet, magnesium dropped to the lowest levels recorded in the watershed. In the mainstem, magnesium concentrations were higher in the spring than in the summer (Figures X & X).
 
-The concentrations in the tributaries ranged from the high of 21.4 mg/L in spring
-2010 at No Name Creek to 0.746 mg/L in spring 2004 at the Killey River (Table X). The
-Killey River, Russian River and Juneau Creek had low medians in comparison to the
-other tributaries like Soldotna Creek, which had the highest median during the summer.
-Excluding the estuary, the tributaries generally had higher levels of magnesium than the
-mainstem. In the tributaries, median concentrations were higher in the summer than in the
-spring, excluding Beaver Creek and Russian River (Figures X & X).
+The concentrations in the tributaries ranged from the high of 21.4 mg/L in spring 2010 at No Name Creek to 0.746 mg/L in spring 2004 at the Killey River (Table X). The Killey River, Russian River and Juneau Creek had low medians in comparison to the other tributaries like Soldotna Creek, which had the highest median during the summer. Excluding the estuary, the tributaries generally had higher levels of magnesium than the mainstem. In the tributaries, median concentrations were higher in the summer than in the spring, excluding Beaver Creek and Russian River (Figures X & X).
 
-```{r echo = F, warning=FALSE, message=FALSE,fig.height=10}
+```{r echo = F, warning=FALSE, message=FALSE,fig.height=8, fig.width=10}
 
 # set parameter
-parameter <- "Magnesium"
+characteristic <- "Magnesium"
 
 # source static regulatory criteria boxplot function
 source("functions/static_boxplot_function.R")
-make_boxplot(param = parameter)
-
-# source calculated regulatory criteria plot(s) function
-
 
 # source table download function
 source("functions/table_download.R")
-download_tbl(param = parameter)
+download_tbl(char = characteristic)
 
 ```

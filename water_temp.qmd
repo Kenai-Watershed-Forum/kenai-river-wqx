@@ -25,20 +25,16 @@ The highest temperature recorded on the mainstem occurred at Mile 1.5 in the sum
 
 In the tributaries, the highest temperature was 19°C in the Moose River during summer 2003, and the lowest temperature was –0.21°C in the Killey River during spring 2002 (Table X). In the spring, No Name Creek, Soldotna Creek and Russian River exceeded the standards for rearing areas and migration routes. Also, Slikok Creek, Funny River and Moose River exceeded the standard for egg and fry incubation and spawning areas. All tributaries had medians below 5°C, with the highest at Russian River and the lowest at Funny River. During the summer, the medians of Beaver Creek, Soldotna Creek, and Moose River exceeded the standards for egg and fry incubation and spawning areas, and the median at Moose River also exceeded the standards for rearing areas and migration routes. The coldest tributary in the summer was the Killey River, followed by Juneau Creek, Funny River and then Slikok Creek. The median water temperatures were higher in the summer than in the spring for all sampling locations in both the mainstem and the tributaries. For this analysis there were no values available for temperature during the sampling event of spring 2012 (Figure X).
 
-```{r echo = F, warning=FALSE, message=FALSE,fig.height=10}
+```{r echo = F, warning=FALSE, message=FALSE,fig.height=8, fig.width=10}
 
 # set parameter
-parameter <- "Temperature, water"
+characteristic <- "Calcium"
 
 # source static regulatory criteria boxplot function
 source("functions/static_boxplot_function.R")
-make_boxplot(param = parameter)
-
-# source calculated regulatory criteria plot(s) function
-
 
 # source table download function
 source("functions/table_download.R")
-download_tbl(param = parameter)
+download_tbl(char = characteristic)
 
 ```

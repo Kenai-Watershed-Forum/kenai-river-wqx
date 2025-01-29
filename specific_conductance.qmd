@@ -17,20 +17,16 @@ The highest level of specific conductance in the mainstem was 29398 µS/cm, whic
 
 In the tributaries, specific conductance ranged from a high of 1088 µS/cm in No Name Creek during spring 2010 to the lowest level of 18 µS/cm in the Killey River during summer 2004 (Table X). The Killey River maintained the lowest median during the spring and the summer, while the highest median was in No Name Creek for both the spring and Soldotna Creek for the summer. The tributaries had higher levels of specific conductance in the summert, except for the Killey River, Russian River and Juneau Creek. In the summer, the tributaries generally had higher medians than the mainstem, but a corresponding trend was not apparent in the spring data (Figures X & X).
 
-```{r echo = F, warning=FALSE, message=FALSE,fig.height=10}
+```{r echo = F, warning=FALSE, message=FALSE,fig.height=8, fig.width=10}
 
 # set parameter
-parameter <- "Specific conductance"
+characteristic <- "Specific conductance"
 
 # source static regulatory criteria boxplot function
 source("functions/static_boxplot_function.R")
-make_boxplot(param = parameter)
-
-# source calculated regulatory criteria plot(s) function
-
 
 # source table download function
 source("functions/table_download.R")
-download_tbl(param = parameter)
+download_tbl(char = characteristic)
 
 ```

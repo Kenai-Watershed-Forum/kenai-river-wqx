@@ -17,21 +17,16 @@ The highest level of phosphorus ever recorded occurred at Mile 1.5 in spring 200
 
 In the tributaries, phosphorus ranged from 64 mg/L in Slikok Creek during May 2013 to below the MDL of 0.0020 mg/L at many locations in the spring and the summer (Table X) Beaver Creek had the highest median in the spring but dropped to the second highest in the summer, after the Killey River. Funny River had relatively high medians during both the spring and the summer. In contrast, Russian River displayed the lowest median in both the spring and the summer (Figures X & X).
 
-
-```{r echo = F, warning=FALSE, message=FALSE,fig.height=10}
+```{r echo = F, warning=FALSE, message=FALSE,fig.height=8, fig.width=10}
 
 # set parameter
-parameter <- "Phosphorus"
+characteristic <- "Phosphorus"
 
 # source static regulatory criteria boxplot function
 source("functions/static_boxplot_function.R")
-make_boxplot(param = parameter)
-
-# source calculated regulatory criteria plot(s) function
-
 
 # source table download function
 source("functions/table_download.R")
-download_tbl(param = parameter)
+download_tbl(char = characteristic)
 
 ```

@@ -13,11 +13,11 @@ format:
 
 ## Interpreting Box Plots
 
-Each of the following graphs display the sampling results for a specific parameter, such as arsenic. Within these graphs, a box and extending lines represent the results reported at each sampling site. A horizontal line within the box corresponds to the median of the data. The box contains 50% of the data and the vertical lines display the minimum and maximum values. Any data points that fall outside of the acceptable range are outliers and are portrayed as small circles (@fig-boxplot1).
+Each of the following graphs display the sampling results for a specific parameter, such as arsenic. Within these graphs, a box and extending lines represent the results reported at each sampling site. A horizontal line within the box corresponds to the median of the data. The box contains 50% of the data and the vertical lines display the minimum and maximum values. All data points generating the boxplot are superimposed atop it (@fig-boxplot1).
 
 ![Components of a box plot](other/documents/images/boxplots.jpg){#fig-boxplot1}
 
-For further background on interpreting boxplots, see [this figure.](https://r4ds.hadley.nz/data-visualize#fig-eda-boxplot)
+For further background on interpreting boxplots, see [this figure](https://r4ds.hadley.nz/data-visualize#fig-eda-boxplot) from "R for Data Science" by Wickham et al 2024.
 
 <br>
 
@@ -71,6 +71,12 @@ points_theme <- theme(axis.title = element_text(size = 14, face = "bold"),
 # function to exclude multiple items per column
 '%ni%' <- Negate('%in%')
 
+# to do: clean up this qmd document
+# - include just boxplot stuff, do data read in and pre-processing in a different doc
+# - ref to data absence epa hows my waterway, in progress fix
+# - ref to total extent of data in epa wqx
+# confirm outlier removal works, org to prep to eqp wqx sync
+
 ```
 
 ```{r echo = F}
@@ -98,31 +104,6 @@ points_theme <- theme(axis.title = element_text(size = 14, face = "bold"),
 # readNWIS won't read the site IDs I try so far ....
 
 library(dataRetrieval)
-# Choptank River near Greensboro, MD
-siteNumber <- "10000022"
-
-ChoptankInfo <- readNWISsite(siteNumber)
-parameterCd <- "00060"
-
-# Raw daily data:
-rawDailyData <- readNWISdv(
-  siteNumber, parameterCd,
-  "1980-01-01", "2010-01-01"
-)
-
-# Sample data Nitrate:
-parameterCd <- "00618"
-qwData <- readNWISqw(
-  siteNumber, parameterCd,
-  "1980-01-01", "2010-01-01"
-)
-
-pCode <- readNWISpCode(parameterCd)
-
-# determine site IDs
-# determine parameter IDs
-10000173
-
 
 ```
 

@@ -6,7 +6,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="dcterms.date" content="2025-01-22">
+<meta name="dcterms.date" content="2025-01-29">
 
 <title>10&nbsp; Copper – Water Quality Assessment of the Kenai River Watershed from 2000 to 2021 [DRAFT]</title>
 <style>
@@ -407,7 +407,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">January 22, 2025</p>
+      <p class="date">January 29, 2025</p>
     </div>
   </div>
   
@@ -425,7 +425,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="copper_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="copper_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid figure-img" width="960"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="copper_files/figure-html/unnamed-chunk-1-2.png" class="img-fluid figure-img" width="960"></p>
 </figure>
 </div>
 </div>
@@ -936,23 +943,20 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>The highest concentration of copper in the mainstem was reported at <span class="sc">\_\_\_\_\_</span> μg/L at <span class="sc">\[</span>site<span class="sc">\]</span> in <span class="sc">\[</span>season/year<span class="sc">\]</span>, and the lowest levels were below the MDL of <span class="sc">\_\_\_\_</span> μg/L. In the summer, <span class="sc">\_\_\_\_</span> exceedances occurred at <span class="sc">\[</span>sites<span class="sc">\]</span>, and copper concentrations exceeded the criteria during individual sampling dates at <span class="sc">\[</span>sites<span class="sc">\]</span>. Higher levels occurred <span class="sc">\_\_\_\_</span>, while the lowest concentrations were detected at <span class="sc">\_\_\_\_</span>. <span class="sc">\[</span>Were exceedances were recorded for the mainstem during the sampling events in spring/summer?<span class="sc">\]</span>. Copper concentrations in the tributaries ranged from <span class="sc">\_\_\_</span> μg/L in the <span class="sc">\[</span>site/year<span class="sc">\]</span> to below the MDL of <span class="sc">\_\_\_</span> μg/L that occurred in many locations during this project. Exceedances in the spring occurred at..... Exceedances in the summer occurred at ....</span>
 <span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="in">```{r echo = F, warning=FALSE, message=FALSE,fig.height=10}</span></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="in">```{r echo = F, warning=FALSE, message=FALSE,fig.height=8, fig.width=10}</span></span>
 <span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="in"># set parameter</span></span>
-<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="in">parameter &lt;- "Copper"</span></span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="in">characteristic &lt;- "Copper"</span></span>
 <span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a><span class="in"># source static regulatory criteria boxplot function</span></span>
 <span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a><span class="in">source("functions/static_boxplot_function.R")</span></span>
-<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a><span class="in">make_boxplot(param = parameter)</span></span>
-<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a><span class="in"># source calculated regulatory criteria plot(s) function</span></span>
-<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a><span class="in"># source table download function</span></span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a><span class="in">source("functions/table_download.R")</span></span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a><span class="in">download_tbl(char = characteristic)</span></span>
 <span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a><span class="in"># source table download function</span></span>
-<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a><span class="in">source("functions/table_download.R")</span></span>
-<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a><span class="in">download_tbl(param = parameter)</span></span>
-<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span></code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span></code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 

@@ -411,8 +411,6 @@ The previous reports on these data (Guerron Orejuela 2016 and McCard 2007) use o
 
 In our dataset, we have `r nitrate_count` observations of "Nitrate" and `r inorganic_n_count` observations of "Inorganic nitrogen (nitrate and nitrite)." Both of these parameters are reported to use the identical lab analytical method (4500-NO3(E)). For this report, will treat the two parameter names as indistinguishable, and data appears in the figure as such.
 
-
-
 <br>
 
 ## Fecal Coliform Bacteria
@@ -424,8 +422,8 @@ A variety of fecal coliform standards are described in ADEC standards ([18 AAC 7
 
 In this project, we collect only single samples on single days for each site. Thus, data are not structured to be assessed against existing state standards. In this report, we display two fixed threshold values for a) harvesting aquatic life and b) secondary recreation (contact with water), but it should be notes that single values above these lines do not represent regulatory exceedences.
 
-- helpful data to understand where/when more monitoring is needed
-- important to help understand spatial trends
+-   helpful data to understand where/when more monitoring is needed
+-   important to help understand spatial trends
 
 Additional sampling beyond this project is needed to reasonably characterize bacteria conditions int he Kenai River, and several major efforts between 2010 - 2020 better achieved this. For more information and detailed reports on Kenai River bacteria monitoring, visit https://www.kenaiwatershed.org/other-water-research/ and click on "Bacteria Monitoring."
 

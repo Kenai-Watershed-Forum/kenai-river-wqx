@@ -11,20 +11,16 @@ format:
     code-summary: "Show the code"
 ---
 
-```{r echo = F, warning=FALSE, message=FALSE,fig.height=10}
+```{r echo = F, warning=FALSE, message=FALSE,fig.height=8, fig.width=10}
 
 # set parameter
-parameter <- "Benzene, toluene, ethyl benzene, xylenes mix"
+characteristic <- "Benzene, toluene, ethyl benzene, xylenes mix"
 
 # source static regulatory criteria boxplot function
 source("functions/static_boxplot_function.R")
-make_boxplot(param = parameter)
-
-# source calculated regulatory criteria plot(s) function
-
 
 # source table download function
 source("functions/table_download.R")
-download_tbl(param = parameter)
+download_tbl(char = characteristic)
 
 ```
