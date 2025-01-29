@@ -54,7 +54,7 @@ trib_order <- c("No Name Creek",
 # "analysis_format" version: 
 
 #### READ IN analysis format data ####
-data <- read.csv("other/output/analysis_format/baseline_analysis_format.csv")
+baseline_data <- read.csv("other/output/analysis_format/baseline_analysis_format.csv")
 
 
 #### READ IN Regulatory Threshold Values ####
@@ -74,6 +74,9 @@ ph_reg_vals <- read.csv("other/input/regulatory_limits/formatted_reg_vals/ph_reg
 # join all static regulatory value dataframes
 # old: reg_vals <- static_metals_reg_vals
 reg_vals <- bind_rows(static_metals_reg_vals,ph_reg_vals)
+
+# write combined csv of all static regulatory values
+write.csv(reg_vals,"other/output/regulatory_values/all_reg_vals.csv")
 
 
 
@@ -177,22 +180,7 @@ create_facet_plots <- function(data, reg_vals, characteristic) {
   return(list(plot1 = plot1, plot2 = plot2))
 }
 
-# Example usage
-# plots <- create_facet_plots(baseline_data, reg_vals, "Arsenic")
-# print(plots$plot1)
-# print(plots$plot2)
 
-
-
-# Example usage
-# combined_plot <- create_facet_plots(baseline_data, reg_vals, "Arsenic")
-# print(combined_plot)
-
-
-
-# Example usage
-# combined_plot <- create_facet_plots(baseline_data, reg_vals, "Arsenic")
-# print(combined_plot)
 
 
 
