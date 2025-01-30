@@ -1,0 +1,22 @@
+# Interpreting Boxplots
+
+---
+execute:
+  echo: false
+date: "`r Sys.Date()`"
+format:
+  html:
+    code-fold: true
+    code-tools: true
+    code-summary: "Show the code"
+---
+
+## Interpreting Box Plots
+
+Each of the following graphs display the sampling results for a specific parameter, such as arsenic. Within these graphs, a box and extending lines represent the results reported at each sampling site. A horizontal line within the box corresponds to the median of the data. The box contains 50% of the data and the vertical lines display the minimum and maximum values. All data points generating the boxplot are superimposed atop it (@fig-boxplot1).
+
+![Components of a box plot](other/documents/images/boxplots.jpg){#fig-boxplot1}
+
+For further background on interpreting boxplots, see [this figure](https://r4ds.hadley.nz/data-visualize#fig-eda-boxplot) from "R for Data Science" by Wickham et al 2024.
+
+

@@ -20,8 +20,9 @@ book:
       - methods.qmd
     - part: "Results"
       chapters:
+      - data_sourcing.qmd
       - data_qa_qc.qmd
-      - parameters.qmd
+      - interpreting_boxplots.qmd
       - reg_limits.qmd
       - arsenic.qmd
       - cadmium.qmd

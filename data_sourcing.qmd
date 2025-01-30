@@ -1,4 +1,4 @@
-# Interpreting Boxplots
+# Data Sourcing 
 
 ---
 execute:
@@ -10,16 +10,6 @@ format:
     code-tools: true
     code-summary: "Show the code"
 ---
-
-## Interpreting Box Plots
-
-Each of the following graphs display the sampling results for a specific parameter, such as arsenic. Within these graphs, a box and extending lines represent the results reported at each sampling site. A horizontal line within the box corresponds to the median of the data. The box contains 50% of the data and the vertical lines display the minimum and maximum values. All data points generating the boxplot are superimposed atop it (@fig-boxplot1).
-
-![Components of a box plot](other/documents/images/boxplots.jpg){#fig-boxplot1}
-
-For further background on interpreting boxplots, see [this figure](https://r4ds.hadley.nz/data-visualize#fig-eda-boxplot) from "R for Data Science" by Wickham et al 2024.
-
-<br>
 
 ```{r echo = F, message = F}
 
@@ -51,31 +41,11 @@ library(cowplot)
 
 select <- dplyr::select
 
-# set plotting themes
+# to do: add explanatory content to this qmd document
 
-## geom_col plots theme
-col_theme <- theme(axis.title = element_text(size = 14, face = "bold"),
-                   strip.text = element_text(size = 14, face = "bold"),
-                   legend.title = element_text(size = 14, face = "bold"),
-                   legend.text = element_text(size = 14),
-                   axis.text = element_text(size = 14))
-
-## geom_points plots theme
-points_theme <- theme(axis.title = element_text(size = 14, face = "bold"),
-                   strip.text = element_text(size = 14, face = "bold"),
-                   legend.title = element_text(size = 14, face = "bold"),
-                   legend.text = element_text(size = 14),
-                   axis.text = element_text(size = 14),
-                   title = element_text(size = 18))
-
-# function to exclude multiple items per column
-'%ni%' <- Negate('%in%')
-
-# to do: clean up this qmd document
-# - include just boxplot stuff, do data read in and pre-processing in a different doc
 # - ref to data absence epa hows my waterway, in progress fix
 # - ref to total extent of data in epa wqx
-# confirm outlier removal works, org to prep to eqp wqx sync
+# - confirm outlier removal works, org to prep to eqp wqx sync. WAIT UNTIL ALL DATA SYNCHED TO THIS DOCUMENT BEFORE EXCISING OUTLIERS
 
 ```
 
@@ -87,32 +57,29 @@ points_theme <- theme(axis.title = element_text(size = 14, face = "bold"),
 
 # CSV download for SAMPLE data: <https://www.waterqualitydata.us/portal/#bBox=-151.322501%2C60.274310%2C-149.216144%2C60.738915&mimeType=csv&dataProfile=narrowResult>
 
-# CSV download for SAMPLE SITE data: <https://www.waterqualitydata.us/portal/#countrycode=US&statecode=US%3A02&countycode=US%3A02%3A122&bBox=-151.322501%2C60.274310%2C-149.216144%2C60.738915&mimeType=csv>
+# CSV download for STATION data: <https://www.waterqualitydata.us/portal/#countrycode=US&statecode=US%3A02&countycode=US%3A02%3A122&bBox=-151.322501%2C60.274310%2C-149.216144%2C60.738915&mimeType=csv>
 
 # Note: these CSV files are excluded from the GitHub repository because they are too large to sync. To reproduce the analysis, download and save these files locally instead. (See the ReadMe file at data/WQX_downloads in the repository).
 
 # Using these same queries in the future will download the most current csv files that may have received additional data in the interim since the last time this script was run.
 
-# We initially attempted to perform the task described above with the dataRetrieval package, but were not successful. See code chunk below.
+# We initially attempted to perform the task described above with the dataRetrieval package, but were not successful. As of 2025 this tool has transitioned to the "TADA" (tools for automated data analysis) package from EPA
 
-```
-
-```{r echo = F, eval = F, warning=FALSE, results='hide',message=FALSE}
+#library(dataRetrieval)
 
 # Note: in there future, I hope to automatically retrieve the most current water quality data from the EPA WQX
 
-# readNWIS won't read the site IDs I try so far ....
-
-library(dataRetrieval)
-
 ```
+
+
 
 ```{r echo = F, warning=FALSE, results='hide',message=FALSE}
 
-# prepare data to be used in boxplots
+# prepare and pre-process data that was downloaded from EPA WQX as described above
 
 # designate download date
 download_date <- "20230215"
+
 # import sample data
 dat <- read_csv("other/input/WQX_downloads/narrowresult/narrowresult.csv") %>%
   # retain only KWF data
@@ -126,7 +93,7 @@ dat %<>%
   mutate(OrganizationFormalName = str_remove(OrganizationFormalName,"\\*"))
 
 
-# import site data
+# import station data, from seperate file
 site_dat <- read_csv("other/input/WQX_downloads/station/station.csv") %>%
   # retain only Kenai Baseline sites (contains "KBL")
   filter(grepl("KBL", MonitoringLocationName)) %>%
@@ -164,72 +131,30 @@ dat <- left_join(dat,site_dat) %>%
 #  distinct()
 
 
-# It appears that data after spring 2013 is not in the EPA database.**](Confirmed w/ ADEC in spring 2021; still true in Spring 2023).
-
-
 # What kind of sites are present in our data set?
 #site_types <- data.frame(unique(dat$MonitoringLocationTypeName))
 
+```
 
-# additional dataframe prep
+
+```{r echo = F, warning=FALSE, results='hide',message=FALSE}
+
+### Miscellaneous additional dataframe prep ###
+
+# specify date format
 dat %<>%
   transform(ActivityStartDate = date(ActivityStartDate)) %>%
   # remove missing observations
   filter(!is.na(ResultMeasureValue))
-
-
-### Exploratory Data Analysis
-### Consider including these numbers in section intro
-
-# How many years of data do we have, including from the waterqualitydata.us database AND the KWF local server?
-
-years_tbl <- dat %>%
-  filter(OrganizationFormalName == "Kenai Watershed Forum") %>%
-  summarise(min_date = min(ActivityStartDate),
-            max_date = max(ActivityStartDate))
-
 
 # Remove air temperature observations
 dat %<>%
   filter(CharacteristicName != "Temperature, air") 
 
 
-# How many different kinds of substances have we measured ?
-total_parameters <- dat %>%
-  filter(OrganizationFormalName == "Kenai Watershed Forum") %>%
-  distinct(CharacteristicName) %>%
-  count()
 
-# What are the names of all of substances have we measured ?
-
-parameter_names <- dat %>%
-  filter(OrganizationFormalName == "Kenai Watershed Forum") %>%
-  distinct(CharacteristicName) 
-
-
-# Create and export table of site names
-site_tbl <- dat %>%
-  group_by(MonitoringLocationName,LatitudeMeasure,LongitudeMeasure) %>%
-  summarise(min_date = min(ActivityStartDate),
-            max_date = max(ActivityStartDate)) %>%
-  rename("latitude" = "LatitudeMeasure",
-         "longitude" = "LongitudeMeasure")
-# export csv
-write.csv(site_tbl,"other/output/field_qa_qc_data/2000_2014_sitenames.csv", row.names = F)
-
-# read back in manually edited table with info on maintsem/trib and river mile
-site_tbl <- read_csv("other/input/baseline_sites.csv") %>%
-  remove_empty() %>%
-  select(-latitude,-longitude)
-
-```
-
-```{r echo = F, warning=FALSE, message=FALSE}
-
-# make corrections where known errors exist from wqx import
 
 # UNITS
-
 # bacteria - fecal coliform should all be "cfu/100ml"
 dat <- dat %>%
   mutate(`ResultMeasure/MeasureUnitCode` = case_when(
@@ -238,19 +163,23 @@ dat <- dat %>%
 
 
 
-```
+# SITE NAME CORRECTIONS
+# Create and export table of site names
+site_tbl <- dat %>%
+  group_by(MonitoringLocationName,LatitudeMeasure,LongitudeMeasure) %>%
+  summarise(min_date = min(ActivityStartDate),
+            max_date = max(ActivityStartDate)) %>%
+  rename("latitude" = "LatitudeMeasure",
+         "longitude" = "LongitudeMeasure")
 
-```{r echo = F, warning=FALSE, message=FALSE}
+# export csv of site names as received from EPA WQX
+write.csv(site_tbl,"other/output/field_qa_qc_data/2000_2014_sitenames.csv", row.names = F)
 
-## Miscellaneous tasks
+# read back in the manually edited table with info on maintsem/trib and river mile
+site_tbl <- read_csv("other/input/baseline_sites.csv") %>%
+  remove_empty() %>%
+  select(-latitude,-longitude)
 
-### Additional site info
-
-# Join additional site info to overall dataset
-# join by coordinates
-# round coordinates on both dataframes to same number of decimals (5)
-# z <- dat %>%
-#  left_join(dat,site_tbl, by = c("MonitoringLocationIdentifier","MonitoringLocationName"))
 
 # 2/15/2023: having some trouble with this join for unknown reasons. 
 # So, instead, we can extract trib/mainstem info and river mile from the existing MonitoringLocationName column (KBL_t_00.0 = kenai baseline tributary mile 0)
@@ -261,8 +190,9 @@ dat %<>%
 # transition column names to "easier" formats
 dat %<>% clean_names()
 
-# export csv to provide column format names for manually curated outlier xlsx file in the same folder
+# export a csv with current column names, to provide the column format names for a seperate, manually curated outlier .xlsx file located in the same directory
 write.csv(dat,"other/input/outliers/baseline_outliers.csv")
+
 
 
 # Create column of tributary names (e.g. Beaver Creek) to associate with tributary river miles
@@ -283,11 +213,13 @@ dat %<>%
     !is.na(tributary_name) ~ tributary_name,
     is.na(tributary_name) ~ river_mile))
 
+
 ```
+
 
 ```{r echo = F, warning=FALSE, message=FALSE}
 
-#### Time formats ####
+#### SEASONS BOUNDARY ####
 
 ### Designate samples as "spring" vs "summer" for each observation ("season")
 # choose a "boundary date" between spring and summer (see appendix "Sample Event Timing" for rationale)
@@ -301,14 +233,11 @@ dat %<>%
     julian_day < 155 ~ "Spring"
   ))
 
-
-## working here 2/17/2023
-# next: go through process of identifying which observations exceed ADEC and/or EPA limits
-
-
 ```
 
 ```{r echo = F, warning=FALSE, message=FALSE}
+# OUTLIERS
+
 # exclude outliers with an inner_join function
 # see manually identified outliers at "other/input/outliers/baseline_outliers.xlsx"
 
@@ -320,16 +249,41 @@ dat <- anti_join(dat,outliers)
 ```
 
 ```{r echo = F, warning=FALSE, message=FALSE}
-# write finalized data that will be used for graphing and analysis to external location 
-# this export format represents the most granular presentation, nothing has been aggregated. The "reg_limits.qmd" script aggregates volatiles, for example
+# EXPORT PREPROCESSED DATA TO LOCAL PROJECT DIRECTORY
+
+# write finalized data that is output form all the steps above, to be used in ext steps in the scripst that follow
+
+# this export format represents the most granular presentation, nothing has been aggregated yet. The "reg_limits.qmd" script aggregates volatiles, for example
 write.csv(dat,"other/output/analysis_format/baseline_export_format.csv",row.names = F)
 
-z <- read.csv("other/output/analysis_format/baseline_export_format.csv")
-z1 <- data.frame(unique(z$characteristic_name))
+```
 
 
-# https://stackoverflow.com/questions/40350230/variable-hline-in-ggplot-with-facet
-# possibly a useful approach, but maybe simpler because in our example the lines don't need to vary by panel
+```{r}
+### Exploratory Data Analysis
+### Consider including these numbers in section intro
+
+# How many years of data do we have, including from the waterqualitydata.us database AND the KWF local server?
+
+years_tbl <- dat %>%
+  filter(organization_formal_name == "Kenai Watershed Forum") %>%
+  summarise(min_date = min(ActivityStartDate),
+            max_date = max(ActivityStartDate))
+
+
+
+# How many different kinds of substances have we measured ?
+total_parameters <- dat %>%
+  filter(OrganizationFormalName == "Kenai Watershed Forum") %>%
+  distinct(CharacteristicName) %>%
+  count()
+
+# What are the names of all of substances have we measured ?
+
+parameter_names <- dat %>%
+  filter(OrganizationFormalName == "Kenai Watershed Forum") %>%
+  distinct(CharacteristicName) 
 
 
 ```
+
