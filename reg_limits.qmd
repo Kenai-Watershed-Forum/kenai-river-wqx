@@ -505,6 +505,7 @@ embed_file(dir, text = "Download List of pH Regulatory Threshold Values")
 
 # Field parameters
 
+# this data below has been modified as described above to ensure compatibility between parameter dimensions and evaluation standards
 write.csv(dat,"other/output/analysis_format/baseline_analysis_format.csv", row.names = F)
 
 ```
