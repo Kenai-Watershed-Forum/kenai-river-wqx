@@ -1,4 +1,4 @@
-# Data Sourcing 
+# Data Sourcing
 
 ---
 execute:
@@ -45,6 +45,8 @@ select <- dplyr::select
 
 # - ref to data absence epa hows my waterway, in progress fix
 # - ref to total extent of data in epa wqx
+# - make sure outliers.xlsx doc can be downloaded & accessed
+
 # - confirm outlier removal works, org to prep to eqp wqx sync. WAIT UNTIL ALL DATA SYNCHED TO THIS DOCUMENT BEFORE EXCISING OUTLIERS
 
 ```
@@ -70,8 +72,6 @@ select <- dplyr::select
 # Note: in there future, I hope to automatically retrieve the most current water quality data from the EPA WQX
 
 ```
-
-
 
 ```{r echo = F, warning=FALSE, results='hide',message=FALSE}
 
@@ -135,7 +135,6 @@ dat <- left_join(dat,site_dat) %>%
 #site_types <- data.frame(unique(dat$MonitoringLocationTypeName))
 
 ```
-
 
 ```{r echo = F, warning=FALSE, results='hide',message=FALSE}
 
@@ -216,7 +215,6 @@ dat %<>%
 
 ```
 
-
 ```{r echo = F, warning=FALSE, message=FALSE}
 
 #### SEASONS BOUNDARY ####
@@ -258,7 +256,6 @@ write.csv(dat,"other/output/analysis_format/baseline_export_format.csv",row.name
 
 ```
 
-
 ```{r}
 ### Exploratory Data Analysis
 ### Consider including these numbers in section intro
@@ -286,4 +283,3 @@ parameter_names <- dat %>%
 
 
 ```
-
