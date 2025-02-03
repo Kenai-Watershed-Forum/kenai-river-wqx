@@ -53,7 +53,7 @@ select <- dplyr::select
 
 ```{r echo = F}
 
-##### Notes on data sourcing
+##### Notes on initial data sourcing
 
 # Data is sourced from the following queries at <https://waterqualitydata.us> on Feb 24, 2021:
 
@@ -73,7 +73,169 @@ select <- dplyr::select
 
 ```
 
+
+```{r echo = F, eval = F}
+# inspect the download results queried from the same above url on 2/3/2025
+# (note that as of Feb 2025, a note at the above url describs a future transition to a v 3.0 of WQP; "improved features")
+
+
+# import sample data
+dat <- read_csv("other/input/WQX_downloads/wqp_download_20250203/narrowresult.csv") %>%
+  # retain only KWF data
+  filter(OrganizationFormalName == "Kenai Watershed Forum") %>%
+  # remove empty columns
+  select_if(~!(all(is.na(.))))
+
+
+# remove extraneous text from "Kenai Watershed Forum(Volunteer)*"
+#dat %<>%
+#  mutate(OrganizationFormalName = gsub("\\s*\\([^\\)]+\\)","",as.character(dat$OrganizationFormalName))) %>%
+#  mutate(OrganizationFormalName = str_remove(OrganizationFormalName,"\\*"))
+
+# import station data, from seperate file
+site_dat <- read_csv("other/input/WQX_downloads/wqp_download_20250203/station.csv") %>%
+  # retain only Kenai Baseline sites (contains "KBL")
+  filter(OrganizationIdentifier == "KENAI_WQX") %>%
+  # remove empty columns
+  select_if(~!(all(is.na(.)))) 
+
+# note: the MonitoringLocationName strings for sites uploaded in 2021 do not jive with those from 2000 - 2013
+
+# join site and sample data
+dat <- left_join(dat,site_dat) %>%
+  # retain only observations with all site data
+    filter(!is.na(LatitudeMeasure)) %>%
+    # retain only Kenai Baseline sites (contains "KBL")
+    filter(grepl("KBL", MonitoringLocationName))
+
+
+
+### Miscellaneous additional dataframe prep ###
+
+# specify date format
+dat %<>%
+  transform(ActivityStartDate = date(ActivityStartDate)) %>%
+  # remove missing observations
+  filter(!is.na(ResultMeasureValue))
+
+# Remove air temperature observations
+dat %<>%
+  filter(CharacteristicName != "Temperature, air") 
+
+
+# UNITS
+# bacteria - fecal coliform should all be "cfu/100ml"
+dat <- dat %>%
+  mutate(`ResultMeasure/MeasureUnitCode` = case_when(
+    CharacteristicName == "Fecal Coliform" ~ "cfu/100ml",
+    TRUE ~ `ResultMeasure/MeasureUnitCode`))
+
+
+
+# SITE NAME CORRECTIONS
+# Create and export table of site names
+site_tbl <- dat %>%
+  group_by(MonitoringLocationName,LatitudeMeasure,LongitudeMeasure) %>%
+  summarise(min_date = min(ActivityStartDate),
+            max_date = max(ActivityStartDate)) %>%
+  rename("latitude" = "LatitudeMeasure",
+         "longitude" = "LongitudeMeasure")
+
+# export csv of site names as received from EPA WQX
+write.csv(site_tbl,"other/output/field_qa_qc_data/2000_2021_sitenames.csv", row.names = F)
+
+# read back in the manually edited table with info on maintsem/trib and river mile
+site_tbl <- read_csv("other/input/baseline_sites.csv") %>%
+  remove_empty() %>%
+  select(-latitude,-longitude)
+
+
+# 2/15/2023: having some trouble with this join for unknown reasons. 
+# So, instead, we can extract trib/mainstem info and river mile from the existing MonitoringLocationName column (KBL_t_00.0 = kenai baseline tributary mile 0)
+
+dat %<>%
+  separate_wider_delim(MonitoringLocationName, delim = "_", names = c("project","trib_mainstem","river_mile"), cols_remove = F)
+
+# transition column names to "easier" formats
+dat %<>% clean_names()
+
+
+
+
+# export a csv with current column names, to provide the column format names for a seperate, manually curated outlier .xlsx file located in the same directory
+write.csv(dat,"other/input/outliers/baseline_outliers.csv")
+
+
+
+# Create column of tributary names (e.g. Beaver Creek) to associate with tributary river miles
+# read in tribuary names
+trib_names <- read.csv("other/input/baseline_sites.csv") %>%
+  select(MonitoringLocationName, tributary_name, tributary_mainstem) %>%
+  filter(tributary_mainstem == "tributary") %>%
+  clean_names() %>%
+  select(-tributary_mainstem)
+
+# join trib names to overall table
+dat %<>% left_join(trib_names, by = "monitoring_location_name")
+
+# create general "site name" column. use tributary name if available, and river mile if not
+dat %<>%
+  transform(river_mile = as.character(as.numeric(river_mile))) %>%
+  mutate(site_name = case_when(
+    !is.na(tributary_name) ~ tributary_name,
+    is.na(tributary_name) ~ river_mile))
+
+
+#### SEASONS BOUNDARY ####
+
+### Designate samples as "spring" vs "summer" for each observation ("season")
+# choose a "boundary date" between spring and summer (see appendix "Sample Event Timing" for rationale)
+# boundary date selected is June 4 (julian day 155)
+boundary_date <- 155
+
+dat %<>%
+  mutate(julian_day = yday(activity_start_date)) %>%
+  mutate(season = case_when(
+    julian_day > 155 ~ "Summer",
+    julian_day < 155 ~ "Spring"
+  ))
+
+
+# OUTLIERS
+
+# exclude outliers with an inner_join function
+# see manually identified outliers at "other/input/outliers/baseline_outliers.xlsx"
+
+outliers <- read.xlsx("other/input/outliers/baseline_outliers.xlsx") %>%
+  select(activity_identifier,characteristic_name)
+dat <- anti_join(dat,outliers)
+
+
+
+# EXPORT PREPROCESSED DATA TO LOCAL PROJECT DIRECTORY
+
+# write finalized data that is output form all the steps above, to be used in ext steps in the scripst that follow
+
+# this export format represents the most granular presentation, nothing has been aggregated yet. The "reg_limits.qmd" script aggregates volatiles, for example
+write.csv(dat,"other/output/analysis_format/baseline_export_format.csv",row.names = F)
+
+
+
+
+
+# TESTING # working here
+
+```
+
+
+
+
+
+
+
 ```{r echo = F, warning=FALSE, results='hide',message=FALSE}
+
+# f'd up below here?!
 
 # prepare and pre-process data that was downloaded from EPA WQX as described above
 
@@ -134,7 +296,111 @@ dat <- left_join(dat,site_dat) %>%
 # What kind of sites are present in our data set?
 #site_types <- data.frame(unique(dat$MonitoringLocationTypeName))
 
+
+
+# SITE NAME CORRECTIONS
+# Create and export table of site names
+site_tbl <- dat %>%
+  group_by(MonitoringLocationName,LatitudeMeasure,LongitudeMeasure) %>%
+  summarise(min_date = min(ActivityStartDate),
+            max_date = max(ActivityStartDate)) %>%
+  rename("latitude" = "LatitudeMeasure",
+         "longitude" = "LongitudeMeasure")
+
+# export csv of site names as received from EPA WQX
+write.csv(site_tbl,"other/output/field_qa_qc_data/2000_2014_sitenames.csv", row.names = F)
+
+# read back in the manually edited table with info on maintsem/trib and river mile
+site_tbl <- read_csv("other/input/baseline_sites.csv") %>%
+  remove_empty() %>%
+  select(-latitude,-longitude)
+
+
+# 2/15/2023: having some trouble with this join for unknown reasons. 
+# So, instead, we can extract trib/mainstem info and river mile from the existing MonitoringLocationName column (KBL_t_00.0 = kenai baseline tributary mile 0)
+
+dat %<>%
+  separate_wider_delim(MonitoringLocationName, delim = "_", names = c("project","trib_mainstem","river_mile"), cols_remove = F)
+
+
+# transition column names to "easier" formats
+dat %<>% clean_names()
+
+
+
+
+# export a csv with current column names, to provide the column format names for a seperate, manually curated outlier .xlsx file located in the same directory
+write.csv(dat,"other/input/outliers/baseline_outliers.csv")
+
+
+
+# Create column of tributary names (e.g. Beaver Creek) to associate with tributary river miles
+# read in tribuary names
+trib_names <- read.csv("other/input/baseline_sites.csv") %>%
+  select(MonitoringLocationName, tributary_name, tributary_mainstem) %>%
+  filter(tributary_mainstem == "tributary") %>%
+  clean_names() %>%
+  select(-tributary_mainstem)
+
+# join trib names to overall table
+dat %<>% left_join(trib_names, by = "monitoring_location_name")
+
+# create general "site name" column. use tributary name if available, and river mile if not
+dat %<>%
+  transform(river_mile = as.character(as.numeric(river_mile))) %>%
+  mutate(site_name = case_when(
+    !is.na(tributary_name) ~ tributary_name,
+    is.na(tributary_name) ~ river_mile))
+
+
+#### SEASONS BOUNDARY ####
+
+### Designate samples as "spring" vs "summer" for each observation ("season")
+# choose a "boundary date" between spring and summer (see appendix "Sample Event Timing" for rationale)
+# boundary date selected is June 4 (julian day 155)
+boundary_date <- 155
+
+dat %<>%
+  mutate(julian_day = yday(activity_start_date)) %>%
+  mutate(season = case_when(
+    julian_day > 155 ~ "Summer",
+    julian_day < 155 ~ "Spring"
+  ))
+
+
+# OUTLIERS
+
+# exclude outliers with an inner_join function
+# see manually identified outliers at "other/input/outliers/baseline_outliers.xlsx"
+
+outliers <- read.xlsx("other/input/outliers/baseline_outliers.xlsx") %>%
+  select(activity_identifier,characteristic_name)
+dat <- anti_join(dat,outliers)
+
+
+
+# EXPORT PREPROCESSED DATA TO LOCAL PROJECT DIRECTORY
+
+# write finalized data that is output form all the steps above, to be used in ext steps in the scripst that follow
+
+# this export format represents the most granular presentation, nothing has been aggregated yet. The "reg_limits.qmd" script aggregates volatiles, for example
+write.csv(dat,"other/output/analysis_format/baseline_export_format.csv",row.names = F)
+
+
+
+
+
+
+
+
+ # TESTING # working here
 ```
+
+
+
+
+
+
 
 ```{r echo = F, warning=FALSE, results='hide',message=FALSE}
 
@@ -149,8 +415,6 @@ dat %<>%
 # Remove air temperature observations
 dat %<>%
   filter(CharacteristicName != "Temperature, air") 
-
-
 
 
 # UNITS
@@ -188,6 +452,9 @@ dat %<>%
 
 # transition column names to "easier" formats
 dat %<>% clean_names()
+
+
+
 
 # export a csv with current column names, to provide the column format names for a seperate, manually curated outlier .xlsx file located in the same directory
 write.csv(dat,"other/input/outliers/baseline_outliers.csv")
@@ -262,24 +529,20 @@ write.csv(dat,"other/output/analysis_format/baseline_export_format.csv",row.name
 
 # How many years of data do we have, including from the waterqualitydata.us database AND the KWF local server?
 
-years_tbl <- dat %>%
-  filter(organization_formal_name == "Kenai Watershed Forum") %>%
-  summarise(min_date = min(ActivityStartDate),
-            max_date = max(ActivityStartDate))
+years_range <- dat %>%
+  summarise(min_date = min(activity_start_date),
+            max_date = max(activity_start_date))
 
 
 
 # How many different kinds of substances have we measured ?
 total_parameters <- dat %>%
-  filter(OrganizationFormalName == "Kenai Watershed Forum") %>%
-  distinct(CharacteristicName) %>%
+  distinct(characteristic_name) %>%
   count()
 
 # What are the names of all of substances have we measured ?
-
 parameter_names <- dat %>%
-  filter(OrganizationFormalName == "Kenai Watershed Forum") %>%
-  distinct(CharacteristicName) 
+  distinct(characteristic_name) 
 
 
 ```

@@ -1,3 +1,5 @@
+# Excludes the following files from synching to GitHub:
+
 #.Rproj.user
 .Rhistory
 .RData
@@ -5,5 +7,7 @@
 
 /.quarto/
 
-other/input/WQX_downloads
 .Rproj.user
+
+# these files downloaded from WQP are too large to sync
+other/input/WQX_downloads 
