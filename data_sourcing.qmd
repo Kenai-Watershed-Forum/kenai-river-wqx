@@ -46,6 +46,7 @@ select <- dplyr::select
 # - ref to data absence epa hows my waterway, in progress fix
 # - ref to total extent of data in epa wqx
 # - make sure outliers.xlsx doc can be downloaded & accessed
+# - modify such that outliers are labeled and present in the tabel downloads, but not shown in the boxplots
 
 # - confirm outlier removal works, org to prep to eqp wqx sync. WAIT UNTIL ALL DATA SYNCHED TO THIS DOCUMENT BEFORE EXCISING OUTLIERS
 
@@ -511,6 +512,8 @@ outliers <- read.xlsx("other/input/outliers/baseline_outliers.xlsx") %>%
 
 dat <- anti_join(dat,outliers)
 
+
+
 ```
 
 ```{r echo = F, warning=FALSE, message=FALSE}
@@ -523,7 +526,7 @@ write.csv(dat,"other/output/analysis_format/baseline_export_format.csv",row.name
 
 ```
 
-```{r}
+```{r eval = F}
 ### Exploratory Data Analysis
 ### Consider including these numbers in section intro
 
