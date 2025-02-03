@@ -15,3 +15,5 @@ if (interactive() && file.exists(".git")) {
     message("Up to date.")
   }
 }
+
+print("Rprofile is running")
