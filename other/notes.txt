@@ -60,3 +60,6 @@ TO DO: draw logic flow chart for 2-step winnowing process for LOQ & 2x LOQ crite
 
 GENERAL PLAN: apply resultFlag to all cases of data that might not work for regulatory criteria, do not submit to EPA WQX. BUT still assess these data in visualizations, color-code to show there is a resultFlag.
 
+1/16/2025
+for specifiying which observations exceed hardness-dependent standards, attempted to use color = fw_acute_exceed. ggplot render did not like this; may need to experiment with using as.factor or as.character, or???
+

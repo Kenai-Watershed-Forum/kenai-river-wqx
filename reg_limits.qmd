@@ -116,10 +116,18 @@ For sampling events with duplicate samples, we calculated average hardness.
 
 # calculate hardness for all sample events in project history with available data
 
-# source formatted data
+# confirm source formatted data
 dat <- read.csv("other/output/analysis_format/baseline_export_format.csv")
 
 # calculate hardness column  
+
+
+# blank calculations w/ 2021 additions. working here 2/3/2025
+
+# units don't match
+
+
+
 hard <- dat %>%
   select(activity_identifier, activity_start_date, characteristic_name, result_measure_value, result_measure_measure_unit_code,monitoring_location_name) %>%
   filter(characteristic_name %in% (c("Magnesium","Calcium"))) %>%
