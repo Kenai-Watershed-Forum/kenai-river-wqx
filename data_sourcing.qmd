@@ -111,7 +111,7 @@ dat <- left_join(dat,site_dat) %>%
 
 
 
-### Miscellaneous additional dataframe prep #####
+### Miscellaneous additional dataframe prep ######
 
 # specify date format
 dat %<>%
