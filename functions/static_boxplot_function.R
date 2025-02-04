@@ -64,7 +64,7 @@ write.csv(reg_vals, reg_vals_path)
 
 # Function to dynamically generate two ggplots with optional sample fraction filtering
 # Function to dynamically generate two ggplots
-create_facet_plots <- function(data_path, reg_vals_path, characteristic) {
+create_facet_plots <- function(data_path, reg_vals_path, characteristic, sample_fraction = character(0)) {
   
   # Read the datasets
   data <- read.csv(data_path, stringsAsFactors = FALSE) %>%
@@ -74,12 +74,19 @@ create_facet_plots <- function(data_path, reg_vals_path, characteristic) {
   # read in regulatory values
   reg_vals <- read.csv(reg_vals_path, stringsAsFactors = FALSE)
   
-  # Apply sample fraction filter if provided
-  if (!is.null(sample_fraction)) {
+  
+  # SAMPLE FRACTIONS
+  # If sample_fraction is not provided, check if it exists in the global environment
+  if (is.null(sample_fraction) && exists("sample_fraction", envir = .GlobalEnv)) {
+    sample_fraction <- get("sample_fraction", envir = .GlobalEnv)
+  }
+  
+  # Apply sample fraction filter only if it is specified
+  if (!is.null(sample_fraction) && length(sample_fraction) > 0) {
     data <- data %>% filter(result_sample_fraction_text %in% sample_fraction)
   }
   
-  
+  # REGULATORY VALUES
   # Dynamically filter regulatory values for the given characteristic_name
   reg_values <- reg_vals %>% filter(characteristic_name == characteristic)
   
