@@ -1,4 +1,4 @@
-# conosle prompt to fetch updates from GitHub #
+# conosle prompt to fetch updates from GitHub ##
 if (interactive() && file.exists(".git")) {
   options(ask_git_pull = TRUE)
 }
