@@ -1,5 +1,9 @@
 # Data Sourcing
 
+
+
+
+
 ---
 execute:
   echo: false
@@ -73,7 +77,6 @@ select <- dplyr::select
 # Note: in there future, I hope to automatically retrieve the most current water quality data from the EPA WQX
 
 ```
-
 
 ```{r echo = F}
 # inspect the download results queried from the same above url on 2/3/2025
@@ -285,17 +288,12 @@ write.csv(dat,"other/output/analysis_format/baseline_export_format.csv",row.name
 
 ```
 
-
-
 ```{r}
 # stop evaluation here
 knitr::knit_exit()
 
 # 2/3/2025 i think we can delete everything below here. 
 ```
-
-
-
 
 ```{r echo = F, warning=FALSE, results='hide',message=FALSE}
 
@@ -457,16 +455,6 @@ write.csv(dat,"other/output/analysis_format/baseline_export_format.csv",row.name
 
 
 ```
-
-
-
-
-
-
-
-
-
-
 
 ```{r echo = F, warning=FALSE, results='hide',message=FALSE}
 
@@ -632,3 +620,4 @@ parameter_names <- dat %>%
 
 
 ```
+
