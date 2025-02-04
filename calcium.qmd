@@ -16,11 +16,16 @@ format:
 # set parameter
 characteristic <- "Calcium"
 
-# source static regulatory criteria boxplot function
+# Define the sample fraction filter
+sample_fraction <- c("Total Recoverable", "Unfiltered")
+
+# source boxplot function
 source("functions/static_boxplot_function.R")
 
 # source table download function
 source("functions/table_download.R")
 download_tbl(char = characteristic)
+
+# need to distinguish between total vs. field filtered (eg dissolved); (specified in ResultSampleFractionText). maybe a seperate plot or table to compare diss vs total values when applicable. 
 
 ```

@@ -1,3 +1,14 @@
+# next
+working at line 123 in reg_limits.qmd.
+here we discover that hardness values do not properly calculate with addition of 2021 data.
+to do: 1) address calculation of hardness values; adress units/conversion for some summer 2021 values that are
+out of realisic range
+
+
+
+
+
+# 2/3/2025
 1) try a new fresh download from EPA WQX, ensure it has the 2021 data and it can be read in/integrated with the report document
 2) proceed with years in this doc, going 2021 backwards
 
