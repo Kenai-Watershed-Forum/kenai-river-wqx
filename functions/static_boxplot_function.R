@@ -62,11 +62,23 @@ write.csv(reg_vals, reg_vals_path)
 
 #### PREPARE PLOT #####
 
+# Function to dynamically generate two ggplots with optional sample fraction filtering
 # Function to dynamically generate two ggplots
 create_facet_plots <- function(data_path, reg_vals_path, characteristic) {
+  
   # Read the datasets
-  data <- read.csv(data_path, stringsAsFactors = FALSE)
+  data <- read.csv(data_path, stringsAsFactors = FALSE) %>%
+    # for plotting, exclude "Rejected" values (did not meet QAPP standards)
+    filter(result_status_identifier != "Rejected")
+  
+  # read in regulatory values
   reg_vals <- read.csv(reg_vals_path, stringsAsFactors = FALSE)
+  
+  # Apply sample fraction filter if provided
+  if (!is.null(sample_fraction)) {
+    data <- data %>% filter(result_sample_fraction_text %in% sample_fraction)
+  }
+  
   
   # Dynamically filter regulatory values for the given characteristic_name
   reg_values <- reg_vals %>% filter(characteristic_name == characteristic)
@@ -193,6 +205,7 @@ create_facet_plots <- function(data_path, reg_vals_path, characteristic) {
           "Kenai River",
           ifelse(x_var == "tributary_name", "Tributaries", "Mainstem"), ",",
           characteristic, ",",
+          sample_fraction, ",",
           min_year, "-", max_year
         )
       ) +

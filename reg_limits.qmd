@@ -120,14 +120,6 @@ For sampling events with duplicate samples, we calculated average hardness.
 dat <- read.csv("other/output/analysis_format/baseline_export_format.csv")
 
 # calculate hardness column  
-
-
-# blank calculations w/ 2021 additions. working here 2/3/2025
-
-# units don't match
-
-
-
 hard <- dat %>%
   select(activity_identifier, activity_start_date, characteristic_name, result_measure_value, result_measure_measure_unit_code,monitoring_location_name) %>%
   filter(characteristic_name %in% (c("Magnesium","Calcium"))) %>%
@@ -182,7 +174,7 @@ metals_hcrit <- c("Cadmium","Chromium","Copper","Lead","Nickel","Silver","Zinc")
 dat_metals_hard_dependent <- dat %>%
   filter(characteristic_name %in% metals_hcrit)
 
-# join calculation parameters to overall dataset
+# join hardness-dependent calculation parameters to overall dataset
 hardness_dependent_metals_thresholds <- full_join(dat_metals_hard_dependent, diss_metals_hard_param, by = "characteristic_name") %>%
 
   # Calculate hardness dependent criteria values

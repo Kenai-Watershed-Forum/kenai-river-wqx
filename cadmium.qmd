@@ -18,7 +18,7 @@ test
 # set parameter
 characteristic <- "Cadmium"
 
-# source static regulatory criteria boxplot function
+# source boxplot function
 source("functions/static_boxplot_function.R")
 
 # source table download function

@@ -75,7 +75,7 @@ select <- dplyr::select
 ```
 
 
-```{r echo = F, eval = F}
+```{r echo = F}
 # inspect the download results queried from the same above url on 2/3/2025
 # (note that as of Feb 2025, a note at the above url describs a future transition to a v 3.0 of WQP; "improved features")
 
@@ -125,11 +125,65 @@ dat %<>%
 
 
 # UNITS
+
+# confirm that each parameter has consistent units. View dataframe here, and if units are not consistent, apply temporary corrections here. Ultimately need to apply corrections to WQP upload, so code here should accommodate read in once corrections are applied.
+
+# view dataframe of unique units by parameter
+parameter_units <- dat %>%
+  select(CharacteristicName, `ResultMeasure/MeasureUnitCode`) %>%
+  distinct() %>%
+  group_by(CharacteristicName) %>%
+  mutate(unit_id = paste0("unit_", row_number())) %>%
+  pivot_wider(names_from = unit_id, values_from = `ResultMeasure/MeasureUnitCode`)
+
+
+# specific conductance
+# spring 2013 values have units of mS/cm rather than uS/cm. looking at them in context of existing data, they apear within normal range (not consistently 1000x greater). Therefore, apply manual correction for spring 2013 SpCond unit 
+dat <- dat %>%
+  mutate(`ResultMeasure/MeasureUnitCode` = case_when(
+    CharacteristicName == "Specific conductance" & ActivityStartDate == "2013-05-07" ~ "uS/cm",
+    TRUE ~ `ResultMeasure/MeasureUnitCode`))
+
+
 # bacteria - fecal coliform should all be "cfu/100ml"
 dat <- dat %>%
   mutate(`ResultMeasure/MeasureUnitCode` = case_when(
     CharacteristicName == "Fecal Coliform" ~ "cfu/100ml",
     TRUE ~ `ResultMeasure/MeasureUnitCode`))
+
+
+# TOTAL METALS (Mg, Ca, Fe, others)
+# address unit consistency introduced by 2021 data
+dat <- dat %>%
+  # fix unit values
+  mutate(`ResultMeasureValue` = as.numeric(`ResultMeasureValue`)) %>%
+  mutate(`ResultMeasureValue` = case_when(
+    CharacteristicName %in% c("Magnesium","Calcium","Iron") & 
+      `ResultMeasure/MeasureUnitCode` == "ug/L" ~ `ResultMeasureValue` * 1000,
+    TRUE ~ `ResultMeasureValue`
+  )) %>%
+  # convert back to character for the rest of this preparation, here?
+  
+  # fix unit names
+  mutate(`ResultMeasure/MeasureUnitCode` = case_when(
+    CharacteristicName %in% c("Magnesium","Calcium","Iron") & 
+      `ResultMeasure/MeasureUnitCode` == "ug/L" ~ "mg/L",
+    TRUE ~ `ResultMeasure/MeasureUnitCode`
+  )) 
+
+# SAMPLE FRACTION
+# address characteristic form (total, dissolved, etc). how many unique forms per parameter?
+
+parameter_fraction <- dat %>%
+  select(CharacteristicName, ResultSampleFractionText) %>%
+  distinct() %>%
+  group_by(CharacteristicName) %>%
+  mutate(unit_id = paste0("unit_", row_number())) %>%
+  pivot_wider(names_from = unit_id, values_from = ResultSampleFractionText)
+
+
+
+
 
 
 
@@ -213,12 +267,16 @@ dat <- anti_join(dat,outliers)
 
 
 
-# EXPORT PREPROCESSED DATA TO LOCAL PROJECT DIRECTORY
+# EXPORT PREPROCESSED DATA TO LOCAL PROJECT DIRECTORY, FOR PLOTS
 
-# write finalized data that is output form all the steps above, to be used in ext steps in the scripst that follow
+# write finalized data that is output form all the steps above, to be used in next steps in the scripts that follow
 
 # this export format represents the most granular presentation, nothing has been aggregated yet. The "reg_limits.qmd" script aggregates volatiles, for example
 write.csv(dat,"other/output/analysis_format/baseline_export_format.csv",row.names = F)
+
+
+
+# ensure final result includes "ResultStatusIdentifer." Keep rejects in table download, but not displayed in plots
 
 
 
@@ -230,11 +288,19 @@ write.csv(dat,"other/output/analysis_format/baseline_export_format.csv",row.name
 
 
 
+```{r}
+# stop evaluation here
+knitr::knit_exit()
+
+# 2/3/2025 i think we can delete everything below here. 
+```
 
 
 
 
 ```{r echo = F, warning=FALSE, results='hide',message=FALSE}
+
+# no further evaluation below for now 2/3/2025
 
 # f'd up below here?!
 
@@ -391,11 +457,11 @@ write.csv(dat,"other/output/analysis_format/baseline_export_format.csv",row.name
 
 
 
-
-
-
- # TESTING # working here
 ```
+
+
+
+
 
 
 
@@ -419,7 +485,25 @@ dat %<>%
 
 
 # UNITS
-# bacteria - fecal coliform should all be "cfu/100ml"
+
+# confirm that each parameter has consistent units. View dataframe here, and if units are not consistent, apply temporary corrections here. Ultimately need to apply corrections to WQP upload, so code here should accommodate read in once corrections are applied.
+
+# view dataframe of unique units by parameter
+parameter_units <- dat %>%
+  select(characteristic_name, result_measure_measure_unit_code) %>%
+  distinct() %>%
+  group_by(characteristic_name) %>%
+  mutate(unit_id = paste0("unit_", row_number())) %>%
+  pivot_wider(names_from = unit_id, values_from = result_measure_measure_unit_code)
+
+
+# specific conductance
+# spring 2013 values have units of mS/cm rather than uS/cm. looking at them in context of existing data, they apear within normal range (not consistently 1000x greater). Therefore, apply manual correction for spring 2013 SpCond unit 
+
+
+
+# bacteria
+# ensure fecal coliform units are all "cfu/100ml"
 dat <- dat %>%
   mutate(`ResultMeasure/MeasureUnitCode` = case_when(
     CharacteristicName == "Fecal Coliform" ~ "cfu/100ml",
