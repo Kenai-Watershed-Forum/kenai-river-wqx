@@ -1,11 +1,17 @@
-# next
+# 2/8/2025
+working at line 147 in reg_limits. unclear why not all 2021 hardness values present after join.
+
+
+
+
+# 2/6/2025
 working at line 123 in reg_limits.qmd.
 here we discover that hardness values do not properly calculate with addition of 2021 data.
-to do: 1) address calculation of hardness values; adress units/conversion for some summer 2021 values that are
-out of realisic range
+to do: 1) address calculation of hardness values; adress units/conversion for some summer 
+2021 values that are out of realisic range
 
 
-
+ex: summer 2021 no name creek dups, diss Ca = 16200 and 16300 ug/L, total Ca dups = 13.7 and 1.8 mg/L dups
 
 
 # 2/3/2025
@@ -16,4 +22,4 @@ see to do list in data_sourcing.qmd doc
 
 working in reg_limits.qmd, see hastags.
 put new wqp downloads in kwf work cpu also
-note: data_sourcing a mess at the moment
+note: data_sourcing a mess at the moment 
