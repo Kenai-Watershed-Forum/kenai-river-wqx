@@ -26,11 +26,11 @@ We discuss how various parameters are assessed against standards below.
 
 The metals parameters in the downloadable table below have *static* thresholds assigned.
 
-[Static regulatory values are represented as solid horizontal lines in the chapters that follow.]{.underline} (to do: show graphic example of values above horizontal line here)
+[Static regulatory values are represented as solid horizontal lines in the chapters that follow.]{.underline} (to do: show graphic example of values above horizontal line here) 
 
 ```{r echo = F}
 
-# read in reg threshold values for metals with static values
+# read in reg threshold values for metals with static values ###
 static_metals_reg_vals <- read_xlsx("other/input/regulatory_limits/master_reg_limits.xlsx", sheet = "static_regulatory_values") %>%
   filter(!is.na(agency),
          standard_type %in% c("drinking_water","irrigation_water","stock_water")) %>%
@@ -50,7 +50,7 @@ write.csv(static_metals_reg_vals, dir, row.names = F)
 # make table viewable
 embed_file(dir, text = "Download Regulatory Limits for Metals with Static Regulatory Threshold Values")
 ```
-
+ 
 ```{r}
 # read in static reg values in wide format
 static_metals_reg_vals <- read_xlsx("other/input/regulatory_limits/master_reg_limits.xlsx", sheet = "static_regulatory_values") %>%
@@ -114,25 +114,37 @@ For sampling events with duplicate samples, we calculated average hardness.
 
 ```{r echo = F, warning=FALSE, message=FALSE}
 
-# calculate hardness for all sample events in project history with available data
+# calculate hardness for all sample events in project history with available Ca and Mg data
 
-# confirm source formatted data
+# confirm source for analysis-formatted data
 dat <- read.csv("other/output/analysis_format/baseline_export_format.csv")
 
 # calculate hardness column  
+
 hard <- dat %>%
-  select(activity_identifier, activity_start_date, characteristic_name, result_measure_value, result_measure_measure_unit_code,monitoring_location_name) %>%
+  select(activity_identifier, activity_start_date, characteristic_name, result_measure_value, result_measure_measure_unit_code,result_sample_fraction_text,monitoring_location_name) %>%
   filter(characteristic_name %in% (c("Magnesium","Calcium"))) %>%
-  group_by(activity_identifier, activity_start_date, characteristic_name, result_measure_measure_unit_code,monitoring_location_name) %>%
+  
+  # retain onl;y total Ca and Mg, not dissolved values
+  filter(result_sample_fraction_text %in% (c("Total Recoverable","Unfiltered"))) %>%
+  
+  group_by(activity_start_date, monitoring_location_name, characteristic_name, result_measure_measure_unit_code) %>%
+  
+  # 2021 data has characteristic names in activity_identifier column fyi, observations prior to 2013 do not
+  
   # get mean of all duplicate samples
   summarise(avg_value = mean(result_measure_value)) %>%
   pivot_wider(names_from = "characteristic_name", values_from = "avg_value") %>%
+  # calculate hardness for each sample event
   mutate(hardness_mgl = 2.497*(Calcium) + 4.119*(Magnesium)) %>%
   ungroup() %>%
   select(-Calcium, -Magnesium,-result_measure_measure_unit_code)
 
 # join hardness back to overall dataset
-dat <- full_join(dat,hard,by = c("activity_identifier","activity_start_date","monitoring_location_name")) 
+
+# UNKNOWN ISSUE WITH THIS JOIN 2/8/2025. MOST OF THE 2021 HARDNESS VALUES ARE NOT IN THE JOINED DF
+
+dat <- full_join(dat,hard,by = c("activity_start_date","monitoring_location_name")) 
 
 # spent inordinate time debugging the following join issue here: we can't include hardness units as a join column becuase some parameters have units other than mg/l
 
