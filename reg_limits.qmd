@@ -110,7 +110,7 @@ Hardness varies by site, by season, and with hydrologic conditions. We calculate
 Hardness = 2.497(Total Calcium in mg/L) + 4.119(Total Magnesium in mg/L)
 :::
 
-For sampling events with duplicate samples, we calculated average hardness.
+For sampling events with duplicate samples, we calculated average hardness. Note that some sampling events do not have calculated hardness values because total Ca and/or total Mg values were not available.
 
 ```{r echo = F, warning=FALSE, message=FALSE}
 
@@ -141,10 +141,16 @@ hard <- dat %>%
   select(-Calcium, -Magnesium,-result_measure_measure_unit_code)
 
 # join hardness back to overall dataset
-
-# UNKNOWN ISSUE WITH THIS JOIN 2/8/2025. MOST OF THE 2021 HARDNESS VALUES ARE NOT IN THE JOINED DF
-
 dat <- full_join(dat,hard,by = c("activity_start_date","monitoring_location_name")) 
+
+# for the sampling events where hardness values are missing, why? presumably becuase total Ca and/or Mg values are missing. Confirm that this is the case. If "characteristic_name" does not include paired observations of Mg or Ca in 'hard_missing', than this is the case
+hard_missing <- dat %>%
+  filter(is.na(hardness_mgl)) %>%
+  distinct(activity_identifier, .keep_all = T) %>%
+  filter(characteristic_name %in% c("Calcium","Magnesium"))
+
+# TO DO HERE: make sure that outlier/incorrect hardness values are not being applied in dissolved metals toxicity calculations
+
 
 # spent inordinate time debugging the following join issue here: we can't include hardness units as a join column becuase some parameters have units other than mg/l
 
@@ -245,7 +251,7 @@ embed_file(dir, text = "Hardness Dependent Regulatory Thresholds for Metals - Ke
 dat <- left_join(dat,hardness_dependent_metals_thresholds)
 
 
-  
+# note: the data visualization boxpot function filters out any "rejected" results
 ```
 
 ```{r}
@@ -309,7 +315,7 @@ To prepare our existing data to be assessed against this standard, we addressed 
 
 ```{r echo = F}
 
-# 1/15/2025: Consider moving this code chunk to "parameters.qmd". It could be logical to have it there along with the read-in of original data. I think this is the only code chunk in this .qmd that manages the original data; all other code chunks just have to do with the regulatory limits
+# working here 2/13/2025 :: makle sure that 2021 hydrocarbon data aligns with 2000 - 2013
 
 # Goal here: replace old volatiles data in the overall dataframe with the aggregagated btex data we discussed above. 
 
