@@ -1,5 +1,6 @@
-# 2/8/2025
-working at line 147 in reg_limits. unclear why not all 2021 hardness values present after join.
+# 2/13/2025
+working at line 316 in reg_limits. make sure 2021 hydrocarbon data format aligns with 2000 - 2013
+also: get rid of extraneous legend data where hardness does not apply
 
 
 

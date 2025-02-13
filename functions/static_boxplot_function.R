@@ -63,12 +63,13 @@ write.csv(reg_vals, reg_vals_path)
 #### PREPARE PLOT #####
 
 # Function to dynamically generate two ggplots with optional sample fraction filtering
-# Function to dynamically generate two ggplots
 create_facet_plots <- function(data_path, reg_vals_path, characteristic, sample_fraction = character(0)) {
   
   # Read the datasets
   data <- read.csv(data_path, stringsAsFactors = FALSE) %>%
-    # for plotting, exclude "Rejected" values (did not meet QAPP standards)
+    
+    # for plotting, exclude "Rejected" values (did not meet QAPP standards). 
+    # these results are still available in the table downloads
     filter(result_status_identifier != "Rejected")
   
   # read in regulatory values
