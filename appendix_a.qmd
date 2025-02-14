@@ -430,6 +430,7 @@ rm(analysis_code_matching_table,aqwms_analytical_methods,epa_analysis_codes)
 
 ```
 
+
 ```{r message = FALSE, echo = F, include = F}
 
 #| warning: false
@@ -442,7 +443,9 @@ rm(analysis_code_matching_table,aqwms_analytical_methods,epa_analysis_codes)
 
 # Note on non-detect values
 # Non-detect values should be left blank. A non-detect does not necessarily mean there was a zero observation of an analyte in a sample, it could be just be present at a level lower than the method detection level (lower than what the lab equipment can detect). 
+
 # Instead of putting 0 in the results, we’ll leave it blank. The Practical Quantitation Limit (or Limit of Quantitation) is presented alongside the result in each row. When DEC evaluates a waterbody, they’ll use ½ the PQL as a stand-in for a non-detect. 
+
 # See explanatory document at "other/documents/references/SGS DL, LOD, LOQ Interpretation.pdf" for more details.
 
 # modify non-detect values from "0" to "NA" if resultflag = U or ND
@@ -475,6 +478,9 @@ dat %<>%
   filter(!grepl("(surr)",analyte))
 
 rm(sgs21_als21_qaqc_dat)
+
+z <- dat %>%
+  distinct(analyte)
 
 ```
 
