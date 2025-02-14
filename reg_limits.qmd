@@ -326,7 +326,23 @@ xylene_isomers <- c("m,p-Xylene" = "Xylene","o-Xylene" = "Xylene")
 
 # 1.) aggregate all volatiles data to sum into "`Benzene, toluene, ethyl benzene, xylenes mix"
 btex_dat <- dat %>%
-  filter(result_sample_fraction_text == "Volatile") %>%
+  filter(result_sample_fraction_text == "Volatile") 
+
+# %>%
+  
+  # this filter is not including 2021 data fior unknown reason
+
+z <- dat %>%
+  transform(activity_start_date <- ymd(activity_start_date)) %>%
+  filter(activity_start_date > ymd("2021-01-01")) %>%
+  distinct(characteristic_name)
+  
+
+# 2021 hydrocarbon data is missing from here. see appendix a, investigate why
+# does the hydrocarbon data  accidentally get eliminated in this reg_limits script, or is it not exported in appendix a???
+# in appendix a, 2021 hydrocarbon data contains: ethylbenzene, P & M -Xylene, o-Xylene, Benzene, Toluene
+  
+  
   select(activity_identifier,characteristic_name,result_measure_value) %>%
   # round all values to two decimals
   mutate(result_measure_value = round(result_measure_value,2)) %>%
