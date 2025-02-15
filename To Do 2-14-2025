@@ -1,5 +1,13 @@
 # 2/14/2025
-working at line 340 in reg_limits. make sure 2021 hydrocarbon data format aligns with 2000 - 2013
+working at line 340 in reg_limits. make sure 2021 hydrocarbon data format aligns with 2000 - 2013.
+2021 epq wqx did not include hydrocarbons? diagnose in appendix a
+--> appears that final export prep to epa cdx does include hydrocarbons. are they in the download???
+--> diagnosis: hydrocarbons were in the upload to epa wqx in jan 2024, but are not present in the download in jan 2025
+--> plan: delete all 2021 data from epa wqx, make corrections as outlined in gdoc, re-upload all 2021 data to epa cdx.
+--> then, repeat ingestion process to this report
+--> gdoc: https://docs.google.com/document/d/1p1fsh2dVfvIWNmRrpjteOTyLPSEeMYoQDRk5XhKTcNk/edit?tab=t.0
+
+
 also: get rid of extraneous legend data where hardness does not apply
 
 
