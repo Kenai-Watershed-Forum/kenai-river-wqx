@@ -74,7 +74,6 @@ select <- dplyr::select
 
 ```
 
-
 ```{r echo = F}
 # inspect the download results queried from the same above url on 2/3/2025
 # (note that as of Feb 2025, a note at the above url describs a future transition to a v 3.0 of WQP; "improved features")
@@ -285,17 +284,12 @@ write.csv(dat,"other/output/analysis_format/baseline_export_format.csv",row.name
 
 ```
 
-
-
 ```{r}
 # stop evaluation here
 knitr::knit_exit()
 
 # 2/3/2025 i think we can delete everything below here. 
 ```
-
-
-
 
 ```{r echo = F, warning=FALSE, results='hide',message=FALSE}
 
@@ -457,16 +451,6 @@ write.csv(dat,"other/output/analysis_format/baseline_export_format.csv",row.name
 
 
 ```
-
-
-
-
-
-
-
-
-
-
 
 ```{r echo = F, warning=FALSE, results='hide',message=FALSE}
 
