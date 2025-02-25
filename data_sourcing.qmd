@@ -80,7 +80,7 @@ select <- dplyr::select
 
 
 # import sample data
-dat <- read_csv("other/input/WQX_downloads/wqp_download_20250203/narrowresult.csv") %>%
+dat <- read_csv("other/input/WQX_downloads/wqp_download_20250225/narrowresult.csv") %>%
   # retain only KWF data
   filter(OrganizationFormalName == "Kenai Watershed Forum") %>%
   # remove empty columns
