@@ -946,6 +946,8 @@ rm(swwtp_tss_spring21,swwtp_tss_sitenames,swwtp_tss21)
 
 ```
 
+
+
 ```{r include = F}
 
 ############### Miscellaneous Steps for Overall Field Results Dataframe #################
@@ -1024,7 +1026,6 @@ rm(site_coords, result_sample_fraction, result_detection_condition, chemical_pre
 ############ g.) assign "Statistical Base Code" column ##############
 
 # this value is not applicable to most results here, usually left blank. will assign "count": to fecal coliform though
-
 dat %<>%
   mutate(stat_base_code = case_when(
     analyte == "Fecal Coliform" ~ "Count"
@@ -1052,6 +1053,7 @@ analyte_abbrev %<>% select(analyte, analyte_abbreviation)
 dat %<>%
   left_join(analyte_abbrev)
 ```
+
 
 ```{r include = F}
 
@@ -1090,6 +1092,7 @@ dat %<>%
 
 
 ```
+
 
 ```{r include = F, eval = F}
 
@@ -2506,6 +2509,8 @@ export_dat %<>%
 
 ```
 
+ 
+
 ```{r echo = F}
 
 # here, we will re-develop the "export_dat" dataframe to match desired import configuration for EPA WQP; modify import config as needed. 
@@ -2653,6 +2658,31 @@ write.csv(export_dat,"other/output/aqwms_formatted_results/results_activities.cs
 Other notes for final 2021 data upload to EPA CDX
 
 -   Phosphorus from EPA Method 200.8 (Dissloved Metals by ICP/MS) requires a "method speciation". (This does not apply to "Total Phosphorus", method SM21 4500P-B,E). However this method does not distinguish speciation. Result Status ID was designated "as P" for this test/parameter. Regardless, this parameter was not included in the QAPP, so is designated as "Rejected" in "Result Status ID".
+
+```{r echo = F}
+# make corrections to existing EPA CDX data
+# in winter 2025 we discovered a series of updates and corrections needed for both 2000 - 2013 data as well as recently uploaded 2021 data. these corrections are detailed and executed here. notesa re listed in a google doc at https://docs.google.com/document/d/1p1fsh2dVfvIWNmRrpjteOTyLPSEeMYoQDRk5XhKTcNk/edit?tab=t.0
+
+# access all existing KWF water quality data downloaded from EPA CDX on 2/3/2025
+narrowresult <- read.csv("other/input/WQX_downloads/wqp_download_20250225/narrowresult.csv")
+station <- read.csv("other/input/WQX_downloads/wqp_download_20250225/station.csv")
+
+# Issue 1 - Units for specific conductance for spring 2013 are all in mS/cm rather than uS/cm. However the range of values for spring 2013 are not totally out range of existing values, so its possible it’s just an error in recording the unit name rather than the actual units. Look in context of existing values to determine
+
+# let's examine if these spring 2021 values are within range of other existing values
+
+# we examined the values in a simple ggplotly, as well as in the original data sheets from 2013. Both indicate the units in WQX shuold be uS/cm rather than mS/cm for spring 2013 specific conductance. we will apply the correction here.
+narrowresult <- narrowresult %>%
+  mutate(ResultMeasure.MeasureUnitCode = case_when(
+    CharacteristicName == "Specific conductance" ~ "uS/cm",
+    TRUE ~ ResultMeasure.MeasureUnitCode
+  ))
+
+# Issue 2 - 
+
+
+```
+
 
 Work in progress here as of `r Sys.Date()`
 
