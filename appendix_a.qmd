@@ -430,7 +430,6 @@ rm(analysis_code_matching_table,aqwms_analytical_methods,epa_analysis_codes)
 
 ```
 
-
 ```{r message = FALSE, echo = F, include = F}
 
 #| warning: false
@@ -946,8 +945,6 @@ rm(swwtp_tss_spring21,swwtp_tss_sitenames,swwtp_tss21)
 
 ```
 
-
-
 ```{r include = F}
 
 ############### Miscellaneous Steps for Overall Field Results Dataframe #################
@@ -1054,7 +1051,6 @@ dat %<>%
   left_join(analyte_abbrev)
 ```
 
-
 ```{r include = F}
 
 ## b.) sample_condition abbreviations
@@ -1092,7 +1088,6 @@ dat %<>%
 
 
 ```
-
 
 ```{r include = F, eval = F}
 
@@ -2509,8 +2504,6 @@ export_dat %<>%
 
 ```
 
- 
-
 ```{r echo = F}
 
 # here, we will re-develop the "export_dat" dataframe to match desired import configuration for EPA WQP; modify import config as needed. 
@@ -2678,11 +2671,12 @@ narrowresult <- narrowresult %>%
     TRUE ~ ResultMeasure.MeasureUnitCode
   ))
 
-# Issue 2 - 
+# Issue 2 - Some metals values for summer 2021 appear to be unrealistic (Mg, Ca,Fe)
+# lets examine the 2021 values in context of all other values
+
 
 
 ```
-
 
 Work in progress here as of `r Sys.Date()`
 
