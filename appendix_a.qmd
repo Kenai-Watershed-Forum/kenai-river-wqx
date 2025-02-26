@@ -2652,8 +2652,9 @@ Other notes for final 2021 data upload to EPA CDX
 
 -   Phosphorus from EPA Method 200.8 (Dissloved Metals by ICP/MS) requires a "method speciation". (This does not apply to "Total Phosphorus", method SM21 4500P-B,E). However this method does not distinguish speciation. Result Status ID was designated "as P" for this test/parameter. Regardless, this parameter was not included in the QAPP, so is designated as "Rejected" in "Result Status ID".
 
-```{r echo = F}
+```{r echo = F, eval = F}
 # make corrections to existing EPA CDX data
+
 # in winter 2025 we discovered a series of updates and corrections needed for both 2000 - 2013 data as well as recently uploaded 2021 data. these corrections are detailed and executed here. notesa re listed in a google doc at https://docs.google.com/document/d/1p1fsh2dVfvIWNmRrpjteOTyLPSEeMYoQDRk5XhKTcNk/edit?tab=t.0
 
 # access all existing KWF water quality data downloaded from EPA CDX on 2/3/2025
@@ -2671,10 +2672,36 @@ narrowresult <- narrowresult %>%
     TRUE ~ ResultMeasure.MeasureUnitCode
   ))
 
-# Issue 2 - Some metals values for summer 2021 appear to be unrealistic (Mg, Ca,Fe)
+# Issue 2 - Some metals values for summer 2021 appear to be unrealistic (Mg,Ca,Fe)
 # lets examine the 2021 values in context of all other values
+p <- narrowresult %>%
+  filter(CharacteristicName %in% c("Iron","Magnesium","Calcium")) %>%
+  ggplot(aes(ymd(ActivityStartDate),as.numeric(ResultMeasureValue))) +
+  geom_point() +
+  facet_grid(CharacteristicName~.)
+p
 
+# examine units and sample fractions
+z <- p %>%
+  select(CharacteristicName,ResultMeasure.MeasureUnitCode,ResultSampleFractionText) %>%
+  distinct()
 
+# from examining the data 2000 - 2021, we see that for Ca, Mg, and Fe data exist as either a.) dissolved, which is denoted as "Dissolved" or "Filtered, field", or b.) total, which is denoted as either "Total Recoverable" or "Unfiltered."
+
+# prior to 2021, we did not have data on dissolved Fe, Ca, Mg
+
+# segregating by fraction, lets see if values are still within reasonable range. if not, maybe unit corrections/conversions are needed
+
+p1 <- narrowresult %>%
+  filter(CharacteristicName %in% c("Iron","Magnesium","Calcium")) %>%
+  ggplot(aes(ymd(ActivityStartDate),as.numeric(ResultMeasureValue))) +
+  geom_point() +
+  facet_grid(CharacteristicName~ResultSampleFractionText)
+
+ggplotly(p1)
+
+# from examining plot p1, the distinction in units and sample fractions is apparent.
+# task: adjust boxplot function to display only "Total Recoverable" or "Unfiltered" results for Ca and Mg
 
 ```
 
