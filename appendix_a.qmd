@@ -486,14 +486,6 @@ dat %<>%
 rm(sgs21_als21_qaqc_dat)
 
 
-
-# summer 2021 has 
-# somewhere above here, spring 2021 Ca and Mg data is removed. but it re-appears later apparently?!
-z <- dat %>%
-  filter(analyte %in% c("Calcium, Total","Magnesium, Total")) %>%
-  filter(sample_type == "PS")
-
-
 ```
 
 <br>
@@ -656,6 +648,28 @@ dat <- bind_rows(dat,swwtp_spring21) %>%
   select(-location)
 
 rm(swwtp_spring21)
+
+# summer 2021 has 
+# somewhere above here, spring 2021 Ca and Mg data is removed. but it re-appears later apparently?!
+z <- dat %>%
+  filter(analyte %in% c("Calcium, Total","Magnesium, Total", "Calcium","Magnesium")) %>%
+  filter(sample_type == "PS")
+
+```
+
+
+```{r}
+
+
+
+# working here
+
+
+# summer 2021 has 
+# somewhere above here, spring 2021 Ca and Mg data is removed. but it re-appears later apparently?!
+z <- dat %>%
+  filter(analyte %in% c("Calcium, Total","Magnesium, Total", "Calcium","Magnesium")) %>%
+  filter(sample_type == "PS")
 
 
 ## NOTE - after this join, there is no content in the "sample" column for FC samples. This column does not exist
@@ -957,7 +971,16 @@ rm(swwtp_tss_spring21,swwtp_tss_sitenames,swwtp_tss21)
 # 2/14/23 go back to FC section and see if sample name is already bad up there
 # (unnecessary??)
 
+ # summer 2021 has 
+# somewhere above here, spring 2021 Ca and Mg data is removed. but it re-appears later apparently?!
+z <- dat %>%
+  filter(analyte %in% c("Calcium, Total","Magnesium, Total", "Calcium","Magnesium")) %>%
+  filter(sample_type == "PS")
+
 ```
+
+
+
 
 ```{r include = F}
 
