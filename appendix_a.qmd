@@ -485,9 +485,12 @@ dat %<>%
 
 rm(sgs21_als21_qaqc_dat)
 
+z <- dat %>%
+  filter(analyte %in% c("Magnesium","Calcium","Calcium, Total","Magnesium, Total"))
+
 
 ```
-
+ 
 <br>
 
 ##### 2021 Fecal Coliform Lab Results (Soldotna Wastewater Treatment Plant (SWWTP)/Taurianen Engineering)
@@ -643,33 +646,11 @@ swwtp_spring21 %<>%
 
 
 ## join SGS 2021 data to Spring 2021 Fecal Coliform data from SWWTP
-
 dat <- bind_rows(dat,swwtp_spring21) %>%
   select(-location)
 
 rm(swwtp_spring21)
 
-# summer 2021 has 
-# somewhere above here, spring 2021 Ca and Mg data is removed. but it re-appears later apparently?!
-z <- dat %>%
-  filter(analyte %in% c("Calcium, Total","Magnesium, Total", "Calcium","Magnesium")) %>%
-  filter(sample_type == "PS")
-
-```
-
-
-```{r}
-
-
-
-# working here
-
-
-# summer 2021 has 
-# somewhere above here, spring 2021 Ca and Mg data is removed. but it re-appears later apparently?!
-z <- dat %>%
-  filter(analyte %in% c("Calcium, Total","Magnesium, Total", "Calcium","Magnesium")) %>%
-  filter(sample_type == "PS")
 
 
 ## NOTE - after this join, there is no content in the "sample" column for FC samples. This column does not exist
@@ -791,8 +772,8 @@ write.csv(taur_summer21_qaqc_dat, "other/output/lab_qaqc_data/2021_lab_qaqc_data
 
 # join 2021 Taurianen Fecal Coliform data into overall dataframe so far
 dat <- bind_rows(dat,taur_summer21)
-  
 
+# rmeove old dfs
 rm(taur_summer21,taur_summer21_sites,taur_summer21_qaqc_dat,swwtp_spring21_qaqc_dat)
 
 ```
@@ -971,11 +952,6 @@ rm(swwtp_tss_spring21,swwtp_tss_sitenames,swwtp_tss21)
 # 2/14/23 go back to FC section and see if sample name is already bad up there
 # (unnecessary??)
 
- # summer 2021 has 
-# somewhere above here, spring 2021 Ca and Mg data is removed. but it re-appears later apparently?!
-z <- dat %>%
-  filter(analyte %in% c("Calcium, Total","Magnesium, Total", "Calcium","Magnesium")) %>%
-  filter(sample_type == "PS")
 
 ```
 
@@ -1013,7 +989,6 @@ result_sample_fraction <- read_excel("other/input/AQWMS/AQWMS_template_matching_
 dat <- left_join(dat,result_sample_fraction)
 
 
-
 ################ d.) assign "result detection condition"##############
 
 ## read in manually assigned join table for "result detection condition"
@@ -1030,6 +1005,7 @@ dat %<>%
   mutate(result_detection_condition = case_when(
     resultflag == "U" | resultflag == "ND" ~ "Not Detected",
     resultflag == "J" ~ "Present Below Quantification Limit"))
+
 
 
 ############### e.) assign chemical preservative type ################
@@ -1086,6 +1062,7 @@ colnames(analyte_abbrev) <- c("analyte","analyte_abbreviation")
 analyte_abbrev %<>% select(analyte, analyte_abbreviation)
 dat %<>%
   left_join(analyte_abbrev)
+
 ```
 
 ```{r include = F}
@@ -2529,6 +2506,7 @@ Within Kenai Watershed Forum's EPA Water Quality Portal web account, we develope
 For this export, we identified as "Rejected" all observations that had been "flagged" throughout the QA/QC process described above. Flagged observations will be uploaded to the EPA WQX labeled as "Rejected" under the column "Result Status ID."
 
 ```{r echo = F}
+
 # remove all flagged observations from 2021 dataset
 
 # label all flagged observations as "Rejected" and non-flagged as "Final."
