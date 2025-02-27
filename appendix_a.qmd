@@ -165,7 +165,6 @@ rm(spring_batch_sgs21,summer_batch_sgs21)
 
 
 
-
 ###################### Part B: ALS Data Read In #############################
 
 ## SGS subcontracted analyses of Ca, Fe, and Mg to ALS laboratories (Kelso, WA). These results are not included in the spreadsheet download from SGS engage and were entered manually in to seperate spring and summer "ALS" named spreadsheets
@@ -182,7 +181,7 @@ summer_als21 <- read.csv("other/input/2021_wqx_data/summer_2021_wqx_data/SGS/sum
 als21 <- bind_rows(spring_als21,summer_als21) %>%
   remove_empty() %>%
   
-  # proceed left to right of existing ALS dataframe to make its naming structure match the sgs21 dataframe. Add, remove, modify column names as needed
+# proceed left to right of existing ALS dataframe to make its naming structure match the sgs21 dataframe. Add, remove, modify column names as needed
   select(-client,
          -project,
          -service_request) %>%
@@ -227,12 +226,18 @@ als21 <- bind_rows(spring_als21,summer_als21) %>%
             result = as.double(result),
             collect_time = as_hms(as.POSIXct(collect_time, format = "%H:%M")))
 
+```
+
+
+```{r}
+
 
 # join SGS data with ALS data
 dat <- bind_rows(sgs21,als21)  
 
 # remove old dataframes
 rm(als21,sgs21,spring_als21,summer_als21)
+
 
 # export table of sample types
 
@@ -250,6 +255,7 @@ unlink("other/input/AQWMS/sample_type_abbreviations.xlsx")
 write.xlsx(sample_types, "other/input/AQWMS/sample_type_abbreviations.xlsx")
 
 # manually created a translation of all the acronyms in an accompanying file. removed inconsistencies in sample type abbreviations into one consistent schema between SGS and ALS labs
+
 
 
 
@@ -296,7 +302,8 @@ dat %<>%
   mutate(sample = case_when(
     sample == "RM0-No Name Creek  Diss" ~ "RM0-No Name Creek",
     TRUE ~ sample)) 
-  
+
+
 # Sample name clean up
 # We need to remove white spaces, apostrophes, and dashes; because join functions such as "left_join" are often uncooperative with these types of string characters. We will need to use joins with site names in next steps.
   
@@ -478,6 +485,13 @@ dat %<>%
 
 rm(sgs21_als21_qaqc_dat)
 
+
+
+# summer 2021 has 
+# somewhere above here, spring 2021 Ca and Mg data is removed. but it re-appears later apparently?!
+z <- dat %>%
+  filter(analyte %in% c("Calcium, Total","Magnesium, Total")) %>%
+  filter(sample_type == "PS")
 
 
 ```
@@ -2701,7 +2715,39 @@ p1 <- narrowresult %>%
 ggplotly(p1)
 
 # from examining plot p1, the distinction in units and sample fractions is apparent.
-# task: adjust boxplot function to display only "Total Recoverable" or "Unfiltered" results for Ca and Mg
+# task: adjusted boxplot function to display only "Total Recoverable" or "Unfiltered" results for Ca and Mg
+
+# Issue 3 - MonitoringLocationName string formats from 2021 do not match those from 2000 - 2013
+z <- narrowresult %>%
+  distinct(MonitoringLocationIdentifier)
+
+# not a big deal
+
+# Issue 4 - check in to Hardness value for 5/11/2021 at KBL_t_74.0. unrealistic?
+z <- narrowresult %>%
+  filter(CharacteristicName %in% c("Calcium","Magnesium")) %>%
+  filter(ResultSampleFractionText %in% c("Total Recoverable","Unfiltered")) %>%
+  filter(ResultMeasureValue != "") %>%
+ # filter(ActivityStartDate == "2021-05-11") %>%
+  filter(MonitoringLocationIdentifier == "KENAI_WQX-10000032") %>%
+  arrange(CharacteristicName,ResultMeasureValue)
+  
+  group_by(ActivityStartDate, MonitoringLocationIdentifier, CharacteristicName, ResultMeasure.MeasureUnitCode) %>%
+  
+  # get mean of all duplicate sample
+  summarise(avg_value = mean(as.numeric(ResultMeasureValue), na.rm = T))
+
+
+
+
+  pivot_wider(names_from = "characteristic_name", values_from = "avg_value") %>%
+  # calculate hardness for each sample event
+  mutate(hardness_mgl = 2.497*(Calcium) + 4.119*(Magnesium)) %>%
+  ungroup() %>%
+  select(-Calcium, -Magnesium,-result_measure_measure_unit_code)
+  
+  
+
 
 ```
 
