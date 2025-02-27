@@ -125,7 +125,7 @@ hard <- dat %>%
   select(activity_identifier, activity_start_date, characteristic_name, result_measure_value, result_measure_measure_unit_code,result_sample_fraction_text,monitoring_location_name) %>%
   filter(characteristic_name %in% (c("Magnesium","Calcium"))) %>%
   
-  # retain onl;y total Ca and Mg, not dissolved values
+  # retain only total Ca and Mg, not dissolved values
   filter(result_sample_fraction_text %in% (c("Total Recoverable","Unfiltered"))) %>%
   
   group_by(activity_start_date, monitoring_location_name, characteristic_name, result_measure_measure_unit_code) %>%
