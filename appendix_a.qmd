@@ -398,6 +398,7 @@ rm(sgs21_sitenames,aqwms21_sitenames,sitenames21_match)
 
 
 
+
 ######################## Part E: "Result Analytical Method Context" name rectification ######################
 
 # In the AQWMS template, the EPA names for chemical analyses that will go in the column "Result Analytical Method ID" do not exactly match the names provided by the laboratory (SGS). After communicating with SGS and ADEC on 2/8/2022, we are able to cross-walk between the two naming systems. These matches are documented in the excel file "analysis_code_matching_table.xlsx."
@@ -484,9 +485,6 @@ dat %<>%
   filter(!grepl("(surr)",analyte))
 
 rm(sgs21_als21_qaqc_dat)
-
-z <- dat %>%
-  filter(analyte %in% c("Magnesium","Calcium","Calcium, Total","Magnesium, Total"))
 
 
 ```
@@ -963,6 +961,7 @@ rm(swwtp_tss_spring21,swwtp_tss_sitenames,swwtp_tss21)
 ############### Miscellaneous Steps for Overall Field Results Dataframe #################
 
 
+
 ############# a.)  filter out lab blanks and positive lab controls ##################
 #dat %<>%
 #  filter(!sample_condition %in% c("Lab Blank","Positive Control")) # should already be gone now 3/4/22
@@ -1063,6 +1062,7 @@ analyte_abbrev %<>% select(analyte, analyte_abbreviation)
 dat %<>%
   left_join(analyte_abbrev)
 
+
 ```
 
 ```{r include = F}
@@ -1104,6 +1104,11 @@ dat %<>%
 ```
 
 ```{r include = F, eval = F}
+
+z1 <- dat %>%
+  filter(analyte %in% c("Magnesium","Calcium","Calcium, Total","Magnesium, Total"),
+         collect_date == "2021-5-11")
+
 
 ############ g.) prepare final format ###############################
 
@@ -1204,6 +1209,10 @@ dat %<>%
 # export final formatted AQWMS results to external csv
 write.csv(dat,"other/output/aqwms_formatted_results/2021_kwf_baseline_results_aqwms.csv",row.names = F)
 
+
+z <- dat %>%
+  filter(`Characteristic Name` %in% c("Magnesium","Calcium","Calcium, Total","Magnesium, Total"),
+         `Activity Start Date` == "2021-5-11")
 
 ```
 
@@ -2670,86 +2679,55 @@ Other notes for final 2021 data upload to EPA CDX
 ```{r echo = F, eval = F}
 # make corrections to existing EPA CDX data
 
-# in winter 2025 we discovered a series of updates and corrections needed for both 2000 - 2013 data as well as recently uploaded 2021 data. these corrections are detailed and executed here. notesa re listed in a google doc at https://docs.google.com/document/d/1p1fsh2dVfvIWNmRrpjteOTyLPSEeMYoQDRk5XhKTcNk/edit?tab=t.0
+# in this chunk we will conduct the following activities:
+# 1) address minor errors that were discovered from downloading all existing EPA WQX data from 2021
 
-# access all existing KWF water quality data downloaded from EPA CDX on 2/3/2025
-narrowresult <- read.csv("other/input/WQX_downloads/wqp_download_20250225/narrowresult.csv")
-station <- read.csv("other/input/WQX_downloads/wqp_download_20250225/station.csv")
+# notes are listed in a google doc at https://docs.google.com/document/d/1p1fsh2dVfvIWNmRrpjteOTyLPSEeMYoQDRk5XhKTcNk/edit?tab=t.0
 
-# Issue 1 - Units for specific conductance for spring 2013 are all in mS/cm rather than uS/cm. However the range of values for spring 2013 are not totally out range of existing values, so its possible it’s just an error in recording the unit name rather than the actual units. Look in context of existing values to determine
+# read in the document downloaded from EPA WQX, which includes some manual edits as described in the ReadMe in the same directory
+submitted_dat <- read.csv("other/output/aqwms_formatted_results/final_preparation/results_activities.csv", check.names = F) 
 
-# let's examine if these spring 2021 values are within range of other existing values
 
-# we examined the values in a simple ggplotly, as well as in the original data sheets from 2013. Both indicate the units in WQX shuold be uS/cm rather than mS/cm for spring 2013 specific conductance. we will apply the correction here.
-narrowresult <- narrowresult %>%
-  mutate(ResultMeasure.MeasureUnitCode = case_when(
-    CharacteristicName == "Specific conductance" ~ "uS/cm",
-    TRUE ~ ResultMeasure.MeasureUnitCode
+# minor issues with existing data  (NOTE: this is for 2013; not a huge priority)
+# Issue 1.1 - Units for specific conductance for spring 2013 are all in mS/cm rather than uS/cm. We examined original records and investigated range of values, as well as in the original data sheets from 2013. Both indicate the units in WQX shuold be uS/cm rather than mS/cm for spring 2013 specific conductance. we will apply the correction here.
+submitted_dat <- submittdat %>%
+  mutate(`Result.Unit` = case_when(
+    `Characteristic.Name` == "Specific conductance" ~ "uS/cm",
+    TRUE ~ `Result.Unit`
   ))
 
-# Issue 2 - Some metals values for summer 2021 appear to be unrealistic (Mg,Ca,Fe)
-# lets examine the 2021 values in context of all other values
-p <- narrowresult %>%
-  filter(CharacteristicName %in% c("Iron","Magnesium","Calcium")) %>%
-  ggplot(aes(ymd(ActivityStartDate),as.numeric(ResultMeasureValue))) +
-  geom_point() +
-  facet_grid(CharacteristicName~.)
-p
-
-# examine units and sample fractions
-z <- p %>%
-  select(CharacteristicName,ResultMeasure.MeasureUnitCode,ResultSampleFractionText) %>%
-  distinct()
-
-# from examining the data 2000 - 2021, we see that for Ca, Mg, and Fe data exist as either a.) dissolved, which is denoted as "Dissolved" or "Filtered, field", or b.) total, which is denoted as either "Total Recoverable" or "Unfiltered."
-
-# prior to 2021, we did not have data on dissolved Fe, Ca, Mg
-
-# segregating by fraction, lets see if values are still within reasonable range. if not, maybe unit corrections/conversions are needed
-
-p1 <- narrowresult %>%
-  filter(CharacteristicName %in% c("Iron","Magnesium","Calcium")) %>%
-  ggplot(aes(ymd(ActivityStartDate),as.numeric(ResultMeasureValue))) +
-  geom_point() +
-  facet_grid(CharacteristicName~ResultSampleFractionText)
-
-ggplotly(p1)
-
-# from examining plot p1, the distinction in units and sample fractions is apparent.
-# task: adjusted boxplot function to display only "Total Recoverable" or "Unfiltered" results for Ca and Mg
-
-# Issue 3 - MonitoringLocationName string formats from 2021 do not match those from 2000 - 2013
-z <- narrowresult %>%
-  distinct(MonitoringLocationIdentifier)
-
-# not a big deal
-
-# Issue 4 - check in to Hardness value for 5/11/2021 at KBL_t_74.0. unrealistic?
-z <- narrowresult %>%
-  filter(CharacteristicName %in% c("Calcium","Magnesium")) %>%
-  filter(ResultSampleFractionText %in% c("Total Recoverable","Unfiltered")) %>%
-  filter(ResultMeasureValue != "") %>%
- # filter(ActivityStartDate == "2021-05-11") %>%
-  filter(MonitoringLocationIdentifier == "KENAI_WQX-10000032") %>%
-  arrange(CharacteristicName,ResultMeasureValue)
-  
-  group_by(ActivityStartDate, MonitoringLocationIdentifier, CharacteristicName, ResultMeasure.MeasureUnitCode) %>%
-  
-  # get mean of all duplicate sample
-  summarise(avg_value = mean(as.numeric(ResultMeasureValue), na.rm = T))
 
 
+# Issue 1.2 - MonitoringLocationName string formats from 2021 do not match those from 2000 - 2013
+z <- dat %>%
+  distinct(Monitoring.Location.Identifier)
+# not a big deal, maybe address later
+
+# Issue 1.3 - check in to Hardness value for 5/11/2021 at KBL_t_74.0. unrealistic?
+# identified error in manually edited sgs site name matching sheet and corrected
+
+# issues with CDX upload format(s)
+# Issue 2.1 - dates need leading zeroes
+# Convert the date column (assuming it's named 'date') and format it with leading zeros
+# do other date columns need this?
+submitted_dat <- submitted_dat %>%
+  mutate(`Analysis Start Date` = format(mdy(`Analysis Start Date`), "%m/%d/%Y"))
 
 
-  pivot_wider(names_from = "characteristic_name", values_from = "avg_value") %>%
-  # calculate hardness for each sample event
-  mutate(hardness_mgl = 2.497*(Calcium) + 4.119*(Magnesium)) %>%
-  ungroup() %>%
-  select(-Calcium, -Magnesium,-result_measure_measure_unit_code)
-  
+# Issue 2.2 - "Total" should be removed from Calcium and Magnesium characteristic name. Sample fraction column differentiates filtered and unfiltered
+dat <- dat %>%
+  mutate(`Characteristic Name` = case_when(
+    `Characteristic Name` == "Calcium, Total" ~ "Calcium",
+    `Characteristic Name` == "Magnesium, Total" ~ "Magnesium",
+    TRUE ~ `Characteristic Name`
+  )) 
+
+# export back into final preparation folder
+write.csv(submitted_dat,"other/output/aqwms_formatted_results/final_preparation/results_activities.csv", row.names = F)
   
 
-
+# working in this chunk
+# task: i need to prep a v2 of "submitted_dat" that includes the 2021 updates. a) corrected ca/mg assignments and b) corrected units. but, in the same format
 ```
 
 Work in progress here as of `r Sys.Date()`
@@ -2771,6 +2749,10 @@ Work in progress here as of `r Sys.Date()`
 # monitoring locations
 # results & activities
 
+
+# access all existing KWF water quality data downloaded from EPA CDX on 2/3/2025
+# narrowresult <- read.csv("other/input/WQX_downloads/wqp_download_20250225/narrowresult.csv")
+# station <- read.csv("other/input/WQX_downloads/wqp_download_20250225/station.csv")
 
 
 knitr::knit_exit()
