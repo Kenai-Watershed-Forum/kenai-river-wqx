@@ -25,8 +25,7 @@ git_pull_prompt <- function() {
 
 # Function to check Git status and prompt before closing
 git_push_reminder <- function() {
-  if (!requireNamespace("rstudioapi", quietly = TRUE)) {
-    message("rstudioapi package not found. Git push reminder disabled.")
+  if (!interactive() || !requireNamespace("rstudioapi", quietly = TRUE)) {
     return()
   }
   
@@ -91,9 +90,10 @@ setHook("rstudio.sessionInit", function(...) {
 }, action = "append")
 
 .Last <- function() {
-  git_push_reminder()
+  if (interactive() && requireNamespace("rstudioapi", quietly = TRUE)) {
+    git_push_reminder()
+  }
 }
 
 # Confirm that .Rprofile has loaded
 print("✅ .Rprofile is running correctly")
-
