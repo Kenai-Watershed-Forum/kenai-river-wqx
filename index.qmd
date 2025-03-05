@@ -1,4 +1,4 @@
-# Preface {.unnumbered} 
+# Preface {.unnumbered}
 
 ---
 execute:
@@ -51,6 +51,7 @@ knitr::include_graphics("other/documents/images/kenai_lake.jpg")
 ::: {.content-visible when-format="docx"}
 ```{r echo = F}
 knitr::include_graphics("other/documents/images/KWF_logo.jpg")
+
 ```
 :::
 

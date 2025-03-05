@@ -80,7 +80,7 @@ select <- dplyr::select
 
 
 # import sample data
-dat <- read_csv("other/input/WQX_downloads/wqp_download_20250225/narrowresult.csv") %>%
+dat <- read_csv("other/input/WQX_downloads/wqp_download_20250305/narrowresult.csv") %>%
   # retain only KWF data
   filter(OrganizationFormalName == "Kenai Watershed Forum") %>%
   # remove empty columns
@@ -114,9 +114,11 @@ dat <- left_join(dat,site_dat) %>%
 
 # specify date format
 dat %<>%
-  transform(ActivityStartDate = date(ActivityStartDate)) %>%
+  transform(ActivityStartDate = date(ActivityStartDate)) 
+
+#%>%
   # remove missing observations
-  filter(!is.na(ResultMeasureValue))
+#  filter(!is.na(ResultMeasureValue))
 
 # Remove air temperature observations
 dat %<>%
@@ -179,8 +181,6 @@ parameter_fraction <- dat %>%
   group_by(CharacteristicName) %>%
   mutate(unit_id = paste0("unit_", row_number())) %>%
   pivot_wider(names_from = unit_id, values_from = ResultSampleFractionText)
-
-
 
 
 
@@ -291,7 +291,7 @@ knitr::knit_exit()
 # 2/3/2025 i think we can delete everything below here. 
 ```
 
-```{r echo = F, warning=FALSE, results='hide',message=FALSE}
+```{r echo = F, warning=FALSE, results='hide',message=FALSE, eval = F}
 
 # no further evaluation below for now 2/3/2025
 
@@ -447,12 +447,12 @@ dat <- anti_join(dat,outliers)
 write.csv(dat,"other/output/analysis_format/baseline_export_format.csv",row.names = F)
 
 
-
-
-
+# delete everything below here?
 ```
 
-```{r echo = F, warning=FALSE, results='hide',message=FALSE}
+
+
+```{r echo = F, warning=FALSE, results='hide',message=FALSE, eval = F}
 
 ### Miscellaneous additional dataframe prep ###
 
@@ -550,7 +550,7 @@ dat %<>%
 
 ```
 
-```{r echo = F, warning=FALSE, message=FALSE}
+```{r echo = F, warning=FALSE, message=FALSE, eval = F}
 
 #### SEASONS BOUNDARY ####
 
@@ -568,7 +568,7 @@ dat %<>%
 
 ```
 
-```{r echo = F, warning=FALSE, message=FALSE}
+```{r echo = F, warning=FALSE, message=FALSE, eval = F}
 # OUTLIERS
 
 # exclude outliers with an inner_join function
@@ -583,7 +583,7 @@ dat <- anti_join(dat,outliers)
 
 ```
 
-```{r echo = F, warning=FALSE, message=FALSE}
+```{r echo = F, warning=FALSE, message=FALSE, eval = F}
 # EXPORT PREPROCESSED DATA TO LOCAL PROJECT DIRECTORY
 
 # write finalized data that is output form all the steps above, to be used in ext steps in the scripst that follow

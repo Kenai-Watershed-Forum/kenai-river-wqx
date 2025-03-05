@@ -110,7 +110,7 @@ Hardness varies by site, by season, and with hydrologic conditions. We calculate
 Hardness = 2.497(Total Calcium in mg/L) + 4.119(Total Magnesium in mg/L)
 :::
 
-For sampling events with duplicate samples, we calculated average hardness. Note that some sampling events do not have calculated hardness values because total Ca and/or total Mg values were not available.
+For sampling events with duplicate samples, we calculated average hardness. Note that some sampling events do not have calculated hardness  values because total Ca and/or total Mg values were not available.
 
 ```{r echo = F, warning=FALSE, message=FALSE}
 
@@ -286,7 +286,7 @@ hydrocarbon_reg_vals <- read_xlsx("other/input/regulatory_limits/master_reg_limi
   filter(!is.na(value)) %>%
   select(-"NA")
 
-# define directory
+# define directory for where hydrocarbon reg values are saved
 dir <- "other/input/regulatory_limits/formatted_reg_vals/hydrocarbon_reg_vals.csv"
 
 # export csv
@@ -299,13 +299,13 @@ embed_file(dir, text = "Download Regulatory Limits for Hydrocarbons with Static 
 
 ### Total BTEX
 
-Total aromatic hydrocarbons (TAH) means the sum of the following volatile monoaromatic hydrocarbon compounds: benzene, toluene, ethylbenzene, and the xylene isomers, commonly called BTEX. The Alaska Dept of Environmental Conversation describes a maximum static regulatory value of 10 ug/l BTEX..
+Total aromatic hydrocarbons (TAH) means the sum of the following volatile monoaromatic hydrocarbon compounds: benzene, toluene, ethylbenzene, and the xylene isomers, commonly called BTEX. The Alaska Dept of Environmental Conversation describes a maximum static regulatory value of 10 ug/l BTEX.
 
 For each sampling event with available hydrocarbons data, we calculated the sum of the parameters that compose BTEX and compared them to a static threshold value.
 
 To prepare our existing data to be assessed against this standard, we addressed the following issues:
 
--   In some cases, BTEX is quantified as a total mixture. In other cases, the individual substances are instead quantified separately.
+-   In some cases, BTEX data is quantified as a total mixture (sum of all benzene, toluene, ethylbenzene, and the xylene isomers). In other cases, the individual substances are instead quantified separately.
 
 -   In yet other cases, both the values of individual components of BTEX and the total mixture values are reported separately.
 
@@ -314,8 +314,6 @@ To prepare our existing data to be assessed against this standard, we addressed 
 -   In some cases, multiple isomers of the same hydrocarbon are quantified (e.g. o-xylene vs m,p-xylene). In these cases, we summed the total quantity of the substance for all isomers.
 
 ```{r echo = F}
-
-# working here 2/13/2025 :: makle sure that 2021 hydrocarbon data aligns with 2000 - 2013
 
 # Goal here: replace old volatiles data in the overall dataframe with the aggregagated btex data we discussed above. 
 
@@ -326,22 +324,7 @@ xylene_isomers <- c("m,p-Xylene" = "Xylene","o-Xylene" = "Xylene")
 
 # 1.) aggregate all volatiles data to sum into "`Benzene, toluene, ethyl benzene, xylenes mix"
 btex_dat <- dat %>%
-  filter(result_sample_fraction_text == "Volatile") 
-
-# %>%
-  
-  # this filter is not including 2021 data fior unknown reason
-
-z <- dat %>%
-  transform(activity_start_date <- ymd(activity_start_date)) %>%
-  filter(activity_start_date > ymd("2021-01-01")) %>%
-  distinct(characteristic_name)
-  
-
-# 2021 hydrocarbon data is missing from here. see appendix a, investigate why
-# does the hydrocarbon data  accidentally get eliminated in this reg_limits script, or is it not exported in appendix a???
-# in appendix a, 2021 hydrocarbon data contains: ethylbenzene, P & M -Xylene, o-Xylene, Benzene, Toluene
-  
+  filter(result_sample_fraction_text == "Volatile") %>%
   
   select(activity_identifier,characteristic_name,result_measure_value) %>%
   # round all values to two decimals
@@ -349,7 +332,7 @@ z <- dat %>%
     # if duplicate samples exist, take their average
   group_by(activity_identifier,characteristic_name) %>%
   summarise(result_measure_value = mean(result_measure_value)) %>%
-   # 
+   # restructure dataframe
   pivot_wider(names_from = "characteristic_name", values_from = "result_measure_value") %>%
   mutate(btex_sum = sum(Benzene,Ethylbenzene,Toluene,Xylene,`o-Xylene`,`m,p-Xylene`, na.rm = T)) %>%
   # does the reported sum match the calculated sum?
@@ -384,11 +367,9 @@ dat <- dat %>%
   bind_rows(mean_volatiles)
   
 # types of issues we addressed in preparing BTEX data
-# - value exists only for provided sum column (we left these as is)
+# - value exists only for total btex sum column (we left these as is)
 # - no provided sum value exists, only calculated (we used the calculated value)
 
-
-# next, to read this data source in separately for boxplots, try using case_when within read.csv to choose one of two data sources
 
 ```
 
