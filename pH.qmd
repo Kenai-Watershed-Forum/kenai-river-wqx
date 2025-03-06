@@ -17,7 +17,6 @@ In the mainstem, the pH ranged from a high of 8.52 at Mile 50 in summer 2002 to 
 
 The highest pH ever sampled was 9.03 at Moose River during summer 2002, and the lowest was 6.2 at No Name Creek in spring 2005 (Table 53). The medians of the tributaries did not exceed either the upper or lower pH limit. The lower limit was exceeded on one occasion each in No Name Creek, Beaver Creek, and Slikok Creek in the spring, and three samples from the Moose River exceeded the upper limit in the summer. The Moose River had the highest median pH in the summer, followed by the Russian River. From spring to the summer, the Killey River median remained near 7, while the other tributaries increased toward 7.5. Excluding the Moose River, the spring samples from the tributaries and the mainstem displayed greater variability than the summer samples (Figures X & X).
 
-
 ```{r echo = F, warning=FALSE, message=FALSE,fig.height=8, fig.width=10}
 
 # set parameter

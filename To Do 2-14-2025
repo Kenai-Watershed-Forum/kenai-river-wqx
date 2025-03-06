@@ -2,6 +2,8 @@
 Is 2021 data displaying when applicable?
 Check for more obvious outliers.
 
+why no static reg vals appearing? eg pH
+
 
 # 3/5/2025
 Updated the source with corrected 2021 data from wqx, but boxplot figures still not displaying 2021 data in some cases. 
