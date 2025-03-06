@@ -22,7 +22,7 @@ library(xfun)
 library(cowplot)
 library(forcats)
 library(magrittr)
-library (patchwork)
+library(patchwork)
 
 #### READ IN WQX DATA #####
 # read in prepared data from local directory.
@@ -150,87 +150,87 @@ create_facet_plots <- function(data_path, reg_vals_path, characteristic, sample_
     y_min <- min(subset_data$result_measure_value, na.rm = TRUE) * 0.9
     y_max <- max(subset_data$result_measure_value, na.rm = TRUE) * 1.1
     
-    ggplot(subset_data, aes(x = get(x_var), y = result_measure_value)) +
+    # Check if there are any non-NA exceedance values
+    exceedance_present <- any(!is.na(subset_data$fw_acute_exceed) | !is.na(subset_data$fw_chronic_exceed))
+    
+    plot <- ggplot(subset_data, aes(x = get(x_var), y = result_measure_value)) +
       geom_boxplot(aes(group = get(x_var)), outlier.shape = NA) +
-      geom_jitter(aes(
-        color = factor(case_when(
-          is.na(fw_acute_exceed) & is.na(fw_chronic_exceed) ~ "gray",
-          
-          is.na(fw_acute_exceed) & fw_chronic_exceed == "Y" ~ "orange",
-          
-          fw_acute_exceed == "Y" & fw_chronic_exceed == "Y" ~ "blue"
-          
-        )),
-        shape = factor(case_when(
-          
-          is.na(fw_acute_exceed) & is.na(fw_chronic_exceed) ~ "gray",
-          is.na(fw_acute_exceed) & fw_chronic_exceed == "Y" ~ "orange",
-          fw_acute_exceed == "Y" & fw_chronic_exceed == "Y" ~ "blue"
-          
-        ))
-      ), width = 0.2, size = 3, show.legend = TRUE) +
+      geom_jitter(
+        aes(
+          color = if (exceedance_present) factor(case_when(
+            is.na(fw_acute_exceed) & is.na(fw_chronic_exceed) ~ "gray",
+            is.na(fw_acute_exceed) & fw_chronic_exceed == "Y" ~ "orange",
+            fw_acute_exceed == "Y" & fw_chronic_exceed == "Y" ~ "blue"
+          )) else NULL,
+          shape = if (exceedance_present) factor(case_when(
+            is.na(fw_acute_exceed) & is.na(fw_chronic_exceed) ~ "gray",
+            is.na(fw_acute_exceed) & fw_chronic_exceed == "Y" ~ "orange",
+            fw_acute_exceed == "Y" & fw_chronic_exceed == "Y" ~ "blue"
+          )) else NULL
+        ),
+        width = 0.2, size = 3, show.legend = exceedance_present
+      ) +
       geom_hline(data = hline_data, aes(yintercept = yintercept, linetype = linetype), color = "#D55E00", size = 1.2, show.legend = TRUE) +
       facet_wrap(~season) +
-      scale_y_continuous(limits = c(y_min, y_max)) +
-      scale_color_manual(
+      scale_y_continuous(limits = c(y_min, y_max))
+    
+    # Conditionally add legends only if exceedance is present
+    if (exceedance_present) {
+      plot <- plot + scale_color_manual(
         name = "Hardness Dependent\nExceedance Type",
         breaks = c("gray", "orange", "blue"),
         labels = c("gray" = "None", "orange" = "Chronic", "blue" = "Acute"),
-        values = c(
-          "gray" = "#7F7F7F",    # Gray for None (colorblind-friendly neutral gray)
-          "orange" = "#E69F00",  # Orange for Acute (colorblind-friendly orange)
-          "blue" = "#0072B2"      # Blue for Chronic (colorblind-friendly blue)
-        )
-      ) +
-      scale_shape_manual(
-        name = "Hardness Dependent\nExceedance Type",
-        breaks = c("gray", "orange", "blue"),
-        labels = c("gray" = "None", "orange" = "Chronic", "blue" = "Acute"),
-        values = c(
-          "gray" = 16,    # Acute: NA, Chronic: NA
-          "orange" = 16,    # Acute: NA, Chronic: Y
-          "blue" = 8      # Acute: Y, Chronic: Y
-        )
-      ) +
-      scale_linetype_manual(
-        name = "Regulatory Standard",
-        values = c(
-          "drinking_water" = "solid",
-          "irrigation_water" = "longdash",
-          "stock_water" = "dotted",
-          "wildlife" = "twodash",
-          "recreation" = "dotdash"
-        )
-      ) +
-      guides(
-        linetype = guide_legend(override.aes = list(color = "red", size = 1.2)),
-        color = guide_legend(override.aes = list(size = 4, linetype = 0)),
-        shape = guide_legend(override.aes = list(size = 4, linetype = 0))
-      ) +
-      
-      labs(
-        title = paste(
-          "Kenai River",
-          ifelse(x_var == "tributary_name", "Tributaries", "Mainstem"), ",",
-          characteristic, ",",
-          sample_fraction, ",",
-          min_year, "-", max_year
-        )
-      ) +
-      xlab("") +
-      ylab(paste0(characteristic, " (",subset_data$result_measure_measure_unit_code,")")) +
-      
-      #theme_minimal() +
-      theme(
-        axis.text.x = element_text(angle = 60, hjust = 1, size = 14),
-        axis.text.y = element_text(size = 14),
-        axis.title = element_text(size = 16),
-        strip.text = element_text(size = 16, face = "bold"),
-        legend.text = element_text(size = 14),
-        legend.title = element_text(size = 16),
-        title = element_text(size = 16),
-        legend.position = "right"
+        values = c("gray" = "#7F7F7F", "orange" = "#E69F00", "blue" = "#0072B2")
       )
+      plot <- plot + scale_shape_manual(
+        name = "Hardness Dependent\nExceedance Type",
+        breaks = c("gray", "orange", "blue"),
+        labels = c("gray" = "None", "orange" = "Chronic", "blue" = "Acute"),
+        values = c("gray" = 16, "orange" = 16, "blue" = 8)
+      )
+    }
+    
+    plot <- plot + scale_linetype_manual(
+      name = "Regulatory Standard",
+      values = c(
+        "drinking_water" = "solid",
+        "irrigation_water" = "longdash",
+        "stock_water" = "dotted",
+        "wildlife" = "twodash",
+        "recreation" = "dotdash"
+      )
+    )
+    
+    plot <- plot + guides(
+      linetype = guide_legend(override.aes = list(color = "red", size = 1.2)),
+      color = if (exceedance_present) guide_legend(override.aes = list(size = 4, linetype = 0)) else "none",
+      shape = if (exceedance_present) guide_legend(override.aes = list(size = 4, linetype = 0)) else "none"
+    )
+    
+    plot <- plot + labs(
+      title = paste(
+        "Kenai River",
+        ifelse(x_var == "tributary_name", "Tributaries", "Mainstem"), ",",
+        characteristic, ",",
+        sample_fraction, ",",
+        min_year, "-", max_year
+      )
+    ) +
+      xlab("") +
+      ylab(paste0(characteristic, " (", subset_data$result_measure_measure_unit_code, ")"))
+    
+    plot <- plot + theme(
+      axis.text.x = element_text(angle = 60, hjust = 1, size = 14),
+      axis.text.y = element_text(size = 14),
+      axis.title = element_text(size = 16),
+      strip.text = element_text(size = 16, face = "bold"),
+      legend.text = element_text(size = 14),
+      legend.title = element_text(size = 16),
+      title = element_text(size = 16),
+      legend.position = if (exceedance_present) "right" else "none"
+    )
+    
+    return(plot)
   }
   
   # Generate plots

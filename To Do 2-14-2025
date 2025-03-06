@@ -1,6 +1,12 @@
+# 3/6/25
+Is 2021 data displaying when applicable?
+Check for more obvious outliers.
+
+
 # 3/5/2025
-Updated the source with corrected 2021 data from wqx, but boxplot figures still not displaying 2021 data in some cases. also, Ca, Mg 2021
-data clearly have wring units. need to remov elegend where not applicable also
+Updated the source with corrected 2021 data from wqx, but boxplot figures still not displaying 2021 data in some cases. 
+also, Ca, Mg, Fe 2021 data clearly have wrong units. need to fix and replace content in wqx
+need to remove legend where not applicable also
 
 # 2/25/25
 Sent email to help desk at EPA for assistance on updating/deleting 2021 data. today, just workingon getting 

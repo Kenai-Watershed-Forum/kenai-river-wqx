@@ -657,7 +657,7 @@ rm(swwtp_spring21)
 
 ```{r}
 
-########################### Part B: Taurianen FC Data Read In (Summer 2021) ##############################################
+########################### Part B: Taurianen FC Data Read In (Summer 2021) ########################
 
 taur_summer21_rec_date <- "2021-07-27"
 taur_summer21_rec_time <- "13:37:00"
