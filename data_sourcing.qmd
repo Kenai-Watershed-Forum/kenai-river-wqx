@@ -124,7 +124,11 @@ dat %<>%
 dat %<>%
   filter(CharacteristicName != "Temperature, air") 
 
+```
 
+
+
+```{r}
 # UNITS
 
 # confirm that each parameter has consistent units. View dataframe here, and if units are not consistent, apply temporary corrections here. Ultimately need to apply corrections to WQP upload, so code here should accommodate read in once corrections are applied.
@@ -154,13 +158,13 @@ dat <- dat %>%
 
 
 # TOTAL METALS (Mg, Ca, Fe, others)
-# address unit consistency introduced by 2021 data
+# address unit consistency introduced by 2021 data. Some are reported in ug/L, and some in mg/L
 dat <- dat %>%
   # fix unit values
   mutate(`ResultMeasureValue` = as.numeric(`ResultMeasureValue`)) %>%
   mutate(`ResultMeasureValue` = case_when(
     CharacteristicName %in% c("Magnesium","Calcium","Iron") & 
-      `ResultMeasure/MeasureUnitCode` == "ug/L" ~ `ResultMeasureValue` * 1000,
+      `ResultMeasure/MeasureUnitCode` == "ug/L" ~ `ResultMeasureValue` / 1000,
     TRUE ~ `ResultMeasureValue`
   )) %>%
   # convert back to character for the rest of this preparation, here?
@@ -171,6 +175,9 @@ dat <- dat %>%
       `ResultMeasure/MeasureUnitCode` == "ug/L" ~ "mg/L",
     TRUE ~ `ResultMeasure/MeasureUnitCode`
   )) 
+
+
+
 
 # SAMPLE FRACTION
 # address characteristic form (total, dissolved, etc). how many unique forms per parameter?
@@ -264,7 +271,6 @@ outliers <- read.xlsx("other/input/outliers/baseline_outliers.xlsx") %>%
 dat <- anti_join(dat,outliers)
 
 
-
 # EXPORT PREPROCESSED DATA TO LOCAL PROJECT DIRECTORY, FOR PLOTS
 
 # write finalized data that is output form all the steps above, to be used in next steps in the scripts that follow
@@ -277,12 +283,11 @@ write.csv(dat,"other/output/analysis_format/baseline_export_format.csv",row.name
 # ensure final result includes "ResultStatusIdentifer." Keep rejects in table download, but not displayed in plots
 
 
-
-
-
-# TESTING # working here
-
 ```
+
+
+
+
 
 ```{r}
 # stop evaluation here
@@ -290,6 +295,8 @@ knitr::knit_exit()
 
 # 2/3/2025 i think we can delete everything below here. 
 ```
+
+
 
 ```{r echo = F, warning=FALSE, results='hide',message=FALSE, eval = F}
 
