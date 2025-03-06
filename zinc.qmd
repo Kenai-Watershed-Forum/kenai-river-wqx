@@ -21,6 +21,8 @@ A trend analysis was conducted using the average and median values for all data 
 
 ```{r echo = F, warning=FALSE, message=FALSE,fig.height=8, fig.width=10}
 
+# need to set sample fraction filter for this and other metals in some years post 2021
+
 # set parameter
 characteristic <- "Zinc"
 
