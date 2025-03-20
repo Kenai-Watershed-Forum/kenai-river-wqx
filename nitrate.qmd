@@ -11,10 +11,19 @@ format:
     code-summary: "Show the code"
 ---
 
+From the 2016 report:
+
+Inorganic nitrogen is generally present in well-aerated, natural streams in the form of nitrate (Glass, 1999). Nitrate enters the hydrologic cycle as a result of precipitation, plant residue, natural minerals, fertilizer, and septic tanks (Glass, 2001). Neither the USEPA nor the ADEC have set a nitrate standard for chronically exposed freshwater aquatic life.
+
+In the mainstem, the highest concentration of nitrate was 0.706 mg/L at Mile 70 during spring 2005, and in many instances, nitrate levels were below the MDL of 0.015 mg/L (Table 15). In the spring, the mainstem had a general downward trend from Kenai Lake to the estuary, excluding the higher medians at Mile 70 and Mile 1.5. The medians in the summer had a downward trend from Mile 82 through Mile 40, but then the medians hovered around 0.15 mg/L through the Lower Kenai River and dropped in the estuary. Overall, nitrate levels were slightly lower in the spring than in the summer for the mainstem (Figures 100 & 101).
+
+The tributaries generally had lower levels of nitrate than the mainstem, with the exception of Russian River. The highest level of nitrate in the tributaries occurred at Russian River with a concentration of 1.11 mg/L during spring 2005, and the lowest levels occurred at many locations below the MDL of 0.015 mg/L (Table 41). Of the tributaries, Russian River had the highest medians in the summer and especially in the spring, which may explain the high median at Mile 70 in the mainstem. Juneau Creek in the spring and Slikok Creek in the summer had the next highest medians. Russian River had a higher median in the spring than the summer, while the other tributaries had too many values below the MDL and MRL to establish a clear seasonal trend (Figures 102 & 103).
+
+
 ```{r echo = F, warning=FALSE, message=FALSE,fig.height=8, fig.width=10}
 
 # set parameter
-characteristic <- "Inorganic nitrogen (nitrate and nitrite)"
+characteristic <- "Nitrate + Nitrite"
 
 # source static regulatory criteria boxplot function
 source("functions/static_boxplot_function.R")
@@ -22,5 +31,10 @@ source("functions/static_boxplot_function.R")
 # source table download function
 source("functions/table_download.R")
 download_tbl(char = characteristic)
+
+# Old characteristic name: "Inorganic nitrogen (nitrate and nitrite) ***retired***use Nitrate + Nitrite." Converted to "Nitrate + Nitrite" in "data_sourcing.qmd"
+
+# also correcting this name in all_reg_vals.csv
+
 
 ```

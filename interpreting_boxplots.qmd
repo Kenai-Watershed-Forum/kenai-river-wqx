@@ -17,6 +17,4 @@ Each of the following graphs display the sampling results for a specific paramet
 
 ![Components of a box plot](other/documents/images/boxplots.jpg){#fig-boxplot1}
 
-For further background on interpreting boxplots, see [this figure](https://r4ds.hadley.nz/data-visualize#fig-eda-boxplot) from "R for Data Science" by Wickham et al 2024.
-
-
+For further background on interpreting boxplots, see [this figure](https://r4ds.hadley.nz/data-visualize#fig-eda-boxplot) from "R for Data Science" by [@wickham2017].

@@ -6,7 +6,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="dcterms.date" content="2025-03-06">
+<meta name="dcterms.date" content="2025-03-20">
 
 <title>14&nbsp; Calcium – Water Quality Assessment of the Kenai River Watershed from 2000 to 2021 [DRAFT]</title>
 <style>
@@ -413,7 +413,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">March 6, 2025</p>
+      <p class="date">March 20, 2025</p>
     </div>
   </div>
   
@@ -425,6 +425,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
+<p>From the 2016 report:</p>
+<p>Both plants and animals require calcium as an essential element, and calcium is important to water quality because it is directly linked to the hardness of water (Glass, 2001). There is not an ADEC or USEPA standard for the chronic exposure of freshwater aquatic life to calcium.</p>
+<p>The highest value in the mainstem occurred during spring 2002 at Mile 1.5 with a concentration of 174 mg/L, and the lowest value was 0.447 mg/L at Mile 43 in summer 2010 (Table 12). Relatively high medians in the spring and the summer occurred at Mile 1.5, Mile 6.5, Mile 70, and Mile 82. In the spring and in the summer, the low median at Mile 43 may be linked to the low calcium concentration in the Killey River. Russian River had high levels of calcium and could be the cause of elevated concentrations at Mile 70. In the mainstem, calcium levels were relatively higher in spring than in summer (Figures 88 &amp; 89).</p>
+<p>In the tributaries, the lowest concentration was 3 mg/L sampled from the No Name Creek during May 2013, and the highest concentration occurred in the Moose River at 25.7 mg/L during summer 2004 (Table 38). In the spring, the Russian River, Moose River and Juneau Creek had relatively high medians, and Slikok Creek had a relatively low median (Figure 90). In the summer, the Moose River, Soldotna Creek and Beaver Creek had relatively high medians, and the Killey River had a relatively low median (Figure 91). In the spring, most of the tributaries had concentrations lower than the mainstem, but during the summer, most of the tributaries had higher levels of calcium than the mainstem. The tributaries had higher levels of calcium in the summer than in the spring, excluding Russian River, the Killey River and Juneau Creek. Beaver Creek exhibited the largest seasonal difference in medians, changing from 9.25 mg/L in the spring to 18.6 mg/L in the summer (Figures 90 &amp; 91).</p>
 <div class="cell">
 <div class="cell-output-display">
 <div>
@@ -943,24 +947,33 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>    code-summary: "Show the code"</span>
 <span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>---</span>
 <span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="in">```{r echo = F, warning=FALSE, message=FALSE,fig.height=8, fig.width=10}</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>From the 2016 report:</span>
 <span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="in"># set parameter</span></span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="in">characteristic &lt;- "Calcium"</span></span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="in"># Define the sample fraction filter</span></span>
-<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="in">sample_fraction &lt;- c("Total Recoverable", "Unfiltered")</span></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>Both plants and animals require calcium as an essential element, and calcium is important to water quality because it is directly linked to the hardness of water (Glass, 2001). There is not an ADEC or USEPA standard for the chronic exposure of freshwater aquatic life to calcium.</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>The highest value in the mainstem occurred during spring 2002 at Mile 1.5 with a concentration of 174 mg/L, and the lowest value was 0.447 mg/L at Mile 43 in summer 2010 (Table 12). Relatively high medians in the spring and the summer occurred at Mile 1.5, Mile 6.5, Mile 70, and Mile 82. In the spring and in the summer, the low median at Mile 43 may be linked to the low calcium concentration in the Killey River. Russian River had high levels of calcium and could be the cause of elevated concentrations at Mile 70. In the mainstem, calcium levels were relatively higher in spring than in summer (Figures 88 &amp; 89).</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>In the tributaries, the lowest concentration was 3 mg/L sampled from the No Name Creek during May 2013, and the highest concentration occurred in the Moose River at 25.7 mg/L during summer 2004 (Table 38). In the spring, the Russian River, Moose River and Juneau Creek had relatively high medians, and Slikok Creek had a relatively low median (Figure 90). In the summer, the Moose River, Soldotna Creek and Beaver Creek had relatively high medians, and the Killey River had a relatively low median (Figure 91). In the spring, most of the tributaries had concentrations lower than the mainstem, but during the summer, most of the tributaries had higher levels of calcium than the mainstem. The tributaries had higher levels of calcium in the summer than in the spring, excluding Russian River, the Killey River and Juneau Creek. Beaver Creek exhibited the largest seasonal difference in medians, changing from 9.25 mg/L in the spring to 18.6 mg/L in the summer (Figures 90 &amp; 91).</span>
 <span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="in"># source boxplot function</span></span>
-<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a><span class="in">source("functions/static_boxplot_function.R")</span></span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a><span class="in">```{r echo = F, warning=FALSE, message=FALSE,fig.height=8, fig.width=10}</span></span>
 <span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a><span class="in"># source table download function</span></span>
-<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a><span class="in">source("functions/table_download.R")</span></span>
-<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a><span class="in">download_tbl(char = characteristic)</span></span>
-<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a><span class="in"># need to distinguish between total vs. field filtered (eg dissolved); (specified in ResultSampleFractionText). maybe a seperate plot or table to compare diss vs total values when applicable. </span></span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a><span class="in"># set parameter</span></span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a><span class="in">characteristic &lt;- "Calcium"</span></span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a><span class="in"># Define the sample fraction filter</span></span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a><span class="in">sample_fraction &lt;- c("Total Recoverable", "Unfiltered")</span></span>
 <span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span></code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a><span class="in"># source boxplot function</span></span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a><span class="in">source("functions/static_boxplot_function.R")</span></span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a><span class="in"># source table download function</span></span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a><span class="in">source("functions/table_download.R")</span></span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a><span class="in">download_tbl(char = characteristic)</span></span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a><span class="in"># need to distinguish between total vs. field filtered (eg dissolved); (specified in ResultSampleFractionText). maybe a seperate plot or table to compare diss vs total values when applicable. </span></span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span></code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 

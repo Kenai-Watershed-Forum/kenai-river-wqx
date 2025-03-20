@@ -79,12 +79,12 @@ create_facet_plots <- function(data_path, reg_vals_path, characteristic, sample_
     data <- data %>% filter(result_sample_fraction_text %in% sample_fraction)
   }
   
-  # Regulatory Values
+  # Regulatory Values with lines for geom_segment
   reg_values <- reg_vals %>% filter(characteristic_name == characteristic)
   hline_data <- reg_values %>%
     filter(!is.na(value)) %>%
-    mutate(yintercept = as.numeric(value)) %>%
-    select(yintercept, linetype = Standard)
+    mutate(yintercept = as.numeric(value), x = -Inf, xend = Inf) %>%
+    select(yintercept, linetype = Standard, x, xend)
   
   unique_river_miles <- unique(data$river_mile)
   
@@ -99,12 +99,20 @@ create_facet_plots <- function(data_path, reg_vals_path, characteristic, sample_
                (x_var_filter == "river_mile" & trib_mainstem != "t")) %>%
       mutate(
         tributary_name = factor(tributary_name,
-                                levels = c("No Name Creek", "Beaver Creek", "Slikok Creek", "Soldotna Creek", "Funny River", "Moose River", "Killey River", "Russian River", "Juneau Creek")),
+                                levels = c("No Name Creek", 
+                                           "Beaver Creek", 
+                                           "Slikok Creek", 
+                                           "Soldotna Creek", 
+                                           "Funny River", 
+                                           "Moose River", 
+                                           "Killey River", 
+                                           "Russian River", 
+                                           "Juneau Creek")),
         river_mile = factor(river_mile, levels = sort(unique_river_miles))
       ) %>%
       filter(characteristic_name == characteristic) %>%
       mutate(
-        result_measure_value = as.numeric(result_measure_value),
+        result_measure_value = suppressWarnings(as.numeric(result_measure_value)),
         fw_acute_exceed = ifelse(is.na(fw_acute_exceed), NA, fw_acute_exceed),
         fw_chronic_exceed = ifelse(is.na(fw_chronic_exceed), NA, fw_chronic_exceed)
       ) %>%
@@ -112,6 +120,10 @@ create_facet_plots <- function(data_path, reg_vals_path, characteristic, sample_
   }
   
   create_plot <- function(subset_data, x_var) {
+    if (nrow(subset_data) == 0) {
+      stop("No data available for plotting after preprocessing.")
+    }
+    
     min_year <- as.character(min(subset_data$year, na.rm = TRUE))
     max_year <- as.character(max(subset_data$year, na.rm = TRUE))
     y_min <- min(subset_data$result_measure_value, na.rm = TRUE) * 0.9
@@ -136,7 +148,8 @@ create_facet_plots <- function(data_path, reg_vals_path, characteristic, sample_
         ),
         width = 0.2, size = 3, show.legend = exceedance_present
       ) +
-      geom_hline(data = hline_data, aes(yintercept = yintercept, linetype = linetype), color = "#D55E00", size = 1.2, show.legend = TRUE) +
+      geom_segment(data = hline_data, aes(x = x, xend = xend, y = yintercept, yend = yintercept, linetype = linetype), 
+                   color = "#D55E00", size = 1.2, show.legend = TRUE) +
       facet_wrap(~season) +
       scale_y_continuous(limits = c(y_min, y_max))
     
@@ -148,7 +161,21 @@ create_facet_plots <- function(data_path, reg_vals_path, characteristic, sample_
     }
     
     plot <- plot + scale_linetype_manual(name = "Regulatory Standard",
-                                         values = c("drinking_water" = "solid", "irrigation_water" = "longdash", "stock_water" = "dotted", "wildlife" = "twodash", "recreation" = "dotdash", "aquaculture_maximum_water" = "dashed", "aquaculture_minimum_water" = "dotted", "aquaculture_water" = "solid"))
+                                         values = c("drinking_water" = "solid", 
+                                                    "irrigation_water" = "longdash", 
+                                                    "stock_water" = "dotted", 
+                                                    "wildlife" = "twodash", 
+                                                    "recreation" = "dotdash", 
+                                                    "aquaculture_maximum_water" = "dashed", 
+                                                    "aquaculture_minimum_water" = "dotted", 
+                                                    "aquaculture_water" = "solid"))
+    
+    # Add dummy invisible lines to show legends even if out of plot range
+    if (nrow(hline_data) > 0) {
+      dummy_lines <- hline_data %>% mutate(yintercept = max(subset_data$result_measure_value, na.rm = TRUE) + 1000)
+      plot <- plot + geom_segment(data = dummy_lines, aes(x = x, xend = xend, y = yintercept, yend = yintercept, linetype = linetype), 
+                                  color = NA, size = 1.2, show.legend = TRUE)
+    }
     
     plot <- plot + guides(
       linetype = guide_legend(override.aes = list(color = "red", size = 1.2)),
@@ -158,8 +185,9 @@ create_facet_plots <- function(data_path, reg_vals_path, characteristic, sample_
     
     plot <- plot + theme(
       axis.text.x = element_text(angle = 60, hjust = 1, size = 14),
-      axis.text.y = element_text(size = 14),
-      legend.position = if (exceedance_present) "right" else "none"
+      axis.text.y = element_text(size = 16),
+      strip.text = element_text(size = 16),
+      legend.position = "right"
     ) +
       labs(y = paste0(characteristic, " (", unique(subset_data$result_measure_measure_unit_code), ")"), x = "")
     
@@ -174,6 +202,10 @@ create_facet_plots <- function(data_path, reg_vals_path, characteristic, sample_
     river_mile_plot = create_plot(river_mile_data, "river_mile")
   ))
 }
+
+
+
+
 
 # Print plots
 plots <- create_facet_plots(data_path, reg_vals_path, characteristic)

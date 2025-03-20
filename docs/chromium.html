@@ -6,7 +6,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="dcterms.date" content="2025-03-06">
+<meta name="dcterms.date" content="2025-03-20">
 
 <title>10&nbsp; Chromium – Water Quality Assessment of the Kenai River Watershed from 2000 to 2021 [DRAFT]</title>
 <style>
@@ -413,7 +413,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">March 6, 2025</p>
+      <p class="date">March 20, 2025</p>
     </div>
   </div>
   
@@ -425,6 +425,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
+<p>From 2016 report:</p>
+<p>In rivers and streams, chromium is an elemental metal that typically exists as hexavalent or trivalent chromium (USEPA, 1980a). Non-natural sources of chromium salts include the metal finishing industry, textile manufacturing, leather tanning, paint, fungicides, and wood preservatives (USEPA, 1980a). At a concentration of 21 µg/L of hexavalent chromium, river algae cannot photosynthesize, and the growth in weight of Chinook salmon can be reduced by approximately ten percent at a concentration of 16 µg/L (USEPA, 1980a). Consequently, the ADEC and the USEPA have set the standard for hexavalent chromium at 11 µg/L and at a range of 15.52 µg/L to 230.67 µg/L for trivalent chromium, depending on hardness, for chronically exposed freshwater aquatic life (Appendix 2) (USEPA, 2014; ADEC, 2008). The standard for hexavalent chromium is not displayed on the following graphs because the analysis did not distinguish between trivalent and hexavalent chromium.</p>
+<p>None of the medians for the mainstem or the tributaries exceeded the freshwater aquatic life standard for hexavalent or trivalent chromium, although single samples did detect concentrations above the hexavalent chromium standard at Mile 6.5, Mile 10.1, Mile 21, and Beaver Creek. The standard for trivalent chromium was not exceeded at any site along the mainstem or tributaries during any sampling event. The highest concentration of chromium in the mainstem was 25 µg/L at Mile 21 in summer 2000, and the lowest levels occurred below the MDL of 0.36 µg/L. In the mainstem the locations with a median above 1 µg/L where Mile 1.5 both in spring and summer and Mile 6.5 in spring only. (Tables 8 &amp; 34)</p>
+<p>Chromium concentrations in the tributaries ranged from a high of 16.4 µg/L at Beaver Creek in summer 2006 to less than the MDL of 0.36 µg/L. The medians of chromium in the tributaries during both the spring and summer events were all below 1 µg/L. In the tributaries, higher levels of chromium were reported in the summer compared to the spring, while a seasonal trend was difficult to distinguish in the mainstem. (Figure 36-39)</p>
 <div class="cell">
 <div class="cell-output-display">
 <div>
@@ -943,19 +947,29 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>    code-summary: "Show the code"</span>
 <span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>---</span>
 <span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="in">```{r echo = F, warning=FALSE, message=FALSE,fig.height=8, fig.width=10}</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>From 2016 report:</span>
 <span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="in"># set parameter</span></span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="in">characteristic &lt;- "Chromium"</span></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>In rivers and streams, chromium is an elemental metal that typically exists as hexavalent or trivalent chromium (USEPA, 1980a). Non-natural sources of chromium salts include the metal finishing industry, textile manufacturing, leather tanning, paint, fungicides, and wood preservatives (USEPA, 1980a). At a concentration of 21 µg/L of hexavalent chromium, river algae cannot photosynthesize, and the growth in weight of Chinook salmon can be reduced by approximately ten percent at a concentration of 16 µg/L (USEPA, 1980a). Consequently, the ADEC and the USEPA have set the standard for hexavalent chromium at 11 µg/L and at a range of 15.52 µg/L to 230.67 µg/L for trivalent chromium, depending on hardness, for chronically exposed freshwater aquatic life (Appendix 2) (USEPA, 2014; ADEC, 2008). The standard for hexavalent chromium is not displayed on the following graphs because the analysis did not distinguish between trivalent and hexavalent chromium.</span>
 <span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="in"># source static regulatory criteria boxplot function</span></span>
-<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="in">source("functions/static_boxplot_function.R")</span></span>
-<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="in"># source table download function</span></span>
-<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a><span class="in">source("functions/table_download.R")</span></span>
-<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a><span class="in">download_tbl(char = characteristic)</span></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>None of the medians for the mainstem or the tributaries exceeded the freshwater aquatic life standard for hexavalent or trivalent chromium, although single samples did detect concentrations above the hexavalent chromium standard at Mile 6.5, Mile 10.1, Mile 21, and Beaver Creek. The standard for trivalent chromium was not exceeded at any site along the mainstem or tributaries during any sampling event. The highest concentration of chromium in the mainstem was 25 µg/L at Mile 21 in summer 2000, and the lowest levels occurred below the MDL of 0.36 µg/L. In the mainstem the locations with a median above 1 µg/L where Mile 1.5 both in spring and summer and Mile 6.5 in spring only. (Tables 8 &amp; 34)</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>Chromium concentrations in the tributaries ranged from a high of 16.4 µg/L at Beaver Creek in summer 2006 to less than the MDL of 0.36 µg/L. The medians of chromium in the tributaries during both the spring and summer events were all below 1 µg/L. In the tributaries, higher levels of chromium were reported in the summer compared to the spring, while a seasonal trend was difficult to distinguish in the mainstem. (Figure 36-39)</span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a><span class="in">```{r echo = F, warning=FALSE, message=FALSE,fig.height=8, fig.width=10}</span></span>
 <span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span></code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a><span class="in"># set parameter</span></span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a><span class="in">characteristic &lt;- "Chromium"</span></span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a><span class="in"># source static regulatory criteria boxplot function</span></span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a><span class="in">source("functions/static_boxplot_function.R")</span></span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a><span class="in"># source table download function</span></span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a><span class="in">source("functions/table_download.R")</span></span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a><span class="in">download_tbl(char = characteristic)</span></span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span></code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 

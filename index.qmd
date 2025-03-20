@@ -23,7 +23,7 @@ This document is the online work-in-progress version of the Water Quality Assess
 
 A four-minute video for general audiences.
 
-{{< video https://youtu.be/hHYw0c-CHHc >}}
+{{< video https://youtu.be/txGNjfH9hqY?si=RfMf2K915FNI3dUi >}}
 
 <br>
 
@@ -31,7 +31,7 @@ A four-minute video for general audiences.
 
 A fifteen-minute video refresher on sampling techniques for field crews.
 
-{{< video https://youtu.be/c4mGS307zuI >}}
+{{< video https://youtu.be/06Gt9DKA08E?si=xV-HNTIKNINKJiyz >}}
 
 <br>
 
@@ -49,9 +49,7 @@ When the report is complete, it will be available for download as a PDF in this 
 
 ## Github
 
-All project files and source code are hosted in a public GitHub repository at https://github.com/Kenai-Watershed-Forum/kenai-river-wqx, also accessible by clicking the GitHub symbol (cat shape) in the upper left corner.
-
-
+All project files and source code are hosted in a public GitHub repository at <https://github.com/Kenai-Watershed-Forum/kenai-river-wqx>, also accessible by clicking the GitHub symbol (cat shape) in the upper left corner.
 
 <br>
 :::
