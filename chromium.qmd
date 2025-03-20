@@ -11,6 +11,16 @@ format:
     code-summary: "Show the code"
 ---
 
+From 2016 report:
+
+
+In rivers and streams, chromium is an elemental metal that typically exists as hexavalent or trivalent chromium (USEPA, 1980a). Non-natural sources of chromium salts include the metal finishing industry, textile manufacturing, leather tanning, paint, fungicides, and wood preservatives (USEPA, 1980a). At a concentration of 21 µg/L of hexavalent chromium, river algae cannot photosynthesize, and the growth in weight of Chinook salmon can be reduced by approximately ten percent at a concentration of 16 µg/L (USEPA, 1980a). Consequently, the ADEC and the USEPA have set the standard for hexavalent chromium at 11 µg/L and at a range of 15.52 µg/L to 230.67 µg/L for trivalent chromium, depending on hardness, for chronically exposed freshwater aquatic life (Appendix 2) (USEPA, 2014; ADEC, 2008). The standard for hexavalent chromium is not displayed on the following graphs because the analysis did not distinguish between trivalent and hexavalent chromium.
+
+None of the medians for the mainstem or the tributaries exceeded the freshwater aquatic life standard for hexavalent or trivalent chromium, although single samples did detect concentrations above the hexavalent chromium standard at Mile 6.5, Mile 10.1, Mile 21, and Beaver Creek. The standard for trivalent chromium was not exceeded at any site along the mainstem or tributaries during any sampling event. The highest concentration of chromium in the mainstem was 25 µg/L at Mile 21 in summer 2000, and the lowest levels occurred below the MDL of 0.36 µg/L. In the mainstem the locations with a median above 1 µg/L where Mile 1.5 both in spring and summer and Mile 6.5 in spring only. (Tables 8 & 34)
+
+Chromium concentrations in the tributaries ranged from a high of 16.4 µg/L at Beaver Creek in summer 2006 to less than the MDL of 0.36 µg/L. The medians of chromium in the tributaries during both the spring and summer events were all below 1 µg/L. In the tributaries, higher levels of chromium were reported in the summer compared to the spring, while a seasonal trend was difficult to distinguish in the mainstem. (Figure 36-39)
+
+
 ```{r echo = F, warning=FALSE, message=FALSE,fig.height=8, fig.width=10}
 
 # set parameter

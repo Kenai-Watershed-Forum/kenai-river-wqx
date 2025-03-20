@@ -41,9 +41,9 @@
 "40","Thallium","ug/l","drinking_water",2,NA
 "41","Thallium","ug/l","stock_water",NA,NA
 "42","Thallium","ug/l","irrigation_water",NA,NA
-"43","Total Nitrate/Nitrite-N","ug/l","drinking_water",10000,NA
-"44","Total Nitrate/Nitrite-N","ug/l","stock_water",NA,NA
-"45","Total Nitrate/Nitrite-N","ug/l","irrigation_water",NA,NA
+"43","Nitrate + Nitrite","mg/l","drinking_water",10,NA
+"44","Nitrate + Nitrite","mg/l","stock_water",NA,NA
+"45","Nitrate + Nitrite","mg/l","irrigation_water",NA,NA
 "46","Vanadium","ug/l","drinking_water",NA,NA
 "47","Vanadium","ug/l","stock_water",NA,NA
 "48","Vanadium","ug/l","irrigation_water",100,NA

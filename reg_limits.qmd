@@ -26,7 +26,7 @@ We discuss how various parameters are assessed against standards below.
 
 The metals parameters in the downloadable table below have *static* thresholds assigned.
 
-[Static regulatory values are represented as solid horizontal lines in the chapters that follow.]{.underline} (to do: show graphic example of values above horizontal line here) 
+[Static regulatory values are represented as solid horizontal lines in the chapters that follow.]{.underline} (to do: show graphic example of values above horizontal line here)
 
 ```{r echo = F}
 
@@ -50,7 +50,7 @@ write.csv(static_metals_reg_vals, dir, row.names = F)
 # make table viewable
 embed_file(dir, text = "Download Regulatory Limits for Metals with Static Regulatory Threshold Values")
 ```
- 
+
 ```{r}
 # read in static reg values in wide format
 static_metals_reg_vals <- read_xlsx("other/input/regulatory_limits/master_reg_limits.xlsx", sheet = "static_regulatory_values") %>%
@@ -110,7 +110,7 @@ Hardness varies by site, by season, and with hydrologic conditions. We calculate
 Hardness = 2.497(Total Calcium in mg/L) + 4.119(Total Magnesium in mg/L)
 :::
 
-For sampling events with duplicate samples, we calculated average hardness. Note that some sampling events do not have calculated hardness  values because total Ca and/or total Mg values were not available.
+For sampling events with duplicate samples, we calculated average hardness. Note that some sampling events do not have calculated hardness values because total Ca and/or total Mg values were not available.
 
 ```{r echo = F, warning=FALSE, message=FALSE}
 
@@ -383,7 +383,7 @@ dat <- dat %>%
 # exploring nutrients data structure
 
 # specify nutrients parameter names
-nutrients_parameters <- c("Phosphorus","Inorganic nitrogen (nitrate and nitrite)","Nitrate")
+nutrients_parameters <- c("Phosphorus","Nitrate + Nitrite")
 
 # create nutrients dataframe
 nutrients <- dat %>%
@@ -391,7 +391,7 @@ nutrients <- dat %>%
 
 # nitrogen only
 nitrogen <- nutrients %>%
-  filter(characteristic_name %in% c("Inorganic nitrogen (nitrate and nitrite)","Nitrate"))
+  filter(characteristic_name %in% c("Nitrate + Nitrite"))
 
 # how many observations of "Nitrate"?
 nitrate_count <- dat %>%
@@ -399,22 +399,24 @@ nitrate_count <- dat %>%
   count() %>%
   as.character()
 
-# how many observations of "Inorganic nitrogen (nitrate and nitrite)"
+# how many observations of "Nitrate + Nitrite"
 inorganic_n_count <- dat %>%
-  filter(characteristic_name == "Inorganic nitrogen (nitrate and nitrite)") %>%
+  filter(characteristic_name == "Nitrate + Nitrite") %>%
   count() %>%
   as.character()
 
 # make all N observations in to just "Nitrate" for characteristics name; see discussion below
 dat <- dat %>%
   mutate(characteristic_name = case_when(
-    characteristic_name == "Nitrate" ~ "Inorganic nitrogen (nitrate and nitrite)",
+    characteristic_name == "Nitrate" ~ "Nitrate + Nitrite",
     TRUE ~ characteristic_name))
 
 
 # note: there appears to be one instance where the analytical method for nitrogen is reported as 200.7(W). Obviously an error, fix it.
 
 ```
+
+
 
 The following nurtient parameters names are present in the dataset:
 
@@ -440,7 +442,7 @@ In this project, we collect only single samples on single days for each site. Th
 -   helpful data to understand where/when more monitoring is needed
 -   important to help understand spatial trends
 
-Additional sampling beyond this project is needed to reasonably characterize bacteria conditions int he Kenai River, and several major efforts between 2010 - 2020 better achieved this. For more information and detailed reports on Kenai River bacteria monitoring, visit https://www.kenaiwatershed.org/other-water-research/ and click on "Bacteria Monitoring."
+Additional sampling beyond this project is needed to reasonably characterize bacteria conditions in the Kenai River, and several major efforts between 2010 - 2020 contributed to this effort. For more information and detailed reports on Kenai River bacteria monitoring, visit https://www.kenaiwatershed.org/other-water-research/ and click on "Bacteria Monitoring."
 
 ```{r echo = F}
 
@@ -463,6 +465,10 @@ Additional sampling beyond this project is needed to reasonably characterize bac
 
 ```
 
+Alaska Department of Environmental Conservation (ADEC) standards require that fine sediment in the range of 0.1 mm to 4.0 mm cannot increase over 5% by weight higher than natural conditions in gravel beds used by anadromous or resident fish for spawning, and the sediment can never exceed a maximum of 30% by weight in freshwater for the growth and propagation of fish, shellfish, other aquatic life, and wildlife [@adec2025]. More generally, the ADEC standard also states that the amount of deposited or suspended sediment cannot cause adverse effects on aquatic life, including their habitat and reproduction.
+
+As such, there is no fixed standard for total suspended solids. Data from this project is best interpreted by either examining long term trends and/or evaluating results in the context of data that provide evidence for "natural conditions."
+
 <br>
 
 ## Other Parameters
@@ -474,8 +480,6 @@ Additional sampling beyond this project is needed to reasonably characterize bac
 # temp: replace with discussion/reference to AKTEMP and modern literature
 # turbidity: no fixed standard
 # DO: not analysed in 2016 report
-
-
 
 # following the template flow below , read in parameter thresholds FROM master sheet and format them to match existing column names (characteristic_name,	reg_unit,	Standard,	value)
 # once there, join thresholds std tabel toble to reg_vals table in static plot fxn
@@ -499,6 +503,16 @@ embed_file(dir, text = "Download List of pH Regulatory Threshold Values")
 
 
 ```
+
+The following parameters are also monitored for each sampling event:
+
+-   pH - The ADEC standard for pH maintains that freshwater may not have a pH less than 6.5 or greater than 8.5 for the growth and propagation of fish, shellfish, other aquatic life and wildlife.
+
+-   Water Temperature - See [https://aktemp.uaa.alaska.edu/](https://aktemp.uaa.alaska.edu/#/)
+
+-   Turbidity
+
+-   Dissolved Oxygen
 
 ```{r}
 # end of script task: combine dataframes from all parameters evaluated against regulatory thresholds. export into "other/output/analysis_format", then source this table for the boxplot and table download functions

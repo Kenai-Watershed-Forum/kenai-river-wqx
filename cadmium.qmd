@@ -11,7 +11,15 @@ format:
     code-summary: "Show the code"
 ---
 
-test
+From 2016 report:
+
+Cadmium is a rare elemental metal that can occur naturally in freshwater at concentrations of less than 0.1 μg/L, but at slightly increased concentrations, it can be toxic to aquatic life (USEPA, 2001). Additional cadmium can enter the hydrologic cycle as a component of fertilizer, pesticide, pigment, and as a result of iron and steel production, coal combustion, and mining waste (USEPA, 2001). The ADEC and the USEPA have set the standard for cadmium at a range of 0.0650 μg/L to 0.64 μg/L, depending on hardness, for chronically exposed freshwater aquatic life (Appendix 2) (USEPA, 2014; ADEC, 2008).
+
+In the mainstem, concentrations of cadmium ranged from a high of 8 μg/L at Mile 21 in summer 2000 to the lowest levels that were below the MDL of 0.062 μg/L that occurred in multiple locations. In the Kenai River mainstem, cadmium samples at Mile 21 and Mile 82 exceeded the standard on one occasion each. (Table 7)
+
+The highest level of cadmium ever detected in the tributaries was 63 μg/L at Soldotna Creek in summer 2002, and the lowest was below the MDL of 0.062 μg/L. Cadmium was detected once above the standard in Soldotna Creek and Slikok Creek, and all other tributary samples did not exceed the standard. (Table 33)
+
+Since so few cadmium samples were detected, trends were difficult to determine and should be interpreted with caution. In spring, cadmium was only reported four times, in contrast to summer samples in which it was reported ten times. In April of 2001, 2002, 2003, 2004, 2005 and summer 2001 through 2005, the method reporting limits (MRL) were mainly higher than the standard, so it is unknown whether these samples exceeded the standard. (Tables 7 & 33)
 
 ```{r echo = F, warning=FALSE, message=FALSE,fig.height=8, fig.width=10}
 

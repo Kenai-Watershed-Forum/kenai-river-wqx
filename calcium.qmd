@@ -11,6 +11,15 @@ format:
     code-summary: "Show the code"
 ---
 
+From the 2016 report:
+
+Both plants and animals require calcium as an essential element, and calcium is important to water quality because it is directly linked to the hardness of water (Glass, 2001). There is not an ADEC or USEPA standard for the chronic exposure of freshwater aquatic life to calcium.
+
+The highest value in the mainstem occurred during spring 2002 at Mile 1.5 with a concentration of 174 mg/L, and the lowest value was 0.447 mg/L at Mile 43 in summer 2010 (Table 12). Relatively high medians in the spring and the summer occurred at Mile 1.5, Mile 6.5, Mile 70, and Mile 82. In the spring and in the summer, the low median at Mile 43 may be linked to the low calcium concentration in the Killey River. Russian River had high levels of calcium and could be the cause of elevated concentrations at Mile 70. In the mainstem, calcium levels were relatively higher in spring than in summer (Figures 88 & 89).
+
+In the tributaries, the lowest concentration was 3 mg/L sampled from the No Name Creek during May 2013, and the highest concentration occurred in the Moose River at 25.7 mg/L during summer 2004 (Table 38). In the spring, the Russian River, Moose River and Juneau Creek had relatively high medians, and Slikok Creek had a relatively low median (Figure 90). In the summer, the Moose River, Soldotna Creek and Beaver Creek had relatively high medians, and the Killey River had a relatively low median (Figure 91). In the spring, most of the tributaries had concentrations lower than the mainstem, but during the summer, most of the tributaries had higher levels of calcium than the mainstem. The tributaries had higher levels of calcium in the summer than in the spring, excluding Russian River, the Killey River and Juneau Creek. Beaver Creek exhibited the largest seasonal difference in medians, changing from 9.25 mg/L in the spring to 18.6 mg/L in the summer (Figures 90 & 91).
+
+
 ```{r echo = F, warning=FALSE, message=FALSE,fig.height=8, fig.width=10}
 
 # set parameter

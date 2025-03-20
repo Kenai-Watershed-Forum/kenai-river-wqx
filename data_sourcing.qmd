@@ -74,7 +74,11 @@ select <- dplyr::select
 
 ```
 
-```{r echo = F}
+We downloaded all results from the U.S. Water Quality Portal at https://www.waterqualitydata.us/ with the organization ID "Kenai Watershed Forum" on March 5, 2025. Results from this download populate the chapters throughout.
+
+For an example of how data is prepared for submission to the Water Quality Portal, see Appendix A.
+
+```{r echo = F, message = F}
 # inspect the download results queried from the same above url on 2/3/2025
 # (note that as of Feb 2025, a note at the above url describs a future transition to a v 3.0 of WQP; "improved features")
 
@@ -128,7 +132,7 @@ dat %<>%
 
 
 
-```{r}
+```{r echo = F, message = F}
 # UNITS
 
 # confirm that each parameter has consistent units. View dataframe here, and if units are not consistent, apply temporary corrections here. Ultimately need to apply corrections to WQP upload, so code here should accommodate read in once corrections are applied.
@@ -150,7 +154,7 @@ dat <- dat %>%
     TRUE ~ `ResultMeasure/MeasureUnitCode`))
 
 
-# bacteria - fecal coliform should all be "cfu/100ml"
+# bacteria - fecal coliform units should all be "cfu/100ml"
 dat <- dat %>%
   mutate(`ResultMeasure/MeasureUnitCode` = case_when(
     CharacteristicName == "Fecal Coliform" ~ "cfu/100ml",
@@ -188,7 +192,19 @@ parameter_fraction <- dat %>%
   group_by(CharacteristicName) %>%
   mutate(unit_id = paste0("unit_", row_number())) %>%
   pivot_wider(names_from = unit_id, values_from = ResultSampleFractionText)
+```
 
+```{r}
+# CHARACTERISTIC NAME CORRECTIONS
+# Nitrogen
+dat <- dat %>%
+  mutate(CharacteristicName = str_replace_all(
+    CharacteristicName,
+    c(
+      "Inorganic nitrogen \\(nitrate and nitrite\\) \\*\\*\\*retired\\*\\*\\*use Nitrate \\+ Nitrite" = "Nitrate + Nitrite",
+      "Inorganic nitrogen \\(nitrate and nitrite\\)" = "Nitrate + Nitrite"
+    )
+  ))
 
 
 
@@ -218,8 +234,6 @@ dat %<>%
 
 # transition column names to "easier" formats
 dat %<>% clean_names()
-
-
 
 
 # export a csv with current column names, to provide the column format names for a seperate, manually curated outlier .xlsx file located in the same directory
