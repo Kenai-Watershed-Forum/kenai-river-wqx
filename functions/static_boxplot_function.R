@@ -187,6 +187,7 @@ create_facet_plots <- function(data_path, reg_vals_path, characteristic, sample_
       axis.text.x = element_text(angle = 60, hjust = 1, size = 14),
       axis.text.y = element_text(size = 16),
       strip.text = element_text(size = 16),
+      axis.title.y = element_text(size = 16),
       legend.position = "right"
     ) +
       labs(y = paste0(characteristic, " (", unique(subset_data$result_measure_measure_unit_code), ")"), x = "")

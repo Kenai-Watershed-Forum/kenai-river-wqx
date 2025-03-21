@@ -28,7 +28,7 @@ In the tributaries, the highest temperature was 19°C in the Moose River during 
 ```{r echo = F, warning=FALSE, message=FALSE,fig.height=8, fig.width=10}
 
 # set parameter
-characteristic <- "Calcium"
+characteristic <- "Temperature, water"
 
 # source static regulatory criteria boxplot function
 source("functions/static_boxplot_function.R")
