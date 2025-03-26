@@ -18,12 +18,14 @@ book:
       - intro.qmd
       - study_area.qmd
       - methods.qmd
-    - part: "Results"
+    - part: "Data"
       chapters:
       - data_sourcing.qmd
       - data_qa_qc.qmd
       - interpreting_boxplots.qmd
       - reg_limits.qmd
+    - part: "Results"
+      chapters:
       - arsenic.qmd
       - cadmium.qmd
       - chromium.qmd
