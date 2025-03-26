@@ -130,8 +130,6 @@ dat %<>%
 
 ```
 
-
-
 ```{r echo = F, message = F}
 # UNITS
 
@@ -192,9 +190,9 @@ parameter_fraction <- dat %>%
   group_by(CharacteristicName) %>%
   mutate(unit_id = paste0("unit_", row_number())) %>%
   pivot_wider(names_from = unit_id, values_from = ResultSampleFractionText)
-```
 
-```{r}
+
+
 # CHARACTERISTIC NAME CORRECTIONS
 # Nitrogen
 dat <- dat %>%
@@ -298,10 +296,6 @@ write.csv(dat,"other/output/analysis_format/baseline_export_format.csv",row.name
 
 
 ```
-
-
-
-
 
 ```{r}
 # stop evaluation here
@@ -470,8 +464,6 @@ write.csv(dat,"other/output/analysis_format/baseline_export_format.csv",row.name
 
 # delete everything below here?
 ```
-
-
 
 ```{r echo = F, warning=FALSE, results='hide',message=FALSE, eval = F}
 

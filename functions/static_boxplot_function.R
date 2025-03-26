@@ -162,7 +162,7 @@ create_facet_plots <- function(data_path, reg_vals_path, characteristic, sample_
     
     plot <- plot + scale_linetype_manual(name = "Regulatory Standard",
                                          values = c("drinking_water" = "solid", 
-                                                    "irrigation_water" = "longdash", 
+                                                    "irrigation_water" = "dotdash", 
                                                     "stock_water" = "dotted", 
                                                     "wildlife" = "twodash", 
                                                     "recreation" = "dotdash", 

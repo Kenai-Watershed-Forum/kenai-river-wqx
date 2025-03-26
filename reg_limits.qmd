@@ -416,8 +416,6 @@ dat <- dat %>%
 
 ```
 
-
-
 The following nurtient parameters names are present in the dataset:
 
 -   "Phosphorus"
@@ -442,7 +440,7 @@ In this project, we collect only single samples on single days for each site. Th
 -   helpful data to understand where/when more monitoring is needed
 -   important to help understand spatial trends
 
-Additional sampling beyond this project is needed to reasonably characterize bacteria conditions in the Kenai River, and several major efforts between 2010 - 2020 contributed to this effort. For more information and detailed reports on Kenai River bacteria monitoring, visit https://www.kenaiwatershed.org/other-water-research/ and click on "Bacteria Monitoring."
+Additional sampling beyond this project is needed to reasonably characterize bacteria conditions in the Kenai River, and several major efforts between 2010 - 2020 contributed to this effort. For more information and detailed reports on Kenai River bacteria monitoring, visit <https://www.kenaiwatershed.org/other-water-research/> and click on "Bacteria Monitoring."
 
 ```{r echo = F}
 
@@ -482,21 +480,21 @@ As such, there is no fixed standard for total suspended solids. Data from this p
 # DO: not analysed in 2016 report
 
 # following the template flow below , read in parameter thresholds FROM master sheet and format them to match existing column names (characteristic_name,	reg_unit,	Standard,	value)
-# once there, join thresholds std tabel toble to reg_vals table in static plot fxn
-# re-render to confirm working order
+# once there, join thresholds std table to reg_vals table in static plot fxn
 
 
 # read in pH threshold values
 ph_reg_vals <- read_excel("other/input/regulatory_limits/master_reg_limits.xlsx", sheet = "static_regulatory_values") %>%
   remove_empty() %>%
   select(-parameter_agency_name) %>%
+  # select for pH information only
   filter(parameter_baseline_name == "pH") %>%
   select(-agency,-source,-special_note,-data_entry) %>%
   rename("characteristic_name" = "parameter_baseline_name",
          "value" = "reg_value",
          "Standard" = "standard_type")
 
-# make downloadable list metals which have calculated parameters
+# make downloadable list of pH parameter standards 
 dir <- "other/input/regulatory_limits/formatted_reg_vals/ph_reg_vals.csv"
 write.csv(ph_reg_vals,dir, row.names = F)
 embed_file(dir, text = "Download List of pH Regulatory Threshold Values")
@@ -504,17 +502,19 @@ embed_file(dir, text = "Download List of pH Regulatory Threshold Values")
 
 ```
 
+<br>
+
 The following parameters are also monitored for each sampling event:
 
 -   pH - The ADEC standard for pH maintains that freshwater may not have a pH less than 6.5 or greater than 8.5 for the growth and propagation of fish, shellfish, other aquatic life and wildlife.
 
 -   Water Temperature - See [https://aktemp.uaa.alaska.edu/](https://aktemp.uaa.alaska.edu/#/)
 
--   Turbidity
+-   Turbidity - see chapter on turbidity for details
 
--   Dissolved Oxygen
+-   Dissolved Oxygen - monitored, but not reported in 2016 study
 
-```{r}
+```{r echo = F, message = F}
 # end of script task: combine dataframes from all parameters evaluated against regulatory thresholds. export into "other/output/analysis_format", then source this table for the boxplot and table download functions
 
 # Metals with Static Regulatory Threshold Values
