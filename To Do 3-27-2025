@@ -1,6 +1,22 @@
 # Tasks with regards to flagging / flagged data and its presentation/archival
 
 
+<<<<<<< HEAD
+=======
+Actions:
+
+0) move flag decisions to the end of appendix a, AFTER all flaggig decisions have been made (DONE)
+
+1) delete 2021 data currently in wqp (DONE)
+
+2) modify import template in CDX to accommodate a "flag" column, maybe another "result detection condition" (one for the lab results, one for the KWF QA)
+
+--> Result Status ID = Rejected/Accepted
+--> Result Status Qualifier = Lab qualifier if applicable
+
+notes on import config
+--current structure contains both of these
+>>>>>>> 94e895f7f15763b9fc1c0284a8cca3cd13183da6
 
 
 
