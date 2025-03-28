@@ -228,7 +228,6 @@ als21 <- bind_rows(spring_als21,summer_als21) %>%
 
 ```
 
-
 ```{r}
 
 
@@ -488,7 +487,7 @@ rm(sgs21_als21_qaqc_dat)
 
 
 ```
- 
+
 <br>
 
 ##### 2021 Fecal Coliform Lab Results (Soldotna Wastewater Treatment Plant (SWWTP)/Taurianen Engineering)
@@ -952,9 +951,6 @@ rm(swwtp_tss_spring21,swwtp_tss_sitenames,swwtp_tss21)
 
 
 ```
-
-
-
 
 ```{r include = F}
 
@@ -1885,51 +1881,6 @@ xfun::embed_file("other/documents/QAPP/memos/KWF Memo to ADEC August 2023.pdf", 
     -   Because these parameters do not have an associated RPD value from 2021 field data, they will be submitted to EPA WQX as "flagged."
     -   Note: beginning in Summer 2022, KWF initiated a series of changes to the QAPP that will better facilitate QA/QC decisions regarding Total Metals and Dissolved metals results. These changes include use of a dissolved metals field blank, and changing from field filtration to lab filtration as standard practice.
 
-```{r echo = F}
-
-# MOVE THIS STEP TO LAST AFTER ALL QUESTIONS THAT COULD PRODUCE A FLAG
-
-# doing now: 12/4/23 11:20 - check to see if any other questions generate flags
-
-# notes on flagging data
-# based on above description, use case_when logic to apply flag Y/N as appropriate. 
-# code should remain agnostic of parameter and year
-# source the results file, re-save as "flagged file" in same folder; do so for each additional future step that involves flagging
-
-
-# read in data formatted for export
-export_dat <- read.csv('other/output/aqwms_formatted_results/2021_kwf_baseline_results_aqwms.csv') %>%
-  clean_names() %>%
-  transform(activity_start_date = ymd(activity_start_date))
-
-# apply manually-chosen data flags based on discussion in question 19
-# NOTE: this csv also has a column for summary rationale for each flagging decision
-flags_2021 <- read.csv('other/input/AQWMS/2021_data_flag_decisions.csv') %>%
-  select(-notes) %>%
-  transform(activity_start_date = mdy(activity_start_date))
-
-export_dat <- full_join(export_dat,flags_2021) %>%
-  # fill in "flag" column with "N" if not already "Y"
-  mutate(flag = case_when(
-    is.na(flag) ~ "N",
-    TRUE ~ "Y"
-  )) %>%
-  filter(!is.na(activity_id))
-
-# do we need to distinguish between RPD flag and MS flag?
-
-
-# re-export results w/ rpd flag column
-write.csv(export_dat,"other/output/aqwms_formatted_results/2021_export_data_flagged.csv", row.names = F)
-
-# remove existing "export_dat" dataframe
-rm(export_dat)
-
-
-# Coordinates for JC site are still correct at this step.
-# is RM 43 missing longitude?
-```
-
 <br>
 
 **20.) Were there any laboratory discrepancies, errors, data qualifiers, or QC failures (review laboratory duplicates, matrix spikes and blanks)?**
@@ -2508,6 +2459,51 @@ leaflet(wqp_sites) %>%
 
 <br>
 
+```{r echo = F}
+
+# notes on flagging data
+# based on above description, use case_when logic to apply flag Y/N as appropriate. 
+# code should remain agnostic of parameter and year
+# source the results file, re-save as "flagged file" in same folder; do so for each additional future step that involves flagging
+
+
+# read in data formatted for export
+export_dat <- read.csv('other/output/aqwms_formatted_results/2021_kwf_baseline_results_aqwms.csv') %>%
+  clean_names() %>%
+  transform(activity_start_date = ymd(activity_start_date))
+
+# apply manually-chosen data flags based on discussion in question 19
+# NOTE: this csv also has a column for summary rationale for each flagging decision
+flags_2021 <- read.csv('other/input/AQWMS/2021_data_flag_decisions.csv') %>%
+  select(-notes) %>%
+  transform(activity_start_date = mdy(activity_start_date))
+
+export_dat <- full_join(export_dat,flags_2021) %>%
+  # fill in "flag" column with "N" if not already "Y"
+  mutate(flag = case_when(
+    is.na(flag) ~ "N",
+    TRUE ~ "Y"
+  )) %>%
+  filter(!is.na(activity_id))
+
+# do we need to distinguish between RPD flag and MS flag?
+
+
+# re-export results w/ rpd flag column
+write.csv(export_dat,"other/output/aqwms_formatted_results/2021_export_data_flagged.csv", row.names = F)
+
+# remove existing "export_dat" dataframe
+#rm(export_dat)
+
+
+# Coordinates for JC site are still correct at this step.
+# is RM 43 missing longitude?
+
+# 3/28/25 - looking now - are there steps past here that would interfere with the manual flaggiing process in this chunk?
+```
+
+<br>
+
 #### Results and Activities
 
 Within Kenai Watershed Forum's EPA Water Quality Portal web account, we developed an import configuration that accommodated all relevant columns and data types for this project. We based the configuration primarily on the template provided by the Alaska Dept of Environmental Conservation.
@@ -2516,7 +2512,7 @@ For this export, we identified as "Rejected" all observations that had been "fla
 
 ```{r echo = F}
 
-# remove all flagged observations from 2021 dataset
+# note all flagged observations in the 2021 dataset
 
 # label all flagged observations as "Rejected" and non-flagged as "Final."
 
@@ -2677,7 +2673,7 @@ Other notes for final 2021 data upload to EPA CDX
 -   Phosphorus from EPA Method 200.8 (Dissloved Metals by ICP/MS) requires a "method speciation". (This does not apply to "Total Phosphorus", method SM21 4500P-B,E). However this method does not distinguish speciation. Result Status ID was designated "as P" for this test/parameter. Regardless, this parameter was not included in the QAPP, so is designated as "Rejected" in "Result Status ID".
 
 ```{r echo = F, eval = F}
-# make corrections to existing EPA CDX data
+# Corrections to existing EPA CDX data #1 - February 2025
 
 # in this chunk we will conduct the following activities:
 # 1) address minor errors that were discovered from downloading all existing EPA WQX data from 2021
@@ -2690,17 +2686,17 @@ submitted_dat <- read.csv("other/output/aqwms_formatted_results/final_preparatio
 
 # minor issues with existing data  (NOTE: this is for 2013; not a huge priority)
 # Issue 1.1 - Units for specific conductance for spring 2013 are all in mS/cm rather than uS/cm. We examined original records and investigated range of values, as well as in the original data sheets from 2013. Both indicate the units in WQX shuold be uS/cm rather than mS/cm for spring 2013 specific conductance. we will apply the correction here.
-submitted_dat <- submittdat %>%
+submitted_dat <- submitted_dat %>%
   mutate(`Result.Unit` = case_when(
-    `Characteristic.Name` == "Specific conductance" ~ "uS/cm",
-    TRUE ~ `Result.Unit`
+    `Characteristic Name` == "Specific conductance" ~ "uS/cm",
+    TRUE ~ `Result Unit`
   ))
 
 
 
 # Issue 1.2 - MonitoringLocationName string formats from 2021 do not match those from 2000 - 2013
-z <- dat %>%
-  distinct(Monitoring.Location.Identifier)
+#z <- dat %>%
+#  distinct(Monitoring.Location.Identifier)
 # not a big deal, maybe address later
 
 # Issue 1.3 - check in to Hardness value for 5/11/2021 at KBL_t_74.0. unrealistic?
@@ -2715,20 +2711,20 @@ submitted_dat <- submitted_dat %>%
 
 
 # Issue 2.2 - "Total" should be removed from Calcium and Magnesium characteristic name. Sample fraction column differentiates filtered and unfiltered
-dat <- dat %>%
-  mutate(`Characteristic Name` = case_when(
-    `Characteristic Name` == "Calcium, Total" ~ "Calcium",
-    `Characteristic Name` == "Magnesium, Total" ~ "Magnesium",
-    TRUE ~ `Characteristic Name`
-  )) 
+# delete this?
+#dat <- dat %>%
+#  mutate(`Characteristic Name` = case_when(
+#    `Characteristic Name` == "Calcium, Total" ~ "Calcium",
+#    `Characteristic Name` == "Magnesium, Total" ~ "Magnesium",
+#    TRUE ~ `Characteristic Name`
+#  )) 
 
 # export back into final preparation folder
 write.csv(submitted_dat,"other/output/aqwms_formatted_results/final_preparation/results_activities.csv", row.names = F)
   
-
-# working in this chunk
-# task: i need to prep a v2 of "submitted_dat" that includes the 2021 updates. a) corrected ca/mg assignments and b) corrected units. but, in the same format
 ```
+
+
 
 Work in progress here as of `r Sys.Date()`
 

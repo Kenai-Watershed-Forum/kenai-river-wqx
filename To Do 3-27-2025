@@ -1,19 +1,22 @@
 # Tasks with regards to flagging / flagged data and its presentation/archival
 
-Goal: have all data for each parameter show up in figures if unflagged, flagged data shows up in table only w/ flagged column
 
-Actions:
-1) delete 2021 data currently in wqp
-2) modify import template in CDX to accommodate a "flag" column, maybe another "result detection condition" (one for the lab results, one for the KWF QA)
+
+
+
+
+
 2.1) look at other/input/AQWMS/2021_data_flag_decisions.csv , and the options under "result measure qualifier". decide
 if going to do more sophisticalted than flag Y/N. if not, us "FQC" (Quality Control - Failed; see report). Make
 clear this designation is from KWF's QA/QC process and not just lab results; see other code names
 
 3) re-import 2021 data with new template
+
 4) download all kwf data again and re-integrate into report
+
 5) modify table function so that flag column info is displayed
 
-also: move flag decisions to the end of appendix a, AFTER all flaggig decisions have been made
+
 
 
 
