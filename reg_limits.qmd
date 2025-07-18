@@ -540,7 +540,3 @@ The following parameters are also monitored for each sampling event:
 write.csv(dat,"other/output/analysis_format/baseline_analysis_format.csv", row.names = F)
 
 ```
-
-
-
-
