@@ -2,7 +2,7 @@
 
 ## Description
 
-Located in southcentral Alaska, the Kenai River is part of the Cook Inlet Basin and is linked to the surrounding communities through sport, commercial, personal use, and susbsistence fishing; as well as tourism, and recreation (@fig-map1). Six species of anadromous Pacific salmonids flourish in the Kenai River watershed, with sockeye (red) and Chinook (king) salmon as the primary species of interest for harvest and sport fisheries [@schoen2017]. The Kenai River his historically produced 80% of the sockeye harvested in Cook Inlet [@dorava2000].
+Located in southcentral Alaska, the Kenai River is part of the Cook Inlet Basin and is linked to the surrounding communities through sport, commercial, personal use, and susbsistence fishing; as well as tourism, and recreation (@fig-map1). At least twenty-seven fish species, including six species of anadromous Pacific salmonids flourish in the Kenai River watershed, with sockeye (red) and Chinook (king) salmon as the primary species of interest for harvest and sport fisheries [@schoen2017; @willette2004]. The Kenai River his historically produced 80% of the sockeye harvested in Cook Inlet [@dorava2000].
 
 Surface runoff, groundwater composition, natural minerals, aquatic plants and animals, and human activities can affect water quality in this area. Potential sources of pollution from humans include gasoline powered boat engines, agriculture, mining, street runoff, and perforated septic tanks [@glassrl1999; @reeves2018; @epa2011].
 
@@ -24,7 +24,29 @@ Field sampling sites described in @fig-map2 are introduced below with a photo a 
 
 ### Tributary Sites
 
-A brief description of each of the tributary stem field sampling sites, along with coordinates and a photo.
+#### No Name Creek
+
+No Name Creek is a Kenai River tributary located at 60.550888 N and -151.268417 W. Samples are typically collected approximately 500 feet upstream of the confluence with the Kenai River, just upstream of the footbridge.
+
+![](other/documents/site_photos/no_name_creek.jpg){#no-name-creek}
+
+#### Beaver Creek
+
+Beaver Creek is a Kenai River tributary. Sample site is located at 60.548029 N and -151.143240 W. 
+
+#### Slikok Creek
+
+#### Soldotna Creek
+
+#### Funny River
+
+#### Moose River
+
+#### Killey River
+
+#### Russian River
+
+#### Juneau Creek
 
 ### Main Stem Sites
 
