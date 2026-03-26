@@ -10,7 +10,9 @@
 .Rproj.user
 
 # these files downloaded from WQP are too large to sync
-other/input/WQX_downloads 
+other/input/WQX_downloads
 
 /other/epa_cdx.txt
 .positai
+
+**/*.quarto_ipynb
