@@ -22,13 +22,13 @@
 "KR RM 0 NNC","2021-07-27","Barium",NA,"ug/L","Limit of Quantitation",3,"ug/L",11.9,11.9,"Y","Y","Y","Y","Y","Y","Y",0
 "KR RM 0 NNC","2021-07-27","Beryllium","Not Detected","ug/L","Limit of Quantitation",0.4,"ug/L",NA,NA,"N","N","N","N","N","N","N",NA
 "KR RM 0 NNC","2021-07-27","Cadmium","Not Detected","ug/L","Limit of Quantitation",0.5,"ug/L",NA,NA,"N","N","N","N","N","N","N",NA
-"KR RM 0 NNC","2021-07-27","Calcium",NA,"ug/L","Limit of Quantitation",500,"ug/L",16200,16300,"Y","Y","Y","Y","Y","Y","Y",0.62
+"KR RM 0 NNC","2021-07-27","Calcium",NA,"mg/L","Limit of Quantitation",500,"mg/L",16.2,16.3,"N","N","N","N","N","N","N",0.62
 "KR RM 0 NNC","2021-07-27","Chromium","Not Detected","ug/L","Limit of Quantitation",5,"ug/L",NA,NA,"N","N","N","N","N","N","N",NA
 "KR RM 0 NNC","2021-07-27","Cobalt","Not Detected","ug/L","Limit of Quantitation",4,"ug/L",NA,NA,"N","N","N","N","N","N","N",NA
 "KR RM 0 NNC","2021-07-27","Copper","Not Detected","ug/L","Limit of Quantitation",1,"ug/L",NA,NA,"N","N","N","N","N","N","N",NA
-"KR RM 0 NNC","2021-07-27","Iron",NA,"ug/L","Limit of Quantitation",250,"ug/L",527,625,"Y","Y","Y","Y","Y","Y","Y",17.01
+"KR RM 0 NNC","2021-07-27","Iron",NA,"mg/L","Limit of Quantitation",250,"mg/L",0.527,0.625,"N","N","N","N","N","N","N",17.01
 "KR RM 0 NNC","2021-07-27","Lead","Not Detected","ug/L","Limit of Quantitation",0.2,"ug/L",NA,NA,"N","N","N","N","N","N","N",NA
-"KR RM 0 NNC","2021-07-27","Magnesium",NA,"ug/L","Limit of Quantitation",50,"ug/L",7320,6960,"Y","Y","Y","Y","Y","Y","Y",5.04
+"KR RM 0 NNC","2021-07-27","Magnesium",NA,"mg/L","Limit of Quantitation",50,"mg/L",7.32,6.96,"N","N","N","N","N","N","N",5.04
 "KR RM 0 NNC","2021-07-27","Manganese",NA,"ug/L","Limit of Quantitation",1,"ug/L",146,149,"Y","Y","Y","Y","Y","Y","Y",2.03
 "KR RM 0 NNC","2021-07-27","Molybdenum","Not Detected","ug/L","Limit of Quantitation",2,"ug/L",NA,NA,"N","N","N","N","N","N","N",NA
 "KR RM 0 NNC","2021-07-27","Nickel","Not Detected","ug/L","Limit of Quantitation",2,"ug/L",NA,NA,"N","N","N","N","N","N","N",NA

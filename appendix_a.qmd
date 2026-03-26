@@ -40,7 +40,7 @@ Data that has been uploaded to the EPA WQX is evaluated biannually by the Alaska
 
 [^appendix_a-1]: https://dec.alaska.gov/water/water-quality/integrated-report/
 
-#### 2021 Water Quality Data AQWMS Formatting
+#### 2021 Water Quality Data WQX Formatting
 
 The code scripts in this document assemble water quality data from the three analytical laboratories that partnered with Kenai Watershed Forum for this project in 2021:
 
@@ -76,7 +76,7 @@ xfun::embed_file('other/input/2021_wqx_data/summer_2021_wqx_data/SGS/SGS_results
 
 \newpage
 
-```{r, 2021 AQWMS formatting for SGS, echo = F, message = F}
+```{r, 2021 WQX formatting for SGS, echo = F, message = F}
 
 #| warning: false
 #| message: false
@@ -122,7 +122,7 @@ summer21_sample_date <-"7/27/2021"
 
 ############################ Part A: SGS Data Read In #############################
 
-## Reformat SGS data downloaded from their server client (SGS Engage, full EDD files) to match AQWMS template
+## Reformat SGS data downloaded from their server client (SGS Engage, full EDD files) to match WQX template
 
 # read in
 spring_batch_sgs21 <- read.csv("other/input/2021_wqx_data/spring_2021_wqx_data/SGS/spring_2021_sgs_batch_info.csv")
@@ -221,7 +221,7 @@ als21 <- bind_rows(spring_als21,summer_als21) %>%
          collect_time = time_collected,
          rec_date = date_received,
          rec_time = time_received,
-         # sample_type ::: not sure where to match with sgs data yet or where to put in aqwms, but is important for qa/qc
+         # sample_type ::: not sure where to match with sgs data yet or where to put in WQX output, but is important for qa/qc
          
          extracted_date = date_extracted,
          extracted_time = time_extracted,
@@ -280,8 +280,8 @@ sample_types <- dat %>%
   distinct()
 
 # remove old version and write new one
-unlink("other/input/AQWMS/sample_type_abbreviations.xlsx")
-write.xlsx(sample_types, "other/input/AQWMS/sample_type_abbreviations.xlsx")
+unlink("other/input/wqx_templates/sample_type_abbreviations.xlsx")
+write.xlsx(sample_types, "other/input/wqx_templates/sample_type_abbreviations.xlsx")
 
 # manually created a translation of all the acronyms in an accompanying file. removed inconsistencies in sample type abbreviations into one consistent schema between SGS and ALS labs
 
@@ -290,13 +290,13 @@ write.xlsx(sample_types, "other/input/AQWMS/sample_type_abbreviations.xlsx")
 
 ############### Part C: Address spelling/format issues and inconsistent sample/site names ######################
 
-# Upon visual inspection of site names, we can see that the location names in the AQWMS template differ slightly from the place names in the SGS report (spelling and name inconsistencies).
+# Upon visual inspection of site names, we can see that the location names in the WQX template differ slightly from the place names in the SGS report (spelling and name inconsistencies).
 
 
 # 3/28/2022 - A note on addressing "Duplicate" designations. 
 # In QA/QC data review in March 2022 the following was clarified through trial and error: we must make a careful distinction between "Field Duplicates" and "Lab duplicates" when preparing this data. The sample names contain info about whether a result is from a "Field Duplicate," e.g., two field collections made at the same location/day/time. However the ALS lab also created "Lab Duplicates," which are not from the same sites as field duplicates, and designates these as "DUP1" in the "sample_type" column.
 
-# See AQWMS Activity Type column assign distinctions
+# See WQX Activity Type column assign distinctions
 
 # Decision - we will designate the field duplicates simply as a Field Duplicate
 
@@ -382,26 +382,26 @@ dat %<>%
 
 # NOTE: The SGS and ALS 2021 sample name results have a variety of misspelling and typos. For 2022, we should provide labs with a csv file of site names that they can use
 
-# In preparation for a join to AQWMS table, we will manually generate a match table csv file that we can use 
+# In preparation for a join to WQX table, we will manually generate a match table csv file that we can use 
 
 ## generate list of unique site names from 2021 SGS data
 sgs21_sitenames <- data.table(unique(dat$sample)) %>%
   arrange(V1)
   
 
-# generate list of unique site names from 2021 AQWMS template. These are the names we want in the final product
-aqwms21_sitenames <- read_excel("other/input/AQWMS/AWQMS_KWF_Baseline_2021.xlsx", sheet = "Monitoring Locations") %>%
+# generate list of unique site names from 2021 WQX template. These are the names we want in the final product
+wqx_sitenames <- read_excel("other/input/wqx_templates/AWQMS_KWF_Baseline_2021.xlsx", sheet = "Monitoring Locations") %>%
   select("Monitoring Location Name", "Monitoring Location ID") %>%
   distinct()
 
 # write 2021 sgs site names to an excel file
-site_match_table_path <- "other/input/AQWMS/sgs_site_names_matching_table.xlsx"
+site_match_table_path <- "other/input/wqx_templates/sgs_site_names_matching_table.xlsx"
 write.xlsx(sgs21_sitenames, site_match_table_path) 
 
-# create an excel file with two sheets: a.) SGS site names, and b.) AQWMS site names
+# create an excel file with two sheets: a.) SGS site names, and b.) WQX site names
 wb <- loadWorkbook(site_match_table_path)
 addWorksheet(wb,"Sheet2")
-writeData(wb,"Sheet2",aqwms21_sitenames)
+writeData(wb,"Sheet2",wqx_sitenames)
 saveWorkbook(wb,site_match_table_path,overwrite = TRUE)
 
 
@@ -412,7 +412,7 @@ saveWorkbook(wb,site_match_table_path,overwrite = TRUE)
 # append "Monitoring Location Name" and "Monitoring Location ID" info from WQX to spring 2021 SGS data
 
 ## read in site names join table
-sitenames21_match <- read_excel("other/input/AQWMS/sgs_site_names_matching_table_manual_edit.xlsx") %>%
+sitenames21_match <- read_excel("other/input/wqx_templates/sgs_site_names_matching_table_manual_edit.xlsx") %>%
   select(`Monitoring Location Name`,`Monitoring Location ID`,sgs_sitenames) %>%
   rename(sample = sgs_sitenames) %>%
   filter(!is.na(`Monitoring Location ID`))
@@ -423,19 +423,19 @@ dat %<>%
   clean_names()
 
 # remove extraneous dataframes
-rm(sgs21_sitenames,aqwms21_sitenames,sitenames21_match)
+rm(sgs21_sitenames,wqx_sitenames,sitenames21_match)
 
 
 
 
 ######################## Part E: "Result Analytical Method Context" name rectification ######################
 
-# In the AQWMS template, the EPA names for chemical analyses that will go in the column "Result Analytical Method ID" do not exactly match the names provided by the laboratory (SGS). After communicating with SGS and ADEC on 2/8/2022, we are able to cross-walk between the two naming systems. These matches are documented in the excel file "analysis_code_matching_table.xlsx."
+# In the WQX template, the EPA names for chemical analyses that will go in the column "Result Analytical Method ID" do not exactly match the names provided by the laboratory (SGS). After communicating with SGS and ADEC on 2/8/2022, we are able to cross-walk between the two naming systems. These matches are documented in the excel file "analysis_code_matching_table.xlsx."
 
 # assign "Result Analytical Method ID" and "Result Analytical Method Context" to dataset using matching table
 
 # read in matching table
-analysis_code_matching_table <- read_excel("other/input/AQWMS/analysis_code_matching_table.xlsx") %>%
+analysis_code_matching_table <- read_excel("other/input/wqx_templates/analysis_code_matching_table.xlsx") %>%
   select(-Comments,-`EPA Name`) %>%
   clean_names() %>%
   rename(analytical_method = sgs_analysis_code) %>%
@@ -443,15 +443,15 @@ analysis_code_matching_table <- read_excel("other/input/AQWMS/analysis_code_matc
   mutate(analytical_method = str_replace(analytical_method,"EP200.8","200.8"))
   
 
-# read in AQWMS Analytical Methods list
-aqwms_analytical_methods <- read_excel("other/input/AQWMS/AWQMS_KWF_Baseline_2021.xlsx", sheet = "Analytical Methods") %>%
+# read in WQX analytical methods list
+wqx_analytical_methods <- read_excel("other/input/wqx_templates/AWQMS_KWF_Baseline_2021.xlsx", sheet = "Analytical Methods") %>%
   select("ID","Context Code") %>%
   clean_names() %>%
   rename(epa_analysis_id = id) %>%
   distinct()
 
 # join two tables above
-epa_analysis_codes <- inner_join(aqwms_analytical_methods,analysis_code_matching_table, by = "epa_analysis_id") %>%
+epa_analysis_codes <- inner_join(wqx_analytical_methods,analysis_code_matching_table, by = "epa_analysis_id") %>%
   filter(!context_code %in% c("USEPA Rev 5.4",
                               "APHA (1997)",
                               "APHA (1999)")) 
@@ -463,7 +463,7 @@ dat %<>%
 
 
 # remove unneeded dfs
-rm(analysis_code_matching_table,aqwms_analytical_methods,epa_analysis_codes)
+rm(analysis_code_matching_table,wqx_analytical_methods,epa_analysis_codes)
 
 ```
 
@@ -493,7 +493,7 @@ dat %<>%
 
 ###### Segregate laboratory QA/QC data from field data ########
 
-# These lab-only data will be evaluated at a later step of QA/QC evaluation. See excel file "other/input/AQWMS/sample_type_abbreviations_manual_edit.xlsx" for sample_type naming schema.
+# These lab-only data will be evaluated at a later step of QA/QC evaluation. See excel file "other/input/wqx_templates/sample_type_abbreviations_manual_edit.xlsx" for sample_type naming schema.
 
 # Within this data evaluation, we will create two dataframes. One containing the full output of both lab QA data and field data, and the other containing field data only.
 
@@ -508,7 +508,7 @@ sgs21_als21_qaqc_dat <- dat %>%
 write.csv(sgs21_als21_qaqc_dat, "other/output/lab_qaqc_data/2021_lab_qaqc_data/sgs21_als21_qaqc_dat.csv")
 
 
-# for this dataframe, retain only non-field sample results for AQWMS export
+# for this dataframe, retain only non-field sample results for WQX export
 dat %<>%
   filter(sample_type %in% c("PS","SMPL","TB")) %>%
   filter(!grepl("(surr)",analyte))
@@ -576,7 +576,7 @@ swwtp_spring21 %<>%
 # address different site naming systems
 # use manually generated matching table
 # read in matching table and match
-swwtp_spring21_site_matching <- read_excel("other/input/AQWMS/swwtp_site_names_matching_table_manual_edit.xlsx") 
+swwtp_spring21_site_matching <- read_excel("other/input/wqx_templates/swwtp_site_names_matching_table_manual_edit.xlsx") 
 
 # join
 # modify join table to contain "sample" column w/ format RM_0_No_Name_Creek
@@ -738,11 +738,11 @@ taur_summer21_sites <- data.frame(unique(taur_summer21$sample)) %>%
   rename(sample = unique.taur_summer21.sample.)
 
 # export site names list to spreadsheet
-write.xlsx(taur_summer21_sites, "other/input/AQWMS/taurianen_site_names_matching_table.xlsx")
+write.xlsx(taur_summer21_sites, "other/input/wqx_templates/taurianen_site_names_matching_table.xlsx")
 
 # manually edit a new spreadsheet such that taurianen site names are paired iwth AWQMS site names
 # read in manually edited site names sheet
-taur_summer21_sites <- read_excel("other/input/AQWMS/taurianen_site_names_matching_table_manual_edit.xlsx") 
+taur_summer21_sites <- read_excel("other/input/wqx_templates/taurianen_site_names_matching_table_manual_edit.xlsx") 
 
 # join AWQMS site names to taurianen data
 taur_summer21 <- left_join(taur_summer21,taur_summer21_sites,by = "sample") 
@@ -829,7 +829,7 @@ xfun::embed_file('other/input/2021_wqx_data/summer_2021_wqx_data/SWWTP/TSS_CoC_S
 
 ```{r include = F}
 # SWWTP Spring 2021 TSS data
-## Reformat TSS data to match AQWMS template
+## Reformat TSS data to match WQX template
 
 
 # read in
@@ -915,14 +915,14 @@ swwtp_tss21 %<>%
 swwtp_tss_sitenames <- data.frame(unique(swwtp_tss21$sample_location))
 
 # delete existing csv if present
-unlink("other/input/AQWMS/swwtp_tss_sitenames.csv")
+unlink("other/input/wqx_templates/swwtp_tss_sitenames.csv")
 
 # export csv of swwtp_tss site names
-write.csv(swwtp_tss_sitenames,"other/input/AQWMS/swwtp_tss_sitenames.csv",row.names = F)
+write.csv(swwtp_tss_sitenames,"other/input/wqx_templates/swwtp_tss_sitenames.csv",row.names = F)
 
 # use this list to create manually edited file, matched to AWQMS template names
 # read in manually edited file
-swwtp_tss_sitenames <- read_excel("other/input/AQWMS/swwtp_tss_site_names_matching_table_manual_edit.xlsx")
+swwtp_tss_sitenames <- read_excel("other/input/wqx_templates/swwtp_tss_site_names_matching_table_manual_edit.xlsx")
 
 # join correct site names to overall 2021 TSS dataset
 swwtp_tss21 <- left_join(swwtp_tss21,swwtp_tss_sitenames)  %>%
@@ -996,7 +996,7 @@ rm(swwtp_tss_spring21,swwtp_tss_sitenames,swwtp_tss21)
 ############ b.) match latitude and longitude coordinates to sites ##################
 
 ## read in coordinates
-site_coords <- read_excel("other/input/AQWMS/AQWMS_template_matching_table.xlsx", sheet = "site_coordinates") %>%
+site_coords <- read_excel("other/input/wqx_templates/wqx_template_matching_table.xlsx", sheet = "site_coordinates") %>%
   remove_empty()
 
  ## join coords to overall df
@@ -1006,7 +1006,7 @@ dat <- left_join(dat,site_coords)
 ############ c.) assign "result sample fraction" (e.g. filtered, dissolved, etc.) ############
 
 ## read in manually organized table that pairs "result sample fraction" with "analytical method"
-result_sample_fraction <- read_excel("other/input/AQWMS/AQWMS_template_matching_table.xlsx", sheet = "result_sample_fraction") %>%
+result_sample_fraction <- read_excel("other/input/wqx_templates/wqx_template_matching_table.xlsx", sheet = "result_sample_fraction") %>%
   filter(!is.na(analytical_method)) %>%
   select(-description)
 
@@ -1017,7 +1017,7 @@ dat <- left_join(dat,result_sample_fraction)
 ################ d.) assign "result detection condition"##############
 
 ## read in manually assigned join table for "result detection condition"
-result_detection_condition <- read_excel("other/input/AQWMS/AQWMS_template_matching_table.xlsx", sheet = "result_detection_condition") %>%
+result_detection_condition <- read_excel("other/input/wqx_templates/wqx_template_matching_table.xlsx", sheet = "result_detection_condition") %>%
   clean_names() %>%
   filter(!is.na(resultflag))
 
@@ -1036,7 +1036,7 @@ dat %<>%
 ############### e.) assign chemical preservative type ################
 
 ## read in table
-chemical_preservative <- read_excel("other/input/AQWMS/AQWMS_template_matching_table.xlsx", sheet = "chemical_preservative") %>%
+chemical_preservative <- read_excel("other/input/wqx_templates/wqx_template_matching_table.xlsx", sheet = "chemical_preservative") %>%
   filter(!is.na(preservative)) %>%
   select(-description)
 
@@ -1047,7 +1047,7 @@ dat <- left_join(dat,chemical_preservative)
 ############# f.) assign bottle type and color ######################
 
 ## read in external table
-bottle_type_color <- read_excel("other/input/AQWMS/AQWMS_template_matching_table.xlsx", sheet = "sample_container_type_color") %>%
+bottle_type_color <- read_excel("other/input/wqx_templates/wqx_template_matching_table.xlsx", sheet = "sample_container_type_color") %>%
   select(-description) %>%
   filter(!is.na(sample_container_type))
 
@@ -1077,12 +1077,12 @@ dat %<>%
 
 ## a.) analyte abbreviations
 # export list of unique analytes from 2021 data
-write.csv(data.frame(unique(dat$analyte)),"other/input/AQWMS/analytes_list.csv", row.names = F)
+write.csv(data.frame(unique(dat$analyte)),"other/input/wqx_templates/analytes_list.csv", row.names = F)
 
 # manually assign abbreviations for each analyte in the sister file "analytes_list_manual_edit.csv"
 
 # re-import edited list of analyte abbreviation names, then append to dataframe. Use in later step when creating Activity IDs.
-analyte_abbrev <- read.csv("other/input/AQWMS/analytes_list_manual_edit.csv") 
+analyte_abbrev <- read.csv("other/input/wqx_templates/analytes_list_manual_edit.csv") 
 colnames(analyte_abbrev) <- c("analyte","analyte_abbreviation")
 analyte_abbrev %<>% select(analyte, analyte_abbreviation)
 dat %<>%
@@ -1100,11 +1100,11 @@ dat %<>%
     sample_condition == "Field Duplicate" ~ "DUP",
     sample_condition == "Trip Blank" ~ "Blank")) 
 
-# temporarily reduce DF width to visually examine  errors described below; see "temp" file in AQWMS folder
+# temporarily reduce DF width to visually examine  errors described below; see "temp" file in wqx_templates folder
 #%>% select(sample,collect_date,sample_type,sample_condition,sample_condition_abbrv,analyte,lab_name,result)
 
 # write temporary inspection file
-#write.csv(z, "other/input/AQWMS/temp.csv")
+#write.csv(z, "other/input/wqx_templates/temp.csv")
 
 
 ########################## TO DO
@@ -1129,7 +1129,7 @@ dat %<>%
 
 ```
 
-```{r include = F, eval = F}
+```{r include = F, eval = T}
 
 z1 <- dat %>%
   filter(analyte %in% c("Magnesium","Calcium","Calcium, Total","Magnesium, Total"),
@@ -1138,7 +1138,7 @@ z1 <- dat %>%
 
 ############ g.) prepare final format ###############################
 
-# create column structure from example in AQWMS template. Use existing input from SGS results if applicable, specify value from "Permitted Values" tab if SGS input not applicable or not yet specified
+# create column structure from example in WQX template. Use existing input from SGS results if applicable, specify value from "Permitted Values" tab if SGS input not applicable or not yet specified
 
 # 6/21/23:: check to see if format will still work for EPA WQX template
 
@@ -1147,6 +1147,10 @@ z1 <- dat %>%
 # 12/4/2023 - confirmed that it was unnecessary to have the column names formatted with capital letters & spaces at this stage.
 
 # Current task - take the dataframe at the end of this long script, make so column names/structure conforms to the ADEC example. In the QA/QC process, it went through the janitor::clean_names process, thus names need to be fixed again at the end.
+
+# Save raw-column-name dat before WQX renaming, so downstream QA/QC chunks
+# (which expect original column names like analyte, collect_date, etc.) continue to work.
+dat_raw <- dat
 
 dat %<>%
   # Proceeding left to right across columns of AWQMS template
@@ -1221,24 +1225,28 @@ dat %<>%
 # Save a copy of the whole dataframe with all results and parameters prior to reducing it to just the column subset. We will use this later in QA/QC analyses.
 all_dat <- dat
 
-# next, for our AQWMS export, we want to retain just those columns listed in the AQWMS template
+# next, for our WQX export, we want to retain just those columns listed in the WQX template
 # found solution to this problem here: https://gist.github.com/djhocking/62c76e63543ba9e94ebe
 
-# get all column names from AQWMS template
-aqwms_colnames <- read_excel("other/input/AQWMS/AWQMS_KWF_Baseline_2021.xlsx", sheet = "KWF Baseline AWQMS Template") %>%
+# get all column names from WQX template
+wqx_colnames <- read_excel("other/input/wqx_templates/AWQMS_KWF_Baseline_2021.xlsx", sheet = "KWF Baseline AWQMS Template") %>%
   colnames()
 
-# select from subset of column in aqwms template
+# select from subset of columns in WQX template
 dat %<>%
-  select(one_of(aqwms_colnames))
+  select(one_of(wqx_colnames))
  
-# export final formatted AQWMS results to external csv
-write.csv(dat,"other/output/aqwms_formatted_results/2021_kwf_baseline_results_aqwms.csv",row.names = F)
+# export final WQX-formatted results to external csv
+write.csv(dat,"other/output/wqx_formatted/2021_kwf_baseline_results_wqx.csv",row.names = F)
 
 
 z <- dat %>%
   filter(`Characteristic Name` %in% c("Magnesium","Calcium","Calcium, Total","Magnesium, Total"),
          `Activity Start Date` == "2021-5-11")
+
+# Restore dat with raw column names so downstream QA/QC chunks work correctly.
+dat <- dat_raw
+rm(dat_raw)
 
 ```
 
@@ -1251,11 +1259,11 @@ z <- dat %>%
 The above data sources have been collated in to a single .csv file (available for download) into a format compatible with the EPA Water Quality Exchange. ***These data have not yet been evaluated against QA/QC standards following guidance in the current project Quality Assurance Project Plan.***
 
 ```{r, echo = F}
-xfun::embed_file('other/output/aqwms_formatted_results/2021_kwf_baseline_results_aqwms.csv', text = "Download All Provisional 2021 Kenai River Baseline Water Quality Monitoring Results, Formatted for EPA WQX import")
+xfun::embed_file('other/output/wqx_formatted/2021_kwf_baseline_results_wqx.csv', text = "Download All Provisional 2021 Kenai River Baseline Water Quality Monitoring Results, Formatted for EPA WQX import")
 
 
 # check unique activity types
-#z <- read.csv("other/output/aqwms_formatted_results/2021_kwf_baseline_results_aqwms.csv")
+#z <- read.csv("other/output/wqx_formatted/2021_kwf_baseline_results_wqx.csv")
 #z1 <- data.frame(unique(z$Characteristic.Name))
 
 
@@ -1270,7 +1278,7 @@ xfun::embed_file('other/output/aqwms_formatted_results/2021_kwf_baseline_results
 Prior to upload to the EPA WQX, all water quality data must be checked against a series of standard questions in order to evaluate how quality assurance / quality check (QA/QC) requirements are met. The draft Data Evaluation Checklist Template (available for download below) outlines these questions:
 
 ```{r, echo = F}
-xfun::embed_file('other/documents/AQWMS_documents/Kenai_Baseline_Data_Evaluation_Checklist_20230331.xlsx', text = "Download 2021 Draft Kenai Baseline Data Evaluation Checklist Template")
+xfun::embed_file('other/documents/wqx_documents/Kenai_Baseline_Data_Evaluation_Checklist_20230331.xlsx', text = "Download 2021 Draft Kenai Baseline Data Evaluation Checklist Template")
 
 ```
 
@@ -1297,7 +1305,7 @@ All sites were visited as planned on 5/11/2021 and 7/27/2021. Most intrinsic wat
 ```{r echo = F, message = F}
 ### First: get number of samples (results) actually collected from formatted, collated results created from the above code chunks
 ### report for each parameter and date
-total_samples_collected_2021_summary_param <- read.csv('other/output/aqwms_formatted_results/2021_kwf_baseline_results_aqwms.csv') %>%
+total_samples_collected_2021_summary_param <- read.csv('other/output/wqx_formatted/2021_kwf_baseline_results_wqx.csv') %>%
   clean_names() %>%
   group_by(result_analytical_method_id,characteristic_name,activity_start_date,activity_type) %>%
   count() %>%
@@ -1407,7 +1415,7 @@ planned_samples_2021_summary_by_site <- planned_samples_2021 %>%
 
   
 ### create table of quantity of samples (results) actually collected; not grouped by parameter, but instead by analysis type
-total_samples_collected_2021_summary <- read.csv('other/output/aqwms_formatted_results/2021_kwf_baseline_results_aqwms.csv') %>%
+total_samples_collected_2021_summary <- read.csv('other/output/wqx_formatted/2021_kwf_baseline_results_wqx.csv') %>%
   clean_names() %>%
   group_by(result_analytical_method_id,activity_start_date,activity_type) %>%
   count() %>%
@@ -1561,7 +1569,7 @@ We worked with three separate laboratories in 2021:
 ```{r hold-times, echo = F, messages = F, warnings = F}
 
 # embed for download
-xfun::embed_file("other/input/AQWMS/sample_holding_times.csv", text = "Download Table of Maximum Holding Times for Each Sample Type")
+xfun::embed_file("other/input/wqx_templates/sample_holding_times.csv", text = "Download Table of Maximum Holding Times for Each Sample Type")
 ```
 
 ```{r hold-times-1, echo = F, messages = F, warnings = F}
@@ -1578,7 +1586,7 @@ col_names <- c(
   "lab_name")
 
 # read in data
-total_samples_collected_2021_summary_param <- read.csv('other/output/aqwms_formatted_results/2021_kwf_baseline_results_aqwms.csv')
+total_samples_collected_2021_summary_param <- read.csv('other/output/wqx_formatted/2021_kwf_baseline_results_wqx.csv')
 
 # read in columns relevant to holding time calculations
 holdtime_dat <- dat %>%
@@ -1602,7 +1610,7 @@ holdtime_dat <- dat %>%
   
 # join the (manually created) dataframe with maximum allowed sample holding times
 # read in max holding times
-max_holding_times <- read.csv("other/input/AQWMS/sample_holding_times.csv") %>%
+max_holding_times <- read.csv("other/input/wqx_templates/sample_holding_times.csv") %>%
   transform(max_holding_time_hours = as.numeric(max_holding_time_hours)) 
 
 # join holding time data to maximum holding times table
@@ -1738,11 +1746,11 @@ Following the example in the Alaska Department of Environmental Conservation 202
 
 # for 2021, we have the same sites for both dates. In future years we will need to assign sites by dates as well (join by date).
 
-qaqc_sites_2021 <- read_excel("other/input/AQWMS/aqwms_qaqc/aqwms_qaqc_info.xlsx", sheet = "field_dup_sites_2021") %>%
+qaqc_sites_2021 <- read_excel("other/input/wqx_templates/wqx_qaqc/wqx_qaqc_info.xlsx", sheet = "field_dup_sites_2021") %>%
   remove_empty()
 
 # read in data formatted for export
-export_dat <- read.csv('other/output/aqwms_formatted_results/2021_kwf_baseline_results_aqwms.csv') %>%
+export_dat <- read.csv('other/output/wqx_formatted/2021_kwf_baseline_results_wqx.csv') %>%
   clean_names()
 
 # inner join
@@ -1979,7 +1987,7 @@ As of `r Sys.Date()`, "Total Nitrate/Nitrite-N" values will be flagged for the s
 
 # apply "flag = Y" to all "Total Nitrate/Nitrite-N" values for Spring 2021
 
-# this step is already accomplished in a previous code block, which imports and joins "other/input/AQWMS/2021_data_flag_decisions.csv" to the parameters chosen in this discussion.
+# this step is already accomplished in a previous code block, which imports and joins "other/input/wqx_templates/2021_data_flag_decisions.csv" to the parameters chosen in this discussion.
 
 ```
 
@@ -2025,13 +2033,13 @@ We calculated Completeness Measure A at the following project scales:
 
 ```{r echo = F, message=FALSE}
 # read in list of analytes specified in QAPP
-analytes_2021 <- read.csv("other/input/AQWMS/analytes_list_manual_edit.csv")
+analytes_2021 <- read.csv("other/input/wqx_templates/analytes_list_manual_edit.csv")
 colnames(analytes_2021) <- c("characteristic_name","a","param_in_qapp") 
 analytes_2021 %<>% select(-a)
 
 # BY PARAMETER
 # summarise flags by parameter
-completeness_summary_param <- read.csv('other/output/aqwms_formatted_results/2021_export_data_flagged.csv') %>%
+completeness_summary_param <- read.csv('other/output/wqx_formatted/2021_export_data_flagged.csv') %>%
   clean_names() %>%
   # reduce the list of analytes to only those specified in QAPP
   left_join(analytes_2021) %>%
@@ -2055,7 +2063,7 @@ write.csv(completeness_summary_param,"other/output/field_qa_qc_data/completeness
 
 ## BY SITE
 # summarise flags by site
-completeness_summary_site <- read.csv('other/output/aqwms_formatted_results/2021_export_data_flagged.csv') %>%
+completeness_summary_site <- read.csv('other/output/wqx_formatted/2021_export_data_flagged.csv') %>%
   clean_names() %>%
   # reduce the list of analytes to only those specified in QAPP
   left_join(analytes_2021) %>%
@@ -2079,7 +2087,7 @@ write.csv(completeness_summary_site,"other/output/field_qa_qc_data/completeness_
 
 # OVERALL
 # summarise flags for overall project
-completeness_summary_project <- read.csv('other/output/aqwms_formatted_results/2021_export_data_flagged.csv') %>%
+completeness_summary_project <- read.csv('other/output/wqx_formatted/2021_export_data_flagged.csv') %>%
   clean_names() %>%
   # reduce the list of analytes to only those specified in QAPP
   left_join(analytes_2021) %>%
@@ -2144,7 +2152,7 @@ For these calculations, we will consider "usable" as "unflagged," and will calcu
 
 # BY PARAMETER (actually by method)
 # unflagged (usable) vs expected results
-cmb_by_method <- read.csv('other/output/aqwms_formatted_results/2021_export_data_flagged.csv') %>%
+cmb_by_method <- read.csv('other/output/wqx_formatted/2021_export_data_flagged.csv') %>%
   clean_names() %>%
   # reduce the list of analytes to only those specified in QAPP
   left_join(analytes_2021) %>%
@@ -2172,7 +2180,7 @@ write.csv(cmb_by_method,"other/output/field_qa_qc_data/completeness_measures/cmb
 
 
 # repeat methods as above for parameter
-cmb_by_site <- read.csv('other/output/aqwms_formatted_results/2021_export_data_flagged.csv') %>%
+cmb_by_site <- read.csv('other/output/wqx_formatted/2021_export_data_flagged.csv') %>%
   clean_names() %>%
   # reduce the list of analytes to only those specified in QAPP
   left_join(analytes_2021) %>%
@@ -2219,7 +2227,7 @@ We used the leaflet package to generate a map of unique sites from the 2021 data
 ```{r echo = F, message=FALSE}
 
 # read in locations from exported data (export_dat)
-export_dat <- read.csv("other/output/aqwms_formatted_results/2021_export_data_flagged.csv")
+export_dat <- read.csv("other/output/wqx_formatted/2021_export_data_flagged.csv")
 
 site_check <- export_dat %>%
   distinct(monitoring_location_id,activity_latitude,activity_longitude) %>%
@@ -2273,10 +2281,10 @@ Kenai Watershed Forum's Organization ID in the EPA Water Quality Exchange is "Ke
 # Existing format does not include AKDT time zone column.
 
 # read in locations from exported data (export_dat)
-export_dat <- read.csv("other/output/aqwms_formatted_results/2021_export_data_flagged.csv") %>%
+export_dat <- read.csv("other/output/wqx_formatted/2021_export_data_flagged.csv") %>%
   mutate(time_zone = "AKDT")
 # re-write export_dat
-write.csv(export_dat,"other/output/aqwms_formatted_results/2021_export_data_flagged.csv")
+write.csv(export_dat,"other/output/wqx_formatted/2021_export_data_flagged.csv")
 
 ```
 
@@ -2498,13 +2506,13 @@ leaflet(wqp_sites) %>%
 
 
 # read in data formatted for export
-export_dat <- read.csv('other/output/aqwms_formatted_results/2021_kwf_baseline_results_aqwms.csv') %>%
+export_dat <- read.csv('other/output/wqx_formatted/2021_kwf_baseline_results_wqx.csv') %>%
   clean_names() %>%
   transform(activity_start_date = ymd(activity_start_date))
 
 # apply manually-chosen data flags based on discussion in question 19
 # NOTE: this csv also has a column for summary rationale for each flagging decision
-flags_2021 <- read.csv('other/input/AQWMS/2021_data_flag_decisions.csv') %>%
+flags_2021 <- read.csv('other/input/wqx_templates/2021_data_flag_decisions.csv') %>%
   select(-notes) %>%
   transform(activity_start_date = mdy(activity_start_date))
 
@@ -2520,7 +2528,7 @@ export_dat <- full_join(export_dat,flags_2021) %>%
 
 
 # re-export results w/ rpd flag column
-write.csv(export_dat,"other/output/aqwms_formatted_results/2021_export_data_flagged.csv", row.names = F)
+write.csv(export_dat,"other/output/wqx_formatted/2021_export_data_flagged.csv", row.names = F)
 
 # remove existing "export_dat" dataframe
 #rm(export_dat)
@@ -2562,14 +2570,14 @@ export_dat %<>%
 
 # --> site names
 # rejoin WQP site location info (site names) to export_dat
-## use matched data at "other/input/AQWMS/AQWMS_matching_table.xlsx
-site_name_match <- read_excel("other/input/AQWMS/AQWMS_template_matching_table.xlsx", sheet = "adec_site_names") %>%
+## use matched data at "other/input/wqx_templates/wqx_template_matching_table.xlsx
+site_name_match <- read_excel("other/input/wqx_templates/wqx_template_matching_table.xlsx", sheet = "adec_site_names") %>%
   remove_empty()
 export_dat <- left_join(export_dat, site_name_match)
 
 # --> characteristic names
 # rejoin edited list of analyte abbreviation names, then append to dataframe. Use in creating Activity IDs.
-analyte_abbrev <- read.csv("other/input/AQWMS/analytes_list_manual_edit.csv") 
+analyte_abbrev <- read.csv("other/input/wqx_templates/analytes_list_manual_edit.csv") 
 colnames(analyte_abbrev) <- c("characteristic_name","analyte_abbreviation")
 analyte_abbrev %<>% select(characteristic_name, analyte_abbreviation)
 export_dat %<>%
@@ -2662,21 +2670,21 @@ export_dat %<>%
     ,.keep = "unused")
 
 
-# next, for our AQWMS export, we want to retain just those columns listed in the AQWMS template
+# next, for our WQX export, we want to retain just those columns listed in the WQX template
 # found solution to this problem here: https://gist.github.com/djhocking/62c76e63543ba9e94ebe
 
-# get all column names from AQWMS template
+# get all column names from WQX template
 
 # need to modify this to include MonitoringLocationIdentifier
-aqwms_colnames <- read_excel("other/input/AQWMS/AWQMS_KWF_Baseline_2021.xlsx", sheet = "KWF Baseline AWQMS Template") %>%
+wqx_colnames <- read_excel("other/input/wqx_templates/AWQMS_KWF_Baseline_2021.xlsx", sheet = "KWF Baseline AWQMS Template") %>%
   colnames()
 
-# select from subset of column in aqwms template
+# select from subset of columns in WQX template
  export_dat %<>%
-  select(one_of(aqwms_colnames))
+  select(one_of(wqx_colnames))
  
-# export final formatted AQWMS results to external csv
-write.csv(export_dat,"other/output/aqwms_formatted_results/results_activities.csv",row.names = F)
+# export final WQX-formatted results to external csv
+write.csv(export_dat,"other/output/wqx_formatted/results_activities.csv",row.names = F)
 
 
 ```
@@ -2689,13 +2697,13 @@ write.csv(export_dat,"other/output/aqwms_formatted_results/results_activities.cs
 
 # project (hashtagged out for now becuase we modified the csv to prep for upload; changed QAPP status to Y and added website)
 #project <- read.csv("other/input/WQX_downloads/project/project.csv")
-#write.csv(project,"other/output/aqwms_formatted_results/project.csv", row.names = F)
+#write.csv(project,"other/output/wqx_formatted/project.csv", row.names = F)
 
 # stations
 #station <- read.csv("other/input/WQX_downloads/station/station.csv") %>%
   # remove all non-KWF sites
 #  filter(grepl("KBL", MonitoringLocationName))
-# write.csv(station,"other/output/aqwms_formatted_results/station.csv", row.names = F)
+# write.csv(station,"other/output/wqx_formatted/station.csv", row.names = F)
 ```
 
 Other notes for final 2021 data upload to EPA CDX
@@ -2711,7 +2719,7 @@ Other notes for final 2021 data upload to EPA CDX
 # notes are listed in a google doc at https://docs.google.com/document/d/1p1fsh2dVfvIWNmRrpjteOTyLPSEeMYoQDRk5XhKTcNk/edit?tab=t.0
 
 # read in the document downloaded from EPA WQX, which includes some manual edits as described in the ReadMe in the same directory
-submitted_dat <- read.csv("other/output/aqwms_formatted_results/final_preparation/results_activities.csv", check.names = F) 
+submitted_dat <- read.csv("other/output/wqx_formatted/final_preparation/results_activities.csv", check.names = F) 
 
 
 # minor issues with existing data  (NOTE: this is for 2013; not a huge priority)
@@ -2750,7 +2758,7 @@ submitted_dat <- submitted_dat %>%
 #  )) 
 
 # export back into final preparation folder
-write.csv(submitted_dat,"other/output/aqwms_formatted_results/final_preparation/results_activities.csv", row.names = F)
+write.csv(submitted_dat,"other/output/wqx_formatted/final_preparation/results_activities.csv", row.names = F)
   
 ```
 
@@ -2766,7 +2774,7 @@ Work in progress here as of `r Sys.Date()`
 
 # for next years::: take the dataframe at the end of this long script, make so column names/structure conforms to the ADEC example. In the 2021 QA/QC process, it went through the janitor::clean_names process, thus names needed to be fixed again at the end.
 
-## 1.) see that column name structure in EPA WQX matches that of adec aqwms example
+## 1.) see that column name structure in EPA WQX matches that of adec WQX example
 ## 2.) ensure that df export from here matches EPA WQX column names
 
 # projects
