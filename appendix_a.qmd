@@ -161,6 +161,36 @@ sgs21 <- bind_rows(spring_batch_sgs21,summer_batch_sgs21) %>%
   select(-collect_date_time,-rec_date_time,-run_date_time) %>%
   rename(sample = sample)
 
+# Correct SGS EDD unit error for dissolved Calcium, Iron, and Magnesium
+#
+# The summer 2021 SGS EDD reports dissolved Ca, Fe, and Mg (method EP200.8)
+# with a unit label of "ug/L", but the numeric values are on the mg/L scale.
+# For example, Calcium at KR RM 0 NNC is recorded as 16,200 "ug/L" — which
+# is 16.2 mg/L, a physically plausible concentration for the Kenai River.
+# 16.2 ug/L would be unrealistically low for freshwater calcium.
+#
+# Cross-referencing with the ALS total metals data (which correctly labels mg/L)
+# and the SGS PDF lab reports confirms that the EDD unit label is wrong:
+# the values themselves are correct but the unit should be mg/L.
+#
+# Spring 2021 SGS data includes no dissolved Ca/Fe/Mg runs (confirmed), so this
+# correction applies to summer 2021 observations only.
+#
+# This correction is applied here at ingestion so all downstream calculations —
+# including hardness and hardness-dependent regulatory thresholds for Cd, Cr,
+# Cu, Pb, and Zn — use the correct unit and value.
+sgs21 %<>%
+  mutate(
+    result = case_when(
+      analyte %in% c("Calcium", "Iron", "Magnesium") & units == "ug/L" ~ result / 1000,
+      TRUE ~ result
+    ),
+    units = case_when(
+      analyte %in% c("Calcium", "Iron", "Magnesium") & units == "ug/L" ~ "mg/L",
+      TRUE ~ units
+    )
+  )
+
 rm(spring_batch_sgs21,summer_batch_sgs21)
 
 
