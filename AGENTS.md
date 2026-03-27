@@ -195,6 +195,13 @@ Note: The original vendor template file `AWQMS_KWF_Baseline_2021.xlsx` retains i
 -   **Completeness Measure B** calculation is incomplete (`eval = F` in appendix_a.qmd, line ~2111).
 -   **TSS lab QA gap:** SWWTP did not report required lab QA results for TSS in 2021/2022. Note in code, address for 2023+.
 
+## Visualization Wish List
+
+These are desired but not yet implemented features for the report figures:
+
+- **A) Interactive boxplots:** When the user hovers over a data point, a pop-up displays relevant information (site, date, value, etc.).
+- **B) QA/QC toggle:** Figures should support two views — (1) data that passed QA/QC only, and (2) all data including failed QA/QC — switchable via a toggle. Symbology should differ between the two views.
+
 ## Key R Packages
 
 `tidyverse`, `dplyr`, `ggplot2`, `lubridate`, `readxl`, `openxlsx`, `writexl`, `DT`, `plotly`, `janitor`, `magrittr`, `dataRetrieval`, `TADA`, `xfun`
@@ -208,3 +215,5 @@ Note: `magrittr` pipe (`%>%`) appears in existing legacy code. For all new code,
 -   **QAPP** — Quality Assurance Project Plan, approved by ADEC and EPA Region 10 (2023 + April 2024 addendum)
 -   **MOU** — Baseline Water Quality MOU 2025 Final
 -   **Funding Proposal** — KWF 2024 BOR WaterSMART CWMP Proposal
+-   **ADEC Water Quality Standards** — Alaska Dept of Environmental Conservation Water Quality Standards (18 AAC 70)
+-   **DL/LOD/LOQ Interpretation** — SGS Laboratories document on detection limit terminology
