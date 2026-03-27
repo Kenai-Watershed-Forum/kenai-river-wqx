@@ -1,6 +1,7 @@
 project:
   type: book
   output-dir: docs
+  execute-dir: project
 
 book:
   title: "Water Quality Assessment of the Kenai River Watershed from 2000 to 2021 [DRAFT]"
@@ -26,30 +27,30 @@ book:
       - reg_limits.qmd
     - part: "Results"
       chapters:
-      - arsenic.qmd
-      - cadmium.qmd
-      - chromium.qmd
-      - copper.qmd
-      - lead.qmd
-      - zinc.qmd
-      - calcium.qmd
-      - iron.qmd
-      - magnesium.qmd
-      - nitrate.qmd
-      - phosphorus.qmd
-      # diesel_range_organics.qmd
-      #- gas_range_organics.qmd
-      #- residual_range_organics.qmd
-      - btex.qmd
-      #- benzene.qmd
-      - fecal_coliform.qmd
-      - pH.qmd
-      - specific_conductance.qmd
-      - tss.qmd
-      - turbidity.qmd
-      - water_temp.qmd
-      - summary.qmd
-      - references.qmd
+      - parameters/arsenic.qmd
+      - parameters/cadmium.qmd
+      - parameters/chromium.qmd
+      - parameters/copper.qmd
+      - parameters/lead.qmd
+      - parameters/zinc.qmd
+      - parameters/calcium.qmd
+      - parameters/iron.qmd
+      - parameters/magnesium.qmd
+      - parameters/nitrate.qmd
+      - parameters/phosphorus.qmd
+      # parameters/diesel_range_organics.qmd
+      #- parameters/gas_range_organics.qmd
+      #- parameters/residual_range_organics.qmd
+      - parameters/btex.qmd
+      #- parameters/benzene.qmd
+      - parameters/fecal_coliform.qmd
+      - parameters/pH.qmd
+      - parameters/specific_conductance.qmd
+      - parameters/tss.qmd
+      - parameters/turbidity.qmd
+      - parameters/water_temp.qmd
+      - parameters/summary.qmd
+      - parameters/references.qmd
   appendices:
     - appendix_a.qmd
     - appendix_b.qmd
