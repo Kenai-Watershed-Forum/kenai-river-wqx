@@ -3,7 +3,6 @@
 ---
 execute:
   echo: false
-  freeze: true
 date: "`r Sys.Date()`"
 format:
   html:
