@@ -22,6 +22,13 @@ In the tributaries, phosphorus ranged from 64 mg/L in Slikok Creek during May 20
 # set parameter
 characteristic <- "Phosphorus"
 
+# Retain only total phosphorus fractions. "Filtered, field" rows are dissolved P
+# from the SGS 200.8 dissolved metals run and are excluded (that method does not
+# specify phosphorus speciation; those results are Rejected in the CDX export).
+# "Total Residual" is a single-row anomaly also excluded.
+# Historical records with NA fraction are retained — same method used throughout.
+sample_fraction <- c("Total", "Total Recoverable")
+
 # source static regulatory criteria boxplot function
 source("functions/static_boxplot_function.R")
 

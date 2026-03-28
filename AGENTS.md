@@ -23,9 +23,15 @@
 
 -   ~~**Fix 11 results with missing `monitoring_location_id`**~~ **DONE.** Root cause: a typo in `sgs_site_names_matching_table_manual_edit.xlsx`. The Part C transformations in `appendix_a.qmd` (lines \~327–346) convert raw sample names from hyphen+space format to underscore format — `"RM1.5-Kenai City Dock"` → `"RM1.5_Kenai_City_Dock"`. All other sites had a matching entry in the table without a leading underscore (e.g., `RM74_Russian_River`), but the RM 1.5 entry was typed as `RM_1.5_Kenai_City_Dock` (extra underscore after `RM`), causing the left join to return NA. Fix: added one row to `sgs_site_names_matching_table_manual_edit.xlsx` with `sgs_sitenames = RM1.5_Kenai_City_Dock`, `Monitoring Location ID = KR RM 1.5`. All spring and summer SGS site names now resolve with zero NAs. Re-render completed successfully. See Known Data Issues section (updated below).
 
+### Completed this session (March 28, 2026)
+
+-   ~~**Integrate project.csv and station.csv generation into `appendix_a.qmd`**~~ **DONE.** The previously commented-out block (lines ~2691–2708) now runs automatically and applies all CDX-required transformations in code (no manual editing needed). Deleted `other/output/wqx_formatted/final_preparation/` folder — its contents are now fully auto-generated.
+
+-   ~~**Clean up redundant output files in `wqx_formatted/`**~~ **DONE.** Deleted stale `2021_kwf_baseline_results_aqwms.csv` (old AQWMS-era name, pre-fix errors, not referenced in pipeline). Moved two pipeline intermediates to `other/output/wqx_formatted/intermediate/`. Updated all 18 path references in `appendix_a.qmd`. See Output File Structure below.
+
 ### Tasks for next session (in order)
 
-1.  **Re-upload 2021 data to EPA CDX** using the regenerated export files (`other/output/wqx_formatted/2021_kwf_baseline_results_wqx.csv` and `2021_export_data_flagged.csv`). The missing `monitoring_location_id` bug is now fixed and the render is clean — the files are ready. Ensure project and station CSVs are also included (see Annual CDX Submission Steps below).
+1.  **Re-upload 2021 data to EPA CDX** (IN PROGRESS — files are ready, manual upload on CDX website required). Upload all three files from `other/output/wqx_formatted/`: `results_activities.csv`, `project.csv`, `station.csv`. Also upload the QAPP PDF attachment referenced in `project.csv`: `KenaiWatershedForum_QAPP_v3_2023_with_Addendum_April_2024.pdf`. After uploading, verify data visibility in [How's My Waterway](https://mywaterway.epa.gov/) as an end-to-end check.
 2.  **Extract ingestion logic to `.R` scripts** (lower priority — see File Structure section below).
 3.  **Address historical CDX data corrections** (e.g., spring 2013 specific conductance) in a dedicated chapter of the `kenai-river-wqx-qaqc` repo — not in `appendix_a.qmd`.
 4.  **Add inline tables alongside all calculated-result download links** (lower priority — polish, does not affect data quality or CDX submission). Currently, ~10 places in `appendix_a.qmd` offer downloadable CSVs with no inline table, which will render as broken download-only links in PDF output. Use the pattern below for dual HTML/PDF output. Raw source files (PDFs, XLSs, JPGs from labs) do not need tables — download-only is appropriate for those. Calculated CSVs that need tables:
@@ -209,9 +215,10 @@ other/
 │   ├── regulatory_limits/ # Hardness-dependent thresholds
 │   └── baseline_sites.csv # Site metadata (21 sites: 13 mainstem + 8 tributaries)
 └── output/
-    ├── wqx_formatted/     # WQX-formatted export files ready for EPA CDX (formerly aqwms_formatted_results/)
-    ├── analysis_format/   # Processed data ready for analysis
-    └── regulatory_values/ # Combined regulatory threshold files
+    ├── wqx_formatted/             # CDX submission-ready files: results_activities.csv, project.csv, station.csv
+    │   └── intermediate/          # Pipeline intermediates (not for upload): 2021_kwf_baseline_results_wqx.csv, 2021_export_data_flagged.csv
+    ├── analysis_format/           # Processed data ready for analysis
+    └── regulatory_values/         # Combined regulatory threshold files
 ```
 
 **Raw data note:** Files in `other/input/` are untouched as received from the laboratory. Do not modify raw inputs; all transformations happen in code.
