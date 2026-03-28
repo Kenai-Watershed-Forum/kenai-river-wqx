@@ -24,6 +24,11 @@ A trend analysis was conducted using the average and median values for all data 
 # set parameter
 characteristic <- "Lead"
 
+# "Dissolved" (historical) and "Filtered, field" (2021) are the same measurement
+# — dissolved metals by EPA 200.8 — labeled differently across data eras.
+# Both fractions are included together so the full time series is shown.
+sample_fraction <- c("Dissolved", "Filtered, field")
+
 # source static regulatory criteria boxplot function
 source("functions/static_boxplot_function.R")
 

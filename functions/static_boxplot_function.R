@@ -75,16 +75,19 @@ create_facet_plots <- function(data_path, reg_vals_path, characteristic, sample_
   if (is.null(sample_fraction) && exists("sample_fraction", envir = .GlobalEnv)) {
     sample_fraction <- get("sample_fraction", envir = .GlobalEnv)
   }
+  # When a fraction whitelist is provided, include matching rows plus rows where
+  # fraction is NA (historical records where fraction was not recorded but the
+  # same analytical method was used throughout the project).
   if (!is.null(sample_fraction) && length(sample_fraction) > 0) {
-    data <- data %>% filter(result_sample_fraction_text %in% sample_fraction)
+    data <- data %>% filter(result_sample_fraction_text %in% sample_fraction | is.na(result_sample_fraction_text))
   }
   
   # Regulatory Values with lines for geom_segment
   reg_values <- reg_vals %>% filter(characteristic_name == characteristic)
   hline_data <- reg_values %>%
     filter(!is.na(value)) %>%
-    mutate(yintercept = as.numeric(value), x = -Inf, xend = Inf) %>%
-    select(yintercept, linetype = Standard, x, xend)
+    mutate(yintercept = as.numeric(value)) %>%
+    select(yintercept, linetype = Standard)
   
   unique_river_miles <- unique(data$river_mile)
   
@@ -116,7 +119,18 @@ create_facet_plots <- function(data_path, reg_vals_path, characteristic, sample_
         fw_acute_exceed = ifelse(is.na(fw_acute_exceed), NA, fw_acute_exceed),
         fw_chronic_exceed = ifelse(is.na(fw_chronic_exceed), NA, fw_chronic_exceed)
       ) %>%
-      filter(!is.na(result_measure_value))
+      filter(!is.na(result_measure_value)) %>%
+      mutate(
+        tooltip_text = paste0(
+          "<b>", site_name, "</b><br>",
+          "Date: ", activity_start_date, "<br>",
+          "Value: ", result_measure_value, " ", result_measure_measure_unit_code, "<br>",
+          "Fraction: ", ifelse(is.na(result_sample_fraction_text), "Not specified", result_sample_fraction_text), "<br>",
+          "Lab: ", ifelse(is.na(laboratory_name), "Not specified", laboratory_name), "<br>",
+          "Method: ", result_analytical_method_method_identifier, "<br>",
+          "Status: ", result_status_identifier
+        )
+      )
   }
   
   create_plot <- function(subset_data, x_var) {
@@ -131,8 +145,8 @@ create_facet_plots <- function(data_path, reg_vals_path, characteristic, sample_
     
     exceedance_present <- any(!is.na(subset_data$fw_acute_exceed) | !is.na(subset_data$fw_chronic_exceed))
     
-    plot <- ggplot(subset_data, aes(x = get(x_var), y = result_measure_value)) +
-      geom_boxplot(aes(group = get(x_var)), outlier.shape = NA) +
+    plot <- ggplot(subset_data, aes(x = .data[[x_var]], y = result_measure_value)) +
+      geom_boxplot(aes(group = .data[[x_var]]), outlier.shape = NA) +
       geom_jitter(
         aes(
           color = if (exceedance_present) factor(case_when(
@@ -144,12 +158,13 @@ create_facet_plots <- function(data_path, reg_vals_path, characteristic, sample_
             is.na(fw_acute_exceed) & is.na(fw_chronic_exceed) ~ "None",
             is.na(fw_acute_exceed) & fw_chronic_exceed == "Y" ~ "Chronic",
             fw_acute_exceed == "Y" & fw_chronic_exceed == "Y" ~ "Acute"
-          )) else NULL
+          )) else NULL,
+          text = tooltip_text
         ),
         width = 0.2, size = 3, show.legend = exceedance_present
       ) +
-      geom_segment(data = hline_data, aes(x = x, xend = xend, y = yintercept, yend = yintercept, linetype = linetype), 
-                   color = "#D55E00", size = 1.2, show.legend = TRUE) +
+      geom_hline(data = hline_data, aes(yintercept = yintercept, linetype = linetype),
+                 color = "#D55E00", linewidth = 1.2, show.legend = TRUE) +
       facet_wrap(~season) +
       scale_y_continuous(limits = c(y_min, y_max))
     
@@ -170,12 +185,6 @@ create_facet_plots <- function(data_path, reg_vals_path, characteristic, sample_
                                                     "aquaculture_minimum_water" = "dotted", 
                                                     "aquaculture_water" = "solid"))
     
-    # Add dummy invisible lines to show legends even if out of plot range
-    if (nrow(hline_data) > 0) {
-      dummy_lines <- hline_data %>% mutate(yintercept = max(subset_data$result_measure_value, na.rm = TRUE) + 1000)
-      plot <- plot + geom_segment(data = dummy_lines, aes(x = x, xend = xend, y = yintercept, yend = yintercept, linetype = linetype), 
-                                  color = NA, size = 1.2, show.legend = TRUE)
-    }
     
     plot <- plot + guides(
       linetype = guide_legend(override.aes = list(color = "red", size = 1.2)),
@@ -190,7 +199,7 @@ create_facet_plots <- function(data_path, reg_vals_path, characteristic, sample_
       axis.title.y = element_text(size = 16),
       legend.position = "right"
     ) +
-      labs(y = paste0(characteristic, " (", unique(subset_data$result_measure_measure_unit_code), ")"), x = "")
+      labs(y = paste0(characteristic, " (", names(which.max(table(subset_data$result_measure_measure_unit_code))), ")"), x = "")
     
     return(plot)
   }
@@ -208,8 +217,13 @@ create_facet_plots <- function(data_path, reg_vals_path, characteristic, sample_
 
 
 
-# Print plots
+# Print plots — interactive (HTML) or static (PDF)
 plots <- create_facet_plots(data_path, reg_vals_path, characteristic)
-print(plots$tributary_plot)
-print(plots$river_mile_plot)
+if (knitr::is_html_output()) {
+  print(plotly::ggplotly(plots$tributary_plot, tooltip = "text"))
+  print(plotly::ggplotly(plots$river_mile_plot, tooltip = "text"))
+} else {
+  print(plots$tributary_plot)
+  print(plots$river_mile_plot)
+}
 

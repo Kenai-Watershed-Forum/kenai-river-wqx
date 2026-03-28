@@ -1225,7 +1225,7 @@ dat %<>%
   select(one_of(wqx_colnames))
  
 # export final WQX-formatted results to external csv
-write.csv(dat,"other/output/wqx_formatted/2021_kwf_baseline_results_wqx.csv",row.names = F)
+write.csv(dat,"other/output/wqx_formatted/intermediate/2021_kwf_baseline_results_wqx.csv",row.names = F)
 
 
 z <- dat %>%
@@ -1247,11 +1247,11 @@ rm(dat_raw)
 The above data sources have been collated in to a single .csv file (available for download) into a format compatible with the EPA Water Quality Exchange. ***These data have not yet been evaluated against QA/QC standards following guidance in the current project Quality Assurance Project Plan.***
 
 ```{r, echo = F}
-xfun::embed_file('other/output/wqx_formatted/2021_kwf_baseline_results_wqx.csv', text = "Download All Provisional 2021 Kenai River Baseline Water Quality Monitoring Results, Formatted for EPA WQX import")
+xfun::embed_file('other/output/wqx_formatted/intermediate/2021_kwf_baseline_results_wqx.csv', text = "Download All Provisional 2021 Kenai River Baseline Water Quality Monitoring Results, Formatted for EPA WQX import")
 
 
 # check unique activity types
-#z <- read.csv("other/output/wqx_formatted/2021_kwf_baseline_results_wqx.csv")
+#z <- read.csv("other/output/wqx_formatted/intermediate/2021_kwf_baseline_results_wqx.csv")
 #z1 <- data.frame(unique(z$Characteristic.Name))
 
 
@@ -1293,7 +1293,7 @@ All sites were visited as planned on 5/11/2021 and 7/27/2021. Most intrinsic wat
 ```{r echo = F, message = F}
 ### First: get number of samples (results) actually collected from formatted, collated results created from the above code chunks
 ### report for each parameter and date
-total_samples_collected_2021_summary_param <- read.csv('other/output/wqx_formatted/2021_kwf_baseline_results_wqx.csv') %>%
+total_samples_collected_2021_summary_param <- read.csv('other/output/wqx_formatted/intermediate/2021_kwf_baseline_results_wqx.csv') %>%
   clean_names() %>%
   group_by(result_analytical_method_id,characteristic_name,activity_start_date,activity_type) %>%
   count() %>%
@@ -1403,7 +1403,7 @@ planned_samples_2021_summary_by_site <- planned_samples_2021 %>%
 
   
 ### create table of quantity of samples (results) actually collected; not grouped by parameter, but instead by analysis type
-total_samples_collected_2021_summary <- read.csv('other/output/wqx_formatted/2021_kwf_baseline_results_wqx.csv') %>%
+total_samples_collected_2021_summary <- read.csv('other/output/wqx_formatted/intermediate/2021_kwf_baseline_results_wqx.csv') %>%
   clean_names() %>%
   group_by(result_analytical_method_id,activity_start_date,activity_type) %>%
   count() %>%
@@ -1574,7 +1574,7 @@ col_names <- c(
   "lab_name")
 
 # read in data
-total_samples_collected_2021_summary_param <- read.csv('other/output/wqx_formatted/2021_kwf_baseline_results_wqx.csv')
+total_samples_collected_2021_summary_param <- read.csv('other/output/wqx_formatted/intermediate/2021_kwf_baseline_results_wqx.csv')
 
 # read in columns relevant to holding time calculations
 holdtime_dat <- dat %>%
@@ -1736,7 +1736,7 @@ qaqc_sites_2021 <- read_excel("other/input/wqx_templates/wqx_qaqc/wqx_qaqc_info.
   remove_empty()
 
 # read in data formatted for export
-export_dat <- read.csv('other/output/wqx_formatted/2021_kwf_baseline_results_wqx.csv') %>%
+export_dat <- read.csv('other/output/wqx_formatted/intermediate/2021_kwf_baseline_results_wqx.csv') %>%
   clean_names()
 
 # inner join
@@ -2023,7 +2023,7 @@ We calculated Completeness Measure A at the following project scales:
 # This chunk must run before Q25 and Q26, which both read from this file.
 
 # read in data formatted for export
-export_dat <- read.csv('other/output/wqx_formatted/2021_kwf_baseline_results_wqx.csv') %>%
+export_dat <- read.csv('other/output/wqx_formatted/intermediate/2021_kwf_baseline_results_wqx.csv') %>%
   clean_names() %>%
   transform(activity_start_date = ymd(activity_start_date))
 
@@ -2040,7 +2040,7 @@ export_dat <- full_join(export_dat, flags_2021) %>%
   )) %>%
   filter(!is.na(activity_id))
 
-write.csv(export_dat, "other/output/wqx_formatted/2021_export_data_flagged.csv", row.names = F)
+write.csv(export_dat, "other/output/wqx_formatted/intermediate/2021_export_data_flagged.csv", row.names = F)
 
 ```
 
@@ -2052,7 +2052,7 @@ analytes_2021 %<>% select(-a)
 
 # BY PARAMETER
 # summarise flags by parameter
-completeness_summary_param <- read.csv('other/output/wqx_formatted/2021_export_data_flagged.csv') %>%
+completeness_summary_param <- read.csv('other/output/wqx_formatted/intermediate/2021_export_data_flagged.csv') %>%
   clean_names() %>%
   # reduce the list of analytes to only those specified in QAPP
   left_join(analytes_2021) %>%
@@ -2076,7 +2076,7 @@ write.csv(completeness_summary_param,"other/output/field_qa_qc_data/completeness
 
 ## BY SITE
 # summarise flags by site
-completeness_summary_site <- read.csv('other/output/wqx_formatted/2021_export_data_flagged.csv') %>%
+completeness_summary_site <- read.csv('other/output/wqx_formatted/intermediate/2021_export_data_flagged.csv') %>%
   clean_names() %>%
   # reduce the list of analytes to only those specified in QAPP
   left_join(analytes_2021) %>%
@@ -2100,7 +2100,7 @@ write.csv(completeness_summary_site,"other/output/field_qa_qc_data/completeness_
 
 # OVERALL
 # summarise flags for overall project
-completeness_summary_project <- read.csv('other/output/wqx_formatted/2021_export_data_flagged.csv') %>%
+completeness_summary_project <- read.csv('other/output/wqx_formatted/intermediate/2021_export_data_flagged.csv') %>%
   clean_names() %>%
   # reduce the list of analytes to only those specified in QAPP
   left_join(analytes_2021) %>%
@@ -2166,7 +2166,7 @@ For these calculations, we will consider "usable" as "unflagged," and will calcu
 
 # BY PARAMETER (by analytical method)
 # unflagged (usable) vs planned results
-cmb_by_method <- read.csv('other/output/wqx_formatted/2021_export_data_flagged.csv') %>%
+cmb_by_method <- read.csv('other/output/wqx_formatted/intermediate/2021_export_data_flagged.csv') %>%
   clean_names() %>%
   # reduce the list of analytes to only those specified in QAPP
   left_join(analytes_2021) %>%
@@ -2193,7 +2193,7 @@ planned_by_site_totals <- planned_samples_2021_summary_by_site %>%
   group_by(monitoring_location_id) %>%
   summarise(expected_results_n = sum(expected_results_n), .groups = "drop")
 
-cmb_by_site <- read.csv('other/output/wqx_formatted/2021_export_data_flagged.csv') %>%
+cmb_by_site <- read.csv('other/output/wqx_formatted/intermediate/2021_export_data_flagged.csv') %>%
   clean_names() %>%
   # reduce the list of analytes to only those specified in QAPP
   left_join(analytes_2021) %>%
@@ -2216,7 +2216,7 @@ write.csv(cmb_by_site, "other/output/field_qa_qc_data/completeness_measures/cmb_
 # Sum unflagged results across entire project, divide by total planned
 total_planned_2021 <- sum(planned_samples_2021_summary$expected_results_n)
 
-cmb_project <- read.csv('other/output/wqx_formatted/2021_export_data_flagged.csv') %>%
+cmb_project <- read.csv('other/output/wqx_formatted/intermediate/2021_export_data_flagged.csv') %>%
   clean_names() %>%
   left_join(analytes_2021) %>%
   filter(param_in_qapp == "Y") %>%
@@ -2260,7 +2260,7 @@ We used the leaflet package to generate a map of unique sites from the 2021 data
 ```{r echo = F, message = F, warning = F}
 
 # read in locations from exported data (export_dat)
-export_dat <- read.csv("other/output/wqx_formatted/2021_export_data_flagged.csv")
+export_dat <- read.csv("other/output/wqx_formatted/intermediate/2021_export_data_flagged.csv")
 
 site_check <- export_dat %>%
   distinct(monitoring_location_id,activity_latitude,activity_longitude) %>%
@@ -2314,10 +2314,10 @@ Kenai Watershed Forum's Organization ID in the EPA Water Quality Exchange is "Ke
 # Existing format does not include AKDT time zone column.
 
 # read in locations from exported data (export_dat)
-export_dat <- read.csv("other/output/wqx_formatted/2021_export_data_flagged.csv") %>%
+export_dat <- read.csv("other/output/wqx_formatted/intermediate/2021_export_data_flagged.csv") %>%
   mutate(time_zone = "AKDT")
 # re-write export_dat
-write.csv(export_dat,"other/output/wqx_formatted/2021_export_data_flagged.csv")
+write.csv(export_dat,"other/output/wqx_formatted/intermediate/2021_export_data_flagged.csv")
 
 ```
 
@@ -2690,21 +2690,56 @@ write.csv(export_dat,"other/output/wqx_formatted/results_activities.csv",row.nam
 
 ```{r echo = F}
 
-# NOTE: The project and station assembly steps below are commented out here
-# but are a CRITICAL part of each annual CDX submission. For each new year,
-# the project CSV (with QAPP status and website) and station CSV (KWF sites only)
-# must be assembled and included alongside the results/activities export.
-# These steps should be integrated into the annual submission pipeline
-# in the kenai-river-wqx-qaqc repo when that pipeline is built out.
+# --- Project CSV ---
+# Read from the WQP download, then apply corrections needed for CDX upload:
+#   - Keep only the Agency Baseline project row (this submission does not include Hydrocarbons)
+#   - Update QAPP approval status and approving agency (QAPP v3 approved by EPA Region 10, May 2023)
+#   - Set ProjectDescriptionText to the project home page URL
+#   - Attach the QAPP PDF filename and type (uploaded alongside this CSV in CDX)
+#   - Drop columns not used in the CDX import configuration
+project_upload <- read.csv("other/input/WQX_downloads/project/project.csv") |>
+  dplyr::filter(ProjectName == "Agency Baseline") |>
+  dplyr::mutate(
+    QAPPApprovedIndicator  = "Yes",
+    QAPPApprovalAgencyName = "EPA",
+    ProjectDescriptionText = "https://www.kenaiwatershed.org/kenai-river-baseline-water-quality-monitoring/",
+    ProjectAttachmentFileName = "KenaiWatershedForum_QAPP_v3_2023_with_Addendum_April_2024.pdf",
+    ProjectAttachmentType     = "QAPP"
+  ) |>
+  dplyr::select(
+    ProjectIdentifier,
+    ProjectName,
+    ProjectDescriptionText,
+    QAPPApprovedIndicator,
+    QAPPApprovalAgencyName,
+    ProjectAttachmentFileName,
+    ProjectAttachmentType
+  )
 
-# project
-#project <- read.csv("other/input/WQX_downloads/project/project.csv")
-#write.csv(project,"other/output/wqx_formatted/project.csv", row.names = F)
+write.csv(project_upload, "other/output/wqx_formatted/project.csv", row.names = FALSE)
 
-# stations (filter to KWF sites only)
-#station <- read.csv("other/input/WQX_downloads/station/station.csv") %>%
-#  filter(grepl("KBL", MonitoringLocationName))
-#write.csv(station,"other/output/wqx_formatted/station.csv", row.names = F)
+# --- Station CSV ---
+# Read from the WQP download, filter to KWF Kenai Baseline sites (prefix "KBL"),
+# and retain only the columns required by the CDX import configuration.
+# Well/aquifer columns and provider metadata are excluded — not applicable to this project.
+station_upload <- read.csv("other/input/WQX_downloads/station/station.csv") |>
+  dplyr::filter(grepl("KBL", MonitoringLocationName)) |>
+  dplyr::select(
+    MonitoringLocationIdentifier,
+    MonitoringLocationName,
+    MonitoringLocationTypeName,
+    MonitoringLocationDescriptionText,
+    HUCEightDigitCode,
+    LatitudeMeasure,
+    LongitudeMeasure,
+    HorizontalCollectionMethodName,
+    HorizontalCoordinateReferenceSystemDatumName,
+    StateCode,
+    CountyCode
+  )
+
+write.csv(station_upload, "other/output/wqx_formatted/station.csv", row.names = FALSE)
+
 ```
 
 **Notes for 2021 CDX upload:**
