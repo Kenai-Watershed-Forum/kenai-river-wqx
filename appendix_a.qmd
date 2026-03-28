@@ -11,15 +11,6 @@ format:
 
 # Appendix: Data Review and Upload {#appendix_a}
 
-```{r echo = F, message = F}
-
-# notes 1/24/2023
-# Current plan: 
-# 1.) follow DEC data prep / evaluation steps per QAPP
-# 2.) format data to match WQX web template, as seen on youtube at https://www.youtube.com/watch?v=elsHENWlU5w
-
-```
-
 ## Introduction
 
 Prior to publishing analysis and interpretation of water quality data, we will ensure that all data that meets QA/QC standards outlined in the current project [Quality Assurance Project Plan (QAPP)](https://paperpile.com/app/p/7703451b-460d-00b4-82a0-1086ea2554c3) and is accessible in the appropriate public repository.
@@ -76,10 +67,7 @@ xfun::embed_file('other/input/2021_wqx_data/summer_2021_wqx_data/SGS/SGS_results
 
 \newpage
 
-```{r, 2021 WQX formatting for SGS, echo = F, message = F}
-
-#| warning: false
-#| message: false
+```{r, 2021 WQX formatting for SGS, echo = F, message = F, warning = F}
 
 
 # clear environment
@@ -258,7 +246,7 @@ als21 <- bind_rows(spring_als21,summer_als21) %>%
 
 ```
 
-```{r}
+```{r echo = F, message = F, warning = F}
 
 
 # join SGS data with ALS data
@@ -684,7 +672,7 @@ rm(swwtp_spring21)
 ## If we need this column to exist, do a table_join similar to what was done for the SGS and ALS data. May not need it though, since we have monitoring location name & monitoring location id columns already.
 ```
 
-```{r}
+```{r echo = F, message = F, warning = F}
 
 ########################### Part B: Taurianen FC Data Read In (Summer 2021) ########################
 
@@ -1566,13 +1554,13 @@ We worked with three separate laboratories in 2021:
 
 -   Yes. Summer and Spring 2021 holding time requirements were met for all samples. See downloadable files below. Laboratory result documents indicated no compromises of preservation and temperature requirements.
 
-```{r hold-times, echo = F, messages = F, warnings = F}
+```{r hold-times, echo = F, message = F, warning = F}
 
 # embed for download
 xfun::embed_file("other/input/wqx_templates/sample_holding_times.csv", text = "Download Table of Maximum Holding Times for Each Sample Type")
 ```
 
-```{r hold-times-1, echo = F, messages = F, warnings = F}
+```{r hold-times-1, echo = F, message = F, warning = F}
 
 # define columns to retain
 col_names <- c(
@@ -1650,7 +1638,7 @@ xfun::embed_file("other/output/field_qa_qc_data/holding_time_calcs.csv", text = 
 
     -   Iron: all available observations show dissolved metals \< total metals
 
-    -   Magnesium: nearly all available observations show dissolved metals \< total metals, with the exception of three sites, all near the Kenai River mouth
+    -   Magnesium: nearly all available observations show dissolved metals \< total metals, with the exception of two sites near the Kenai River mouth (RM 0 NNC and RM 1.5). At both sites the difference is small and may be within measurement uncertainty.
 
 ```{r echo = F, message = F, warning = F}
 
@@ -1715,9 +1703,7 @@ rm(ca,fe,mg)
 
 <br>
 
-As of Fall 2023 it is unclear why the values measured for total metals is greater than dissolved metals for the cases described above.
-
-See discussion XX in "Summary" section of this report for plans in future years to address the issue of dissolved metals values being greater than total metals values in some cases.
+As of the time of this writing, it is unclear why dissolved metals values exceed total metals values for calcium at all measured sites, and for magnesium at two sites near the river mouth (RM 0 NNC and RM 1.5). Iron behaves as expected (total \> dissolved) at all measured sites. This discrepancy for calcium and magnesium warrants follow-up in future sampling years.
 
 <br>
 
@@ -1892,7 +1878,7 @@ We attempted to calculate RPD values for all parameters collected in 2021 at two
     -   a.) one or both of the samples **were not above** the LOQ; OR one or both of the samples **were not** at least two times the LOQ
         -   Project data for this parameter will be submitted unflagged to EPA WQX if both paired values are non-detect
 
-Best practices for interpreting and applying RPD data in order to flag/not flag the overall dataset are currently being finalized. KWF communicated with the Alaska Department of Environmental Conservation on August 22, 2023 via an inquiry on this topic. The memo includes a visual flow chart of the logic for when data is flagged, and is available for download below.
+KWF's approach to flagging when RPD cannot be calculated follows the example of the Alaska Department of Environmental Conservation (ADEC) 2021 Kenai River Metals Field Report (Apsens and Petitt, 2021): when duplicate pairs cannot be evaluated for RPD because concentrations are at or below the LOQ, results are retained as accepted non-detect or estimated values rather than flagged. A below-LOQ result is not a precision failure — it reflects actual environmental conditions. Non-detect status is already documented in the `Result Detection Condition` column (U = not detected; J = detected below LOQ, treated as an estimate). KWF communicated with the Alaska Department of Environmental Conservation on August 22, 2023 via an inquiry on this topic. The memo includes a visual flow chart of the logic for when data is flagged, and is available for download below.
 
 ```{r echo = F}
 # export csv of rpd results 
@@ -1912,12 +1898,12 @@ xfun::embed_file("other/documents/QAPP/memos/KWF Memo to ADEC August 2023.pdf", 
 
     -   Given the above considerations, KWF will submit 2021 fecal coliform data to the EPA WQX as "flagged". Fecal coliform data will be evaluated in this report and assessed against state standards, but given the high RPD values among duplicate samples, 2021 data will likely not be considered in the context of potential regulatory exceedences.
 
-    -   TO DO: Calculate and visualize RPD values for 2014-2022 and compare, also compare to RPD values in previous comprehensive report.
+    -   A comparison of fecal coliform RPD values across years (2014–2022) and against results from the 2016 comprehensive report is recommended as a future step.
 
 -   *Selected Dissolved Metals (As, Cd, Cr, Cu, Pb, Zn)*
 
-    -   Because these parameters do not have an associated RPD value from 2021 field data, they will be submitted to EPA WQX as "flagged."
-    -   Note: beginning in Summer 2022, KWF initiated a series of changes to the QAPP that will better facilitate QA/QC decisions regarding Total Metals and Dissolved metals results. These changes include use of a dissolved metals field blank, and changing from field filtration to lab filtration as standard practice.
+    -   RPD calculations could not be performed for these parameters because concentrations at both the primary and duplicate sample locations were at or below the LOQ. Following the ADEC 2021 approach described above, these results are submitted to EPA WQX as **Accepted**, with non-detect or estimated status clearly documented in the `Result Detection Condition` and `Result Qualifier` columns. This approach recognizes that a below-LOQ result is not a precision failure.
+    -   Note: beginning in Summer 2022, KWF initiated a series of changes to the QAPP that will better facilitate QA/QC decisions regarding dissolved metals results in future years. These changes include use of a dissolved metals field blank and changing from field filtration to lab filtration as standard practice, both of which will improve the ability to detect contamination and calculate RPD for dissolved metals.
 
 <br>
 
@@ -2030,6 +2016,33 @@ We calculated Completeness Measure A at the following project scales:
 -   For individual parameters
 -   For individual sites
 -   As a project whole
+
+```{r echo = F, message = F, warning = F}
+
+# Apply data flags and write the flagged export CSV before completeness measures are calculated.
+# This chunk must run before Q25 and Q26, which both read from this file.
+
+# read in data formatted for export
+export_dat <- read.csv('other/output/wqx_formatted/2021_kwf_baseline_results_wqx.csv') %>%
+  clean_names() %>%
+  transform(activity_start_date = ymd(activity_start_date))
+
+# apply manually-chosen data flags based on discussion in question 19
+# NOTE: this csv also has a column for summary rationale for each flagging decision
+flags_2021 <- read.csv('other/input/wqx_templates/2021_data_flag_decisions.csv') %>%
+  select(-notes) %>%
+  transform(activity_start_date = mdy(activity_start_date))
+
+export_dat <- full_join(export_dat, flags_2021) %>%
+  mutate(flag = case_when(
+    is.na(flag) ~ "N",
+    TRUE ~ "Y"
+  )) %>%
+  filter(!is.na(activity_id))
+
+write.csv(export_dat, "other/output/wqx_formatted/2021_export_data_flagged.csv", row.names = F)
+
+```
 
 ```{r echo = F, message=FALSE}
 # read in list of analytes specified in QAPP
@@ -2146,12 +2159,13 @@ For these calculations, we will consider "usable" as "unflagged," and will calcu
 -   For individual sites
 -   As a project whole
 
-```{r echo = F, message=FALSE, eval= F}
+```{r echo = F, message=FALSE, eval= T}
 
-# NOTE: IF THE NUMBER/TYPE OF PLANNED SAMPLES IS IDENTICAL TO THE SAMPLES ACTUALLY COLLECTED, THAN COMPLETENESS MEASURES A = COMPLETENESS MEASURES B (?!)
+# NOTE: IF THE NUMBER/TYPE OF PLANNED SAMPLES IS IDENTICAL TO THE SAMPLES ACTUALLY COLLECTED,
+# THEN COMPLETENESS MEASURES A = COMPLETENESS MEASURES B
 
-# BY PARAMETER (actually by method)
-# unflagged (usable) vs expected results
+# BY PARAMETER (by analytical method)
+# unflagged (usable) vs planned results
 cmb_by_method <- read.csv('other/output/wqx_formatted/2021_export_data_flagged.csv') %>%
   clean_names() %>%
   # reduce the list of analytes to only those specified in QAPP
@@ -2165,50 +2179,69 @@ cmb_by_method <- read.csv('other/output/wqx_formatted/2021_export_data_flagged.c
          flag_N = N) %>%
   transform(activity_start_date = ymd(activity_start_date)) %>%
   left_join(planned_samples_2021_summary) %>%
-  # calculate Completeness Measure B for each parameter
-  mutate(cmb = flag_N/expected_results_n)%>%
-  mutate(cmb = replace_na(cmb,0)) %>%
+  # CMB = unflagged / planned (per QAPP formula T - (I + NC) / T, goal 60%)
+  mutate(cmb = flag_N / expected_results_n) %>%
+  mutate(cmb = replace_na(cmb, 0)) %>%
   adorn_pct_formatting(,,,cmb)
-write.csv(cmb_by_method,"other/output/field_qa_qc_data/completeness_measures/cmb_parameter.csv")
-
+write.csv(cmb_by_method, "other/output/field_qa_qc_data/completeness_measures/cmb_parameter.csv")
 
 
 # BY SITE
-# unflagged (usable) vs expected results
+# Aggregate planned totals to one row per site (summing across methods and sampling events)
+# so the join is 1-to-1 on monitoring_location_id
+planned_by_site_totals <- planned_samples_2021_summary_by_site %>%
+  group_by(monitoring_location_id) %>%
+  summarise(expected_results_n = sum(expected_results_n), .groups = "drop")
 
-# prepare table of planned sample summary that includes site names
-
-
-# repeat methods as above for parameter
 cmb_by_site <- read.csv('other/output/wqx_formatted/2021_export_data_flagged.csv') %>%
   clean_names() %>%
   # reduce the list of analytes to only those specified in QAPP
   left_join(analytes_2021) %>%
   filter(param_in_qapp == "Y") %>%
-  group_by(monitoring_location_id,flag) %>%
+  group_by(monitoring_location_id, flag) %>%
   count() %>%
   rename(unflagged_results_n = n) %>%
   pivot_wider(names_from = "flag", values_from = "unflagged_results_n") %>%
   rename(flag_Y = Y,
          flag_N = N) %>%
-  left_join(planned_samples_2021_summary_by_site) %>%
-  # calculate Completeness Measure B for each SITE
-  mutate(cmb = flag_N/expected_ct)%>%
-  mutate(cmb = replace_na(cmb,0)) %>%
+  left_join(planned_by_site_totals) %>%
+  # CMB = unflagged / planned
+  mutate(cmb = flag_N / expected_results_n) %>%
+  mutate(cmb = replace_na(cmb, 0)) %>%
   adorn_pct_formatting(,,,cmb)
+write.csv(cmb_by_site, "other/output/field_qa_qc_data/completeness_measures/cmb_site.csv")
 
-# calculated results here are non-sensical. re-assess what we need in the tables being joined; by site
-
-
-write.csv(cmb_by_method,"other/output/field_qa_qc_data/completeness_measures/cmb_parameter.csv")
 
 # BY PROJECT WHOLE
-# unflagged (usable) vs expected results 
+# Sum unflagged results across entire project, divide by total planned
+total_planned_2021 <- sum(planned_samples_2021_summary$expected_results_n)
 
+cmb_project <- read.csv('other/output/wqx_formatted/2021_export_data_flagged.csv') %>%
+  clean_names() %>%
+  left_join(analytes_2021) %>%
+  filter(param_in_qapp == "Y") %>%
+  group_by(flag) %>%
+  count() %>%
+  pivot_wider(names_from = "flag", values_from = "n") %>%
+  rename(flag_Y = Y,
+         flag_N = N) %>%
+  mutate(total_planned = total_planned_2021,
+         cmb = flag_N / total_planned) %>%
+  mutate(cmb = replace_na(cmb, 0)) %>%
+  adorn_pct_formatting(,,,cmb)
+write.csv(cmb_project, "other/output/field_qa_qc_data/completeness_measures/cmb_project.csv")
 
 ```
 
-Work still in progress on calculating Completness Measures B as of `r Sys.Date()`
+```{r echo = F, message=FALSE}
+xfun::embed_file("other/output/field_qa_qc_data/completeness_measures/cmb_parameter.csv", text = "Download Completeness Measure B Results, By Parameter")
+xfun::embed_file("other/output/field_qa_qc_data/completeness_measures/cmb_site.csv", text = "Download Completeness Measure B Results, By Site")
+xfun::embed_file("other/output/field_qa_qc_data/completeness_measures/cmb_project.csv", text = "Download Completeness Measure B Results, Overall")
+```
+
+*Discussion on "Completeness Measure B" Results*
+
+Work in progress — results to be interpreted following review of output files above.
 
 <br>
 
@@ -2224,7 +2257,7 @@ Kenai Watershed Forum consulted regularly with staff from the Alaska Department 
 
 We used the leaflet package to generate a map of unique sites from the 2021 dataset:
 
-```{r echo = F, message=FALSE}
+```{r echo = F, message = F, warning = F}
 
 # read in locations from exported data (export_dat)
 export_dat <- read.csv("other/output/wqx_formatted/2021_export_data_flagged.csv")
@@ -2497,47 +2530,13 @@ leaflet(wqp_sites) %>%
 
 <br>
 
-```{r echo = F}
+```{r echo = F, message = F, warning = F}
 
-# notes on flagging data
-# based on above description, use case_when logic to apply flag Y/N as appropriate. 
-# code should remain agnostic of parameter and year
-# source the results file, re-save as "flagged file" in same folder; do so for each additional future step that involves flagging
+# NOTE: The flagging chunk that generates 2021_export_data_flagged.csv has been moved
+# to just before Q25 (Completeness Measure A) so that both CMA and CMB calculations
+# read from a freshly-written version of the file within the same render pass.
+# export_dat (with flag column) remains in memory from that earlier chunk.
 
-
-# read in data formatted for export
-export_dat <- read.csv('other/output/wqx_formatted/2021_kwf_baseline_results_wqx.csv') %>%
-  clean_names() %>%
-  transform(activity_start_date = ymd(activity_start_date))
-
-# apply manually-chosen data flags based on discussion in question 19
-# NOTE: this csv also has a column for summary rationale for each flagging decision
-flags_2021 <- read.csv('other/input/wqx_templates/2021_data_flag_decisions.csv') %>%
-  select(-notes) %>%
-  transform(activity_start_date = mdy(activity_start_date))
-
-export_dat <- full_join(export_dat,flags_2021) %>%
-  # fill in "flag" column with "N" if not already "Y"
-  mutate(flag = case_when(
-    is.na(flag) ~ "N",
-    TRUE ~ "Y"
-  )) %>%
-  filter(!is.na(activity_id))
-
-# do we need to distinguish between RPD flag and MS flag?
-
-
-# re-export results w/ rpd flag column
-write.csv(export_dat,"other/output/wqx_formatted/2021_export_data_flagged.csv", row.names = F)
-
-# remove existing "export_dat" dataframe
-#rm(export_dat)
-
-
-# Coordinates for JC site are still correct at this step.
-# is RM 43 missing longitude?
-
-# 3/28/25 - looking now - are there steps past here that would interfere with the manual flaggiing process in this chunk?
 ```
 
 <br>
@@ -2691,103 +2690,27 @@ write.csv(export_dat,"other/output/wqx_formatted/results_activities.csv",row.nam
 
 ```{r echo = F}
 
-# assemble all components of upload to one folder location
+# NOTE: The project and station assembly steps below are commented out here
+# but are a CRITICAL part of each annual CDX submission. For each new year,
+# the project CSV (with QAPP status and website) and station CSV (KWF sites only)
+# must be assembled and included alongside the results/activities export.
+# These steps should be integrated into the annual submission pipeline
+# in the kenai-river-wqx-qaqc repo when that pipeline is built out.
 
-# renew this code for future years; this is manually edited for now.
-
-# project (hashtagged out for now becuase we modified the csv to prep for upload; changed QAPP status to Y and added website)
+# project
 #project <- read.csv("other/input/WQX_downloads/project/project.csv")
 #write.csv(project,"other/output/wqx_formatted/project.csv", row.names = F)
 
-# stations
+# stations (filter to KWF sites only)
 #station <- read.csv("other/input/WQX_downloads/station/station.csv") %>%
-  # remove all non-KWF sites
 #  filter(grepl("KBL", MonitoringLocationName))
-# write.csv(station,"other/output/wqx_formatted/station.csv", row.names = F)
+#write.csv(station,"other/output/wqx_formatted/station.csv", row.names = F)
 ```
 
-Other notes for final 2021 data upload to EPA CDX
+**Notes for 2021 CDX upload:**
 
--   Phosphorus from EPA Method 200.8 (Dissloved Metals by ICP/MS) requires a "method speciation". (This does not apply to "Total Phosphorus", method SM21 4500P-B,E). However this method does not distinguish speciation. Result Status ID was designated "as P" for this test/parameter. Regardless, this parameter was not included in the QAPP, so is designated as "Rejected" in "Result Status ID".
+-   Phosphorus from EPA Method 200.8 (Dissolved Metals by ICP/MS) requires a "method speciation". (This does not apply to "Total Phosphorus", method SM21 4500P-B,E). However this method does not distinguish speciation. Result Status ID was designated "as P" for this test/parameter. Regardless, this parameter was not included in the QAPP, so is designated as "Rejected" in "Result Status ID".
 
-```{r echo = F, eval = F}
-# Corrections to existing EPA CDX data #1 - February 2025
-
-# in this chunk we will conduct the following activities:
-# 1) address minor errors that were discovered from downloading all existing EPA WQX data from 2021
-
-# notes are listed in a google doc at https://docs.google.com/document/d/1p1fsh2dVfvIWNmRrpjteOTyLPSEeMYoQDRk5XhKTcNk/edit?tab=t.0
-
-# read in the document downloaded from EPA WQX, which includes some manual edits as described in the ReadMe in the same directory
-submitted_dat <- read.csv("other/output/wqx_formatted/final_preparation/results_activities.csv", check.names = F) 
-
-
-# minor issues with existing data  (NOTE: this is for 2013; not a huge priority)
-# Issue 1.1 - Units for specific conductance for spring 2013 are all in mS/cm rather than uS/cm. We examined original records and investigated range of values, as well as in the original data sheets from 2013. Both indicate the units in WQX shuold be uS/cm rather than mS/cm for spring 2013 specific conductance. we will apply the correction here.
-submitted_dat <- submitted_dat %>%
-  mutate(`Result.Unit` = case_when(
-    `Characteristic Name` == "Specific conductance" ~ "uS/cm",
-    TRUE ~ `Result Unit`
-  ))
-
-
-
-# Issue 1.2 - MonitoringLocationName string formats from 2021 do not match those from 2000 - 2013
-#z <- dat %>%
-#  distinct(Monitoring.Location.Identifier)
-# not a big deal, maybe address later
-
-# Issue 1.3 - check in to Hardness value for 5/11/2021 at KBL_t_74.0. unrealistic?
-# identified error in manually edited sgs site name matching sheet and corrected
-
-# issues with CDX upload format(s)
-# Issue 2.1 - dates need leading zeroes
-# Convert the date column (assuming it's named 'date') and format it with leading zeros
-# do other date columns need this?
-submitted_dat <- submitted_dat %>%
-  mutate(`Analysis Start Date` = format(mdy(`Analysis Start Date`), "%m/%d/%Y"))
-
-
-# Issue 2.2 - "Total" should be removed from Calcium and Magnesium characteristic name. Sample fraction column differentiates filtered and unfiltered
-# delete this?
-#dat <- dat %>%
-#  mutate(`Characteristic Name` = case_when(
-#    `Characteristic Name` == "Calcium, Total" ~ "Calcium",
-#    `Characteristic Name` == "Magnesium, Total" ~ "Magnesium",
-#    TRUE ~ `Characteristic Name`
-#  )) 
-
-# export back into final preparation folder
-write.csv(submitted_dat,"other/output/wqx_formatted/final_preparation/results_activities.csv", row.names = F)
-  
-```
-
-Work in progress here as of `r Sys.Date()`
-
-```{r echo = F}
-
-# 1/4/24
-# next step: re-start (delete old) EPA CDX import config for results_activities. Somehow I duplicated a bunch of column names. Consider removing all irrelevant columns with no info (all NA) from results_activities, make import config to reflect this
-
-
-# next steps
-
-# for next years::: take the dataframe at the end of this long script, make so column names/structure conforms to the ADEC example. In the 2021 QA/QC process, it went through the janitor::clean_names process, thus names needed to be fixed again at the end.
-
-## 1.) see that column name structure in EPA WQX matches that of adec WQX example
-## 2.) ensure that df export from here matches EPA WQX column names
-
-# projects
-# monitoring locations
-# results & activities
-
-
-# access all existing KWF water quality data downloaded from EPA CDX on 2/3/2025
-# narrowresult <- read.csv("other/input/WQX_downloads/wqp_download_20250225/narrowresult.csv")
-# station <- read.csv("other/input/WQX_downloads/wqp_download_20250225/station.csv")
-
-
-knitr::knit_exit()
-```
+-   Corrections to data from years other than 2021 (e.g., spring 2013 specific conductance units) are documented in AGENTS.md and will be addressed in a dedicated chapter of the kenai-river-wqx-qaqc repo, not here.
 
 \newpage

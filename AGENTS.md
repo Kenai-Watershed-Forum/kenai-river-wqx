@@ -6,24 +6,50 @@
 
 ### Completed this session (March 25, 2026)
 
-- ~~Inspect and correct the Ca/Mg/Fe unit errors in the 2021 data.~~ **DONE.** Fix applied in the SGS ingestion block of `appendix_a.qmd`. See Known Data Issues for full details.
+-   ~~Inspect and correct the Ca/Mg/Fe unit errors in the 2021 data.~~ **DONE.** Fix applied in the SGS ingestion block of `appendix_a.qmd`. See Known Data Issues for full details.
 
 ### Completed this session (March 26, 2026)
 
-- ~~**Re-render `appendix_a.qmd`**~~ **DONE.** Render completes successfully. Two bugs fixed in the process:
-  1. The main WQX column-formatting/write chunk (lines ~1132–1249) had `eval = F` — changed to `eval = T`.
-  2. Enabling that chunk caused downstream QA/QC chunks to break (they expected raw column names like `analyte`, `collect_date`). Fixed by saving `dat_raw <- dat` before the WQX mutate and restoring `dat <- dat_raw` afterward, so the formatted copy is written to CSV while raw `dat` is preserved for QA/QC.
-  - Spot-check confirmed: Ca (11.8–39.1 mg/L), Fe (0.257–1.020 mg/L), Mg (0.919–68.6 mg/L) — all correct, units mg/L.
-- ~~**Replace AQWMS/AWQWMS terminology**~~ **DONE (March 2026).** All references replaced with `wqx_formatted`/`wqx_templates`. See Terminology section for full list of renamed files and paths.
+-   ~~**Re-render `appendix_a.qmd`**~~ **DONE.** Render completes successfully. Two bugs fixed in the process:
+
+    1.  The main WQX column-formatting/write chunk (lines \~1132–1249) had `eval = F` — changed to `eval = T`.
+    2.  Enabling that chunk caused downstream QA/QC chunks to break (they expected raw column names like `analyte`, `collect_date`). Fixed by saving `dat_raw <- dat` before the WQX mutate and restoring `dat <- dat_raw` afterward, so the formatted copy is written to CSV while raw `dat` is preserved for QA/QC.
+
+    -   Spot-check confirmed: Ca (11.8–39.1 mg/L), Fe (0.257–1.020 mg/L), Mg (0.919–68.6 mg/L) — all correct, units mg/L.
+
+-   ~~**Replace AQWMS/AWQWMS terminology**~~ **DONE (March 2026).** All references replaced with `wqx_formatted`/`wqx_templates`. See Terminology section for full list of renamed files and paths.
+
+### Completed this session (March 27, 2026)
+
+-   ~~**Fix 11 results with missing `monitoring_location_id`**~~ **DONE.** Root cause: a typo in `sgs_site_names_matching_table_manual_edit.xlsx`. The Part C transformations in `appendix_a.qmd` (lines \~327–346) convert raw sample names from hyphen+space format to underscore format — `"RM1.5-Kenai City Dock"` → `"RM1.5_Kenai_City_Dock"`. All other sites had a matching entry in the table without a leading underscore (e.g., `RM74_Russian_River`), but the RM 1.5 entry was typed as `RM_1.5_Kenai_City_Dock` (extra underscore after `RM`), causing the left join to return NA. Fix: added one row to `sgs_site_names_matching_table_manual_edit.xlsx` with `sgs_sitenames = RM1.5_Kenai_City_Dock`, `Monitoring Location ID = KR RM 1.5`. All spring and summer SGS site names now resolve with zero NAs. Re-render completed successfully. See Known Data Issues section (updated below).
 
 ### Tasks for next session (in order)
 
-1. **Re-upload 2021 data to EPA CDX** using the regenerated export files (`other/output/wqx_formatted/2021_kwf_baseline_results_wqx.csv` and `2021_export_data_flagged.csv`).
-2. **Fix the `Completeness Measure B` block** (~line 2141 after recent edits, currently `eval = F`). The block produces nonsensical results and is unfinished. Understand what it is supposed to calculate (per the QAPP), diagnose why results are wrong, and either fix or document as a known gap.
-3. **Address the post-hoc corrections placeholder** (~line 2705, `eval = F`). This chunk never executes and `knitr::knit_exit()` at the end of the file halts rendering prematurely. Decide whether to complete, remove, or document this section.
-4. **Extract ingestion logic to `.R` scripts** (lower priority — see File Structure section below). Do not start this until steps 1–3 are complete.
+1.  **Re-upload 2021 data to EPA CDX** using the regenerated export files (`other/output/wqx_formatted/2021_kwf_baseline_results_wqx.csv` and `2021_export_data_flagged.csv`). The missing `monitoring_location_id` bug is now fixed and the render is clean — the files are ready. Ensure project and station CSVs are also included (see Annual CDX Submission Steps below).
+2.  **Extract ingestion logic to `.R` scripts** (lower priority — see File Structure section below).
+3.  **Address historical CDX data corrections** (e.g., spring 2013 specific conductance) in a dedicated chapter of the `kenai-river-wqx-qaqc` repo — not in `appendix_a.qmd`.
+4.  **Add inline tables alongside all calculated-result download links** (lower priority — polish, does not affect data quality or CDX submission). Currently, ~10 places in `appendix_a.qmd` offer downloadable CSVs with no inline table, which will render as broken download-only links in PDF output. Use the pattern below for dual HTML/PDF output. Raw source files (PDFs, XLSs, JPGs from labs) do not need tables — download-only is appropriate for those. Calculated CSVs that need tables:
+    - `planned_actual_analyses_2021.csv` (planned vs. actual analyses)
+    - `sample_holding_times.csv` (max holding times by sample type)
+    - `holding_time_calcs.csv` (spring/summer 2021 holding time calcs)
+    - Ca, Fe, Mg total vs. dissolved CSVs (3 files)
+    - `rpd_check_dat.csv` (duplicate RPD values)
+    - `matrix_spike_recovery_fails_2021.csv` (matrix spike failures)
+    - CMA outputs: `cma_parameter.csv`, `cma_site.csv`, `cma_project.csv`
+    - CMB outputs: `cmb_parameter.csv`, `cmb_site.csv`, `cmb_project.csv`
+    - Observation count by characteristic CSV (Q39 area)
+    - Skip inline table for the large WQX-formatted results file (`2021_kwf_baseline_results_wqx.csv`) — too many rows to display usefully.
 
----
+    **Pattern for dual HTML/PDF tables:**
+    ```r
+    if (knitr::is_html_output()) {
+      DT::datatable(df)
+    } else {
+      knitr::kable(df)
+    }
+    ```
+
+------------------------------------------------------------------------
 
 ## Decisions Made — March 2026
 
@@ -31,9 +57,9 @@
 
 The existing flagging approach in `appendix_a.qmd` is already correct and aligns with WQX conventions. Do not change the flagging design. Specifically:
 
-- **`Result Qualifier`** column: Lab qualifiers from the laboratory (`U` = non-detect, `J` = below LOQ, `=` = detected). These come from the lab EDD files and are mapped in the data ingestion step.
-- **`Result Status ID`** column: KWF's QA/QC decision. Values are `Accepted` or `Rejected`. This is the standard WQX field for flagging data that does not meet project QA/QC standards (e.g., RPD failures, matrix spike failures). The binary internal `flag` (Y/N) in `2021_data_flag_decisions.csv` maps to this field at the CDX export step.
-- The `FQC` qualifier code idea from the To Do notes is **not needed** and should not be implemented. The `Result Status ID = Rejected` convention is sufficient and standard.
+-   **`Result Qualifier`** column: Lab qualifiers from the laboratory (`U` = non-detect, `J` = below LOQ, `=` = detected). These come from the lab EDD files and are mapped in the data ingestion step.
+-   **`Result Status ID`** column: KWF's QA/QC decision. Values are `Accepted` or `Rejected`. This is the standard WQX field for flagging data that does not meet project QA/QC standards (e.g., RPD failures, matrix spike failures). The binary internal `flag` (Y/N) in `2021_data_flag_decisions.csv` maps to this field at the CDX export step.
+-   The `FQC` qualifier code idea from the To Do notes is **not needed** and should not be implemented. The `Result Status ID = Rejected` convention is sufficient and standard.
 
 ### File Structure (decided but not yet implemented)
 
@@ -42,7 +68,7 @@ Extract processing logic from `appendix_a.qmd` into sourced `.R` scripts. This m
 Planned script breakdown:
 
 | Script | Content |
-|---|---|
+|----|----|
 | `R/ingest_sgs_als.R` | SGS EDD + ALS CSV read-in, column normalization, site name mapping, method code mapping (Parts A–E of current appendix) |
 | `R/ingest_fc.R` | SWWTP + Taurianen fecal coliform read-in |
 | `R/ingest_tss.R` | SWWTP TSS read-in |
@@ -51,23 +77,23 @@ Planned script breakdown:
 
 Each script should accept year-specific inputs (file paths, sample dates) as arguments or via a config object so they work for multiple years.
 
----
+------------------------------------------------------------------------
 
 ## appendix_a.qmd Audit Results (March 2026)
 
-Full audit was completed. Section-by-section status. **Note: line numbers are approximate and have shifted with each editing session. As of March 26, 2026 edits, add ~15 lines to the original estimates.**
+Full audit was completed. Section-by-section status. **Note: line numbers are approximate and have shifted with each editing session. As of March 26, 2026 edits, add \~15 lines to the original estimates.**
 
 | Approx. Lines | Section | Status |
-|---|---|---|
+|----|----|----|
 | 1–518 | SGS/ALS ingestion (Parts A–E) | Working. Includes Ca/Mg/Fe unit correction (March 2026). Dense — priority candidate for extraction to `R/ingest_sgs_als.R`. |
 | 520–983 | FC and TSS ingestion | Mostly working. TSS has a documented QA gap: SWWTP did not report lab QA results (blanks, duplicates, check standards) as required by QAPP in 2021/2022. Lab QA export block is commented out. |
 | 985–1260 | Lookup joins + first WQX export | Working (March 26, 2026). The write chunk was `eval = F` and is now `eval = T`. A `dat_raw`/`dat` save-restore pattern was added so the WQX CSV is written without corrupting the raw-column `dat` used by downstream QA/QC. The full column-rename block is redundantly repeated later for the CDX export — consolidate in the script extraction step. |
-| 1268–2410 | QA/QC Checklist (Questions 1–42) | Mostly complete. Two gaps: (1) Completeness Measure B block is `eval = F` and produces nonsensical results — unfinished (~line 2141). (2) Q39 (range check / outliers) defers to visual review in report chapters rather than doing anything here. |
+| 1268–2410 | QA/QC Checklist (Questions 1–42) | Mostly complete. Two gaps: (1) Completeness Measure B block is `eval = F` and produces nonsensical results — unfinished (\~line 2141). (2) Q39 (range check / outliers) defers to visual review in report chapters rather than doing anything here. |
 | 2411–2533 | Flagging and flagged export | Working. Ca/Mg/Fe unit error is now corrected upstream at ingestion (March 2026); this section no longer needs a workaround. |
 | 2535–2680 | CDX export (Results and Activities) | Working but nearly duplicates the format block at lines 985–1243. Consolidate. |
 | 2705–2786 | Post-hoc corrections + `knitr::knit_exit()` | Incomplete placeholder. The chunk is `eval = F` and never executes. The `knitr::knit_exit()` near the end of the file stops rendering prematurely. |
 
----
+------------------------------------------------------------------------
 
 ## Project Overview
 
@@ -78,13 +104,41 @@ The **Kenai River Baseline Water Quality Monitoring Project** is a long-term coo
 -   **QA/QC repo (separate):** https://github.com/Kenai-Watershed-Forum/kenai-river-wqx-qaqc
 -   **Public data:** https://www.waterqualitydata.us/ (organization: "Kenai Watershed Forum")
 
-### Long-Term Vision
+### Intended Audience
 
--   The report should eventually intake data **directly from EPA CDX** when the project is freshly rendered, rather than relying on manually downloaded files.
--   All KWF data in EPA CDX should be visible in EPA's **"How's My Waterway"** interactive web app.
--   The report format is modeled on previously completed comprehensive reports from **2007 and 2016** (PDFs in `other/agent_context/`).
--   The Quarto book renders to both **HTML** (hosted on GitHub Pages) and **PDF**, with the PDF accessible/downloadable by readers.
--   Each parameter chapter should contain **inline R code** for summary statistics (min/max, range, etc.) so values update automatically on re-render.
+This project serves multiple audiences simultaneously:
+
+-   **Regulatory agencies** — primarily ADEC, which draws data from EPA CDX every two years for its [Integrated Report](https://dec.alaska.gov/water/water-quality/integrated-report/). That report makes determination decisions about which water bodies may need management action. This is the most immediate real-world use of KWF's submitted data.
+-   **KWF scientists** tracking long-term trends
+-   **General public** and local stakeholders
+-   **Funding partners** — a cohort of local agencies funds the laboratory work. They want assurance that funds are being spent wisely. Communicate with them regularly; this is a project priority that is not obvious from the code itself.
+
+The report format is modeled on previously completed comprehensive reports from **2007 and 2016** (PDFs in `other/agent_context/`).
+
+### QA/QC Decision Authority
+
+KWF staff scientists have final say on all QA/QC flag decisions (Accepted vs. Rejected). All decisions must be thoroughly documented and transparent. Labs, ADEC, and EPA Region 10 do not make flagging decisions, but ADEC is the primary downstream consumer of flagged data. If ADEC disagrees with KWF's QA/QC decisions, they may choose to exclude the data from analyses in the Integrated Report — making thorough documentation of all flag decisions especially important.
+
+### Long-Term Vision and Intended Use
+
+This codebase is intended for **ongoing annual use**, not a one-time archive. The workflow is:
+
+1.  New annual data is processed each year in the **separate qaqc repo** (`kenai-river-wqx-qaqc`), using `appendix_a.qmd` as the template/example.
+2.  Processed, QA/QC'd data is submitted to **EPA CDX**.
+3.  This main report repo downloads data directly from EPA CDX on render, automatically integrating new years.
+
+`appendix_a.qmd` is the **example pipeline for 2021** — once it is stable and correct, its logic is extracted to `.R` scripts reusable across years in the qaqc repo.
+
+A "complete" version of this report can: (a) access data from EPA CDX, and (b) automatically integrate it into the report on render. The Quarto book renders to both **HTML** (hosted on GitHub Pages) and **PDF**, with the PDF accessible/downloadable by readers.
+
+Each parameter chapter should contain **inline R code** for summary statistics so values update automatically on re-render.
+
+**A primary goal of this project is that all KWF water quality data is publicly visible in EPA's [How's My Waterway](https://mywaterway.epa.gov/) web app.** This requires that data be correctly formatted and successfully submitted to EPA CDX/WQX. Verifying visibility in How's My Waterway is a meaningful end-to-end check that the submission pipeline worked correctly.
+
+### Known Scientific Context
+
+-   The **lower Kenai River area** is experiencing faster-paced development and use. Parameters of concern are more likely to show trends there.
+-   **Climate change** may be driving trends in turbidity, temperature, and related field parameters — worth watching.
 
 ### Future Flexibility
 
@@ -114,6 +168,21 @@ A Quarto book/website publishing to HTML and DOCX simultaneously. Key source fil
 | `functions/static_boxplot_function.R` | Reusable boxplot function |
 
 Parameter result chapters (one per water quality parameter) follow a consistent structure: boxplot, regulatory comparison, downloadable data table.
+
+## Annual CDX Submission Steps
+
+Each annual CDX submission requires three components uploaded together. This logic is currently stubbed out (commented) at the end of `appendix_a.qmd` and must be built into the annual pipeline in `kenai-river-wqx-qaqc`:
+
+1.  **Results & Activities CSV** — the main QA/QC'd output (e.g., `2021_export_data_flagged.csv`)
+2.  **Project CSV** — read from existing CDX download, update QAPP status to `Y` and add website URL before uploading
+3.  **Station CSV** — read from existing CDX download, filter to KWF sites only (`grepl("KBL", MonitoringLocationName)`)
+
+## Annual CDX Historical Corrections
+
+Corrections to data from years other than the current submission year (e.g., errors discovered in previously uploaded data) should be addressed in a **dedicated chapter of the `kenai-river-wqx-qaqc` repo**, not in `appendix_a.qmd`. Known issues to address there:
+
+-   **Spring 2013 specific conductance units:** Values are stored in CDX as `mS/cm` but should be `uS/cm`. Original field records confirm `uS/cm` is correct. This correction has never been applied. Reference Google Doc with full issue log: https://docs.google.com/document/d/1p1fsh2dVfvIWNmRrpjteOTyLPSEeMYoQDRk5XhKTcNk/edit?tab=t.0
+-   **2021 MonitoringLocationName format mismatch:** String formats from 2021 do not match those from 2000–2013. Low priority.
 
 ## Data Pipeline Summary
 
@@ -150,7 +219,7 @@ other/
 ## Parameters Monitored
 
 | Category | Parameters |
-|------------------------------------|------------------------------------|
+|----|----|
 | Dissolved Metals | Arsenic, Cadmium, Chromium, Copper, Lead, Zinc |
 | Total Metals | Calcium, Iron, Magnesium |
 | Nutrients | Nitrate + Nitrite, Phosphorus |
@@ -169,15 +238,7 @@ other/
 
 `AQWMS` (also written `AWQWMS` or `aqwms`) stands for "Ambient Water Quality Monitoring System," software sold by Gold Systems. KWF considered using it in 2021 but ultimately did not. **Completed March 2026:** All references have been replaced with `wqx_formatted` / `wqx_templates` as appropriate throughout `appendix_a.qmd` and on disk.
 
-Renamed paths:
-- `other/output/aqwms_formatted_results/` → `other/output/wqx_formatted/`
-- `other/input/AQWMS/` → `other/input/wqx_templates/`
-- `other/input/AQWMS/aqwms_qaqc/` → `other/input/wqx_templates/wqx_qaqc/`
-- `other/documents/AQWMS_documents/` → `other/documents/wqx_documents/`
-- `AQWMS_template_matching_table.xlsx` → `wqx_template_matching_table.xlsx`
-- `aqwms_qaqc_info.xlsx` → `wqx_qaqc_info.xlsx`
-- Output file: `2021_kwf_baseline_results_aqwms.csv` → `2021_kwf_baseline_results_wqx.csv`
-- R variables: `aqwms_colnames` → `wqx_colnames`, `aqwms21_sitenames` → `wqx_sitenames`, `aqwms_analytical_methods` → `wqx_analytical_methods`
+Renamed paths: - `other/output/aqwms_formatted_results/` → `other/output/wqx_formatted/` - `other/input/AQWMS/` → `other/input/wqx_templates/` - `other/input/AQWMS/aqwms_qaqc/` → `other/input/wqx_templates/wqx_qaqc/` - `other/documents/AQWMS_documents/` → `other/documents/wqx_documents/` - `AQWMS_template_matching_table.xlsx` → `wqx_template_matching_table.xlsx` - `aqwms_qaqc_info.xlsx` → `wqx_qaqc_info.xlsx` - Output file: `2021_kwf_baseline_results_aqwms.csv` → `2021_kwf_baseline_results_wqx.csv` - R variables: `aqwms_colnames` → `wqx_colnames`, `aqwms21_sitenames` → `wqx_sitenames`, `aqwms_analytical_methods` → `wqx_analytical_methods`
 
 Note: The original vendor template file `AWQMS_KWF_Baseline_2021.xlsx` retains its name — it is a received file from Gold Systems and is kept as-is per the raw data policy.
 
@@ -189,18 +250,24 @@ Note: The original vendor template file `AWQMS_KWF_Baseline_2021.xlsx` retains i
 
 ## Known Data Issues (as of March 2026)
 
+-   **11 results missing `monitoring_location_id`: RESOLVED (March 27, 2026).** Root cause was a typo in `sgs_site_names_matching_table_manual_edit.xlsx`: the RM 1.5 entry was `RM_1.5_Kenai_City_Dock` (extra underscore after `RM`) rather than `RM1.5_Kenai_City_Dock` (the form produced by the Part C transformations). Fix applied by adding one correctly-formatted row to the Excel file. All spring and summer SGS site names now resolve without NAs. Re-render completed successfully March 27, 2026; output CSVs are current and ready for CDX upload.
+
 -   **Ca/Mg/Fe unit errors: RESOLVED (March 2026).** Root cause identified: the summer 2021 SGS EDD reported dissolved Calcium, Iron, and Magnesium (method EP200.8) with unit label `ug/L`, but the numeric values were on the mg/L scale (e.g., Ca = 16,200 "ug/L" at RM 0 NNC = 16.2 mg/L, which is physically plausible; 16.2 ug/L would be unrealistically low for freshwater). Spring 2021 SGS data contained no dissolved Ca/Fe/Mg runs (confirmed). ALS total metals were correctly labeled mg/L throughout. Fix applied in `appendix_a.qmd` at the SGS ingestion step (Part A): rows where `analyte %in% c("Calcium", "Iron", "Magnesium")` and `units == "ug/L"` are divided by 1000 and relabeled `mg/L`. Corrected hardness values for summer 2021 are 37–380 mg/L as CaCO3 (plausible); erroneous values were 37,000–380,000 mg/L.
--   **Output CSVs regenerated (March 26, 2026).** Both `other/output/wqx_formatted/2021_kwf_baseline_results_wqx.csv` and `2021_export_data_flagged.csv` have been regenerated with corrected values (confirmed: Ca 11.8–39.1 mg/L, Fe 0.257–1.020 mg/L, Mg 0.919–68.6 mg/L). **The 2021 EPA WQX upload was previously deleted and is ready to be re-submitted to CDX** — this is Task 1 for the next session.
+
+-   **Output CSVs regenerated (March 27, 2026, clean).** Both `other/output/wqx_formatted/2021_kwf_baseline_results_wqx.csv` and `2021_export_data_flagged.csv` have been regenerated with corrected Ca/Mg/Fe values and correct RM 1.5 site IDs. **The 2021 EPA WQX upload was previously deleted and is ready to be re-submitted to CDX** — this is Task 1 for the next session.
+
 -   **Hydrocarbon data** missing from 2025 WQP download (uploaded Jan 2024 but not appearing in download).
--   **Completeness Measure B** calculation is incomplete (`eval = F` in appendix_a.qmd, line ~2111).
+
+-   **Completeness Measure B** calculation is complete and enabled. Project-wide CMB is 52.2% (below the 60% QAPP goal), primarily driven by dissolved metals being fully below LOQ and fecal coliform RPD failures.
+
 -   **TSS lab QA gap:** SWWTP did not report required lab QA results for TSS in 2021/2022. Note in code, address for 2023+.
 
 ## Visualization Wish List
 
 These are desired but not yet implemented features for the report figures:
 
-- **A) Interactive boxplots:** When the user hovers over a data point, a pop-up displays relevant information (site, date, value, etc.).
-- **B) QA/QC toggle:** Figures should support two views — (1) data that passed QA/QC only, and (2) all data including failed QA/QC — switchable via a toggle. Symbology should differ between the two views.
+-   **A) Interactive boxplots:** When the user hovers over a data point, a pop-up displays relevant information (site, date, value, etc.).
+-   **B) QA/QC toggle:** Figures should support two views — (1) data that passed QA/QC only, and (2) all data including failed QA/QC — switchable via a toggle. Symbology should differ between the two views.
 
 ## Key R Packages
 
