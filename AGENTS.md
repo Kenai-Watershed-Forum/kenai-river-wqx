@@ -25,29 +25,48 @@
 
 ### Completed this session (March 28, 2026)
 
--   ~~**Integrate project.csv and station.csv generation into `appendix_a.qmd`**~~ **DONE.** The previously commented-out block (lines ~2691–2708) now runs automatically and applies all CDX-required transformations in code (no manual editing needed). Deleted `other/output/wqx_formatted/final_preparation/` folder — its contents are now fully auto-generated.
+-   ~~**Integrate project.csv and station.csv generation into `appendix_a.qmd`**~~ **DONE.** The previously commented-out block (lines \~2691–2708) now runs automatically and applies all CDX-required transformations in code (no manual editing needed). Deleted `other/output/wqx_formatted/final_preparation/` folder — its contents are now fully auto-generated.
 
 -   ~~**Clean up redundant output files in `wqx_formatted/`**~~ **DONE.** Deleted stale `2021_kwf_baseline_results_aqwms.csv` (old AQWMS-era name, pre-fix errors, not referenced in pipeline). Moved two pipeline intermediates to `other/output/wqx_formatted/intermediate/`. Updated all 18 path references in `appendix_a.qmd`. See Output File Structure below.
+
+-   ~~**Fix `_quarto.yml` corruption**~~ **DONE.** R code was accidentally injected into the chapters list, and `copper.qmd`, `lead.qmd`, and `zinc.qmd` were missing from the book. Restored all three chapter entries correctly.
+
+-   ~~**Add per-chapter regulatory threshold tables**~~ **DONE.** Created `functions/threshold_table.R` with a `show_threshold_table(characteristic)` function. For static thresholds it reads `other/output/regulatory_values/all_reg_vals.csv`; for hardness-dependent metals (Cd, Cr, Cu, Pb, Zn) it computes the min/max range of calculated values from `other/input/regulatory_limits/formatted_reg_vals/calculated_metals_reg_vals.csv`. Table columns: Standard Type, Value, Unit, Regulatory Authority. Returns silently for parameters with no defined thresholds. Added `source("functions/threshold_table.R")` + `show_threshold_table(characteristic)` to all 19 active parameter chapters, placed after the CSV download link. Regulatory authority mapping is hard-coded in `threshold_table.R` lines ~32–41 — **needs user verification before final render.**
+
+-   ~~**Restore out-of-range threshold legend entries**~~ **DONE.** Removed the `hline_visible` filter from `static_boxplot_function.R`. All threshold lines now appear in the legend regardless of whether they fall within the visible y range. Companion threshold table provides the numerical values.
+
+-   ~~**Code quality: replace `!!!` / `dplyr::recode()` in `threshold_table.R`**~~ **DONE.** Replaced with plain named-vector lookups using `dplyr::coalesce()`. No metaprogramming, no deprecated functions.
+
+-   ~~**Tooltip: prefix "RM" to mainstem river mile labels**~~ **DONE.** Tooltip bold header now shows e.g. "RM 1.5" instead of bare "1.5" for mainstem sites. One-line change in `static_boxplot_function.R`.
+
+-   **Boxplot whisker display (decision logged):** Long whiskers on Chromium and Copper are intentional — they reflect genuine right-skewed distributions at RM 1.5 and RM 6.5 (most developed lower-river sites, n=21 and n=22 observations respectively). Display left as-is; wide spread at lower-river sites should be noted in chapter narratives.
 
 ### Tasks for next session (in order)
 
 1.  **Re-upload 2021 data to EPA CDX** (IN PROGRESS — files are ready, manual upload on CDX website required). Upload all three files from `other/output/wqx_formatted/`: `results_activities.csv`, `project.csv`, `station.csv`. Also upload the QAPP PDF attachment referenced in `project.csv`: `KenaiWatershedForum_QAPP_v3_2023_with_Addendum_April_2024.pdf`. After uploading, verify data visibility in [How's My Waterway](https://mywaterway.epa.gov/) as an end-to-end check.
-2.  **Extract ingestion logic to `.R` scripts** (lower priority — see File Structure section below).
-3.  **Address historical CDX data corrections** (e.g., spring 2013 specific conductance) in a dedicated chapter of the `kenai-river-wqx-qaqc` repo — not in `appendix_a.qmd`.
-4.  **Add inline tables alongside all calculated-result download links** (lower priority — polish, does not affect data quality or CDX submission). Currently, ~10 places in `appendix_a.qmd` offer downloadable CSVs with no inline table, which will render as broken download-only links in PDF output. Use the pattern below for dual HTML/PDF output. Raw source files (PDFs, XLSs, JPGs from labs) do not need tables — download-only is appropriate for those. Calculated CSVs that need tables:
-    - `planned_actual_analyses_2021.csv` (planned vs. actual analyses)
-    - `sample_holding_times.csv` (max holding times by sample type)
-    - `holding_time_calcs.csv` (spring/summer 2021 holding time calcs)
-    - Ca, Fe, Mg total vs. dissolved CSVs (3 files)
-    - `rpd_check_dat.csv` (duplicate RPD values)
-    - `matrix_spike_recovery_fails_2021.csv` (matrix spike failures)
-    - CMA outputs: `cma_parameter.csv`, `cma_site.csv`, `cma_project.csv`
-    - CMB outputs: `cmb_parameter.csv`, `cmb_site.csv`, `cmb_project.csv`
-    - Observation count by characteristic CSV (Q39 area)
-    - Skip inline table for the large WQX-formatted results file (`2021_kwf_baseline_results_wqx.csv`) — too many rows to display usefully.
+
+2.  **Verify regulatory authority column in threshold tables.** The USEPA/ADEC mapping in `functions/threshold_table.R` lines ~32–41 is hard-coded — confirm assignments are correct before final render.
+
+3.  **Extract ingestion logic to `.R` scripts** (lower priority — see File Structure section below).
+
+4.  **Address historical CDX data corrections** (e.g., spring 2013 specific conductance) in a dedicated chapter of the `kenai-river-wqx-qaqc` repo — not in `appendix_a.qmd`.
+
+5.  **Add inline tables alongside all calculated-result download links** (lower priority — polish, does not affect data quality or CDX submission). Currently, \~10 places in `appendix_a.qmd` offer downloadable CSVs with no inline table, which will render as broken download-only links in PDF output. Use the pattern below for dual HTML/PDF output. Raw source files (PDFs, XLSs, JPGs from labs) do not need tables — download-only is appropriate for those. Calculated CSVs that need tables:
+
+    -   `planned_actual_analyses_2021.csv` (planned vs. actual analyses)
+    -   `sample_holding_times.csv` (max holding times by sample type)
+    -   `holding_time_calcs.csv` (spring/summer 2021 holding time calcs)
+    -   Ca, Fe, Mg total vs. dissolved CSVs (3 files)
+    -   `rpd_check_dat.csv` (duplicate RPD values)
+    -   `matrix_spike_recovery_fails_2021.csv` (matrix spike failures)
+    -   CMA outputs: `cma_parameter.csv`, `cma_site.csv`, `cma_project.csv`
+    -   CMB outputs: `cmb_parameter.csv`, `cmb_site.csv`, `cmb_project.csv`
+    -   Observation count by characteristic CSV (Q39 area)
+    -   Skip inline table for the large WQX-formatted results file (`2021_kwf_baseline_results_wqx.csv`) — too many rows to display usefully.
 
     **Pattern for dual HTML/PDF tables:**
-    ```r
+
+    ``` r
     if (knitr::is_html_output()) {
       DT::datatable(df)
     } else {
@@ -265,6 +284,10 @@ Note: The original vendor template file `AWQMS_KWF_Baseline_2021.xlsx` retains i
 
 -   **Hydrocarbon data** missing from 2025 WQP download (uploaded Jan 2024 but not appearing in download).
 
+-   **Turbidity: one spurious `uS/cm` record** exists in the analysis dataset (`result_measure_measure_unit_code = "uS/cm"` for a Turbidity row — almost certainly a data entry error; uS/cm is a conductance unit). Needs to be identified and corrected at the source. Found during interactive plot testing, March 2026.
+
+-   **Turbidity: anomalously high value at RM 1.5 spring** (\~3,200 NTU) warrants review during historical data outlier check. Flagged as a candidate outlier, March 2026.
+
 -   **Completeness Measure B** calculation is complete and enabled. Project-wide CMB is 52.2% (below the 60% QAPP goal), primarily driven by dissolved metals being fully below LOQ and fecal coliform RPD failures.
 
 -   **TSS lab QA gap:** SWWTP did not report required lab QA results for TSS in 2021/2022. Note in code, address for 2023+.
@@ -273,7 +296,7 @@ Note: The original vendor template file `AWQMS_KWF_Baseline_2021.xlsx` retains i
 
 These are desired but not yet implemented features for the report figures:
 
--   **A) Interactive boxplots:** When the user hovers over a data point, a pop-up displays relevant information (site, date, value, etc.).
+-   **A) Interactive boxplots:** DONE (March 2026). Hover tooltips show site, date, value+units, fraction, lab, method, and QA/QC status. Implemented via `plotly::ggplotly()` in `static_boxplot_function.R`, with HTML/PDF conditional rendering in each parameter chapter.
 -   **B) QA/QC toggle:** Figures should support two views — (1) data that passed QA/QC only, and (2) all data including failed QA/QC — switchable via a toggle. Symbology should differ between the two views.
 
 ## Key R Packages

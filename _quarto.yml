@@ -69,7 +69,7 @@ format:
   html:
     theme: cosmo
     code-fold: true
-    code-summary: "Show the code"
+    code-summary: "Show code"
     prefer-html: true
     
 output-dir: docs

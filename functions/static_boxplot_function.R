@@ -122,7 +122,7 @@ create_facet_plots <- function(data_path, reg_vals_path, characteristic, sample_
       filter(!is.na(result_measure_value)) %>%
       mutate(
         tooltip_text = paste0(
-          "<b>", site_name, "</b><br>",
+          "<b>", ifelse(trib_mainstem == "m", paste0("RM ", site_name), site_name), "</b><br>",
           "Date: ", activity_start_date, "<br>",
           "Value: ", result_measure_value, " ", result_measure_measure_unit_code, "<br>",
           "Fraction: ", ifelse(is.na(result_sample_fraction_text), "Not specified", result_sample_fraction_text), "<br>",
@@ -144,7 +144,7 @@ create_facet_plots <- function(data_path, reg_vals_path, characteristic, sample_
     y_max <- max(subset_data$result_measure_value, na.rm = TRUE) * 1.1
     
     exceedance_present <- any(!is.na(subset_data$fw_acute_exceed) | !is.na(subset_data$fw_chronic_exceed))
-    
+
     plot <- ggplot(subset_data, aes(x = .data[[x_var]], y = result_measure_value)) +
       geom_boxplot(aes(group = .data[[x_var]]), outlier.shape = NA) +
       geom_jitter(
@@ -161,8 +161,13 @@ create_facet_plots <- function(data_path, reg_vals_path, characteristic, sample_
           )) else NULL,
           text = tooltip_text
         ),
-        width = 0.2, size = 3, show.legend = exceedance_present
+        width = 0.2, size = 1.5, show.legend = exceedance_present
       ) +
+      # All threshold lines are passed to geom_hline regardless of whether they
+      # fall within the visible y range. Out-of-range lines will not appear in
+      # the plot body but their legend entries are retained intentionally, so
+      # readers can see that a standard exists even when no data is near it.
+      # A companion threshold table in each chapter shows the numeric values.
       geom_hline(data = hline_data, aes(yintercept = yintercept, linetype = linetype),
                  color = "#D55E00", linewidth = 1.2, show.legend = TRUE) +
       facet_wrap(~season) +
@@ -217,13 +222,28 @@ create_facet_plots <- function(data_path, reg_vals_path, characteristic, sample_
 
 
 
-# Print plots — interactive (HTML) or static (PDF)
-plots <- create_facet_plots(data_path, reg_vals_path, characteristic)
-if (knitr::is_html_output()) {
-  print(plotly::ggplotly(plots$tributary_plot, tooltip = "text"))
-  print(plotly::ggplotly(plots$river_mile_plot, tooltip = "text"))
-} else {
-  print(plots$tributary_plot)
-  print(plots$river_mile_plot)
+# Helper: deduplicate plotly legend entries created by facet_wrap.
+# ggplotly generates one trace per layer per facet panel, naming them e.g.
+# "(Acute,1)" / "(Acute,2)". This collapses them to a single legend entry each.
+clean_plotly_legend <- function(p) {
+  seen <- character(0)
+  for (i in seq_along(p$x$data)) {
+    nm <- p$x$data[[i]]$name
+    # Strip facet suffix: "(NAME,N)" or "(NAME,N,NA)" -> "NAME"
+    base_nm <- sub("^\\((.+),\\d+(?:,NA)?\\)$", "\\1", nm, perl = TRUE)
+    if (base_nm == nm || nchar(base_nm) == 0) next
+    p$x$data[[i]]$legendgroup <- base_nm
+    if (base_nm %in% seen) {
+      p$x$data[[i]]$showlegend <- FALSE
+    } else {
+      seen <- c(seen, base_nm)
+      p$x$data[[i]]$name <- base_nm
+    }
+  }
+  p
 }
+
+# Build plots — rendering is handled directly in each parameter chapter's chunk
+# (htmlwidgets must be output from a direct chunk expression in Quarto, not inside source())
+plots <- create_facet_plots(data_path, reg_vals_path, characteristic)
 

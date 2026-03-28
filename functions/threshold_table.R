@@ -1,0 +1,131 @@
+# threshold_table.R
+# Renders a summary table of regulatory threshold values for a given characteristic.
+# Called from each parameter chapter after the CSV download link.
+#
+# For static thresholds, numeric values come from all_reg_vals.csv.
+# For hardness-dependent metals (Cd, Cr, Cu, Pb, Zn), the table shows the range
+# of calculated threshold values across all samples in the full dataset
+# (calculated_metals_reg_vals.csv), reflecting the range of observed hardness.
+# This gives readers actionable numerical context without requiring formula notation.
+#
+# Usage (in each parameter chapter, after source("functions/table_download.R")):
+#   source("functions/threshold_table.R")
+#   show_threshold_table(characteristic)
+
+library(dplyr)
+library(knitr)
+
+show_threshold_table <- function(characteristic) {
+
+  # --- Lookup tables: Standard code -> display label and regulatory authority ---
+  standard_labels <- c(
+    drinking_water            = "Drinking water (MCL)",
+    stock_water               = "Stock water",
+    irrigation_water          = "Irrigation water",
+    aquaculture_maximum_water = "Aquaculture (maximum pH)",
+    aquaculture_minimum_water = "Aquaculture (minimum pH)",
+    aquaculture_water         = "Aquaculture",
+    wildlife                  = "Wildlife",
+    recreation                = "Recreation"
+  )
+
+  standard_authority <- c(
+    drinking_water            = "USEPA",
+    stock_water               = "ADEC",
+    irrigation_water          = "ADEC",
+    aquaculture_maximum_water = "ADEC",
+    aquaculture_minimum_water = "ADEC",
+    aquaculture_water         = "ADEC",
+    wildlife                  = "ADEC",
+    recreation                = "ADEC"
+  )
+
+  unit_labels <- c(
+    "ug/l" = "\u00b5g/L",
+    "mg/l" = "mg/L",
+    "none" = "\u2014"   # em dash for dimensionless (e.g. pH)
+  )
+
+  # --- Static thresholds ---
+  reg_vals <- read.csv("other/output/regulatory_values/all_reg_vals.csv",
+                       stringsAsFactors = FALSE)
+
+  static_rows <- reg_vals |>
+    filter(characteristic_name == characteristic, !is.na(value)) |>
+    mutate(
+      standard_type = dplyr::coalesce(standard_labels[Standard], Standard),
+      authority     = dplyr::coalesce(standard_authority[Standard], ""),
+      unit_display  = dplyr::coalesce(unit_labels[tolower(reg_unit)], reg_unit),
+      value_fmt     = format(value, scientific = FALSE, drop0trailing = TRUE) |>
+                        trimws()
+    ) |>
+    select(
+      `Standard Type`        = standard_type,
+      `Value`                = value_fmt,
+      `Unit`                 = unit_display,
+      `Regulatory Authority` = authority
+    )
+
+  # --- Hardness-dependent thresholds ---
+  calc_path <- "other/input/regulatory_limits/formatted_reg_vals/calculated_metals_reg_vals.csv"
+  hd_rows <- data.frame(
+    `Standard Type`        = character(),
+    `Value`                = character(),
+    `Unit`                 = character(),
+    `Regulatory Authority` = character(),
+    check.names = FALSE
+  )
+
+  if (file.exists(calc_path)) {
+    calc <- read.csv(calc_path, stringsAsFactors = FALSE)
+    hd_data <- calc |>
+      filter(characteristic_name == characteristic)
+
+    # Acute criterion
+    acute_vals <- hd_data$fw_acute_std[!is.na(hd_data$fw_acute_std) &
+                                         is.finite(hd_data$fw_acute_std)]
+    if (length(acute_vals) > 0) {
+      hd_rows <- rbind(hd_rows, data.frame(
+        `Standard Type`        = "Aquatic life \u2013 acute (hardness-dependent)",
+        `Value`                = paste0(
+          signif(min(acute_vals), 3), " \u2013 ", signif(max(acute_vals), 3)
+        ),
+        `Unit`                 = "\u00b5g/L",
+        `Regulatory Authority` = "USEPA",
+        check.names = FALSE
+      ))
+    }
+
+    # Chronic criterion
+    chronic_vals <- hd_data$fw_chronic_std[!is.na(hd_data$fw_chronic_std) &
+                                              is.finite(hd_data$fw_chronic_std)]
+    if (length(chronic_vals) > 0) {
+      hd_rows <- rbind(hd_rows, data.frame(
+        `Standard Type`        = "Aquatic life \u2013 chronic (hardness-dependent)",
+        `Value`                = paste0(
+          signif(min(chronic_vals), 3), " \u2013 ", signif(max(chronic_vals), 3)
+        ),
+        `Unit`                 = "\u00b5g/L",
+        `Regulatory Authority` = "USEPA",
+        check.names = FALSE
+      ))
+    }
+  }
+
+  # --- Combine and render ---
+  all_rows <- rbind(static_rows, hd_rows)
+
+  if (nrow(all_rows) == 0) {
+    # No thresholds defined for this parameter — return silently
+    return(invisible(NULL))
+  }
+
+  knitr::kable(
+    all_rows,
+    caption = paste("Regulatory thresholds for", characteristic,
+                    "(hardness-dependent ranges reflect observed hardness across",
+                    "all dataset years)"),
+    col.names = c("Standard Type", "Value", "Unit", "Regulatory Authority"),
+    align = c("l", "r", "l", "l")
+  )
+}

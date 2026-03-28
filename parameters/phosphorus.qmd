@@ -32,8 +32,24 @@ sample_fraction <- c("Total", "Total Recoverable")
 # source static regulatory criteria boxplot function
 source("functions/static_boxplot_function.R")
 
+# Render plots directly in chunk — htmlwidgets must be output from direct chunk
+# code in Quarto; printing inside source() is not captured for widget output.
+if (knitr::is_html_output()) {
+  htmltools::tagList(
+    plotly::ggplotly(plots$tributary_plot, tooltip = "text", height = 700) |> clean_plotly_legend(),
+    plotly::ggplotly(plots$river_mile_plot, tooltip = "text", height = 550) |> clean_plotly_legend()
+  )
+} else {
+  print(plots$tributary_plot)
+  print(plots$river_mile_plot)
+}
+
 # source table download function
 source("functions/table_download.R")
 download_tbl(char = characteristic)
+
+# source threshold table function
+source("functions/threshold_table.R")
+show_threshold_table(characteristic)
 
 ```
