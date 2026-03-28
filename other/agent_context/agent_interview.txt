@@ -1,0 +1,26 @@
+Agent interview questions 3/27/2026. Respondent: Benjamin Meyer
+
+1. Decision-making authority Who has final say on QA/QC flag decisions (e.g., Accepted vs. Rejected)? Is that always a KWF staff scientist, or does it sometimes involve the contracted lab, ADEC, or EPA Region 10?
+
+KWF will review its own data to make QA/QC decisions. All decisions must be thoroughly documented and transparent. The agency that will come in to most immediate contact with this data is the Alaska Department of Environmental Conservation (ADEC). Every two years, ADEC draws the most current data from the EPA CDX and uses it for its Integrated Report (https://dec.alaska.gov/water/water-quality/integrated-report/). The report makes determination decisions about which bodies of water may be in need of management action. If ADEC does not agree with the AQ/QC decisions made by KWF, they may choose to not include it in analyses in the Integrated Report.
+
+2. Intended lifespan and re-use Is this codebase meant to be run once for the 2000–2021 report and then essentially archived, or is the expectation that the same repo/pipeline will continue to be used for future reporting cycles (2022+)? How does that relate to the separate qaqc repo?
+
+This codebase is intended to be a tool used on an ongoing basis for annual updates. Ideally, we will use the seperate qa/qc repo to process new data each year and submit to to EPA CDX. That data is then downloaded and accessed by this codebase.
+
+
+3. Audience and use Beyond the formal report deliverable, who actually uses this data day-to-day — is it primarily regulatory agencies checking compliance, KWF scientists tracking trends, the general public, or some mix? Does that affect how you want results presented?
+
+The audience is all the groups listed in the question. I am working to roughly mimic the format of the 2016 comprehenzive report on this project.
+
+4. "Done" criteria What does a finished, releasable version of this report look like? Is there a formal review/sign-off process (e.g., ADEC, EPA, KWF board), and are there specific deliverable milestones tied to grant reporting?
+
+A complete version of this project will be able to 1) access data from the EPA CDX, and 2) automatically integrate it in to this report. The Appendix A that performs the detailed QA/QC will be an example for just one year (2021). Once that appendix functions smoothly, I want to use that same structure for other years in the QA/QC repo at https://github.com/Kenai-Watershed-Forum/kenai-river-wqx-qaqc . 
+
+5. Known scientific context Are there known patterns, concerns, or hypotheses in the data you'd want a new collaborator to be aware of upfront — for example, specific sites that are historically elevated, parameters of particular regulatory concern, or trends you're watching?
+
+In general, the lower Kenai River area is experiencing a greater pace of development and use. Thus I would expect to see trends of concern more in this area. However climate change may also have effects on patterns in turbidity, temperature, and other parameters.
+
+6. Future scientist scenario If a new KWF scientist inherits this project in 2028 with no handoff from you, what's the one thing you most want them to understand about the project that isn't obvious from the code or report itself?
+
+The laboratory work for this project is funded by a cohort of local agencies. They want to know that their funds are being spent wisely. Communicate with them regularly.
