@@ -38,7 +38,7 @@ book:
       - parameters/magnesium.qmd
       - parameters/nitrate.qmd
       - parameters/phosphorus.qmd
-      # parameters/diesel_range_organics.qmd
+      #- parameters/diesel_range_organics.qmd
       #- parameters/gas_range_organics.qmd
       #- parameters/residual_range_organics.qmd
       - parameters/btex.qmd

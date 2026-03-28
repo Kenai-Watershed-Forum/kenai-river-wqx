@@ -47,11 +47,15 @@
 
 2.  **Verify regulatory authority column in threshold tables.** The USEPA/ADEC mapping in `functions/threshold_table.R` lines ~32–41 is hard-coded — confirm assignments are correct before final render.
 
-3.  **Extract ingestion logic to `.R` scripts** (lower priority — see File Structure section below).
+3.  **Resolve ALS lab duplicate (DUP) status issue.** Four 2021 results have DUP status unexpectedly assigned in the ALS data — it appears ALS ran these as lab duplicates for Total Ca/Fe/Mg (method 200.7), which may not have been requested or covered by the QAPP. Sites: KR RM 22 SOC 2021-05-11; KR RM 1.5 2021-07-27; KR RM 23 2021-05-11; KR RM 70 2021-07-27. **Investigated March 28, 2026:** The DUP1 records are silently dropped by the pipeline — only primary sample values (Ca, Fe, Mg) appear in the export as `Field Msr/Obs` with correct single values. The exported data is not incorrect. What is missing is the QA/QC value of those lab duplicates: RPDs were never computed for them. **This does not block the CDX upload.** Outstanding questions for a future QA/QC session: (a) were lab duplicates requested/covered by QAPP? (b) should lab duplicate RPDs be computed and reported? Note: in SGS, field duplicates are labeled "PS" in `sample_type`; in ALS, lab duplicates are labeled "DUP1" in `sample_type`. Flagged originally March 2022.
 
-4.  **Address historical CDX data corrections** (e.g., spring 2013 specific conductance) in a dedicated chapter of the `kenai-river-wqx-qaqc` repo — not in `appendix_a.qmd`.
+4.  **LOQ logic flow chart for ADEC.** Draw a logic flow chart for the 2-step winnowing process for LOQ and 2× LOQ criteria and send to ADEC staff to confirm interpretation. Flagged June 2023 — unclear if completed.
 
-5.  **Add inline tables alongside all calculated-result download links** (lower priority — polish, does not affect data quality or CDX submission). Currently, \~10 places in `appendix_a.qmd` offer downloadable CSVs with no inline table, which will render as broken download-only links in PDF output. Use the pattern below for dual HTML/PDF output. Raw source files (PDFs, XLSs, JPGs from labs) do not need tables — download-only is appropriate for those. Calculated CSVs that need tables:
+5.  **Extract ingestion logic to `.R` scripts** (lower priority — see File Structure section below).
+
+6.  **Address historical CDX data corrections** (e.g., spring 2013 specific conductance) in a dedicated chapter of the `kenai-river-wqx-qaqc` repo — not in `appendix_a.qmd`.
+
+7.  **Add inline tables alongside all calculated-result download links** (lower priority — polish, does not affect data quality or CDX submission). Currently, \~10 places in `appendix_a.qmd` offer downloadable CSVs with no inline table, which will render as broken download-only links in PDF output. Use the pattern below for dual HTML/PDF output. Raw source files (PDFs, XLSs, JPGs from labs) do not need tables — download-only is appropriate for those. Calculated CSVs that need tables:
 
     -   `planned_actual_analyses_2021.csv` (planned vs. actual analyses)
     -   `sample_holding_times.csv` (max holding times by sample type)
@@ -93,7 +97,7 @@ Extract processing logic from `appendix_a.qmd` into sourced `.R` scripts. This m
 Planned script breakdown:
 
 | Script | Content |
-|----|----|
+|------------------------------------|------------------------------------|
 | `R/ingest_sgs_als.R` | SGS EDD + ALS CSV read-in, column normalization, site name mapping, method code mapping (Parts A–E of current appendix) |
 | `R/ingest_fc.R` | SWWTP + Taurianen fecal coliform read-in |
 | `R/ingest_tss.R` | SWWTP TSS read-in |
@@ -109,7 +113,7 @@ Each script should accept year-specific inputs (file paths, sample dates) as arg
 Full audit was completed. Section-by-section status. **Note: line numbers are approximate and have shifted with each editing session. As of March 26, 2026 edits, add \~15 lines to the original estimates.**
 
 | Approx. Lines | Section | Status |
-|----|----|----|
+|------------------------|------------------------|------------------------|
 | 1–518 | SGS/ALS ingestion (Parts A–E) | Working. Includes Ca/Mg/Fe unit correction (March 2026). Dense — priority candidate for extraction to `R/ingest_sgs_als.R`. |
 | 520–983 | FC and TSS ingestion | Mostly working. TSS has a documented QA gap: SWWTP did not report lab QA results (blanks, duplicates, check standards) as required by QAPP in 2021/2022. Lab QA export block is commented out. |
 | 985–1260 | Lookup joins + first WQX export | Working (March 26, 2026). The write chunk was `eval = F` and is now `eval = T`. A `dat_raw`/`dat` save-restore pattern was added so the WQX CSV is written without corrupting the raw-column `dat` used by downstream QA/QC. The full column-rename block is redundantly repeated later for the CDX export — consolidate in the script extraction step. |
@@ -245,7 +249,7 @@ other/
 ## Parameters Monitored
 
 | Category | Parameters |
-|----|----|
+|------------------------------------|------------------------------------|
 | Dissolved Metals | Arsenic, Cadmium, Chromium, Copper, Lead, Zinc |
 | Total Metals | Calcium, Iron, Magnesium |
 | Nutrients | Nitrate + Nitrite, Phosphorus |
