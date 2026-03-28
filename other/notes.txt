@@ -1,65 +1,45 @@
-NOTE: terminal command to stage all commits:
-git add -A && git commit -m 'staging all files'
+# Quick Reference Commands
 
-Terminal command to clear cache:
-quarto render --cache-refresh
+Stage all files and commit:
+  git add -A && git commit -m 'your message here'
 
-Command to exit render at downstream script point
+Refresh Quarto cache:
+  quarto render --cache-refresh
 
-knitr::knit_exit()
-
-# for unclear reasons,  DUP status in 2021 data is incorrectly assigned to the following:
-# KR RM 22 SOC 2021-05-11 200.7
-# KR RM 1.5 2021-07-27 200.7
-# KR RM 23 2021-05-11 200.7
-# KR RM 70 2021-07-27 200.7
-
-# likely explanation -- als ran these as LAB duplicates ... was this even requested or part of the qapp????? yeesh.
-# steps:
-# 1.) ensure data is transferred from EDD to final export (currently is not, eg. average = "NA", rpd is blank)
-# 2.) assign these data as LAB replicates. wtf.
-
-----> not sure if the above is incorporated in flow yet 3/29/2022
-
-Interpretation:
-in sgs, FIELD dups are labeled "PS" (project sample) is sample_type
-in als, LAB dups are labeled "DUP1" in sample_type
-
-so::: if its a FIELD dup then this info in conatined in sample name only, not in a distinct column (---> From wwhich lab does this apply???)
+Exit render early at a specific point in a script:
+  knitr::knit_exit()
 
 
+# Resolved Notes (archived for reference)
 
-2/28/23
-Distinguish between application in columns
-1.)"sample_condition" (Field Duplicate, Trip Blank, NA) vs.
-2.) "sample_type" (PS, TB, SMPL)
+## resultFlag / Result Status ID approach (resolved June 2023, implemented March 2026)
+General plan was to use resultFlag for data that fails QA/QC. This is now implemented
+as Result Status ID = "Rejected" in the WQX export. Accepted/Rejected maps from the
+binary flag column in 2021_data_flag_decisions.csv. Do not add custom FQC codes —
+the existing design is complete and correct.
 
-3.) I think I have addressed this; will find out in export file
+## ggplot fw_acute_exceed color issue (resolved March 2026)
+Attempted to use color = fw_acute_exceed in ggplot; render failed.
+Fixed in static_boxplot_function.R using factor(case_when(...)) for color and shape aesthetics.
+
+## sample_condition vs sample_type column distinction (noted Feb 2023, believed resolved)
+In SGS: field duplicates are labeled "PS" in sample_type.
+In ALS: lab duplicates are labeled "DUP1" in sample_type.
+sample_condition column holds: Field Duplicate, Trip Blank, NA.
+Believed addressed in appendix_a.qmd but not confirmed — see ALS DUP task in AGENTS.md.
+
+## 2021 QA/QC pipeline (completed March 2026)
+Finish winnowing data through QA/QC steps — DONE.
+Re-inspect column structure of KWF data already in EPA WQX — DONE.
+Export structure for 2021 matching existing CDX columns — DONE.
+2022+ data processing is handled in the separate kenai-river-wqx-qaqc repo.
+
+## Extract scripts to .R files (noted May 2023)
+Write intake/processing scripts in .R files and source them into Quarto.
+Still on the task list — see AGENTS.md.
 
 
-5/22/2023
+# Outstanding Items (tracked in AGENTS.md)
 
-In general for future drafts of QA/QC procedure: write intake/processing scripts in .R files and source them in to the Quarto file. Will make easier in long term to apply standard across multiple documents.
-
-6/21/23
-
-Next steps:
-
-Finish winnowing data through QA/QC steps and retain passable data
-re-inspect existing column structuere of KWF data already in epa wqx
-ensure that export structure for 2021 can match existing needed columns in kwf's 2021 dataset
-repeat for 2022
-ensure 2017-2020 is in wqx
-repeat for 2014,2015,2016 data
-
-6/23/23
-
-TO DO: draw logic flow chart for 2-step winnowing process for LOQ & 2x LOQ criteria; send to ADEC staff to confirm interpretation.
-
-6/24/23
-
-GENERAL PLAN: apply resultFlag to all cases of data that might not work for regulatory criteria, do not submit to EPA WQX. BUT still assess these data in visualizations, color-code to show there is a resultFlag.
-
-1/16/2025
-for specifiying which observations exceed hardness-dependent standards, attempted to use color = fw_acute_exceed. ggplot render did not like this; may need to experiment with using as.factor or as.character, or???
-
+All unresolved items from this file have been moved to the Tasks section of AGENTS.md.
+Do not track new to-do items here — use AGENTS.md instead.
