@@ -61,27 +61,13 @@ book:
   search:
     location: sidebar
     type: textbox
-  downloads: [docx]
 
 bibliography: references.bib
 
-format:
-  html:
-    theme: cosmo
-    code-fold: true
-    code-summary: "Show code"
-    prefer-html: true
-    
-output-dir: docs
-
-  #pdf:
-  #  documentclass: scrreprt
-  #docx:
-  #  toc: true
-  #  toc-depth: 2
-  #  toc-title: Table of contents
-  #  number-sections: true
-  #  highlight-style: github
+profile:
+  default: html
+  group:
+    - [html, docx]
 
 editor: visual
 

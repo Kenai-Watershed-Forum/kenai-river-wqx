@@ -18,38 +18,144 @@ Access ArcGIS Online project map at <https://arcg.is/0LXGSf>
 
 ![Location of water quality sampling sites](other/documents/images/kenai_river_map_bw.png){#fig-map2}
 
-## Sampling sites descriptions/photos
+## Sampling Site Descriptions
 
-Field sampling sites described in @fig-map2 are introduced below with a photo a coordinates for each location.
+Field sampling sites shown in @fig-map2 are described below with coordinates, collection notes, and a representative photo. Site descriptions and photos are reproduced from the 2016 Kenai Watershed Forum Baseline Water Quality Assessment report; photos may be updated in future revisions of this report.
+
+### Kenai River Mainstem Sites
+
+#### Kenai River Mile 82
+
+This site is near the Kenai Lake Outlet and Kenai Lake Bridge and is located at 60.492007 N and -149.810844 W. Samples are typically collected downstream of the boat launch.
+
+![Kenai River Mile 82 (Kenai Lake Outlet), 07/26/05](other/documents/site_photos/rm_82_kenai_lake_outlet.jpeg){#fig-rm82}
+
+#### Kenai River Mile 70
+
+This site is near Jim's Landing and is located at 60.481392 N and -150.115020 W. The sample is typically collected 40 feet downstream of the boat launch.
+
+![Kenai River Mile 70 (Jim's Landing), 07/22/14](other/documents/site_photos/rm_70_jims_landing.jpeg){#fig-rm70}
+
+#### Kenai River Mile 50
+
+This site is near the Skilak Lake Outflow and is located at 60.467517 N and -150.507789 W. Samples are typically collected between the swan signs off of the south bank.
+
+![Kenai River Mile 50 (Skilak Lake Outflow), 04/22/08](other/documents/site_photos/rm_50_skilak_lake_outflow.jpeg){#fig-rm50}
+
+#### Kenai River Mile 43
+
+This site is upstream of Dow Island and is located at 60.489844 N and -150.636905 W. The samples are typically collected 100 feet upstream of the point of Dow Island.
+
+![Kenai River Mile 43 (upstream of Dow Island), 07/22/14](other/documents/site_photos/rm_43_dow_island.jpeg){#fig-rm43}
+
+#### Kenai River Mile 40
+
+This site is near Bings Landing and is located at 60.515441 N and -150.702069 W. Samples are typically collected in front of the boat launch near the center of the river.
+
+![Kenai River Mile 40 (Bings Landing), 04/26/11](other/documents/site_photos/rm_40_bings_landing.jpeg){#fig-rm40}
+
+#### Kenai River Mile 31
+
+This site is near Morgan's Landing and is located at 60.498284 N and -150.863121 W. Sampling typically occurs down the abandoned steep road behind the headquarters building.
+
+![Kenai River Mile 31 (Morgan's Landing), 05/01/12](other/documents/site_photos/rm_31_morgans_landing.jpeg){#fig-rm31}
+
+#### Kenai River Mile 23
+
+This site is near Swiftwater Park and is located at 60.480338 N and -151.030847 W. Samples are typically collected mid-channel in front of the ramp.
+
+![Kenai River Mile 23 (Swiftwater Park)](other/documents/site_photos/rm_23_swiftwater_park.jpeg){#fig-rm23}
+
+#### Kenai River Mile 21
+
+This site is near the Soldotna Bridge and is located at 60.476634 N and -151.082099 W. Samples are typically collected 20 feet downstream of the bridge on the south bank.
+
+![Kenai River Mile 21 (Soldotna Bridge), 07/26/05](other/documents/site_photos/rm_21_soldotna_bridge.jpeg){#fig-rm21}
+
+#### Kenai River Mile 18
+
+This site is near Poacher's Cove and is located at 60.502005 N and -151.106973 W. Samples are typically collected mid-channel just downstream of an island.
+
+![Kenai River Mile 18 (Poacher's Cove), 07/17/07](other/documents/site_photos/rm_18_poachers_cove.jpeg){#fig-rm18}
+
+#### Kenai River Mile 12.5
+
+This site is near the Pillars Boat Launch and is located at 60.533743 N and -151.099258 W. Samples are typically collected toward the center of the river across from the dock.
+
+![Kenai River Mile 12.5 (Pillars Boat Launch), 07/17/07](other/documents/site_photos/rm_12_5_pillars_boat_launch.jpeg){#fig-rm125}
+
+#### Kenai River Mile 10.1
+
+This site is upstream of Beaver Creek and is located at 60.539279 N and -151.142263 W. Samples are typically collected 200 yards upstream of the Beaver Creek and Kenai River confluence. During July 2000, April 2001, and July 2001, samples were collected downstream of the Kenai River and Beaver Creek confluence. No samples were collected from this site from several spring sampling events due to challenging access terrain.
+
+![Kenai River Mile 10.1 (upstream of Beaver Creek), 07/17/07](other/documents/site_photos/rm_10_1_upstream_beaver_creek.jpeg){#fig-rm101}
+
+#### Kenai River Mile 6.5
+
+This site is near Cunningham Park and is located at 60.540810 N and -151.182780 W. Sampling typically occurs straight out from the public-use boardwalk and can vary due to tidal stage.
+
+![Kenai River Mile 6.5 (Cunningham Park), 07/26/05](other/documents/site_photos/rm_6_5_cunningham_park.jpeg){#fig-rm65}
+
+#### Kenai River Mile 1.5
+
+This site is near the City of Kenai Dock and is located at 60.543680 N and -151.222940 W. Samples are typically collected at the north end of the public fueling dock.
+
+![Kenai River Mile 1.5 (Kenai City Dock), 05/02/13](other/documents/site_photos/rm_1_5_kenai_city_dock.jpeg){#fig-rm15}
 
 ### Tributary Sites
 
-#### No Name Creek
+#### Juneau Creek
 
-No Name Creek is a Kenai River tributary located at 60.550888 N and -151.268417 W. Samples are typically collected approximately 500 feet upstream of the confluence with the Kenai River, just upstream of the footbridge.
+This site is located at 60.481392 N and -150.115020 W. The sample is typically collected 40 feet downstream of the boat launch at Alaska Wildlands.
 
-![](other/documents/site_photos/no_name_creek.jpg){#no-name-creek}
-
-#### Beaver Creek
-
-Beaver Creek is a Kenai River tributary. Sample site is located at 60.548029 N and -151.143240 W. 
-
-#### Slikok Creek
-
-#### Soldotna Creek
-
-#### Funny River
-
-#### Moose River
-
-#### Killey River
+![Juneau Creek looking downstream, 05/07/13](other/documents/site_photos/juneau_creek.jpeg){#fig-juneau}
 
 #### Russian River
 
-#### Juneau Creek
+This site is a Kenai River tributary and is located at 60.484622 N and -149.993955 W. Samples are typically collected 90 feet upstream of the sanctuary sign.
 
-### Main Stem Sites
+![Russian River looking upstream, 07/26/05](other/documents/site_photos/russian_river.jpeg){#fig-russian}
 
-This section will include a brief description of each of the main stem field sampling sites, along with coordinates and a photo.
+#### Killey River
+
+This site is a Kenai River tributary and is located at 60.481518 N and -150.632498 W. Sampling typically occurs 100 yards upstream from the Kenai River confluence across from the fish table.
+
+![Killey River, 04/29/14](other/documents/site_photos/killey_river.jpeg){#fig-killey}
+
+#### Moose River
+
+This site is a Kenai River tributary and is located at 60.536870 N and -150.754724 W. Sampling typically occurs upstream of the parking area.
+
+![Moose River, 04/26/05](other/documents/site_photos/moose_river.jpeg){#fig-moose}
+
+#### Funny River
+
+This site is a Kenai River tributary and is located at 60.489963 N and -150.860982 W. Samples are typically collected 75 feet downstream of the bridge.
+
+![Funny River, 05/01/12](other/documents/site_photos/funny_river.jpeg){#fig-funny}
+
+#### Soldotna Creek
+
+This site is a Kenai River tributary and is located at 60.483364 N and -151.057656 W. Sampling typically occurs mid-channel.
+
+![Soldotna Creek, 07/17/07](other/documents/site_photos/soldotna_creek.jpeg){#fig-soldotna}
+
+#### Slikok Creek
+
+This site is a Kenai River tributary and is located at 60.482318 N and -151.127053 W. Samples are typically collected in the mid-channel of Slikok Creek.
+
+![Slikok Creek, 05/07/13](other/documents/site_photos/slikok_creek.jpeg){#fig-slikok}
+
+#### Beaver Creek
+
+This site is a Kenai River tributary and is located at 60.548029 N and -151.143240 W.
+
+![Beaver Creek, 04/28/09](other/documents/site_photos/beaver_creek.jpeg){#fig-beaver}
+
+#### No Name Creek
+
+This site is a Kenai River tributary located at 60.550888 N and -151.268417 W. Samples are typically collected approximately 500 feet upstream of the confluence with the Kenai River, just upstream of the footbridge.
+
+![No Name Creek, 07/22/09](other/documents/site_photos/no_name_creek.jpeg){#fig-noname}
 
 \newpage

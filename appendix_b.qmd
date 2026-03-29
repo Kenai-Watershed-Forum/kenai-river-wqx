@@ -1,4 +1,5 @@
 ---
+prefer-html: true
 execute:
   echo: false
 date: "`r Sys.Date()`"
@@ -148,8 +149,11 @@ p <- krbwqm_dates %>%
   theme_minimal() +
   ggtitle("Kenai River Baseline Water Quality Sampling Dates")
 
-# Make the plot interactive
-ggplotly(p, tooltip = "text")  # Specify to use the text aesthetic for tooltips
+if (!knitr::pandoc_to("docx")) {
+  ggplotly(p, tooltip = "text")
+} else {
+  print(p)
+}
 
 
 ```
@@ -185,22 +189,30 @@ summary_table <- krbwqm_dates %>%
   )
 
 # Create an attractive table
-summary_table %>%
-  kable(
-    format = "html",  # Use HTML for rich styling in Quarto
-    caption = "Spring and Summer Average Dates and Tide Times",
-    col.names = c(
-      "Season", "Average Date", "+/- Days (StDev)", "Avg Max Tide Time",
-      "Avg Min Tide Time", "Number of Years", "Earliest Year", "Latest Year"
-    ),
-    align = c("l", "c", "c", "c", "c", "c", "c", "c")
-  ) %>%
-  kable_styling(
-    bootstrap_options = c("striped", "hover", "condensed", "responsive"),
-    full_width = FALSE,
-    position = "center"
-  ) %>%
-  column_spec(2:8, width = "2cm")  # Adjust column widths
+col_names <- c(
+  "Season", "Average Date", "+/- Days (StDev)", "Avg Max Tide Time",
+  "Avg Min Tide Time", "Number of Years", "Earliest Year", "Latest Year"
+)
+
+if (knitr::is_html_output()) {
+  summary_table %>%
+    kable(
+      format = "html",
+      caption = "Spring and Summer Average Dates and Tide Times",
+      col.names = col_names,
+      align = c("l", "c", "c", "c", "c", "c", "c", "c")
+    ) %>%
+    kable_styling(
+      bootstrap_options = c("striped", "hover", "condensed", "responsive"),
+      full_width = FALSE,
+      position = "center"
+    ) %>%
+    column_spec(2:8, width = "2cm")
+} else {
+  knitr::kable(summary_table,
+               caption = "Spring and Summer Average Dates and Tide Times",
+               col.names = col_names)
+}
 
 
 ```
@@ -270,7 +282,7 @@ t <- dat %>%
   summarise(min_date = min(date(ActivityStartDate)),
             max_date = max(date(ActivityStartDate)))
 
-datatable(t)
+if (!knitr::pandoc_to("docx")) { datatable(t) } else { knitr::kable(t) }
 
 ```
 
@@ -317,7 +329,7 @@ What kind of sites are present in our data set?
 
 ```{r}
 t <- data.frame(unique(dat$MonitoringLocationTypeName))
-datatable(t)
+if (!knitr::pandoc_to("docx")) { datatable(t) } else { knitr::kable(t) }
 ```
 
 <br>
@@ -446,7 +458,7 @@ param <- dat %>%
   filter(OrganizationFormalName == "Kenai Watershed Forum") %>%
   distinct(CharacteristicName) 
 
-datatable(param)
+if (!knitr::pandoc_to("docx")) { datatable(param) } else { knitr::kable(param) }
 
 ```
 

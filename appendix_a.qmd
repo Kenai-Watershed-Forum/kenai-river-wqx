@@ -1,6 +1,7 @@
 ---
 execute:
   echo: false
+  cache: false
 date: "`r Sys.Date()`"
 format:
   html:
@@ -49,17 +50,18 @@ The code scripts in this document assemble water quality data from the three ana
 
 ```{r, echo = F, message = F}
 library("xfun")
+source("functions/embed_if_html.R")
 
-xfun::embed_file('other/input/2021_wqx_data/spring_2021_wqx_data/SGS/spring_2021_sgs_batch_info.csv', text = "Download Original Spring 2021 Metals/Nutrients Lab Results from SGS - Electronic Data Delivery file")
+embed_if_html('other/input/2021_wqx_data/spring_2021_wqx_data/SGS/spring_2021_sgs_batch_info.csv', text = "Download Original Spring 2021 Metals/Nutrients Lab Results from SGS - Electronic Data Delivery file")
 
-xfun::embed_file('other/input/2021_wqx_data/spring_2021_wqx_data/SGS/Spring 2021 Results from SGS.pdf', text = "Download Original Spring 2021 Metals/Nutrients Lab Results from SGS - PDF file")
+embed_if_html('other/input/2021_wqx_data/spring_2021_wqx_data/SGS/Spring 2021 Results from SGS.pdf', text = "Download Original Spring 2021 Metals/Nutrients Lab Results from SGS - PDF file")
 
 ```
 
 ```{r, echo = F}
-xfun::embed_file('other/input/2021_wqx_data/summer_2021_wqx_data/SGS/summer_2021_sgs_batch_info.csv', text = "Download Original Summer 2021 Metals/Nutrients Lab Results from SGS - Electronic Data Delivery file")
+embed_if_html('other/input/2021_wqx_data/summer_2021_wqx_data/SGS/summer_2021_sgs_batch_info.csv', text = "Download Original Summer 2021 Metals/Nutrients Lab Results from SGS - Electronic Data Delivery file")
 
-xfun::embed_file('other/input/2021_wqx_data/summer_2021_wqx_data/SGS/SGS_results_Summer2021.pdf', text = "Download Original Summer 2021 Metals/Nutrients Lab Results from SGS - PDF file")
+embed_if_html('other/input/2021_wqx_data/summer_2021_wqx_data/SGS/SGS_results_Summer2021.pdf', text = "Download Original Summer 2021 Metals/Nutrients Lab Results from SGS - PDF file")
 
 ```
 
@@ -72,6 +74,9 @@ xfun::embed_file('other/input/2021_wqx_data/summer_2021_wqx_data/SGS/SGS_results
 
 # clear environment
 rm(list=ls())
+
+# restore embed_if_html helper after environment clear
+source("functions/embed_if_html.R")
 
 # load packages
 library(tidyverse)
@@ -511,21 +516,21 @@ rm(sgs21_als21_qaqc_dat)
 ##### 2021 Fecal Coliform Lab Results (Soldotna Wastewater Treatment Plant (SWWTP)/Taurianen Engineering)
 
 ```{r, echo = F}
-xfun::embed_file('other/input/2021_wqx_data/spring_2021_wqx_data/SWWTP/KRWF Fecal 05-11-21.xls', text = "Download Original Spring 2021 Fecal Coliform Lab Results from SWWTP")
+embed_if_html('other/input/2021_wqx_data/spring_2021_wqx_data/SWWTP/KRWF Fecal 05-11-21.xls', text = "Download Original Spring 2021 Fecal Coliform Lab Results from SWWTP")
 
 ```
 
 ```{r, echo = F}
-xfun::embed_file('other/input/2021_wqx_data/summer_2021_wqx_data/Taurianen/FecalColiform_Results_Summer2021.pdf', text = "Download Original Summer 2021 Fecal Coliform Lab Results from Taurianen")
+embed_if_html('other/input/2021_wqx_data/summer_2021_wqx_data/Taurianen/FecalColiform_Results_Summer2021.pdf', text = "Download Original Summer 2021 Fecal Coliform Lab Results from Taurianen")
 
 ```
 
 ```{r, echo = F}
-xfun::embed_file('other/input/2021_wqx_data/spring_2021_wqx_data/SWWTP/SWWTP_Spring_2021_TCC_FC.jpg', text = "Download Spring 2021 Fecal Coliform Chain of Custody")
+embed_if_html('other/input/2021_wqx_data/spring_2021_wqx_data/SWWTP/SWWTP_Spring_2021_TCC_FC.jpg', text = "Download Spring 2021 Fecal Coliform Chain of Custody")
 ```
 
 ```{r, echo = F}
-xfun::embed_file('other/input/2021_wqx_data/summer_2021_wqx_data/Taurianen/FC_CoC_Taurianen_Summer2021.pdf', text = "Download Summer 2021 Fecal Coliform Chain of Custody")
+embed_if_html('other/input/2021_wqx_data/summer_2021_wqx_data/Taurianen/FC_CoC_Taurianen_Summer2021.pdf', text = "Download Summer 2021 Fecal Coliform Chain of Custody")
 ```
 
 ```{r include = F}
@@ -798,19 +803,19 @@ rm(taur_summer21,taur_summer21_sites,taur_summer21_qaqc_dat,swwtp_spring21_qaqc_
 ##### 2021 Total Suspended Solids Lab Results (Soldotna Wastewater Treatment Plant (SWWTP))
 
 ```{r, echo = F}
-xfun::embed_file('other/input/2021_wqx_data/spring_2021_wqx_data/SWWTP/KRWF TSS MONITORING 05-11-21.xlsx', text = "Download Original Spring 2021 Total Suspended Solids Results from SWWTP.xlsx")
+embed_if_html('other/input/2021_wqx_data/spring_2021_wqx_data/SWWTP/KRWF TSS MONITORING 05-11-21.xlsx', text = "Download Original Spring 2021 Total Suspended Solids Results from SWWTP.xlsx")
 ```
 
 ```{r, echo = F}
-xfun::embed_file('other/input/2021_wqx_data/summer_2021_wqx_data/SWWTP/KRWF TSS MONITORING 07-28-21.xlsx', text = "Download Original Summer 2021 Total Suspended Solids Results from SWWTP.xlsx")
+embed_if_html('other/input/2021_wqx_data/summer_2021_wqx_data/SWWTP/KRWF TSS MONITORING 07-28-21.xlsx', text = "Download Original Summer 2021 Total Suspended Solids Results from SWWTP.xlsx")
 ```
 
 ```{r, echo = F}
-xfun::embed_file('other/input/2021_wqx_data/spring_2021_wqx_data/SWWTP/SWWTP_Spring_2021_TCC_FC.jpg', text = "Download Spring 2021 Total Suspended Solids Chain of Custody")
+embed_if_html('other/input/2021_wqx_data/spring_2021_wqx_data/SWWTP/SWWTP_Spring_2021_TCC_FC.jpg', text = "Download Spring 2021 Total Suspended Solids Chain of Custody")
 ```
 
 ```{r, echo = F}
-xfun::embed_file('other/input/2021_wqx_data/summer_2021_wqx_data/SWWTP/TSS_CoC_SWWTP_Summer2021.pdf', text = "Download Summer 2021 Total Suspended Solids Chain of Custody")
+embed_if_html('other/input/2021_wqx_data/summer_2021_wqx_data/SWWTP/TSS_CoC_SWWTP_Summer2021.pdf', text = "Download Summer 2021 Total Suspended Solids Chain of Custody")
 ```
 
 <br>
@@ -1247,7 +1252,7 @@ rm(dat_raw)
 The above data sources have been collated in to a single .csv file (available for download) into a format compatible with the EPA Water Quality Exchange. ***These data have not yet been evaluated against QA/QC standards following guidance in the current project Quality Assurance Project Plan.***
 
 ```{r, echo = F}
-xfun::embed_file('other/output/wqx_formatted/intermediate/2021_kwf_baseline_results_wqx.csv', text = "Download All Provisional 2021 Kenai River Baseline Water Quality Monitoring Results, Formatted for EPA WQX import")
+embed_if_html('other/output/wqx_formatted/intermediate/2021_kwf_baseline_results_wqx.csv', text = "Download All Provisional 2021 Kenai River Baseline Water Quality Monitoring Results, Formatted for EPA WQX import")
 
 
 # check unique activity types
@@ -1266,7 +1271,7 @@ xfun::embed_file('other/output/wqx_formatted/intermediate/2021_kwf_baseline_resu
 Prior to upload to the EPA WQX, all water quality data must be checked against a series of standard questions in order to evaluate how quality assurance / quality check (QA/QC) requirements are met. The draft Data Evaluation Checklist Template (available for download below) outlines these questions:
 
 ```{r, echo = F}
-xfun::embed_file('other/documents/wqx_documents/Kenai_Baseline_Data_Evaluation_Checklist_20230331.xlsx', text = "Download 2021 Draft Kenai Baseline Data Evaluation Checklist Template")
+embed_if_html('other/documents/wqx_documents/Kenai_Baseline_Data_Evaluation_Checklist_20230331.xlsx', text = "Download 2021 Draft Kenai Baseline Data Evaluation Checklist Template")
 
 ```
 
@@ -1426,7 +1431,7 @@ write.csv(planned_actual_analyses_2021,"other/output/field_qa_qc_data/planned_ac
 ```
 
 ```{r, echo = F}
-xfun::embed_file('other/output/field_qa_qc_data/planned_actual_analyses_2021.csv', text = "Download Planned vs. Actual Analysis Results for 2021, Kenai Baseline")
+embed_if_html('other/output/field_qa_qc_data/planned_actual_analyses_2021.csv', text = "Download Planned vs. Actual Analysis Results for 2021, Kenai Baseline")
 
 ```
 
@@ -1557,7 +1562,7 @@ We worked with three separate laboratories in 2021:
 ```{r hold-times, echo = F, message = F, warning = F}
 
 # embed for download
-xfun::embed_file("other/input/wqx_templates/sample_holding_times.csv", text = "Download Table of Maximum Holding Times for Each Sample Type")
+embed_if_html("other/input/wqx_templates/sample_holding_times.csv", text = "Download Table of Maximum Holding Times for Each Sample Type")
 ```
 
 ```{r hold-times-1, echo = F, message = F, warning = F}
@@ -1614,7 +1619,7 @@ holdtime_dat <- left_join(holdtime_dat,max_holding_times) %>%
 write.csv(holdtime_dat,"other/output/field_qa_qc_data/holding_time_calcs.csv", row.names = F)
 
 # embed for download
-xfun::embed_file("other/output/field_qa_qc_data/holding_time_calcs.csv", text = "Download Holding Time Calculations for Spring and Summer 2021 Field Samples")
+embed_if_html("other/output/field_qa_qc_data/holding_time_calcs.csv", text = "Download Holding Time Calculations for Spring and Summer 2021 Field Samples")
 
 ```
 
@@ -1670,7 +1675,7 @@ ca <- diss_total_metals_dat %>%
   mutate(total_greater_diss = ifelse(particulate_conc > 0,"Y","N"))
 ca_dir <- paste0(dir,"ca",".csv")
 write.csv(ca,ca_dir)
-xfun::embed_file(paste0(dir,"ca",".csv"), text = "Download 2021 Calcium data, total vs dissolved")
+embed_if_html(paste0(dir,"ca",".csv"), text = "Download 2021 Calcium data, total vs dissolved")
 
 # iron
 fe <- diss_total_metals_dat %>%
@@ -1681,7 +1686,7 @@ fe <- diss_total_metals_dat %>%
   mutate(total_greater_diss = ifelse(particulate_conc > 0,"Y","N"))
 fe_dir <- paste0(dir,"fe",".csv")
 write.csv(fe,fe_dir)
-xfun::embed_file(paste0(dir,"fe",".csv"), text = "Download 2021 Iron data, total vs dissolved")
+embed_if_html(paste0(dir,"fe",".csv"), text = "Download 2021 Iron data, total vs dissolved")
 
 # magnesium
 mg <- diss_total_metals_dat %>%
@@ -1692,7 +1697,7 @@ mg <- diss_total_metals_dat %>%
   mutate(total_greater_diss = ifelse(particulate_conc > 0,"Y","N"))
 mg_dir <- paste0(dir,"mg",".csv")
 write.csv(mg,mg_dir)
-xfun::embed_file(paste0(dir,"mg",".csv"), text = "Download 2021 Magnesium data, total vs dissolved")
+embed_if_html(paste0(dir,"mg",".csv"), text = "Download 2021 Magnesium data, total vs dissolved")
 
 rm(ca,fe,mg)
 
@@ -1833,7 +1838,7 @@ A csv file of Relative Percent Difference values organized by site, date, and pa
 
 ```{r echo = F}
 # export csv of rpd results 
-xfun::embed_file("other/output/field_qa_qc_data/rpd_check_dat.csv", text = "Download 2021 Duplicate Sample Relative Percent Difference Data")
+embed_if_html("other/output/field_qa_qc_data/rpd_check_dat.csv", text = "Download 2021 Duplicate Sample Relative Percent Difference Data")
 
 # note: code in the next chunk references an object named "rpd_check_dat," do not change the name of the csv
 
@@ -1882,7 +1887,7 @@ KWF's approach to flagging when RPD cannot be calculated follows the example of 
 
 ```{r echo = F}
 # export csv of rpd results 
-xfun::embed_file("other/documents/QAPP/memos/KWF Memo to ADEC August 2023.pdf", text = "Download August 2023 Memo to ADEC regarding RPD Interpretation")
+embed_if_html("other/documents/QAPP/memos/KWF Memo to ADEC August 2023.pdf", text = "Download August 2023 Memo to ADEC regarding RPD Interpretation")
 
 ```
 
@@ -1912,9 +1917,9 @@ xfun::embed_file("other/documents/QAPP/memos/KWF Memo to ADEC August 2023.pdf", 
 Laboratory discrepancies and QC failures from the SGS lab are described on page 2 of the spring and summer PDF document reports, which are available for download below.
 
 ```{r echo = F}
-xfun::embed_file('other/input/2021_wqx_data/spring_2021_wqx_data/SGS/Spring 2021 Results from SGS.pdf', text = "Download Original Spring 2021 Metals/Nutrients Lab Results from SGS - PDF file")
+embed_if_html('other/input/2021_wqx_data/spring_2021_wqx_data/SGS/Spring 2021 Results from SGS.pdf', text = "Download Original Spring 2021 Metals/Nutrients Lab Results from SGS - PDF file")
 
-xfun::embed_file('other/input/2021_wqx_data/spring_2021_wqx_data/SGS/Spring 2021 Results from SGS.pdf', text = "Download Original Spring 2021 Metals/Nutrients Lab Results from SGS - PDF file")
+embed_if_html('other/input/2021_wqx_data/spring_2021_wqx_data/SGS/Spring 2021 Results from SGS.pdf', text = "Download Original Spring 2021 Metals/Nutrients Lab Results from SGS - PDF file")
 
 ```
 
@@ -1959,7 +1964,7 @@ A total of `r matrix_spike_recovery_fails` matrix spike or matrix spike duplicat
 
 ```{r matrix-spikes, echo = F, messages = F, warnings = F}
 # embed for download
-xfun::embed_file("other/output/lab_qaqc_data/matrix_spike_recovery_fails_2021.csv", text = "Download Matrix Spike Recovery Values Exceeding Threshold for 2021 Sample Analyses")
+embed_if_html("other/output/lab_qaqc_data/matrix_spike_recovery_fails_2021.csv", text = "Download Matrix Spike Recovery Values Exceeding Threshold for 2021 Sample Analyses")
 
 ```
 
@@ -2129,9 +2134,9 @@ write.csv(completeness_summary_project,"other/output/field_qa_qc_data/completene
 
 ```{r complete-measures, echo = F, messages = F, warnings = F}
 # embed for download
-xfun::embed_file("other/output/field_qa_qc_data/completeness_measures/cma_parameter.csv", text = "Download Completeness Measure A Results, By Parameter")
-xfun::embed_file("other/output/field_qa_qc_data/completeness_measures/cma_site.csv", text = "Download Completeness Measure A Results, By Site")
-xfun::embed_file("other/output/field_qa_qc_data/completeness_measures/cma_project.csv", text = "Download Completeness Measure A Results, By Overall")
+embed_if_html("other/output/field_qa_qc_data/completeness_measures/cma_parameter.csv", text = "Download Completeness Measure A Results, By Parameter")
+embed_if_html("other/output/field_qa_qc_data/completeness_measures/cma_site.csv", text = "Download Completeness Measure A Results, By Site")
+embed_if_html("other/output/field_qa_qc_data/completeness_measures/cma_project.csv", text = "Download Completeness Measure A Results, By Overall")
 
 ```
 
@@ -2234,9 +2239,9 @@ write.csv(cmb_project, "other/output/field_qa_qc_data/completeness_measures/cmb_
 ```
 
 ```{r echo = F, message=FALSE}
-xfun::embed_file("other/output/field_qa_qc_data/completeness_measures/cmb_parameter.csv", text = "Download Completeness Measure B Results, By Parameter")
-xfun::embed_file("other/output/field_qa_qc_data/completeness_measures/cmb_site.csv", text = "Download Completeness Measure B Results, By Site")
-xfun::embed_file("other/output/field_qa_qc_data/completeness_measures/cmb_project.csv", text = "Download Completeness Measure B Results, Overall")
+embed_if_html("other/output/field_qa_qc_data/completeness_measures/cmb_parameter.csv", text = "Download Completeness Measure B Results, By Parameter")
+embed_if_html("other/output/field_qa_qc_data/completeness_measures/cmb_site.csv", text = "Download Completeness Measure B Results, By Site")
+embed_if_html("other/output/field_qa_qc_data/completeness_measures/cmb_project.csv", text = "Download Completeness Measure B Results, Overall")
 ```
 
 *Discussion on "Completeness Measure B" Results*
@@ -2277,11 +2282,15 @@ site_check <- export_dat %>%
 # generate map
 library(leaflet)
 
-leaflet(site_check) %>%
-  addTiles() %>%
-  addMarkers(~activity_longitude,~activity_latitude,
-             popup = ~as.character(monitoring_location_id),
-             label = ~as.character(monitoring_location_id))
+if (knitr::is_html_output()) {
+  leaflet(site_check) %>%
+    addTiles() %>%
+    addMarkers(~activity_longitude,~activity_latitude,
+               popup = ~as.character(monitoring_location_id),
+               label = ~as.character(monitoring_location_id))
+} else {
+  knitr::kable(site_check, caption = "2021 monitoring locations")
+}
 
 ```
 
@@ -2396,7 +2405,7 @@ write.csv(chr_num,dir)
 
 ```{r echo = F}
 # embed for download
-xfun::embed_file(dir, text = "Download Observation Count by Characteristic, 2021 Kenai River Baseline Water Quality")
+embed_if_html(dir, text = "Download Observation Count by Characteristic, 2021 Kenai River Baseline Water Quality")
 ```
 
 <br>
@@ -2508,11 +2517,15 @@ wqp_sites %<>%
   filter(str_detect(MonitoringLocationName,"^KBL"))
   
 # generate map
-leaflet(wqp_sites) %>%
-  addTiles() %>%
-  addMarkers(~LongitudeMeasure,~LatitudeMeasure,
-             popup = ~as.character(MonitoringLocationName),
-             label = ~as.character(MonitoringLocationName))
+if (knitr::is_html_output()) {
+  leaflet(wqp_sites) %>%
+    addTiles() %>%
+    addMarkers(~LongitudeMeasure,~LatitudeMeasure,
+               popup = ~as.character(MonitoringLocationName),
+               label = ~as.character(MonitoringLocationName))
+} else {
+  knitr::kable(wqp_sites, caption = "KBL monitoring locations from EPA WQP")
+}
 
 # Notes on ADEC Site Names
 # It appears that the "monitoring location id" site names provided by ADEC are not in the existing project dataset on the EPA WQX. (Example: ADEC template calls the No Name Creek site "KR RM 0 NNC", whereas the existing name in the EPA database for this site is "KBL_t_00.0", indicating "Kenai River Baseline, tributary, river mile 0.00")

@@ -1,4 +1,4 @@
-# Water Quality Assessment of the Kenai River Watershed, 2000–2021
+# Water Quality Assessment of the Kenai River Watershed, 2000–2025
 
 **Kenai Watershed Forum (KWF) — Baseline Water Quality Monitoring Project**
 
@@ -8,7 +8,7 @@
 
 ## Overview
 
-This repository contains source code and data for a comprehensive water quality assessment of the Kenai River watershed in south-central Alaska, covering biannual (spring and summer) sampling from 2000 through 2021. The report is produced as a [Quarto book](https://quarto.org/docs/books/) that renders to both an interactive HTML website and a downloadable Word document.
+This repository contains source code and data for a comprehensive water quality assessment of the Kenai River watershed in south-central Alaska, covering biannual (spring and summer) sampling from 2000 through 2025. The report is produced as a [Quarto book](https://quarto.org/docs/books/) that renders to both an interactive HTML website and a downloadable Word document.
 
 The project is a long-term cooperative monitoring initiative led by KWF, with funding from a coalition of local agencies. It is designed to be updated annually as new data become available.
 
@@ -54,7 +54,7 @@ kenai-river-wqx/
     │   ├── 2021_wqx_data/         # Raw lab data (SGS, ALS, SWWTP, Taurianen)
     │   ├── wqx_templates/         # WQX reference files and lookup tables
     │   ├── regulatory_limits/     # Hardness-dependent metal thresholds
-    │   └── baseline_sites.csv     # Site metadata (21 sites)
+    │   └── baseline_sites.csv     # Site metadata (22 sites)
     └── output/
         ├── wqx_formatted/         # CDX-ready upload files (results, project, station CSVs)
         └── analysis_format/       # Processed data for report figures and tables
@@ -126,7 +126,7 @@ Large raw data files in `other/input/WQX_downloads/` are excluded from version c
 
 ## Project History
 
-Comprehensive reports have previously been completed for: - [2007 report](https://www.kenaiwatershed.org/kenai-river-baseline-water-quality-monitoring/) — McCard (2007) - [2016 report](https://www.kenaiwatershed.org/kenai-river-baseline-water-quality-monitoring/) — Guerron-Orejuela (2016)
+Comprehensive reports have previously been completed for: [2007 report](https://www.kenaiwatershed.org/kenai-river-baseline-water-quality-monitoring/) and McCard (2007) - [2016 report](https://www.kenaiwatershed.org/kenai-river-baseline-water-quality-monitoring/) — Guerron-Orejuela (2016)
 
 This repository covers the update through 2025 and establishes a reproducible, annually-extensible pipeline for future reports.
 

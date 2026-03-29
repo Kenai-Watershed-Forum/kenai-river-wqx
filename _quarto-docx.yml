@@ -1,0 +1,18 @@
+project:
+  output-dir: docs-docx
+
+execute:
+  echo: false
+  warning: false
+  message: false
+
+filters:
+  - filters/pagebreak-h1.lua
+
+format:
+  docx:
+    toc: true
+    toc-depth: 2
+    toc-title: Table of contents
+    number-sections: true
+    highlight-style: github

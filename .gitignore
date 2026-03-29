@@ -16,3 +16,7 @@ other/input/WQX_downloads
 .positai
 
 **/*.quarto_ipynb
+
+# Windows NUL device — accidentally surfaced as a filesystem entry by a bash
+# redirect (2>nul) in a tool call; cannot be deleted, must be ignored.
+/nul

@@ -65,6 +65,20 @@ write.csv(reg_vals, reg_vals_path)
 
 # Function to dynamically generate two ggplots with optional sample fraction filtering
 create_facet_plots <- function(data_path, reg_vals_path, characteristic, sample_fraction = character(0)) {
+  
+  # Scale point and text sizes up for DOCX, where figures are larger and
+  # code-folding is unavailable, making readability more important.
+  # Two-check detection: QUARTO_PROFILE is set by Quarto's profile system
+  # (most reliable); knitr::pandoc_to() is a fallback for non-profile renders.
+  is_docx     <- identical(Sys.getenv("QUARTO_PROFILE"), "docx") ||
+                 isTRUE(knitr::pandoc_to("docx"))
+  pt_size     <- if (is_docx) 3.0 else 1.5
+  strip_size  <- if (is_docx) 22  else 16
+  axis_x_size <- if (is_docx) 18  else 14
+  axis_y_size <- if (is_docx) 20  else 16
+  title_size  <- if (is_docx) 20  else 16
+  legend_size <- if (is_docx) 14  else 11
+  
   # Read the datasets
   data <- read.csv(data_path, stringsAsFactors = FALSE) %>%
     filter(result_status_identifier != "Rejected")
@@ -161,7 +175,7 @@ create_facet_plots <- function(data_path, reg_vals_path, characteristic, sample_
           )) else NULL,
           text = tooltip_text
         ),
-        width = 0.2, size = 1.5, show.legend = exceedance_present
+        width = 0.2, size = pt_size, show.legend = exceedance_present
       ) +
       # All threshold lines are passed to geom_hline regardless of whether they
       # fall within the visible y range. Out-of-range lines will not appear in
@@ -198,10 +212,11 @@ create_facet_plots <- function(data_path, reg_vals_path, characteristic, sample_
     )
     
     plot <- plot + theme(
-      axis.text.x = element_text(angle = 60, hjust = 1, size = 14),
-      axis.text.y = element_text(size = 16),
-      strip.text = element_text(size = 16),
-      axis.title.y = element_text(size = 16),
+      axis.text.x = element_text(angle = 60, hjust = 1, size = axis_x_size),
+      axis.text.y = element_text(size = axis_y_size),
+      strip.text = element_text(size = strip_size),
+      axis.title.y = element_text(size = title_size),
+      legend.text = element_text(size = legend_size),
       legend.position = "right"
     ) +
       labs(y = paste0(characteristic, " (", names(which.max(table(subset_data$result_measure_measure_unit_code))), ")"), x = "")
