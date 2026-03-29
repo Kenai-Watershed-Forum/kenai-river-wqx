@@ -14,7 +14,7 @@ format:
 ***Note: this online report is not optimized for use on mobile devices, and is best accessed on a desktop or laptop computer.***
 
 ::: {.content-visible when-format="html"}
-This document is the online work-in-progress version of the Water Quality Assessment of the Kenai River Watershed, 2000 - 2021. When completed, it will be an update to historical reports summarizing available data to date for this project [@mccard2007; @guerronorejuela2016].
+This document is the online work-in-progress version of the Water Quality Assessment of the Kenai River Watershed, 2000 - 2025. When completed, it will be an update to historical reports summarizing available data to date for this project [@mccard2007; @guerronorejuela2016].
 
 ## Videos
 
