@@ -1,15 +1,14 @@
-# Data Sourcing
-
 ---
 execute:
   echo: false
-date: "`r Sys.Date()`"
 format:
   html:
     code-fold: true
     code-tools: true
     code-summary: "Show the code"
 ---
+
+# Data Sourcing
 
 ```{r echo = F, message = F}
 
@@ -303,7 +302,7 @@ write.csv(dat,"other/output/analysis_format/baseline_export_format.csv",row.name
 
 
 
-```{r}
+```{r echo = FALSE}
 # stop evaluation here
 knitr::knit_exit()
 

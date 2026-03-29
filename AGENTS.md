@@ -31,7 +31,7 @@
 
 -   ~~**Fix `_quarto.yml` corruption**~~ **DONE.** R code was accidentally injected into the chapters list, and `copper.qmd`, `lead.qmd`, and `zinc.qmd` were missing from the book. Restored all three chapter entries correctly.
 
--   ~~**Add per-chapter regulatory threshold tables**~~ **DONE.** Created `functions/threshold_table.R` with a `show_threshold_table(characteristic)` function. For static thresholds it reads `other/output/regulatory_values/all_reg_vals.csv`; for hardness-dependent metals (Cd, Cr, Cu, Pb, Zn) it computes the min/max range of calculated values from `other/input/regulatory_limits/formatted_reg_vals/calculated_metals_reg_vals.csv`. Table columns: Standard Type, Value, Unit, Regulatory Authority. Returns silently for parameters with no defined thresholds. Added `source("functions/threshold_table.R")` + `show_threshold_table(characteristic)` to all 19 active parameter chapters, placed after the CSV download link. Regulatory authority mapping is hard-coded in `threshold_table.R` lines ~32–41 — **needs user verification before final render.**
+-   ~~**Add per-chapter regulatory threshold tables**~~ **DONE.** Created `functions/threshold_table.R` with a `show_threshold_table(characteristic)` function. For static thresholds it reads `other/output/regulatory_values/all_reg_vals.csv`; for hardness-dependent metals (Cd, Cr, Cu, Pb, Zn) it computes the min/max range of calculated values from `other/input/regulatory_limits/formatted_reg_vals/calculated_metals_reg_vals.csv`. Table columns: Standard Type, Value, Unit, Regulatory Authority. Returns silently for parameters with no defined thresholds. Added `source("functions/threshold_table.R")` + `show_threshold_table(characteristic)` to all 19 active parameter chapters, placed after the CSV download link. Regulatory authority mapping is hard-coded in `threshold_table.R` lines \~32–41 — **needs user verification before final render.**
 
 -   ~~**Restore out-of-range threshold legend entries**~~ **DONE.** Removed the `hline_visible` filter from `static_boxplot_function.R`. All threshold lines now appear in the legend regardless of whether they fall within the visible y range. Companion threshold table provides the numerical values.
 
@@ -39,23 +39,49 @@
 
 -   ~~**Tooltip: prefix "RM" to mainstem river mile labels**~~ **DONE.** Tooltip bold header now shows e.g. "RM 1.5" instead of bare "1.5" for mainstem sites. One-line change in `static_boxplot_function.R`.
 
+-   ~~**Enable DOCX render**~~ **DONE.** Uncommented `docx:` format block in `_quarto.yml` and fixed a YAML indentation error (stray `output-dir: docs` line). Fixed all DOCX-incompatible HTML-only features: (1) created `functions/embed_if_html.R` helper and replaced all 32 `xfun::embed_file()` calls in `appendix_a.qmd` plus calls in `table_download.R` and `reg_limits.qmd`; (2) wrapped two `leaflet` maps in `appendix_a.qmd` and one `ggplotly` in `appendix_b.qmd` with `if (knitr::is_html_output())` conditionals. Root bug: `rm(list=ls())` at line \~76 of `appendix_a.qmd` cleared the function from the environment; fixed by adding `source("functions/embed_if_html.R")` immediately after the `rm()`. Also added `cache: false` to `appendix_a.qmd` YAML execute block to prevent stale HTML cache from masking the issue in future renders. Run with `quarto render --to docx`.
+
 -   **Boxplot whisker display (decision logged):** Long whiskers on Chromium and Copper are intentional — they reflect genuine right-skewed distributions at RM 1.5 and RM 6.5 (most developed lower-river sites, n=21 and n=22 observations respectively). Display left as-is; wide spread at lower-river sites should be noted in chapter narratives.
+
+-   ~~**Fix `appendix_b.qmd` DOCX render failure**~~ **DONE.** Root cause: `kable(format = "html")` + `kable_styling()` in the summary table chunk (lines ~192–207) produced HTML output unconditionally — not guarded by an HTML check. Fixed by wrapping in `if (knitr::is_html_output())` with a plain `knitr::kable()` fallback for DOCX.
+
+-   ~~**Fix site count discrepancy (21 vs 22)**~~ **DONE.** `README.md` line 57 comment said "21 sites"; `AGENTS.md` said "21 sites: 13 mainstem + 8 tributaries." Both corrected to 22 sites: 13 mainstem + 9 tributaries (verified from `baseline_sites.csv`).
+
+-   ~~**Set up Quarto render profile dropdown**~~ **DONE.** Created `_quarto-html.yml` and `_quarto-docx.yml` profile files. Moved `format:` blocks out of `_quarto.yml` into the respective profile files. Added `profile: default: html / group: [[html, docx]]` to `_quarto.yml`. RStudio now shows "html" and "docx" as selectable profiles in the Render button dropdown. Default profile is HTML.
+
+-   ~~**Fix code print leakage in `data_sourcing.qmd`**~~ **DONE.** Two root causes: (1) YAML front matter (including `execute: echo: false` and `date: "\`r Sys.Date()\`"`) was placed *after* the `# Data Sourcing` heading on line 1, so Quarto did not parse it as document front matter — the date expression appeared as raw text in DOCX. Fixed by moving YAML to the top of the file. (2) The `knitr::knit_exit()` chunk had no `echo = FALSE`, so the source code could appear in DOCX. Fixed by adding `echo = FALSE` to that chunk.
+
+-   ~~**Integrate 2016 report site descriptions into `study_area.qmd`**~~ **DONE.** Converted the 2016 Baseline Water Quality Assessment DOCX to markdown using pandoc and extracted 22 embedded site photos. Copied all photos to `other/documents/site_photos/` with descriptive filenames. Rewrote the "Sampling Site Descriptions" section of `study_area.qmd` with text, coordinates, photo, and caption for all 13 mainstem sites (RM 82 through RM 1.5) and all 9 tributary sites, following the 2016 report order (mainstem first). Added a note that descriptions and photos are from the 2016 report and may be updated.
+
+-   ~~**DOCX formatting: suppress all code output globally**~~ **DONE.** Added `execute: echo: false / warning: false / message: false` to `_quarto-docx.yml`. Applies across all chapters during DOCX rendering regardless of per-chapter YAML settings.
+
+-   ~~**DOCX formatting: chapter page breaks**~~ **DONE.** Created `filters/pagebreak-h1.lua` — a Lua filter that inserts an OpenXML `<w:br w:type="page"/>` element before every H1 heading. Guarded by `if FORMAT == "docx"` so it has no effect on HTML rendering. Referenced from `_quarto-docx.yml` under `filters:`.
+
+-   ~~**Separate HTML and DOCX output directories**~~ **DONE.** Added `project: output-dir: docs-docx` to `_quarto-docx.yml`. HTML profile continues to render to `docs/` (for GitHub Pages); DOCX profile now renders to `docs-docx/`. The two formats no longer interfere on successive renders. Removed `downloads: [docx]` from `_quarto.yml` book section — that sidebar link pointed to a DOCX inside `docs/`, which is no longer the case.
+
+-   **DOCX formatting: boxplot point/text sizing — PARTIALLY DONE, needs verification.** Added conditional size variables to `create_facet_plots` in `static_boxplot_function.R` (point size 1.5 → 3.0, facet strip text 16 → 22, axis labels 14–16 → 18–20, legend text default → 14). The DOCX detection originally used `isTRUE(knitr::pandoc_to("docx"))`, which may not fire in Quarto's rendering pipeline. Updated to `identical(Sys.getenv("QUARTO_PROFILE"), "docx") || isTRUE(knitr::pandoc_to("docx"))`. **Verify that sizes are now correct in DOCX at start of next session.**
 
 ### Tasks for next session (in order)
 
-1.  **Re-upload 2021 data to EPA CDX** (IN PROGRESS — files are ready, manual upload on CDX website required). Upload all three files from `other/output/wqx_formatted/`: `results_activities.csv`, `project.csv`, `station.csv`. Also upload the QAPP PDF attachment referenced in `project.csv`: `KenaiWatershedForum_QAPP_v3_2023_with_Addendum_April_2024.pdf`. After uploading, verify data visibility in [How's My Waterway](https://mywaterway.epa.gov/) as an end-to-end check.
+1.  **Verify boxplot DOCX sizing fix.** Render DOCX and confirm that jitter points, facet strip text, and legend text are visibly larger than in HTML output. The fix is in `functions/static_boxplot_function.R` — the `is_docx` detection now uses `Sys.getenv("QUARTO_PROFILE") == "docx"` as the primary check. If still not working, add `cat(Sys.getenv("QUARTO_PROFILE"), "\n")` in a temporary test chunk to confirm the environment variable is set during rendering.
 
-2.  **Verify regulatory authority column in threshold tables.** The USEPA/ADEC mapping in `functions/threshold_table.R` lines ~32–41 is hard-coded — confirm assignments are correct before final render.
+2.  **Re-upload 2021 data to EPA CDX** (IN PROGRESS — files are ready, manual upload on CDX website required). Upload all three files from `other/output/wqx_formatted/`: `results_activities.csv`, `project.csv`, `station.csv`. Also upload the QAPP PDF attachment referenced in `project.csv`: `KenaiWatershedForum_QAPP_v3_2023_with_Addendum_April_2024.pdf`. After uploading, verify data visibility in [How's My Waterway](https://mywaterway.epa.gov/) as an end-to-end check.
 
-3.  **Resolve ALS lab duplicate (DUP) status issue.** Four 2021 results have DUP status unexpectedly assigned in the ALS data — it appears ALS ran these as lab duplicates for Total Ca/Fe/Mg (method 200.7), which may not have been requested or covered by the QAPP. Sites: KR RM 22 SOC 2021-05-11; KR RM 1.5 2021-07-27; KR RM 23 2021-05-11; KR RM 70 2021-07-27. **Investigated March 28, 2026:** The DUP1 records are silently dropped by the pipeline — only primary sample values (Ca, Fe, Mg) appear in the export as `Field Msr/Obs` with correct single values. The exported data is not incorrect. What is missing is the QA/QC value of those lab duplicates: RPDs were never computed for them. **This does not block the CDX upload.** Outstanding questions for a future QA/QC session: (a) were lab duplicates requested/covered by QAPP? (b) should lab duplicate RPDs be computed and reported? Note: in SGS, field duplicates are labeled "PS" in `sample_type`; in ALS, lab duplicates are labeled "DUP1" in `sample_type`. Flagged originally March 2022.
+3.  **Verify regulatory authority column in threshold tables.** The USEPA/ADEC mapping in `functions/threshold_table.R` lines \~32–41 is hard-coded — confirm assignments are correct before final render.
 
-4.  **LOQ logic flow chart for ADEC.** Draw a logic flow chart for the 2-step winnowing process for LOQ and 2× LOQ criteria and send to ADEC staff to confirm interpretation. Flagged June 2023 — unclear if completed.
+4.  **Resolve ALS lab duplicate (DUP) status issue.** Four 2021 results have DUP status unexpectedly assigned in the ALS data — it appears ALS ran these as lab duplicates for Total Ca/Fe/Mg (method 200.7), which may not have been requested or covered by the QAPP. Sites: KR RM 22 SOC 2021-05-11; KR RM 1.5 2021-07-27; KR RM 23 2021-05-11; KR RM 70 2021-07-27. **Investigated March 28, 2026:** The DUP1 records are silently dropped by the pipeline — only primary sample values (Ca, Fe, Mg) appear in the export as `Field Msr/Obs` with correct single values. The exported data is not incorrect. What is missing is the QA/QC value of those lab duplicates: RPDs were never computed for them. **This does not block the CDX upload.** Outstanding questions for a future QA/QC session: (a) were lab duplicates requested/covered by QAPP? (b) should lab duplicate RPDs be computed and reported? Note: in SGS, field duplicates are labeled "PS" in `sample_type`; in ALS, lab duplicates are labeled "DUP1" in `sample_type`. Flagged originally March 2022.
 
-5.  **Extract ingestion logic to `.R` scripts** (lower priority — see File Structure section below).
+5.  **LOQ logic flow chart for ADEC.** Draw a logic flow chart for the 2-step winnowing process for LOQ and 2× LOQ criteria and send to ADEC staff to confirm interpretation. Flagged June 2023 — unclear if completed.
 
-6.  **Address historical CDX data corrections** (e.g., spring 2013 specific conductance) in a dedicated chapter of the `kenai-river-wqx-qaqc` repo — not in `appendix_a.qmd`.
+6.  **Make `appendix_a.qmd` year-neutral** (lower priority). The document has hardcoded references to "2021" throughout — in file paths, variable names, narrative text, and chunk labels (e.g., `{r, 2021 WQX formatting for SGS, ...}`). Goal: replace with a `year` variable set once at the top so the script can be reused for any year without find-and-replace edits. Closely related to task 6 (extract ingestion logic to `.R` scripts); both tasks should be done together.
 
-7.  **Add inline tables alongside all calculated-result download links** (lower priority — polish, does not affect data quality or CDX submission). Currently, \~10 places in `appendix_a.qmd` offer downloadable CSVs with no inline table, which will render as broken download-only links in PDF output. Use the pattern below for dual HTML/PDF output. Raw source files (PDFs, XLSs, JPGs from labs) do not need tables — download-only is appropriate for those. Calculated CSVs that need tables:
+7.  **Extract ingestion logic to `.R` scripts** (lower priority — see File Structure section below).
+
+8.  **Address historical CDX data corrections** (e.g., spring 2013 specific conductance) in a dedicated chapter of the `kenai-river-wqx-qaqc` repo — not in `appendix_a.qmd`.
+
+9.  **Move `wqx_corrections.qmd` to `kenai-river-wqx-qaqc` repo.** This file contains corrections to previously uploaded CDX data (e.g., historical unit errors) and belongs in the QA/QC repo, not this report repo. It is currently a loose file in the project root and is not included in the book chapter list. Move the file and its associated data to `kenai-river-wqx-qaqc`, then delete it from this repo.
+
+10. **Add inline tables alongside all calculated-result download links** (lower priority — polish, does not affect data quality or CDX submission). Currently, \~10 places in `appendix_a.qmd` offer downloadable CSVs with no inline table, which will render as broken download-only links in PDF output. Use the pattern below for dual HTML/PDF output. Raw source files (PDFs, XLSs, JPGs from labs) do not need tables — download-only is appropriate for those. Calculated CSVs that need tables:
 
     -   `planned_actual_analyses_2021.csv` (planned vs. actual analyses)
     -   `sample_holding_times.csv` (max holding times by sample type)
@@ -97,7 +123,7 @@ Extract processing logic from `appendix_a.qmd` into sourced `.R` scripts. This m
 Planned script breakdown:
 
 | Script | Content |
-|------------------------------------|------------------------------------|
+|----|----|
 | `R/ingest_sgs_als.R` | SGS EDD + ALS CSV read-in, column normalization, site name mapping, method code mapping (Parts A–E of current appendix) |
 | `R/ingest_fc.R` | SWWTP + Taurianen fecal coliform read-in |
 | `R/ingest_tss.R` | SWWTP TSS read-in |
@@ -113,7 +139,7 @@ Each script should accept year-specific inputs (file paths, sample dates) as arg
 Full audit was completed. Section-by-section status. **Note: line numbers are approximate and have shifted with each editing session. As of March 26, 2026 edits, add \~15 lines to the original estimates.**
 
 | Approx. Lines | Section | Status |
-|------------------------|------------------------|------------------------|
+|----|----|----|
 | 1–518 | SGS/ALS ingestion (Parts A–E) | Working. Includes Ca/Mg/Fe unit correction (March 2026). Dense — priority candidate for extraction to `R/ingest_sgs_als.R`. |
 | 520–983 | FC and TSS ingestion | Mostly working. TSS has a documented QA gap: SWWTP did not report lab QA results (blanks, duplicates, check standards) as required by QAPP in 2021/2022. Lab QA export block is commented out. |
 | 985–1260 | Lookup joins + first WQX export | Working (March 26, 2026). The write chunk was `eval = F` and is now `eval = T`. A `dat_raw`/`dat` save-restore pattern was added so the WQX CSV is written without corrupting the raw-column `dat` used by downstream QA/QC. The full column-rename block is redundantly repeated later for the CDX export — consolidate in the script extraction step. |
@@ -236,7 +262,7 @@ other/
 │   ├── 2021_wqx_data/     # Raw lab results (SGS North America, Soldotna WWTP, Taurianen Engineering)
 │   ├── outliers/          # Manually identified outliers spreadsheet
 │   ├── regulatory_limits/ # Hardness-dependent thresholds
-│   └── baseline_sites.csv # Site metadata (21 sites: 13 mainstem + 8 tributaries)
+│   └── baseline_sites.csv # Site metadata (22 sites: 13 mainstem + 9 tributaries)
 └── output/
     ├── wqx_formatted/             # CDX submission-ready files: results_activities.csv, project.csv, station.csv
     │   └── intermediate/          # Pipeline intermediates (not for upload): 2021_kwf_baseline_results_wqx.csv, 2021_export_data_flagged.csv
@@ -249,7 +275,7 @@ other/
 ## Parameters Monitored
 
 | Category | Parameters |
-|------------------------------------|------------------------------------|
+|----|----|
 | Dissolved Metals | Arsenic, Cadmium, Chromium, Copper, Lead, Zinc |
 | Total Metals | Calcium, Iron, Magnesium |
 | Nutrients | Nitrate + Nitrite, Phosphorus |

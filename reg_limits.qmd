@@ -159,7 +159,11 @@ dir <- "other/output/hardness/dat_hardness.csv"
 write.csv(dat, dir, row.names = F)
 
 # make hardness data downloadable
-xfun::embed_file(dir, name = "Kenai River Baseline Hardness Data")
+if (knitr::is_html_output()) {
+  xfun::embed_file(dir, name = "Kenai River Baseline Hardness Data")
+} else {
+  invisible(NULL)
+}
 
 ```
 

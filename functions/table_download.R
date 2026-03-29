@@ -19,6 +19,10 @@ download_tbl <- function(char){
   # write csv
   dir <- paste0("other/output/parameter_downloads/",characteristic," Kenai River Baseline Data",".csv")
   write.csv(parameter_dat, dir)
-  xfun::embed_file(dir)
+  if (knitr::is_html_output()) {
+    xfun::embed_file(dir)
+  } else {
+    invisible(NULL)
+  }
 }
 

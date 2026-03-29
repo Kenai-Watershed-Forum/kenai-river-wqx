@@ -1,0 +1,6 @@
+format:
+  html:
+    theme: cosmo
+    code-fold: true
+    code-summary: "Show code"
+    prefer-html: true
