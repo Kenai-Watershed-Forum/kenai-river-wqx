@@ -4,7 +4,7 @@ project:
   execute-dir: project
 
 book:
-  title: "Water Quality Assessment of the Kenai River Watershed from 2000 to 2025 [DRAFT]"
+  title: "Water Quality Assessment of the Kenai River Watershed from 2000 to 2021 [DRAFT]"
   author: "Benjamin Meyer, Kenai Watershed Forum"
   date: "`r Sys.Date()`"
   page-navigation: true
@@ -38,7 +38,7 @@ book:
       - parameters/magnesium.qmd
       - parameters/nitrate.qmd
       - parameters/phosphorus.qmd
-      #- parameters/diesel_range_organics.qmd
+      # parameters/diesel_range_organics.qmd
       #- parameters/gas_range_organics.qmd
       #- parameters/residual_range_organics.qmd
       - parameters/btex.qmd
@@ -53,6 +53,7 @@ book:
       - parameters/references.qmd
   appendices:
     - appendix_a.qmd
+    - cdx_upload.qmd
     - appendix_b.qmd
     - finance_history.qmd
     
@@ -61,13 +62,27 @@ book:
   search:
     location: sidebar
     type: textbox
+  downloads: [docx]
 
 bibliography: references.bib
 
-profile:
-  default: html
-  group:
-    - [html, docx]
+format:
+  html:
+    theme: cosmo
+    code-fold: true
+    code-summary: "Show code"
+    prefer-html: true
+    
+output-dir: docs
+
+  #pdf:
+  #  documentclass: scrreprt
+  #docx:
+  #  toc: true
+  #  toc-depth: 2
+  #  toc-title: Table of contents
+  #  number-sections: true
+  #  highlight-style: github
 
 editor: visual
 

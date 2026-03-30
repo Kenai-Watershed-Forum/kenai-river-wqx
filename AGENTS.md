@@ -322,6 +322,8 @@ Note: The original vendor template file `AWQMS_KWF_Baseline_2021.xlsx` retains i
 
 -   **TSS lab QA gap:** SWWTP did not report required lab QA results for TSS in 2021/2022. Note in code, address for 2023+.
 
+-   **Calcium dissolved \> total metals — cause unknown (flagged March 2026, unresolved).** In summer 2021, dissolved Ca (SGS, Method 200.8, field-filtered 0.45 µm) consistently exceeds total Ca (ALS, Method 200.7, unfiltered) at all 12 paired sites by 13–19% (median ~18%, absolute difference 1.5–5.4 mg/L). This violates the fundamental expectation that dissolved ≤ total. The discrepancy is systematic and too large to attribute to measurement uncertainty. Iron behaves correctly (total \> dissolved) at all sites. Magnesium shows small inversions at RM 0 NNC (+1.2%) and RM 1.5 (+2.5%), likely within analytical uncertainty. Leading hypotheses: (1) inter-laboratory bias between SGS and ALS for Ca specifically; (2) method-specific matrix effects between 200.7 (ICP-OES) and 200.8 (ICP-MS). The anomaly may also be connected to the SGS unit labeling error in the summer 2021 EDD (corrected at ingestion — see Ca/Mg/Fe unit errors entry above), which introduces additional uncertainty about SGS 200.8 Ca values. **Action needed:** In future sampling years, send split samples to both labs for direct inter-laboratory Ca comparison, or use a single lab for both fractions. Consider contacting SGS and ALS to review 2021 Ca calibration and QC records. The 2021 dissolved and total Ca results are included in the CDX upload as-is, with the discrepancy documented in `appendix_a.qmd` Q18.
+
 ## Visualization Wish List
 
 These are desired but not yet implemented features for the report figures:
