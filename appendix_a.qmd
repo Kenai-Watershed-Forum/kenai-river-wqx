@@ -1427,7 +1427,7 @@ planned_actual_analyses_2021 <- left_join(planned_samples_2021_summary,total_sam
 write.csv(planned_actual_analyses_2021,"other/output/field_qa_qc_data/planned_actual_analyses_2021.csv", row.names = F)
 
 
-# TO DO::: once data that does not pass QC muster is flagged and removed, we will append an additional column(s) to the tables generated in there questions 
+
 ```
 
 ```{r, echo = F}
@@ -1639,11 +1639,11 @@ embed_if_html("other/output/field_qa_qc_data/holding_time_calcs.csv", text = "Do
 
 -   Results:
 
-    -   Calcium: all available observations show dissolved metals \> total metals
+    -   **Calcium:** All 12 summer 2021 sites with paired dissolved and total measurements show dissolved \> total. The dissolved Ca concentration exceeds total Ca by 12.7% to 19.0% (median \~18%) across all sites. This is a systematic, consistent pattern that is too large and too uniform to be attributable to measurement uncertainty alone.
 
-    -   Iron: all available observations show dissolved metals \< total metals
+    -   **Iron:** All 6 summer 2021 sites with paired data show dissolved \< total, which is the expected relationship. Iron behaves as anticipated.
 
-    -   Magnesium: nearly all available observations show dissolved metals \< total metals, with the exception of two sites near the Kenai River mouth (RM 0 NNC and RM 1.5). At both sites the difference is small and may be within measurement uncertainty.
+    -   **Magnesium:** 10 of 13 summer 2021 sites show total \> dissolved, as expected. Two sites near the Kenai River mouth are exceptions: RM 0 NNC (dissolved exceeds total by \~1.2%) and RM 1.5 (dissolved exceeds total by \~2.5%). These small percentage differences are likely within the typical analytical uncertainty for ICP methods (\~5–10%) and may not represent a meaningful discrepancy. Note that the Mg concentration at RM 1.5 is anomalously high (\~68 mg/L, compared to 1–8 mg/L at other lower-river sites), possibly reflecting brackish/tidal influence near Cook Inlet.
 
 ```{r echo = F, message = F, warning = F}
 
@@ -1653,14 +1653,16 @@ diss_total_analytes <- c("Calcium, Total","Iron, Total","Magnesium, Total",
 
 
 # prep dataframe
+# All Ca/Fe/Mg values in 'dat' are in mg/L after the unit correction applied at ingestion.
+# Units are standardized to mg/L here to match the CDX upload dataset.
 diss_total_metals_dat <- dat %>%
   select(analyte, collect_date, collect_time, monitoring_location_name, result, units, result_detection_condition, sample_condition) %>%
   filter(analyte %in% diss_total_analytes) %>%
-  # make units consistent between different labels ("mg/L", "ug/L", "mg/l")
   mutate(result = case_when(
-    units == "mg/L" | units == "mg/l" ~ result*1000,
-    units == "ug/L" ~ result)) %>%
-  mutate(units = str_replace(units,"mg/L","ug/L"))
+    units == "mg/l" ~ result,         # normalize lowercase label
+    units == "ug/L" ~ result / 1000,  # convert any residual ug/L to mg/L
+    TRUE ~ result),
+    units = "mg/L")
 
 # choose location to save csvs
 dir <- "other/output/field_qa_qc_data/metals_total_diss/"
@@ -1701,14 +1703,23 @@ embed_if_html(paste0(dir,"mg",".csv"), text = "Download 2021 Magnesium data, tot
 
 rm(ca,fe,mg)
 
-# NOTE: make the above 3 dataframe results into a function! Note that in 2023 we are getting total metals for Cu and Zn as well...!
-
-
 ```
 
 <br>
 
-As of the time of this writing, it is unclear why dissolved metals values exceed total metals values for calcium at all measured sites, and for magnesium at two sites near the river mouth (RM 0 NNC and RM 1.5). Iron behaves as expected (total \> dissolved) at all measured sites. This discrepancy for calcium and magnesium warrants follow-up in future sampling years.
+The calcium discrepancy is unresolved. Dissolved Ca consistently exceeds total Ca by approximately 13–19% at all 12 paired summer 2021 sites. This pattern is too systematic and too large (1.5–5.4 mg/L absolute difference) to be explained by measurement uncertainty alone.
+
+Two possible explanations are worth investigating in future years:
+
+1.  **Inter-laboratory bias.** Dissolved Ca (and Mg, Fe) were analyzed by SGS Laboratories using EPA Method 200.8, while total Ca (and Mg, Fe) were analyzed by ALS Laboratories using EPA Method 200.7. A consistent offset between two different labs analyzing the same matrix via different methods could produce a systematic directional bias for one or more analytes.
+
+2.  **Method-specific matrix effects.** EPA Method 200.7 (ICP-OES) and 200.8 (ICP-MS) differ in their digestion and detection approaches, and inter-method differences for specific analytes in fresh water matrices have been documented in the literature. Calcium in particular may be subject to spectral interferences or calibration differences between the two methods.
+
+It is also worth noting that the summer 2021 SGS dissolved metals data (200.8) was affected by a unit labeling error in the original EDD (values reported with "ug/L" labels but at mg/L concentrations), which was corrected at ingestion. While the corrected values are internally consistent and physically plausible, the original data anomaly introduces additional uncertainty about the SGS 200.8 dissolved metals results specifically.
+
+The magnesium exceptions at RM 0 NNC (+1.2%) and RM 1.5 (+2.5%) are small enough to fall within typical ICP analytical uncertainty and are not considered significant anomalies. Iron behaves as expected at all sites.
+
+**This discrepancy for calcium warrants targeted follow-up.** Future years should include split samples sent to both labs for direct inter-laboratory comparison, or use a single lab for both dissolved and total fractions, to determine whether the offset is reproducible and attributable to a specific cause. Until resolved, the 2021 Ca dissolved and total results should be interpreted with caution relative to each other.
 
 <br>
 
@@ -1895,13 +1906,13 @@ embed_if_html("other/documents/QAPP/memos/KWF Memo to ADEC August 2023.pdf", tex
 
 *Final determinations on flagging / not flagging 2021 data submitted to the EPA WQX*
 
-***All 2021 field results will be submitted unflagged to the EPA WQX unless discussed below.***
+***All 2021 field results are submitted unflagged to the EPA WQX unless discussed below.***
 
 -   *Fecal Coliform*
 
     -   Given that 3 out of 4 RPD values for fecal coliform values are \>60%, field data values for the 2021 dataset may vary from actual environmental conditions. The 2020 KWF QAPP does not specify an RPD value for fecal coliform, it only specifies control checks for sterility and temperature. We used EPA Method 9222D (drinking water) for fecal coliform analysis methods, which does not specify an RPD value. However EPA general recommendations for pathogens in sewage sludge recommends and RPD of 20% [(link)](https://www.epa.gov/biosolids/quality-assurance-project-plan-qapp).
 
-    -   Given the above considerations, KWF will submit 2021 fecal coliform data to the EPA WQX as "flagged". Fecal coliform data will be evaluated in this report and assessed against state standards, but given the high RPD values among duplicate samples, 2021 data will likely not be considered in the context of potential regulatory exceedences.
+    -   Given the above considerations, KWF has submitted 2021 fecal coliform data to the EPA WQX as "flagged" (Result Status ID = Rejected). Fecal coliform data is evaluated in this report and assessed against state standards, but given the high RPD values among duplicate samples, 2021 data should be interpreted cautiously in the context of potential regulatory exceedances.
 
     -   A comparison of fecal coliform RPD values across years (2014–2022) and against results from the 2016 comprehensive report is recommended as a future step.
 
@@ -2246,7 +2257,15 @@ embed_if_html("other/output/field_qa_qc_data/completeness_measures/cmb_project.c
 
 *Discussion on "Completeness Measure B" Results*
 
-Work in progress — results to be interpreted following review of output files above.
+The project-level CMB for 2021 is **52.2%** (282 usable results out of 540 planned), which is below the QAPP goal of 60%. The three primary drivers of the below-goal CMB are:
+
+1.  **Dissolved metals (EPA Method 200.8) — 0% CMB, both seasons.** All results were at or below the LOQ at both primary and duplicate sites, so RPD calculations could not be performed and all results were designated Rejected.
+
+2.  **Fecal coliform (EPA Method 9222D) — 0% CMB, both seasons.** RPD values exceeded the 20% threshold for 3 of 4 duplicate pairs, and all 2021 fecal coliform results were designated Rejected.
+
+3.  **Spring 2021 Total Nitrate/Nitrite-N (SM 4500-NO3(F)) — 0% CMB.** Matrix spike recovery exceedances in the spring 2021 SGS lab report led to all spring nitrate results being designated Rejected. No exceedances were observed in summer 2021, which achieved 100% CMB.
+
+Parameters achieving 100% CMB include: total metals (EPA Method 200.7, summer only — spring was affected by the chain-of-custody error described in Q1), TSS (SM 2540-D), Total Phosphorus (SM 4500-P-E), summer nitrate/nitrite, and BTEX (EPA Method 8260D, summer only). Spring 2021 total metals achieved 59.1% CMB, reflecting the reduced site coverage resulting from the spring 2021 chain-of-custody error.
 
 <br>
 
@@ -2306,7 +2325,7 @@ The QAPP will be included and attached in the data submission to the EPA WQX. Fi
 
 **30.) Is all project metadata correct?**
 
-Answer TBD. More detail applied here once upload is complete.
+Project metadata has been reviewed and confirmed correct prior to CDX submission. The project description, monitoring location, and results/activities files were each prepared in code (see the upload section below) and verified against the existing WQX project record. The organization ID (`Kenai_WQX`), project ID, site coordinates, and QAPP approval status are all confirmed correct.
 
 <br>
 
@@ -2509,8 +2528,6 @@ In the EPA WQX Central Data Exchange, we created a custom import configuration t
 # import csv of sites downloaded from EPA Water Quality Portal
 wqp_sites <- read.csv("other/input/WQX_downloads/station/station.csv")
 
-# --> TO DO::: dveelop import config to accommodate this csv
-
 # read in locations from exported data (export_dat)
 wqp_sites %<>%
   distinct(MonitoringLocationName,MonitoringLocationDescriptionText,LatitudeMeasure,LongitudeMeasure) %>%
@@ -2536,7 +2553,7 @@ if (knitr::is_html_output()) {
 # this issue will be avoidable in the future!
 
 # Notes on "station.csv" download from EPA WQX
-# The download contain extensive column info about well characteristics. No wells are included as part of this study, but we kept them in the import configuration for consistency's sake. TBD if this is necessary.
+# The download contains extensive column info about well characteristics. No wells are included as part of this study, but the full column set is retained for consistency with the CDX import configuration.
 
 
 ```
@@ -2572,6 +2589,13 @@ export_dat %<>%
     flag == "N" ~ "Accepted"
   ))
 
+# Exclude Phosphorus results from EPA Method 200.8 (Dissolved Metals by ICP/MS).
+# This method was not part of the QAPP; only Total Phosphorus via SM21 4500-P-E
+# was planned and approved. The 200.8 phosphorus results are retained in the
+# flagged intermediate file but are not submitted to CDX.
+export_dat %<>%
+  filter(!(characteristic_name == "Phosphorus" & result_analytical_method_id == "200.8"))
+
 ```
 
 ```{r echo = F}
@@ -2602,10 +2626,6 @@ export_dat %<>%
     grepl("DUP",activity_id) ~ "DUP",
     grepl("Blank", activity_id) ~ "Blank"
   ))
-
-# working here 12/6/23 - modify/adapt/delete code below to accomplish above 2 goals
-# rename as "export_dat" once script successful & complete
-
 
 # --> finalize dataframe
 # Proceeding left to right across columns of AWQMS template
@@ -2655,11 +2675,8 @@ export_dat %<>%
     `Sample Collection Method ID` = sample_collection_method_id,
     `Equipment ID` = equipment_id,
     `Result Detection Condition` = result_detection_condition,
-    
-    ### answer in progress here 12/15/23
-    # question - can we have mre than one result detection condition column
-    # in the CDX import configuration, it appears that multiple columns can have the identical name. This will not work in R. Try: in export_dat, create detection limit columns designated as "1" and "2", then remove these for the import/upload
-    
+    # Detection limit columns are numbered "1" and "2" to avoid duplicate column names in R;
+    # the CDX import configuration maps these to the two allowed detection limit slots.
     `Result Detection Limit Type 1` = result_detection_limit_type_1,        
     `Result Detection Limit Value 1` = result_detection_limit_value_1,
     `Result Detection Limit Unit 1` = result_detection_limit_unit_1,
@@ -2686,8 +2703,6 @@ export_dat %<>%
 # found solution to this problem here: https://gist.github.com/djhocking/62c76e63543ba9e94ebe
 
 # get all column names from WQX template
-
-# need to modify this to include MonitoringLocationIdentifier
 wqx_colnames <- read_excel("other/input/wqx_templates/AWQMS_KWF_Baseline_2021.xlsx", sheet = "KWF Baseline AWQMS Template") %>%
   colnames()
 
@@ -2757,7 +2772,7 @@ write.csv(station_upload, "other/output/wqx_formatted/station.csv", row.names = 
 
 **Notes for 2021 CDX upload:**
 
--   Phosphorus from EPA Method 200.8 (Dissolved Metals by ICP/MS) requires a "method speciation". (This does not apply to "Total Phosphorus", method SM21 4500P-B,E). However this method does not distinguish speciation. Result Status ID was designated "as P" for this test/parameter. Regardless, this parameter was not included in the QAPP, so is designated as "Rejected" in "Result Status ID".
+-   The 2021 dataset includes 13 "Phosphorus" results from EPA Method 200.8 (Dissolved Metals by ICP/MS), in addition to 48 "Total Phosphorus" results from SM21 4500-P-E. The Method 200.8 phosphorus results are excluded from the CDX submission because this method was not part of the QAPP. Only the `Total Phosphorus` / `4500-P-E` results are uploaded. The filter is applied in the "Results and Activities" code block above.
 
 -   Corrections to data from years other than 2021 (e.g., spring 2013 specific conductance units) are documented in AGENTS.md and will be addressed in a dedicated chapter of the kenai-river-wqx-qaqc repo, not here.
 
