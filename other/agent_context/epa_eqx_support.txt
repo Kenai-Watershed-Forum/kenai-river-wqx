@@ -1,0 +1,13 @@
+3/31/2026
+
+I spoke the support person at wqx@epa.gov, Kevin Christian. I will write down here some of our conversation and have it be incorporated in to to-do's and documentation for this project.
+
+- Our existing data in WQX appear to be organized at the "Activity" level. He recommends instead organizing it at the "Results" level. E.g., each sampling activity (unique time/place) is associated with a set of results (parameters).
+
+- It is not necessarily "wrong" as is, but as the number of observations increase, performance decreases
+
+- Addressing this involves using the "Review" function in WQX to access all existing results and re-defining them as "Results" rather than activities
+
+- This task is likely best performed in the separate QA/QC quarto book previously referenced and linked in AGENTS.md
+
+--- Benjamin Meyer (ben@kenaiwatershed.org)
