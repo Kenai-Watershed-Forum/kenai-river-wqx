@@ -123,7 +123,7 @@ Extract processing logic from `appendix_a.qmd` into sourced `.R` scripts. This m
 Planned script breakdown:
 
 | Script | Content |
-|----|----|
+|------------------------------------|------------------------------------|
 | `R/ingest_sgs_als.R` | SGS EDD + ALS CSV read-in, column normalization, site name mapping, method code mapping (Parts A–E of current appendix) |
 | `R/ingest_fc.R` | SWWTP + Taurianen fecal coliform read-in |
 | `R/ingest_tss.R` | SWWTP TSS read-in |
@@ -139,7 +139,7 @@ Each script should accept year-specific inputs (file paths, sample dates) as arg
 Full audit was completed. Section-by-section status. **Note: line numbers are approximate and have shifted with each editing session. As of March 26, 2026 edits, add \~15 lines to the original estimates.**
 
 | Approx. Lines | Section | Status |
-|----|----|----|
+|------------------------|------------------------|------------------------|
 | 1–518 | SGS/ALS ingestion (Parts A–E) | Working. Includes Ca/Mg/Fe unit correction (March 2026). Dense — priority candidate for extraction to `R/ingest_sgs_als.R`. |
 | 520–983 | FC and TSS ingestion | Mostly working. TSS has a documented QA gap: SWWTP did not report lab QA results (blanks, duplicates, check standards) as required by QAPP in 2021/2022. Lab QA export block is commented out. |
 | 985–1260 | Lookup joins + first WQX export | Working (March 26, 2026). The write chunk was `eval = F` and is now `eval = T`. A `dat_raw`/`dat` save-restore pattern was added so the WQX CSV is written without corrupting the raw-column `dat` used by downstream QA/QC. The full column-rename block is redundantly repeated later for the CDX export — consolidate in the script extraction step. |
@@ -275,7 +275,7 @@ other/
 ## Parameters Monitored
 
 | Category | Parameters |
-|----|----|
+|------------------------------------|------------------------------------|
 | Dissolved Metals | Arsenic, Cadmium, Chromium, Copper, Lead, Zinc |
 | Total Metals | Calcium, Iron, Magnesium |
 | Nutrients | Nitrate + Nitrite, Phosphorus |
@@ -321,8 +321,6 @@ Note: The original vendor template file `AWQMS_KWF_Baseline_2021.xlsx` retains i
 -   **Completeness Measure B** calculation is complete and enabled. Project-wide CMB is 52.2% (below the 60% QAPP goal), primarily driven by dissolved metals being fully below LOQ and fecal coliform RPD failures.
 
 -   **TSS lab QA gap:** SWWTP did not report required lab QA results for TSS in 2021/2022. Note in code, address for 2023+.
-
--   **Calcium dissolved \> total metals — cause unknown (flagged March 2026, unresolved).** In summer 2021, dissolved Ca (SGS, Method 200.8, field-filtered 0.45 µm) consistently exceeds total Ca (ALS, Method 200.7, unfiltered) at all 12 paired sites by 13–19% (median ~18%, absolute difference 1.5–5.4 mg/L). This violates the fundamental expectation that dissolved ≤ total. The discrepancy is systematic and too large to attribute to measurement uncertainty. Iron behaves correctly (total \> dissolved) at all sites. Magnesium shows small inversions at RM 0 NNC (+1.2%) and RM 1.5 (+2.5%), likely within analytical uncertainty. Leading hypotheses: (1) inter-laboratory bias between SGS and ALS for Ca specifically; (2) method-specific matrix effects between 200.7 (ICP-OES) and 200.8 (ICP-MS). The anomaly may also be connected to the SGS unit labeling error in the summer 2021 EDD (corrected at ingestion — see Ca/Mg/Fe unit errors entry above), which introduces additional uncertainty about SGS 200.8 Ca values. **Action needed:** In future sampling years, send split samples to both labs for direct inter-laboratory Ca comparison, or use a single lab for both fractions. Consider contacting SGS and ALS to review 2021 Ca calibration and QC records. The 2021 dissolved and total Ca results are included in the CDX upload as-is, with the discrepancy documented in `appendix_a.qmd` Q18.
 
 ## Visualization Wish List
 

@@ -42,10 +42,12 @@ INLINE CODE NOTES
 Each chapter about a water quality parameter will contain sentences describing summary statistics (min/max, range, etc). In this Quarto Book, I want these values to updated using inline code whenever the project is freshly rendered.
 
 QUARTO NOTES
-I want this project to be able to be rendered as both .html (hosted on GitHub Pages) or as a PDF. I want the reader to be able to access and download the PDF.
+I want this project to be able to be rendered as both .html (hosted on GitHub Pages) or as a docx. I want the reader to be able to access and download the docx. It does not need to be render-able from Quarto as a PDF.
 
 OTHER MISCELLANEOUS NOTES
-Appendix A and its associated source materials contain various references to "AWQWMS", few  sometimes also written as "aqwms" or similar. This acronym " is for "ambient water quality monitoring system," which is software sold by Gold Systems. In 2021 we had considered using this software but eventually decided not to. I would like to edit the document to no longer use this acronym and instead use something more generalized. Whatever convention for similar project might be.
+- Appendix A and its associated source materials contain various references to "AWQWMS", few  sometimes also written as "aqwms" or similar. This acronym " is for "ambient water quality monitoring system," which is software sold by Gold Systems. In 2021 we had considered using this software but eventually decided not to. I would like to edit the document to no longer use this acronym and instead use something more generalized. Whatever convention for similar project might be.
+
+- One eventual goal of this work is to make decisions about if sampling plans and sampling designs should change for ongoing long-term monitoring. Some example questions may include: 1) Are there parameters we should be monitoring for that we are not yet? 2) Are there parameters we no longer need to monitor as much or at all? Would it be useful or feasible to change monitoring plans so that it is performed by a single team over multiple days rather than multiple teams over the course of a few hours? 4) Are there places/times/parameters that would be more effectively monitored by logger devices as opposed to grab samples and synoptic measurements? 
 
 WISH LIST ITEMS
 A) I would like for all boxplot figures displaying data to be interactive. When the user hovers their mouse over, the point has a pop-up window with relevant information
