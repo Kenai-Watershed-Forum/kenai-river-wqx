@@ -15,7 +15,7 @@
 library(dplyr)
 library(knitr)
 
-show_threshold_table <- function(characteristic) {
+show_threshold_table <- function(characteristic, no_threshold_note = NULL) {
 
   # --- Lookup tables: Standard code -> display label and regulatory authority ---
   standard_labels <- c(
@@ -116,8 +116,14 @@ show_threshold_table <- function(characteristic) {
   all_rows <- rbind(static_rows, hd_rows)
 
   if (nrow(all_rows) == 0) {
-    # No thresholds defined for this parameter — return silently
-    return(invisible(NULL))
+    # Use custom note if provided, otherwise use the default message
+    msg <- if (!is.null(no_threshold_note)) {
+      no_threshold_note
+    } else {
+      paste0("*No regulatory threshold for ", characteristic,
+             " has been established for freshwater aquatic life by ADEC or USEPA.*")
+    }
+    return(knitr::asis_output(msg))
   }
 
   knitr::kable(

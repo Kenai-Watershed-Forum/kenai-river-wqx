@@ -61,13 +61,40 @@
 
 -   **DOCX formatting: boxplot point/text sizing — PARTIALLY DONE, needs verification.** Added conditional size variables to `create_facet_plots` in `static_boxplot_function.R` (point size 1.5 → 3.0, facet strip text 16 → 22, axis labels 14–16 → 18–20, legend text default → 14). The DOCX detection originally used `isTRUE(knitr::pandoc_to("docx"))`, which may not fire in Quarto's rendering pipeline. Updated to `identical(Sys.getenv("QUARTO_PROFILE"), "docx") || isTRUE(knitr::pandoc_to("docx"))`. **Verify that sizes are now correct in DOCX at start of next session.**
 
+### Completed this session (March 31, 2026)
+
+-   ~~**CDX WQX delete file debugging**~~ **DONE.** Ben attempted to delete all 835 existing 2021 WQX records using a batch Activity ID delete file (`resultphyschem_DELETE.csv`). The import failed for all records with error "Domain Value Invalid."
+
+    **Root cause:** The DELETE file contained Activity IDs with the `KENAI_WQX-` org prefix (e.g., `KENAI_WQX-KBL_t_30.0-2021-07-27-P`). WQX's batch delete process expects IDs *without* the org prefix — the org context is provided by the logged-in account. The org prefix is added by WQX when storing and should not be included when submitting delete references.
+
+    **Fix:** A corrected DELETE file was generated with the prefix stripped: `other/output/epa_wqp_uploads/corrected_epa_wqp_uploads/resultphyschem_DELETE_v2.csv`. **This file was successfully used to delete all 835 existing 2021 records on 3/31/2026.**
+
+    **Why full delete was required (not just re-upload):** 66 Activity IDs in WQX used old naming conventions (`Nitrate_Nitrite-N`, `Total xylenes`) that differ from the corrected file (`Total Nitrate/Nitrite-N`, individual xylene names). A re-upload without deletion would have left those stale records permanently.
+
+    **WQX delete UI path (confirmed working 3/31/2026):** Import & Submit → Import a batch of IDs for records to delete from WQX → Import a file of Activity IDs to be deleted. Type of File: CSV (Comma delimited). **Leave "Ignore First Row of Import File?" checked** (file has a header row). Organization ID is auto-populated from login. Note: the UI labels this as "Activity Group IDs to Delete" but it correctly deletes individual Activities.
+
+-   **EPA WQX support call — structural recommendation logged (3/31/2026).** Spoke with Kevin Christian (wqx@epa.gov). Key notes:
+    -   Current KWF data in WQX is organized at the **"Activity" level** (each Activity = one result). Kevin recommends organizing at the **"Results" level** instead (each Activity = one sampling event, with multiple results nested under it). This is not necessarily wrong as-is, but performance degrades as the number of records increases.
+    -   Addressing this involves using the **"Review" function** in WQX Web to access existing records and re-define them as Results rather than Activities.
+    -   This restructuring is best handled in the **`kenai-river-wqx-qaqc` repo**, not here, and should be considered for future annual submissions. See tasks below.
+
 ### Tasks for next session (in order)
 
-1.  **Verify boxplot DOCX sizing fix.** Render DOCX and confirm that jitter points, facet strip text, and legend text are visibly larger than in HTML output. The fix is in `functions/static_boxplot_function.R` — the `is_docx` detection now uses `Sys.getenv("QUARTO_PROFILE") == "docx"` as the primary check. If still not working, add `cat(Sys.getenv("QUARTO_PROFILE"), "\n")` in a temporary test chunk to confirm the environment variable is set during rendering.
+1.  **Finish 2021 CDX re-upload.** Existing 2021 data has been deleted (3/31/2026). Upload all three corrected files from `other/output/wqx_formatted/`: `results_activities.csv`, `project.csv`, `station.csv`, plus the QAPP PDF (`KenaiWatershedForum_QAPP_v3_2023_with_Addendum_April_2024.pdf`). Verify in [How's My Waterway](https://mywaterway.epa.gov/) once uploaded. **Then update `cdx_upload.qmd`** with the accurate, tested procedure — including the confirmed delete UI path above and the WQX Activity-vs-Results structural issue.
 
-2.  **Re-upload 2021 data to EPA CDX** (IN PROGRESS — files are ready, manual upload on CDX website required). Upload all three files from `other/output/wqx_formatted/`: `results_activities.csv`, `project.csv`, `station.csv`. Also upload the QAPP PDF attachment referenced in `project.csv`: `KenaiWatershedForum_QAPP_v3_2023_with_Addendum_April_2024.pdf`. After uploading, verify data visibility in [How's My Waterway](https://mywaterway.epa.gov/) as an end-to-end check.
+2.  **Verify boxplot DOCX sizing fix.** Render DOCX and confirm that jitter points, facet strip text, and legend text are visibly larger than in HTML output. The fix is in `functions/static_boxplot_function.R` — the `is_docx` detection now uses `Sys.getenv("QUARTO_PROFILE") == "docx"` as the primary check. If still not working, add `cat(Sys.getenv("QUARTO_PROFILE"), "\n")` in a temporary test chunk to confirm the environment variable is set during rendering.
 
 3.  **Verify regulatory authority column in threshold tables.** The USEPA/ADEC mapping in `functions/threshold_table.R` lines \~32–41 is hard-coded — confirm assignments are correct before final render.
+
+4.  **Add missing threshold values to `all_reg_vals.csv`** (pending Ben's review — 3/31/2026). Three parameters have standards cited in chapter text but absent from the data file. Proposed values (verified from chapter narrative citations):
+    -   **Iron:** 1 mg/L — ADEC and USEPA chronic freshwater aquatic life (ADEC 2008, USEPA 2014). Add as new standard type e.g. `aquatic_life_chronic`.
+    -   **Water Temperature:** 13°C (egg/fry incubation and spawning), 15°C (rearing and migration routes), 20°C (all freshwaters) — all ADEC 18 AAC 70. Needs three new standard type labels.
+    -   **Fecal Coliform:** 400 CFU/100mL recreation single-sample limit; 40 CFU/100mL drinking water single-sample limit — both ADEC. Geometric mean criteria (200 / 20 CFU/100mL) are optional context but were not evaluated in this study due to insufficient sample frequency.
+    -   **Do not edit the file until Ben confirms these values.** File is at `other/output/regulatory_values/all_reg_vals.csv`.
+
+    `threshold_table.R` was also updated (3/31/2026): now prints an italicized "no regulatory threshold" note instead of returning silently. TSS and Turbidity pass a custom note (their ADEC standards are relative/sediment-based and cannot be expressed as fixed threshold lines). `no_threshold_note` parameter added to function signature for this purpose.
+
+    **Benzene chapter (`parameters/benzene.qmd`) has no narrative text.** Needs prose added noting that: (a) no separate standard exists for individual benzene in freshwater; (b) the applicable ADEC standard is 10 µg/L for total aromatic hydrocarbons (BTEX combined) — see BTEX chapter.
 
 4.  **Resolve ALS lab duplicate (DUP) status issue.** Four 2021 results have DUP status unexpectedly assigned in the ALS data — it appears ALS ran these as lab duplicates for Total Ca/Fe/Mg (method 200.7), which may not have been requested or covered by the QAPP. Sites: KR RM 22 SOC 2021-05-11; KR RM 1.5 2021-07-27; KR RM 23 2021-05-11; KR RM 70 2021-07-27. **Investigated March 28, 2026:** The DUP1 records are silently dropped by the pipeline — only primary sample values (Ca, Fe, Mg) appear in the export as `Field Msr/Obs` with correct single values. The exported data is not incorrect. What is missing is the QA/QC value of those lab duplicates: RPDs were never computed for them. **This does not block the CDX upload.** Outstanding questions for a future QA/QC session: (a) were lab duplicates requested/covered by QAPP? (b) should lab duplicate RPDs be computed and reported? Note: in SGS, field duplicates are labeled "PS" in `sample_type`; in ALS, lab duplicates are labeled "DUP1" in `sample_type`. Flagged originally March 2022.
 
@@ -77,9 +104,11 @@
 
 7.  **Extract ingestion logic to `.R` scripts** (lower priority — see File Structure section below).
 
-8.  **Address historical CDX data corrections** (e.g., spring 2013 specific conductance) in a dedicated chapter of the `kenai-river-wqx-qaqc` repo — not in `appendix_a.qmd`.
+8.  **Restructure WQX data from Activity-level to Results-level** (lower priority — future annual submissions). Per EPA WQX support (Kevin Christian, 3/31/2026): current data is organized one-result-per-Activity. The correct WQX structure is one-Activity-per-sampling-event with multiple Results nested under it. Performance degrades at scale with the current structure. Use the "Review" function in WQX Web to access and re-define existing records. Address in `kenai-river-wqx-qaqc` repo; incorporate correct structure into the annual pipeline for future years.
 
-9.  **Move `wqx_corrections.qmd` to `kenai-river-wqx-qaqc` repo.** This file contains corrections to previously uploaded CDX data (e.g., historical unit errors) and belongs in the QA/QC repo, not this report repo. It is currently a loose file in the project root and is not included in the book chapter list. Move the file and its associated data to `kenai-river-wqx-qaqc`, then delete it from this repo.
+9.  **Address historical CDX data corrections** (e.g., spring 2013 specific conductance) in a dedicated chapter of the `kenai-river-wqx-qaqc` repo — not in `appendix_a.qmd`.
+
+10. **Move `wqx_corrections.qmd` to `kenai-river-wqx-qaqc` repo.** This file contains corrections to previously uploaded CDX data (e.g., historical unit errors) and belongs in the QA/QC repo, not this report repo. It is currently a loose file in the project root and is not included in the book chapter list. Move the file and its associated data to `kenai-river-wqx-qaqc`, then delete it from this repo.
 
 10. **Add inline tables alongside all calculated-result download links** (lower priority — polish, does not affect data quality or CDX submission). Currently, \~10 places in `appendix_a.qmd` offer downloadable CSVs with no inline table, which will render as broken download-only links in PDF output. Use the pattern below for dual HTML/PDF output. Raw source files (PDFs, XLSs, JPGs from labs) do not need tables — download-only is appropriate for those. Calculated CSVs that need tables:
 

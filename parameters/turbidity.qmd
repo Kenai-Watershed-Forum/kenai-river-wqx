@@ -43,6 +43,6 @@ download_tbl(char = characteristic)
 
 # source threshold table function
 source("functions/threshold_table.R")
-show_threshold_table(characteristic)
+show_threshold_table(characteristic, no_threshold_note = "*The ADEC standard for turbidity is expressed relative to natural background conditions (turbidity may not exceed 25 NTU above natural conditions in freshwater; 5 NTU in lakes), not as a fixed absolute value. It cannot be represented as a reference line on the plot above. See chapter narrative for details.*")
 
 ```

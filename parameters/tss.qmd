@@ -43,6 +43,6 @@ download_tbl(char = characteristic)
 
 # source threshold table function
 source("functions/threshold_table.R")
-show_threshold_table(characteristic)
+show_threshold_table(characteristic, no_threshold_note = "*The ADEC standard for total suspended solids is expressed as a percentage of sediment by weight in spawning gravel (fine sediment cannot increase more than 5% above natural conditions, and cannot exceed 30% maximum), not as a concentration threshold in mg/L. It cannot be represented as a reference line on the plot above. See chapter narrative for details.*")
 
 ```
