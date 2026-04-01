@@ -50,10 +50,11 @@ hydrocarbon_reg_vals <- read.csv("other/input/regulatory_limits/formatted_reg_va
 # field parameters threshold values
 ph_reg_vals <- read.csv("other/input/regulatory_limits/formatted_reg_vals/ph_reg_vals.csv")
 
+# total metals with freshwater aquatic life standards (e.g. Iron 1 mg/L chronic)
+total_metals_aq_reg_vals <- read.csv("other/input/regulatory_limits/formatted_reg_vals/total_metals_aq_reg_vals.csv")
 
 # join all static regulatory value dataframes
-# old: reg_vals <- static_metals_reg_vals
-reg_vals <- bind_rows(static_metals_reg_vals,hydrocarbon_reg_vals,ph_reg_vals)
+reg_vals <- bind_rows(static_metals_reg_vals, hydrocarbon_reg_vals, ph_reg_vals, total_metals_aq_reg_vals)
 
 # write combined csv of all static regulatory values
 reg_vals_path <- "other/output/regulatory_values/all_reg_vals.csv"

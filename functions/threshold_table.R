@@ -19,31 +19,45 @@ show_threshold_table <- function(characteristic, no_threshold_note = NULL) {
 
   # --- Lookup tables: Standard code -> display label and regulatory authority ---
   standard_labels <- c(
-    drinking_water            = "Drinking water (MCL)",
-    stock_water               = "Stock water",
-    irrigation_water          = "Irrigation water",
-    aquaculture_maximum_water = "Aquaculture (maximum pH)",
-    aquaculture_minimum_water = "Aquaculture (minimum pH)",
-    aquaculture_water         = "Aquaculture",
-    wildlife                  = "Wildlife",
-    recreation                = "Recreation"
+    drinking_water               = "Drinking water (MCL)",
+    stock_water                  = "Stock water",
+    irrigation_water             = "Irrigation water",
+    aquaculture_maximum_water    = "Aquaculture (maximum pH)",
+    aquaculture_minimum_water    = "Aquaculture (minimum pH)",
+    aquaculture_water            = "Aquaculture",
+    wildlife                     = "Wildlife",
+    recreation                   = "Recreation",
+    aquatic_life_chronic         = "Aquatic life \u2013 chronic",
+    temp_all_freshwaters         = "All freshwaters (maximum)",
+    temp_rearing_migration       = "Rearing areas and migration routes",
+    temp_egg_fry_spawning        = "Egg and fry incubation and spawning areas",
+    recreation_single_sample     = "Recreation (single-sample limit)",
+    drinking_water_single_sample = "Drinking water (single-sample limit)"
   )
 
   standard_authority <- c(
-    drinking_water            = "USEPA",
-    stock_water               = "ADEC",
-    irrigation_water          = "ADEC",
-    aquaculture_maximum_water = "ADEC",
-    aquaculture_minimum_water = "ADEC",
-    aquaculture_water         = "ADEC",
-    wildlife                  = "ADEC",
-    recreation                = "ADEC"
+    drinking_water               = "USEPA",
+    stock_water                  = "ADEC",
+    irrigation_water             = "ADEC",
+    aquaculture_maximum_water    = "ADEC",
+    aquaculture_minimum_water    = "ADEC",
+    aquaculture_water            = "ADEC",
+    wildlife                     = "ADEC",
+    recreation                   = "ADEC",
+    aquatic_life_chronic         = "ADEC, USEPA",
+    temp_all_freshwaters         = "ADEC",
+    temp_rearing_migration       = "ADEC",
+    temp_egg_fry_spawning        = "ADEC",
+    recreation_single_sample     = "ADEC",
+    drinking_water_single_sample = "ADEC"
   )
 
   unit_labels <- c(
-    "ug/l" = "\u00b5g/L",
-    "mg/l" = "mg/L",
-    "none" = "\u2014"   # em dash for dimensionless (e.g. pH)
+    "ug/l"      = "\u00b5g/L",
+    "mg/l"      = "mg/L",
+    "none"      = "\u2014",    # em dash for dimensionless (e.g. pH)
+    "deg_c"     = "\u00b0C",
+    "cfu/100ml" = "CFU/100 mL"
   )
 
   # --- Static thresholds ---
