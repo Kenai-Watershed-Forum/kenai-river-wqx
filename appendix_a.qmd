@@ -1637,14 +1637,6 @@ embed_if_html("other/output/field_qa_qc_data/holding_time_calcs.csv", text = "Do
 
     -   Dissolved metals results are available for 7/27/2021 (summer) only, and not for 5/11/2021 (spring); see question #3 in this sequence.
 
--   Results:
-
-    -   **Calcium:** All 12 summer 2021 sites with paired dissolved and total measurements show dissolved \> total. The dissolved Ca concentration exceeds total Ca by 12.7% to 19.0% (median \~18%) across all sites. This is a systematic, consistent pattern that is too large and too uniform to be attributable to measurement uncertainty alone.
-
-    -   **Iron:** All 6 summer 2021 sites with paired data show dissolved \< total, which is the expected relationship. Iron behaves as anticipated.
-
-    -   **Magnesium:** 10 of 13 summer 2021 sites show total \> dissolved, as expected. Two sites near the Kenai River mouth are exceptions: RM 0 NNC (dissolved exceeds total by \~1.2%) and RM 1.5 (dissolved exceeds total by \~2.5%). These small percentage differences are likely within the typical analytical uncertainty for ICP methods (\~5–10%) and may not represent a meaningful discrepancy. Note that the Mg concentration at RM 1.5 is anomalously high (\~68 mg/L, compared to 1–8 mg/L at other lower-river sites), possibly reflecting brackish/tidal influence near Cook Inlet.
-
 ```{r echo = F, message = F, warning = F}
 
 # define elements to compare
@@ -1701,13 +1693,57 @@ mg_dir <- paste0(dir,"mg",".csv")
 write.csv(mg,mg_dir)
 embed_if_html(paste0(dir,"mg",".csv"), text = "Download 2021 Magnesium data, total vs dissolved")
 
-rm(ca,fe,mg)
+# --- Summary scalars for metals comparison prose (computed before objects are removed) ---
+
+# Calcium: pct difference = (dissolved - total) / total * 100 (positive = dissolved > total)
+ca <- ca |> mutate(
+  pct_diff = (Calcium - `Calcium, Total`) / `Calcium, Total` * 100,
+  abs_diff = abs(Calcium - `Calcium, Total`)
+)
+ca_paired     <- ca |> filter(!is.na(Calcium) & !is.na(`Calcium, Total`))
+ca_n_sites    <- nrow(ca_paired)
+ca_pct_min    <- paste0(round(min(ca_paired$pct_diff),   1), "%")
+ca_pct_max    <- paste0(round(max(ca_paired$pct_diff),   1), "%")
+ca_pct_median <- paste0(round(median(ca_paired$pct_diff), 0), "%")
+ca_abs_min    <- round(min(ca_paired$abs_diff), 1)
+ca_abs_max    <- round(max(ca_paired$abs_diff), 1)
+
+# Iron: all paired sites expected to show total > dissolved
+fe_n_sites <- sum(!is.na(fe$Iron) & !is.na(fe$`Iron, Total`))
+
+# Magnesium
+mg <- mg |> mutate(pct_diff = (Magnesium - `Magnesium, Total`) / `Magnesium, Total` * 100)
+mg_paired      <- mg |> filter(!is.na(Magnesium) & !is.na(`Magnesium, Total`))
+mg_n_sites     <- n_distinct(mg_paired$monitoring_location_name)
+mg_n_expected  <- sum(mg_paired$total_greater_diss == "Y", na.rm = TRUE)
+
+# RM 0 NNC: most extreme case where dissolved > total
+mg_rm0_pct <- mg_paired |>
+  filter(grepl("River Mile 0", monitoring_location_name), pct_diff > 0) |>
+  slice_max(pct_diff, n = 1) |>
+  mutate(label = paste0("~", round(pct_diff, 1), "%")) |>
+  pull(label)
+
+# RM 1.5
+mg_rm15_row <- mg_paired |> filter(grepl("River Mile 1.5", monitoring_location_name))
+mg_rm15_pct  <- paste0("~", round(mg_rm15_row$pct_diff[1], 1), "%")
+mg_rm15_conc <- paste0("~", round(mg_rm15_row$Magnesium[1], 0), " mg/L")
+
+rm(ca, fe, mg)
 
 ```
 
+Results:
+
+-   **Calcium:** All `r ca_n_sites` summer 2021 sites with paired dissolved and total measurements show dissolved \> total. The dissolved Ca concentration exceeds total Ca by `r ca_pct_min` to `r ca_pct_max` (median \~`r ca_pct_median`) across all sites. This is a systematic, consistent pattern that is too large and too uniform to be attributable to measurement uncertainty alone.
+
+-   **Iron:** All `r fe_n_sites` summer 2021 sites with paired data show dissolved \< total, which is the expected relationship. Iron behaves as anticipated.
+
+-   **Magnesium:** `r mg_n_expected` of `r mg_n_sites` summer 2021 sites show total \> dissolved, as expected. Two sites near the Kenai River mouth are exceptions: RM 0 NNC (dissolved exceeds total by `r mg_rm0_pct`) and RM 1.5 (dissolved exceeds total by `r mg_rm15_pct`). These small percentage differences are likely within the typical analytical uncertainty for ICP methods (\~5–10%) and may not represent a meaningful discrepancy. Note that the Mg concentration at RM 1.5 is anomalously high (`r mg_rm15_conc`, compared to 1–8 mg/L at other lower-river sites), possibly reflecting brackish/tidal influence near Cook Inlet.
+
 <br>
 
-The calcium discrepancy is unresolved. Dissolved Ca consistently exceeds total Ca by approximately 13–19% at all 12 paired summer 2021 sites. This pattern is too systematic and too large (1.5–5.4 mg/L absolute difference) to be explained by measurement uncertainty alone.
+The calcium discrepancy is unresolved. Dissolved Ca consistently exceeds total Ca by approximately `r ca_pct_min` to `r ca_pct_max` at all `r ca_n_sites` paired summer 2021 sites. This pattern is too systematic and too large (`r ca_abs_min`–`r ca_abs_max` mg/L absolute difference) to be explained by measurement uncertainty alone.
 
 Two possible explanations are worth investigating in future years:
 
@@ -1717,7 +1753,7 @@ Two possible explanations are worth investigating in future years:
 
 It is also worth noting that the summer 2021 SGS dissolved metals data (200.8) was affected by a unit labeling error in the original EDD (values reported with "ug/L" labels but at mg/L concentrations), which was corrected at ingestion. While the corrected values are internally consistent and physically plausible, the original data anomaly introduces additional uncertainty about the SGS 200.8 dissolved metals results specifically.
 
-The magnesium exceptions at RM 0 NNC (+1.2%) and RM 1.5 (+2.5%) are small enough to fall within typical ICP analytical uncertainty and are not considered significant anomalies. Iron behaves as expected at all sites.
+The magnesium exceptions at RM 0 NNC (`r mg_rm0_pct`) and RM 1.5 (`r mg_rm15_pct`) are small enough to fall within typical ICP analytical uncertainty and are not considered significant anomalies. Iron behaves as expected at all sites.
 
 **This discrepancy for calcium warrants targeted follow-up.** Future years should include split samples sent to both labs for direct inter-laboratory comparison, or use a single lab for both dissolved and total fractions, to determine whether the offset is reproducible and attributable to a specific cause. Until resolved, the 2021 Ca dissolved and total results should be interpreted with caution relative to each other.
 
@@ -1843,6 +1879,31 @@ rpd_check_dat %<>%
 
 # write csv
 write.csv(rpd_check_dat,"other/output/field_qa_qc_data/rpd_check_dat.csv", row.names = F)
+
+# --- Summary scalars for RPD narrative prose ---
+rpd_n_total    <- nrow(rpd_check_dat)
+rpd_n_eligible <- sum(rpd_check_dat$rpd_eligible == "Y", na.rm = TRUE)
+
+# Apply QAPP thresholds: Phosphorus/Nitrates = 25%, Suspended solids = 5%, others = 20%
+rpd_eligible_dat <- rpd_check_dat |>
+  filter(rpd_eligible == "Y") |>
+  mutate(threshold = case_when(
+    grepl("Nitrate|Nitrite",  characteristic_name, ignore.case = TRUE) ~ 25,
+    grepl("Phosphorus",       characteristic_name, ignore.case = TRUE) ~ 25,
+    grepl("suspended|solids", characteristic_name, ignore.case = TRUE) ~ 5,
+    TRUE ~ 20
+  )) |>
+  filter(!is.na(rpd_pct))
+
+rpd_exceed     <- rpd_eligible_dat |> filter(rpd_pct > threshold)
+rpd_n_exceed   <- nrow(rpd_exceed)
+rpd_exceed_tbl <- rpd_exceed |> count(characteristic_name) |> arrange(desc(n))
+
+# Fecal coliform RPD counts
+rpd_fc_eligible <- rpd_eligible_dat |>
+  filter(grepl("Fecal|Coliform", characteristic_name, ignore.case = TRUE))
+rpd_fc_n_total  <- nrow(rpd_fc_eligible)
+rpd_fc_n_high   <- sum(rpd_fc_eligible$rpd_pct > 60, na.rm = TRUE)
 ```
 
 A csv file of Relative Percent Difference values organized by site, date, and parameter may be downloaded below:
@@ -1860,13 +1921,13 @@ embed_if_html("other/output/field_qa_qc_data/rpd_check_dat.csv", text = "Downloa
 
 <br>
 
-From the above downloadable table, we can see that a limited subset of paired values from field duplicates are eligible to be used for RPD calculations for 2021. Pairs of measurements must meet LOQ criteria described above ("a" and "b") in order to be used. For 2021 data, of 69 paired field duplicate observations, 24 of them meet these criteria and thus may be used for RPD calculations.
+From the above downloadable table, we can see that a limited subset of paired values from field duplicates are eligible to be used for RPD calculations for 2021. Pairs of measurements must meet LOQ criteria described above ("a" and "b") in order to be used. For 2021 data, of `r rpd_n_total` paired field duplicate observations, `r rpd_n_eligible` of them meet these criteria and thus may be used for RPD calculations.
 
 RPD values range from `r min(rpd_check_dat$rpd_pct, na.rm = T)` % to `r max(rpd_check_dat$rpd_pct, na.rm = T)` %.
 
 In the 2020 Quality Assurance Action Plan, Relative Percent Difference values for most parameters are set at 20%, with the exception of "Phosphorus, total" and "Nitrates (NO2+NO3)" at 25%, and "Suspended solids, total" at 5%.
 
-Using the available RPD values against the above criteria, four paired observations exceed project precision goals in 2021. Three of these four observations are for fecal coliform, and one is for total phosphorus.
+Using the available RPD values against the above criteria, `r rpd_n_exceed` paired observations exceed project precision goals in 2021. The parameters with exceedances are: `r paste(paste0(rpd_exceed_tbl$characteristic_name, " (n=", rpd_exceed_tbl$n, ")"), collapse = ", ")`.
 
 Most other parameters have at least one available RPD value that is within project precision goals defined in the QAPP.
 
@@ -1910,7 +1971,7 @@ embed_if_html("other/documents/QAPP/memos/KWF Memo to ADEC August 2023.pdf", tex
 
 -   *Fecal Coliform*
 
-    -   Given that 3 out of 4 RPD values for fecal coliform values are \>60%, field data values for the 2021 dataset may vary from actual environmental conditions. The 2020 KWF QAPP does not specify an RPD value for fecal coliform, it only specifies control checks for sterility and temperature. We used EPA Method 9222D (drinking water) for fecal coliform analysis methods, which does not specify an RPD value. However EPA general recommendations for pathogens in sewage sludge recommends and RPD of 20% [(link)](https://www.epa.gov/biosolids/quality-assurance-project-plan-qapp).
+    -   Given that `r rpd_fc_n_high` out of `r rpd_fc_n_total` RPD values for fecal coliform are \>60%, field data values for the 2021 dataset may vary from actual environmental conditions. The 2020 KWF QAPP does not specify an RPD value for fecal coliform, it only specifies control checks for sterility and temperature. We used EPA Method 9222D (drinking water) for fecal coliform analysis methods, which does not specify an RPD value. However EPA general recommendations for pathogens in sewage sludge recommends and RPD of 20% [(link)](https://www.epa.gov/biosolids/quality-assurance-project-plan-qapp).
 
     -   Given the above considerations, KWF has submitted 2021 fecal coliform data to the EPA WQX as "flagged" (Result Status ID = Rejected). Fecal coliform data is evaluated in this report and assessed against state standards, but given the high RPD values among duplicate samples, 2021 data should be interpreted cautiously in the context of potential regulatory exceedances.
 
@@ -1963,6 +2024,12 @@ matrix_spike_recovery_fails_tbl <- matrix_spike_limits %>%
   select(-extracted_date,-dissolved)
 write.csv(matrix_spike_recovery_fails_tbl,"other/output/lab_qaqc_data/matrix_spike_recovery_fails_2021.csv")
 
+# --- Summary scalars for matrix spike prose ---
+ms_recovery_min <- round(min(matrix_spike_recovery_fails_tbl$percent_recovered), 0)
+ms_recovery_max <- round(max(matrix_spike_recovery_fails_tbl$percent_recovered), 0)
+ms_bias_min     <- ms_recovery_min - 100
+ms_bias_max     <- ms_recovery_max - 100
+
 ```
 
 <br>
@@ -1971,7 +2038,7 @@ The following discrepancies were identified in the results from SGS laboratories
 
 **Matrix Spike Recoveries**
 
-A total of `r matrix_spike_recovery_fails` matrix spike or matrix spike duplicate samples are outside of QC criteria. The limit of recovery range for the analyte "Total Nitrate/Nitrite-N" is 90% - 110%. For these matrix spike measurements outside of the QC criteria, recovery levels range from 112% - 118%. The subset of sample values that exceed threshold may be downloaded as a table below:
+A total of `r matrix_spike_recovery_fails` matrix spike or matrix spike duplicate samples are outside of QC criteria. The limit of recovery range for the analyte "Total Nitrate/Nitrite-N" is 90% - 110%. For these matrix spike measurements outside of the QC criteria, recovery levels range from `r ms_recovery_min`% to `r ms_recovery_max`%. The subset of sample values that exceed threshold may be downloaded as a table below:
 
 ```{r matrix-spikes, echo = F, messages = F, warnings = F}
 # embed for download
@@ -1983,7 +2050,7 @@ embed_if_html("other/output/lab_qaqc_data/matrix_spike_recovery_fails_2021.csv",
 
 No additional laboratory QA/QC anomalies for any other parameters were noted by any laboratories contracted in 2021. Additional details are available upon request at [hydrology\@kenaiwatershed.org](mailto:hydrology@kenaiwatershed.org){.email}
 
-As of `r Sys.Date()`, "Total Nitrate/Nitrite-N" values will be flagged for the spring 2021 dataset. (Spring only and not summer because no matrix spike recovery exedences were observed from the summer 2021 lab results). The matrix spike recovery exceedances indicate that reported lab values may be 2% - 7% above actual field values. At a later date we will evaluate these results in the context of year 2000 - present data to help evaluate the relevancy of this flag.
+As of `r Sys.Date()`, "Total Nitrate/Nitrite-N" values will be flagged for the spring 2021 dataset. (Spring only and not summer because no matrix spike recovery exedences were observed from the summer 2021 lab results). The matrix spike recovery exceedances indicate that reported lab values may be `r ms_bias_min`% to `r ms_bias_max`% above actual field values. At a later date we will evaluate these results in the context of year 2000 - present data to help evaluate the relevancy of this flag.
 
 ```{r echo = F}
 
@@ -2359,7 +2426,7 @@ All times zones are listed as AKDT.
 
 <br>
 
-**34.) Check Sample Collection, Preparation and Preservation Methods, Thermal Preservative, Equipment ID, Activity Media. Is supporting information included and correct??**
+**34.) Check Sample Collection, Preparation and Preservation Methods, Thermal Preservative, Equipment ID, Activity Media. Is supporting information included and correct?**
 
 ```{r echo = F}
 # sample collection method

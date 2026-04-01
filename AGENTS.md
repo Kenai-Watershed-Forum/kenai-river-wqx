@@ -114,6 +114,18 @@
 
 -   **HMW partial visibility observed (3/31/2026).** Before any corrective steps were taken, some KWF sites with historical data were already appearing in HMW. This was unexpected given that all 37 station records in WQP show `HUCEightDigitCode = NA`. The reason is not yet fully understood - HMW may have alternate geographic lookup paths, or some station records may have been partially corrected previously. This finding does not eliminate the need for the station corrections (HUC codes should be populated for all stations regardless), but it does mean HMW visibility is not entirely broken at present. Investigate further when picking up Task 2.
 
+### Completed this session (April 1, 2026)
+
+-   ~~**Correct CMA and CMB narrative errors in `appendix_a.qmd` (Q25–Q26)**~~ **DONE.** Root cause: an older version of the flagging logic had treated dissolved metals (EPA Method 200.8) as Rejected when RPD could not be calculated. That decision was later reversed (see Q19 narrative, line ~1921): below-LOQ results are retained as Accepted, not flagged. The flag decisions CSV (`2021_data_flag_decisions.csv`) correctly reflects this — only Fecal Coliform (both seasons) and spring Total Nitrate/Nitrite-N are flagged — but the Q25/Q26 prose had never been updated to match.
+
+    Corrected figures:
+    - **CMA:** 50.1% → **87.4%** (72 of 570 in-QAPP results flagged, i.e., 12.6%)
+    - **CMB:** 52.2% → **92.2%** (498 usable results out of 540 planned) — project now meets the 60% QAPP goal
+    - **CMA by site range:** 44.4%–71.4% → **80.6%–92.1%**
+    - **Dissolved metals CMA:** 0% → **100%** (all Accepted)
+
+    Narrative changes applied: (1) Q25 CMA discussion now correctly identifies the two flagged methods and notes dissolved metals are Accepted; (2) Q26 CMB discussion removes dissolved metals from the driver list, updates the project % and count, and adds dissolved metals to the "100% CMB" list.
+
 ### Tasks for next session (in order)
 
 1.  **Re-upload corrected `station.csv` to CDX.** The root cause of KWF data not appearing in HMW has been identified and fixed: `HorizontalCollectionMethodName = "Interpolation-Satellite"` was an invalid WQX domain value, causing WQX to drop `HUCEightDigitCode` for all 22 stations. The station generation code in `appendix_a.qmd` now corrects this to `"GPS-Unspecified"`. The corrected `station.csv` is ready at `other/output/wqx_formatted/station.csv`. **Upload it to CDX**, then verify in WQP that all 22 stations now show `HUCEightDigitCode = 19020302`. Allow 24–72 hours for HMW to reflect the change. If HUC codes still show as NA after re-upload, use the WQX Web geocoding tool to manually set them.
@@ -379,7 +391,7 @@ Note: The original vendor template file `AWQMS_KWF_Baseline_2021.xlsx` retains i
 
 -   **Turbidity: anomalously high value at RM 1.5 spring** (\~3,200 NTU) warrants review during historical data outlier check. Flagged as a candidate outlier, March 2026.
 
--   **Completeness Measure B** calculation is complete and enabled. Project-wide CMB is 52.2% (below the 60% QAPP goal), primarily driven by dissolved metals being fully below LOQ and fecal coliform RPD failures.
+-   **Completeness Measure A/B** calculations are complete and enabled. Project-wide **CMA = 87.4%** and **CMB = 92.2%** (498 usable / 540 planned) — both above the 60% QAPP goal. The only flagged parameters are Fecal Coliform (both seasons, 9222D) and spring Total Nitrate/Nitrite-N (4500-NO3(F)). Dissolved metals (200.8) are all Accepted at 100% CMA/CMB; below-LOQ results are retained per KWF's adopted approach (see Q19 in `appendix_a.qmd`). **Note:** earlier versions of AGENTS.md incorrectly stated CMB = 52.2% — this was based on a superseded flagging decision that had dissolved metals as Rejected. Corrected April 1, 2026.
 
 -   **TSS lab QA gap:** SWWTP did not report required lab QA results for TSS in 2021/2022. Note in code, address for 2023+.
 
