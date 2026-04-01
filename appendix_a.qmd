@@ -158,7 +158,7 @@ sgs21 <- bind_rows(spring_batch_sgs21,summer_batch_sgs21) %>%
 #
 # The summer 2021 SGS EDD reports dissolved Ca, Fe, and Mg (method EP200.8)
 # with a unit label of "ug/L", but the numeric values are on the mg/L scale.
-# For example, Calcium at KR RM 0 NNC is recorded as 16,200 "ug/L" — which
+# For example, Calcium at KR RM 0 NNC is recorded as 16,200 "ug/L" - which
 # is 16.2 mg/L, a physically plausible concentration for the Kenai River.
 # 16.2 ug/L would be unrealistically low for freshwater calcium.
 #
@@ -169,9 +169,9 @@ sgs21 <- bind_rows(spring_batch_sgs21,summer_batch_sgs21) %>%
 # Spring 2021 SGS data includes no dissolved Ca/Fe/Mg runs (confirmed), so this
 # correction applies to summer 2021 observations only.
 #
-# This correction is applied here at ingestion so all downstream calculations —
+# This correction is applied here at ingestion so all downstream calculations -
 # including hardness and hardness-dependent regulatory thresholds for Cd, Cr,
-# Cu, Pb, and Zn — use the correct unit and value.
+# Cu, Pb, and Zn - use the correct unit and value.
 sgs21 %<>%
   mutate(
     result = case_when(
@@ -1955,7 +1955,7 @@ We attempted to calculate RPD values for all parameters collected in 2021 at two
     -   a.) one or both of the samples **were not above** the LOQ; OR one or both of the samples **were not** at least two times the LOQ
         -   Project data for this parameter will be submitted unflagged to EPA WQX if both paired values are non-detect
 
-KWF's approach to flagging when RPD cannot be calculated follows the example of the Alaska Department of Environmental Conservation (ADEC) 2021 Kenai River Metals Field Report (Apsens and Petitt, 2021): when duplicate pairs cannot be evaluated for RPD because concentrations are at or below the LOQ, results are retained as accepted non-detect or estimated values rather than flagged. A below-LOQ result is not a precision failure — it reflects actual environmental conditions. Non-detect status is already documented in the `Result Detection Condition` column (U = not detected; J = detected below LOQ, treated as an estimate). KWF communicated with the Alaska Department of Environmental Conservation on August 22, 2023 via an inquiry on this topic. The memo includes a visual flow chart of the logic for when data is flagged, and is available for download below.
+KWF's approach to flagging when RPD cannot be calculated follows the example of the Alaska Department of Environmental Conservation (ADEC) 2021 Kenai River Metals Field Report (Apsens and Petitt, 2021): when duplicate pairs cannot be evaluated for RPD because concentrations are at or below the LOQ, results are retained as accepted non-detect or estimated values rather than flagged. A below-LOQ result is not a precision failure; it reflects actual environmental conditions. Non-detect status is already documented in the `Result Detection Condition` column (U = not detected; J = detected below LOQ, treated as an estimate). KWF communicated with the Alaska Department of Environmental Conservation on August 22, 2023 via an inquiry on this topic. The memo includes a visual flow chart of the logic for when data is flagged, and is available for download below.
 
 ```{r echo = F}
 # export csv of rpd results 
@@ -2220,15 +2220,35 @@ embed_if_html("other/output/field_qa_qc_data/completeness_measures/cma_project.c
 
 <br>
 
+```{r cma-narrative-values, echo = F, message = F}
+# Compute scalar values used in the CMA discussion prose below
+cma_dat_inline <- read.csv('other/output/wqx_formatted/intermediate/2021_export_data_flagged.csv') |>
+  clean_names() |>
+  left_join(analytes_2021) |>
+  filter(param_in_qapp == "Y")
+
+cma_total        <- nrow(cma_dat_inline)
+cma_unflagged_n  <- sum(cma_dat_inline$flag == "N", na.rm = TRUE)
+cma_flagged_n    <- sum(cma_dat_inline$flag == "Y", na.rm = TRUE)
+cma_overall_pct  <- paste0(round(cma_unflagged_n / cma_total * 100, 1), "%")
+cma_flagged_pct  <- paste0(round(cma_flagged_n   / cma_total * 100, 1), "%")
+
+cma_site_vals <- cma_dat_inline |>
+  group_by(monitoring_location_id) |>
+  summarise(cma_val = sum(flag == "N") / n(), .groups = "drop")
+cma_site_min <- paste0(round(min(cma_site_vals$cma_val) * 100, 1), "%")
+cma_site_max <- paste0(round(max(cma_site_vals$cma_val) * 100, 1), "%")
+```
+
 *Discussion on "Completeness Measure A" Results*
 
-Based on the data flagging decisions discussed in the previous questions, the 2021 dataset did not achieve all Completeness Measure A goals.
+Based on the data flagging decisions discussed in the previous questions, the 2021 dataset achieved Completeness Measure A goals for most parameters.
 
-When completeness results were summarized by parameter, all dissolved metals had a value of 0% for Completeness Measure A since the decision was made to flag these as a result of an inability to calculate Relative Percent Difference values.
+When completeness results were summarized by parameter, two methods had 0% Completeness Measure A: Fecal Coliform (EPA Method 9222D, both seasons) and Total Nitrate/Nitrite-N (SM 4500-NO3(F), spring 2021 only). All other in-QAPP parameters achieved 100% CMA. Notably, dissolved metals (EPA Method 200.8) achieved 100% CMA - RPD calculations could not be performed because concentrations were at or below the LOQ, but per KWF's adopted approach (see Q19), below-LOQ results are retained as Accepted rather than flagged.
 
-When completeness results were summarised by Site, Completeness Measure A values ranged from 44.4% - 71.4%, depending on the site's sampling plan.
+When completeness results were summarized by site, Completeness Measure A values ranged from `r cma_site_min` to `r cma_site_max`, depending on the site's sampling plan.
 
-When completeness results are summarized for the overall 2021 dataset, Completeness Measure A is calculated at 50.1%; indicating that 49.9% of the overall result values were flagged.
+When completeness results are summarized for the overall 2021 dataset, Completeness Measure A is calculated at `r cma_overall_pct`; indicating that `r cma_flagged_pct` of the overall result values were flagged.
 
 <br>
 
@@ -2322,17 +2342,28 @@ embed_if_html("other/output/field_qa_qc_data/completeness_measures/cmb_site.csv"
 embed_if_html("other/output/field_qa_qc_data/completeness_measures/cmb_project.csv", text = "Download Completeness Measure B Results, Overall")
 ```
 
+```{r cmb-narrative-values, echo = F, message = F}
+# Compute scalar values used in the CMB discussion prose below
+cmb_usable      <- cmb_project$flag_N
+cmb_planned_n   <- cmb_project$total_planned
+cmb_overall_pct <- paste0(round(cmb_usable / cmb_planned_n * 100, 1), "%")
+
+cmb_spring_totmet_pct <- cmb_by_method |>
+  filter(result_analytical_method_id == "200.7",
+         as.character(activity_start_date) == "2021-05-11",
+         activity_type == "Field Msr/Obs") |>
+  pull(cmb)
+```
+
 *Discussion on "Completeness Measure B" Results*
 
-The project-level CMB for 2021 is **52.2%** (282 usable results out of 540 planned), which is below the QAPP goal of 60%. The three primary drivers of the below-goal CMB are:
+The project-level CMB for 2021 is **`r cmb_overall_pct`** (`r cmb_usable` usable results out of `r cmb_planned_n` planned), which is above the QAPP goal of 60%. Two parameters contributed to the CMB falling short of 100%:
 
-1.  **Dissolved metals (EPA Method 200.8) — 0% CMB, both seasons.** All results were at or below the LOQ at both primary and duplicate sites, so RPD calculations could not be performed and all results were designated Rejected.
+1.  **Fecal coliform (EPA Method 9222D): 0% CMB, both seasons.** RPD values exceeded the 20% threshold for multiple duplicate pairs, and all 2021 fecal coliform results were designated Rejected.
 
-2.  **Fecal coliform (EPA Method 9222D) — 0% CMB, both seasons.** RPD values exceeded the 20% threshold for 3 of 4 duplicate pairs, and all 2021 fecal coliform results were designated Rejected.
+2.  **Spring 2021 Total Nitrate/Nitrite-N (SM 4500-NO3(F)): 0% CMB.** Matrix spike recovery exceedances in the spring 2021 SGS lab report led to all spring nitrate results being designated Rejected. No exceedances were observed in summer 2021, which achieved 100% CMB.
 
-3.  **Spring 2021 Total Nitrate/Nitrite-N (SM 4500-NO3(F)) — 0% CMB.** Matrix spike recovery exceedances in the spring 2021 SGS lab report led to all spring nitrate results being designated Rejected. No exceedances were observed in summer 2021, which achieved 100% CMB.
-
-Parameters achieving 100% CMB include: total metals (EPA Method 200.7, summer only — spring was affected by the chain-of-custody error described in Q1), TSS (SM 2540-D), Total Phosphorus (SM 4500-P-E), summer nitrate/nitrite, and BTEX (EPA Method 8260D, summer only). Spring 2021 total metals achieved 59.1% CMB, reflecting the reduced site coverage resulting from the spring 2021 chain-of-custody error.
+Parameters achieving 100% CMB include: dissolved metals (EPA Method 200.8, both seasons - all results were at or below the LOQ and are retained as Accepted per KWF's adopted approach; see Q19), total metals (EPA Method 200.7, summer only - spring was affected by the chain-of-custody error described in Q1), TSS (SM 2540-D), Total Phosphorus (SM 4500-P-E), summer nitrate/nitrite, and BTEX (EPA Method 8260D, summer only). Spring 2021 total metals achieved `r cmb_spring_totmet_pct` CMB, reflecting the reduced site coverage resulting from the spring 2021 chain-of-custody error.
 
 <br>
 
@@ -2816,7 +2847,7 @@ write.csv(project_upload, "other/output/wqx_formatted/project.csv", row.names = 
 # --- Station CSV ---
 # Read from the WQP download, filter to KWF Kenai Baseline sites (prefix "KBL"),
 # and retain only the columns required by the CDX import configuration.
-# Well/aquifer columns and provider metadata are excluded — not applicable to this project.
+# Well/aquifer columns and provider metadata are excluded - not applicable to this project.
 station_upload <- read.csv("other/input/WQX_downloads/station/station.csv") |>
   dplyr::filter(grepl("KBL", MonitoringLocationName)) |>
   dplyr::select(
