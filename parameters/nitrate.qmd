@@ -20,33 +20,13 @@ In the mainstem, the highest concentration of nitrate was 0.706 mg/L at Mile 70 
 The tributaries generally had lower levels of nitrate than the mainstem, with the exception of Russian River. The highest level of nitrate in the tributaries occurred at Russian River with a concentration of 1.11 mg/L during spring 2005, and the lowest levels occurred at many locations below the MDL of 0.015 mg/L (Table 41). Of the tributaries, Russian River had the highest medians in the summer and especially in the spring, which may explain the high median at Mile 70 in the mainstem. Juneau Creek in the spring and Slikok Creek in the summer had the next highest medians. Russian River had a higher median in the spring than the summer, while the other tributaries had too many values below the MDL and MRL to establish a clear seasonal trend (Figures 102 & 103).
 
 
-```{r echo = F, warning=FALSE, message=FALSE,fig.height=8, fig.width=10}
+```{r echo=FALSE, warning=FALSE, message=FALSE, results='asis'}
 
 # set parameter
 characteristic <- "Nitrate + Nitrite"
 
-# source static regulatory criteria boxplot function
-source("functions/static_boxplot_function.R")
-
-# Render plots directly in chunk — htmlwidgets must be output from direct chunk
-# code in Quarto; printing inside source() is not captured for widget output.
-if (knitr::is_html_output()) {
-  htmltools::tagList(
-    plotly::ggplotly(plots$tributary_plot, tooltip = "text", height = 700) |> clean_plotly_legend(),
-    plotly::ggplotly(plots$river_mile_plot, tooltip = "text", height = 550) |> clean_plotly_legend()
-  )
-} else {
-  print(plots$tributary_plot)
-  print(plots$river_mile_plot)
-}
-
-# source table download function
-source("functions/table_download.R")
-download_tbl(char = characteristic)
-
-# source threshold table function
-source("functions/threshold_table.R")
-show_threshold_table(characteristic)
+res <- knitr::knit_child("templates/_parameter_chunk.Rmd", envir = environment(), quiet = TRUE)
+cat(res, sep = "\n")
 
 # Old characteristic name: "Inorganic nitrogen (nitrate and nitrite) ***retired***use Nitrate + Nitrite." Converted to "Nitrate + Nitrite" in "data_sourcing.qmd"
 

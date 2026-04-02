@@ -19,7 +19,7 @@ Zinc concentrations in the tributaries ranged from a high of 247 μg/L in Beaver
 
 A trend analysis was conducted using the average and median values for all data collected during the time period between years 2000-2014. The concentrations of zinc throughout the entire Kenai River show a relative decrease from Mile 1.5 to Mile 50 and a relative increase at Mile 70 and Mile 82. This pattern is visible during both the spring and summer sampling events (Figure X-X). A similar analysis was run for each sampling station at the Kenai River. During the spring all the stations present a relative decrease in zinc concentrations until year 2008, after that a low increase is apparent at all stations. For the summer the same general trend is visible, with a stronger increase pattern after year 2008 (Figure X-X)
 
-```{r echo = F, warning=FALSE, message=FALSE,fig.height=8, fig.width=10}
+```{r echo=FALSE, warning=FALSE, message=FALSE, results='asis'}
 
 # need to set sample fraction filter for this and other metals in some years post 2021
 
@@ -31,27 +31,7 @@ characteristic <- "Zinc"
 # Both fractions are included together so the full time series is shown.
 sample_fraction <- c("Dissolved", "Filtered, field")
 
-# source static regulatory criteria boxplot function
-source("functions/static_boxplot_function.R")
-
-# Render plots directly in chunk — htmlwidgets must be output from direct chunk
-# code in Quarto; printing inside source() is not captured for widget output.
-if (knitr::is_html_output()) {
-  htmltools::tagList(
-    plotly::ggplotly(plots$tributary_plot, tooltip = "text", height = 700) |> clean_plotly_legend(),
-    plotly::ggplotly(plots$river_mile_plot, tooltip = "text", height = 550) |> clean_plotly_legend()
-  )
-} else {
-  print(plots$tributary_plot)
-  print(plots$river_mile_plot)
-}
-
-# source table download function
-source("functions/table_download.R")
-download_tbl(char = characteristic)
-
-# source threshold table function
-source("functions/threshold_table.R")
-show_threshold_table(characteristic)
+res <- knitr::knit_child("templates/_parameter_chunk.Rmd", envir = environment(), quiet = TRUE)
+cat(res, sep = "\n")
 
 ```

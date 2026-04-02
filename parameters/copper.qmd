@@ -15,7 +15,7 @@ Typically present in surface waters, naturally low concentrations of copper are 
 
 The highest concentration of copper in the mainstem was reported at \_\_\_\_\_ μg/L at \[site\] in \[season/year\], and the lowest levels were below the MDL of \_\_\_\_ μg/L. In the summer, \_\_\_\_ exceedances occurred at \[sites\], and copper concentrations exceeded the criteria during individual sampling dates at \[sites\]. Higher levels occurred \_\_\_\_, while the lowest concentrations were detected at \_\_\_\_. \[Were exceedances were recorded for the mainstem during the sampling events in spring/summer?\]. Copper concentrations in the tributaries ranged from \_\_\_ μg/L in the \[site/year\] to below the MDL of \_\_\_ μg/L that occurred in many locations during this project. Exceedances in the spring occurred at..... Exceedances in the summer occurred at ....
 
-```{r echo = F, warning=FALSE, message=FALSE,fig.height=8, fig.width=10}
+```{r echo=FALSE, warning=FALSE, message=FALSE, results='asis'}
 
 # set parameter
 characteristic <- "Copper"
@@ -25,28 +25,8 @@ characteristic <- "Copper"
 # Both fractions are included together so the full time series is shown.
 sample_fraction <- c("Dissolved", "Filtered, field")
 
-# source static regulatory criteria boxplot function
-source("functions/static_boxplot_function.R")
-
-# Render plots directly in chunk — htmlwidgets must be output from direct chunk
-# code in Quarto; printing inside source() is not captured for widget output.
-if (knitr::is_html_output()) {
-  htmltools::tagList(
-    plotly::ggplotly(plots$tributary_plot, tooltip = "text", height = 700) |> clean_plotly_legend(),
-    plotly::ggplotly(plots$river_mile_plot, tooltip = "text", height = 550) |> clean_plotly_legend()
-  )
-} else {
-  print(plots$tributary_plot)
-  print(plots$river_mile_plot)
-}
-
-# source table download function
-source("functions/table_download.R")
-download_tbl(char = characteristic)
-
-# source threshold table function
-source("functions/threshold_table.R")
-show_threshold_table(characteristic)
+res <- knitr::knit_child("templates/_parameter_chunk.Rmd", envir = environment(), quiet = TRUE)
+cat(res, sep = "\n")
 
 
 ```

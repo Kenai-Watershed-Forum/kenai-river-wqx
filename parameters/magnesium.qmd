@@ -17,7 +17,7 @@ In the mainstem, the highest concentration of magnesium was 582 mg/L and occurre
 
 The concentrations in the tributaries ranged from the high of 21.4 mg/L in spring 2010 at No Name Creek to 0.746 mg/L in spring 2004 at the Killey River (Table X). The Killey River, Russian River and Juneau Creek had low medians in comparison to the other tributaries like Soldotna Creek, which had the highest median during the summer. Excluding the estuary, the tributaries generally had higher levels of magnesium than the mainstem. In the tributaries, median concentrations were higher in the summer than in the spring, excluding Beaver Creek and Russian River (Figures X & X).
 
-```{r echo = F, warning=FALSE, message=FALSE,fig.height=8, fig.width=10}
+```{r echo=FALSE, warning=FALSE, message=FALSE, results='asis'}
 
 # set parameter
 characteristic <- "Magnesium"
@@ -25,28 +25,8 @@ characteristic <- "Magnesium"
 # Define the sample fraction filter
 sample_fraction <- c("Total Recoverable", "Unfiltered")
 
-# source static regulatory criteria boxplot function
-source("functions/static_boxplot_function.R")
-
-# Render plots directly in chunk — htmlwidgets must be output from direct chunk
-# code in Quarto; printing inside source() is not captured for widget output.
-if (knitr::is_html_output()) {
-  htmltools::tagList(
-    plotly::ggplotly(plots$tributary_plot, tooltip = "text", height = 700) |> clean_plotly_legend(),
-    plotly::ggplotly(plots$river_mile_plot, tooltip = "text", height = 550) |> clean_plotly_legend()
-  )
-} else {
-  print(plots$tributary_plot)
-  print(plots$river_mile_plot)
-}
-
-# source table download function
-source("functions/table_download.R")
-download_tbl(char = characteristic)
-
-# source threshold table function
-source("functions/threshold_table.R")
-show_threshold_table(characteristic)
+res <- knitr::knit_child("templates/_parameter_chunk.Rmd", envir = environment(), quiet = TRUE)
+cat(res, sep = "\n")
 
 # need to distinguish between total vs. field filtered (eg dissolved); (specified in ResultSampleFractionText). maybe a seperate plot or table to compare values. 
 

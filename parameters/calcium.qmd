@@ -19,8 +19,7 @@ The highest value in the mainstem occurred during spring 2002 at Mile 1.5 with a
 
 In the tributaries, the lowest concentration was 3 mg/L sampled from the No Name Creek during May 2013, and the highest concentration occurred in the Moose River at 25.7 mg/L during summer 2004 (Table 38). In the spring, the Russian River, Moose River and Juneau Creek had relatively high medians, and Slikok Creek had a relatively low median (Figure 90). In the summer, the Moose River, Soldotna Creek and Beaver Creek had relatively high medians, and the Killey River had a relatively low median (Figure 91). In the spring, most of the tributaries had concentrations lower than the mainstem, but during the summer, most of the tributaries had higher levels of calcium than the mainstem. The tributaries had higher levels of calcium in the summer than in the spring, excluding Russian River, the Killey River and Juneau Creek. Beaver Creek exhibited the largest seasonal difference in medians, changing from 9.25 mg/L in the spring to 18.6 mg/L in the summer (Figures 90 & 91).
 
-
-```{r echo = F, warning=FALSE, message=FALSE,fig.height=8, fig.width=10}
+```{r echo=FALSE, warning=FALSE, message=FALSE, results='asis'}
 
 # set parameter
 characteristic <- "Calcium"
@@ -28,28 +27,8 @@ characteristic <- "Calcium"
 # Define the sample fraction filter
 sample_fraction <- c("Total Recoverable", "Unfiltered")
 
-# source boxplot function
-source("functions/static_boxplot_function.R")
-
-# Render plots directly in chunk — htmlwidgets must be output from direct chunk
-# code in Quarto; printing inside source() is not captured for widget output.
-if (knitr::is_html_output()) {
-  htmltools::tagList(
-    plotly::ggplotly(plots$tributary_plot, tooltip = "text", height = 700) |> clean_plotly_legend(),
-    plotly::ggplotly(plots$river_mile_plot, tooltip = "text", height = 550) |> clean_plotly_legend()
-  )
-} else {
-  print(plots$tributary_plot)
-  print(plots$river_mile_plot)
-}
-
-# source table download function
-source("functions/table_download.R")
-download_tbl(char = characteristic)
-
-# source threshold table function
-source("functions/threshold_table.R")
-show_threshold_table(characteristic)
+res <- knitr::knit_child("templates/_parameter_chunk.Rmd", envir = environment(), quiet = TRUE)
+cat(res, sep = "\n")
 
 # need to distinguish between total vs. field filtered (eg dissolved); (specified in ResultSampleFractionText). maybe a seperate plot or table to compare diss vs total values when applicable. 
 

@@ -21,7 +21,7 @@ None of the medians for the mainstem or the tributaries exceeded the freshwater 
 Chromium concentrations in the tributaries ranged from a high of 16.4 µg/L at Beaver Creek in summer 2006 to less than the MDL of 0.36 µg/L. The medians of chromium in the tributaries during both the spring and summer events were all below 1 µg/L. In the tributaries, higher levels of chromium were reported in the summer compared to the spring, while a seasonal trend was difficult to distinguish in the mainstem. (Figure 36-39)
 
 
-```{r echo = F, warning=FALSE, message=FALSE,fig.height=8, fig.width=10}
+```{r echo=FALSE, warning=FALSE, message=FALSE, results='asis'}
 
 # set parameter
 characteristic <- "Chromium"
@@ -31,27 +31,7 @@ characteristic <- "Chromium"
 # Both fractions are included together so the full time series is shown.
 sample_fraction <- c("Dissolved", "Filtered, field")
 
-# source static regulatory criteria boxplot function
-source("functions/static_boxplot_function.R")
-
-# Render plots directly in chunk — htmlwidgets must be output from direct chunk
-# code in Quarto; printing inside source() is not captured for widget output.
-if (knitr::is_html_output()) {
-  htmltools::tagList(
-    plotly::ggplotly(plots$tributary_plot, tooltip = "text", height = 700) |> clean_plotly_legend(),
-    plotly::ggplotly(plots$river_mile_plot, tooltip = "text", height = 550) |> clean_plotly_legend()
-  )
-} else {
-  print(plots$tributary_plot)
-  print(plots$river_mile_plot)
-}
-
-# source table download function
-source("functions/table_download.R")
-download_tbl(char = characteristic)
-
-# source threshold table function
-source("functions/threshold_table.R")
-show_threshold_table(characteristic)
+res <- knitr::knit_child("templates/_parameter_chunk.Rmd", envir = environment(), quiet = TRUE)
+cat(res, sep = "\n")
 
 ```
