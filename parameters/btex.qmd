@@ -23,32 +23,12 @@ A trend analysis was conducted using the average and median values for data coll
 
 All of the aromatic hydrocarbons of BTEX are typically associated with gasoline (Oasis Environmental, Inc., 2004). Litchfield and Kyle suggest that motorized boats could be the primary contamination source since peak times of outboard motor use coincided with peak concentrations of BTEX (1992). In 2003, the Kenai Watershed Forum determined that the majority of hydrocarbon contamination resulted from unburned refined gasoline product with outboard motors as the most likely source. In March 2008, the Alaska Department of Natural Resources Division of Parks and Recreation banned the use of two-stroke engines, with the exception of direct fuel injected (DFI) engines, within the Kenai River Special Management Area.
 
-```{r echo = F, warning=FALSE, message=FALSE,fig.height=8, fig.width=10}
+```{r echo=FALSE, warning=FALSE, message=FALSE, results='asis'}
 
 # set parameter
 characteristic <- "Benzene, toluene, ethyl benzene, xylenes mix"
 
-# source static regulatory criteria boxplot function
-source("functions/static_boxplot_function.R")
-
-# Render plots directly in chunk — htmlwidgets must be output from direct chunk
-# code in Quarto; printing inside source() is not captured for widget output.
-if (knitr::is_html_output()) {
-  htmltools::tagList(
-    plotly::ggplotly(plots$tributary_plot, tooltip = "text", height = 700) |> clean_plotly_legend(),
-    plotly::ggplotly(plots$river_mile_plot, tooltip = "text", height = 550) |> clean_plotly_legend()
-  )
-} else {
-  print(plots$tributary_plot)
-  print(plots$river_mile_plot)
-}
-
-# source table download function
-source("functions/table_download.R")
-download_tbl(char = characteristic)
-
-# source threshold table function
-source("functions/threshold_table.R")
-show_threshold_table(characteristic)
+res <- knitr::knit_child("templates/_parameter_chunk.Rmd", envir = environment(), quiet = TRUE)
+cat(res, sep = "\n")
 
 ```

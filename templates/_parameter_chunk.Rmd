@@ -1,0 +1,39 @@
+```{=html}
+<!-- _parameter_chunk.Rmd
+     Shared knitr child template for all parameter chapters.
+
+     Called via:
+       res <- knitr::knit_child("templates/_parameter_chunk.Rmd",
+                                envir = environment(), quiet = TRUE)
+       cat(res, sep = "\n")
+
+     The calling chunk must set `characteristic` (and optionally
+     `sample_fraction`) before calling knit_child(). Those variables are
+     inherited through `envir = environment()` and picked up by the source()
+     calls below.
+
+     All paths are relative to the project root (execute-dir: project in
+     _quarto.yml), so this file works correctly from any chapter in
+     the parameters/ subdirectory. -->
+```
+
+```{r echo=FALSE, warning=FALSE, message=FALSE, fig.height=8, fig.width=10}
+source("functions/static_boxplot_function.R")
+source("functions/render_plots.R")
+render_parameter_plots(plots)
+```
+
+```{r echo=FALSE, warning=FALSE, message=FALSE}
+source("functions/table_download.R")
+download_tbl(char = characteristic)
+
+source("functions/threshold_table.R")
+# no_threshold_note is an optional character variable set in the calling chunk
+# for parameters whose standard cannot be expressed as a numeric line on the plot
+# (e.g. TSS, Turbidity). Falls back to the standard single-argument call.
+if (exists("no_threshold_note", inherits = FALSE) && !is.null(no_threshold_note)) {
+  show_threshold_table(characteristic, no_threshold_note = no_threshold_note)
+} else {
+  show_threshold_table(characteristic)
+}
+```

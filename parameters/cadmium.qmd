@@ -21,7 +21,7 @@ The highest level of cadmium ever detected in the tributaries was 63 μg/L at So
 
 Since so few cadmium samples were detected, trends were difficult to determine and should be interpreted with caution. In spring, cadmium was only reported four times, in contrast to summer samples in which it was reported ten times. In April of 2001, 2002, 2003, 2004, 2005 and summer 2001 through 2005, the method reporting limits (MRL) were mainly higher than the standard, so it is unknown whether these samples exceeded the standard. (Tables 7 & 33)
 
-```{r echo = F, warning=FALSE, message=FALSE,fig.height=8, fig.width=10}
+```{r echo=FALSE, warning=FALSE, message=FALSE, results='asis'}
 
 # set parameter
 characteristic <- "Cadmium"
@@ -31,27 +31,7 @@ characteristic <- "Cadmium"
 # Both fractions are included together so the full time series is shown.
 sample_fraction <- c("Dissolved", "Filtered, field")
 
-# source boxplot function
-source("functions/static_boxplot_function.R")
-
-# Render plots directly in chunk — htmlwidgets must be output from direct chunk
-# code in Quarto; printing inside source() is not captured for widget output.
-if (knitr::is_html_output()) {
-  htmltools::tagList(
-    plotly::ggplotly(plots$tributary_plot, tooltip = "text", height = 700) |> clean_plotly_legend(),
-    plotly::ggplotly(plots$river_mile_plot, tooltip = "text", height = 550) |> clean_plotly_legend()
-  )
-} else {
-  print(plots$tributary_plot)
-  print(plots$river_mile_plot)
-}
-
-# source table download function
-source("functions/table_download.R")
-download_tbl(char = characteristic)
-
-# source threshold table function
-source("functions/threshold_table.R")
-show_threshold_table(characteristic)
+res <- knitr::knit_child("templates/_parameter_chunk.Rmd", envir = environment(), quiet = TRUE)
+cat(res, sep = "\n")
 
 ```
