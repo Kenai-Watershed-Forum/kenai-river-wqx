@@ -43,3 +43,6 @@ Still on the task list — see AGENTS.md.
 
 All unresolved items from this file have been moved to the Tasks section of AGENTS.md.
 Do not track new to-do items here — use AGENTS.md instead.
+3.  **\[HIGH PRIORITY\] Fix missing legend group subtitles in HTML boxplots.** The "Legend" title appears correctly, but the two group subtitles — "Static regulatory thresholds" (for linetype legend) and "Hardness-dependent exceedance type" (for color/shape legend) — are not rendering. Root cause is likely that `legendgrouptitle` was removed from `clean_plotly_legend()` to fix a prior duplicate-label bug, but no replacement mechanism was implemented. Need to find an approach that displays the group labels without duplicating them. The ggplot2 (DOCX) guide names are set correctly via `scale_linetype_manual(name = ...)` and `scale_color_manual(name = ...)`; the problem is specific to the plotly (HTML) output. Investigate whether `legendgrouptitle` can be applied selectively to only the first trace of each group, or whether a different plotly API approach (e.g., invisible dummy traces as headers) is needed.
+
+4.  **Verify boxplot DOCX sizing fix.**
