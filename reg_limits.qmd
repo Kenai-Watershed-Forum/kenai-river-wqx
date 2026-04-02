@@ -84,7 +84,6 @@ Some regulatory values for metals are not simple static values, and are instead 
 
 ```{r}
 
-
 # hardness-dependent criteria
 # see page 29 of "Alaska Water Quality Criteria Manual for Toxic and other Deleterious Organic and Inorganic Substances" for parameters and formulas
 
@@ -516,6 +515,19 @@ total_metals_aq_reg_vals <- read_excel("other/input/regulatory_limits/master_reg
 
 dir <- "other/input/regulatory_limits/formatted_reg_vals/total_metals_aq_reg_vals.csv"
 write.csv(total_metals_aq_reg_vals, dir, row.names = FALSE)
+
+# Field and biological parameters with static thresholds (Water Temperature, Fecal Coliform)
+field_bio_reg_vals <- read_excel("other/input/regulatory_limits/master_reg_limits.xlsx",
+                                 sheet = "static_regulatory_values") %>%
+  remove_empty() %>%
+  filter(static_category == "field_bio_standards") %>%
+  select(-parameter_agency_name, -agency, -source, -special_note, -data_entry) %>%
+  rename("characteristic_name" = "parameter_baseline_name",
+         "value"               = "reg_value",
+         "Standard"            = "standard_type")
+
+dir <- "other/input/regulatory_limits/formatted_reg_vals/field_bio_reg_vals.csv"
+write.csv(field_bio_reg_vals, dir, row.names = FALSE)
 
 ```
 

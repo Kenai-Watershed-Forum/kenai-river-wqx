@@ -2848,6 +2848,7 @@ write.csv(project_upload, "other/output/wqx_formatted/project.csv", row.names = 
 # Read from the WQP download, filter to KWF Kenai Baseline sites (prefix "KBL"),
 # and retain only the columns required by the CDX import configuration.
 # Well/aquifer columns and provider metadata are excluded - not applicable to this project.
+
 station_upload <- read.csv("other/input/WQX_downloads/station/station.csv") |>
   dplyr::filter(grepl("KBL", MonitoringLocationName)) |>
   dplyr::select(
@@ -2868,8 +2869,10 @@ station_upload <- read.csv("other/input/WQX_downloads/station/station.csv") |>
   # HUCEightDigitCode, which prevents stations from appearing in How's My Waterway.
   # "GPS-Unspecified" is the correct WQX value for satellite-based coordinates
   # and is what ADEC uses for nearby stations that do appear in HMW.
+  # Both "Interpolation-Satellite" and "Unknown" are corrected here as a safety net
+  # in case either value appears in a future WQP re-download.
   dplyr::mutate(HorizontalCollectionMethodName = dplyr::case_when(
-    HorizontalCollectionMethodName == "Interpolation-Satellite" ~ "GPS-Unspecified",
+    HorizontalCollectionMethodName %in% c("Interpolation-Satellite", "Unknown") ~ "GPS-Unspecified",
     TRUE ~ HorizontalCollectionMethodName
   ))
 
