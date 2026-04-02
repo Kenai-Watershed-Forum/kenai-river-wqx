@@ -81,12 +81,9 @@ static_metals_thresholds <- left_join(dat,static_metals_reg_vals) %>%
 ### Metals with Hardness-Dependent Regulatory Values
 
 Some regulatory values for metals are not simple static values, and are instead hardness-dependent (i.e. toxicity depends on calcium (Ca) and magnesium (Mg) concentrations). The metals parameters in the downloadable table below have *hardness-dependent* thresholds assigned.
+-   ~~**Add missing threshold values — Iron pipeline fix**~~ **DONE (3/31/2026).** Iron threshold added to `master_reg_limits.xlsx` and routed through the pipeline (see iron boxplot entry below). Note: Water Temperature and Fecal Coliform were also added directly to `all_reg_vals.csv` at this time, but that approach was superseded — direct edits to `all_reg_vals.csv` do not survive renders. **Correct fix applied 4/2/2026** — see April 2 session notes.
 
-```{r}
-
-# hardness-dependent criteria
-# see page 29 of "Alaska Water Quality Criteria Manual for Toxic and other Deleterious Organic and Inorganic Substances" for parameters and formulas
-
+-   ~~**Update `threshold_table.R`**~~ **DONE (3/31/2026, superseded 4/2/2026).** Added `standard_labels`, `standard_authority`, and `unit_labels` entries for new standard type codes. **Superseded by April 2, 2026 change:** `threshold_table.R` now reads these mappings from the `standard_types` sheet in `master_reg_limits.xlsx` rather than hardcoded vectors.
 # read in parameters which have hardness dependent criteria
 diss_metals_hard_param <- read_excel("other/input/regulatory_limits/master_reg_limits.xlsx", skip = 1, sheet = "diss_metals_hard_parameters") %>%
   remove_empty() %>%
@@ -156,17 +153,45 @@ hard_missing <- dat %>%
 # export hardness joined to overall data results
 dir <- "other/output/hardness/dat_hardness.csv"
 write.csv(dat, dir, row.names = F)
+### Completed this session (April 2, 2026)
 
-# make hardness data downloadable
-if (knitr::is_html_output()) {
-  xfun::embed_file(dir, name = "Kenai River Baseline Hardness Data")
-} else {
-  invisible(NULL)
-}
+-   ~~**Re-upload corrected `station.csv` to CDX (Task 1)**~~ **DONE.** Uploaded `other/output/wqx_formatted/station.csv` with `HorizontalCollectionMethodName = "GPS-Unspecified"` and `HUCEightDigitCode = 19020302` for all 22 stations. No import configuration changes were needed (the existing A–K column mapping was correct). **Verify in WQP after 24–72 hours** that HUC codes are now populated for all 22 KBL stations, then check HMW tributary visibility.
 
-```
+    **Pipeline durability confirmed:** the `GPS-Unspecified` fix is hardcoded in `appendix_a.qmd`'s station generation block and applies on every render. The `case_when` now catches both `"Interpolation-Satellite"` and `"Unknown"` as a safety net. `WaterbodyName` was investigated as an additional improvement but is **not available as an importable field** in the WQX Web CSV batch import UI — it does not appear in the Elements list. The field can only be set manually via the WQX Web Review interface on individual station records.
 
-<br>
+-   ~~**Move `standard_labels` / `standard_authority` from hardcoded R to `master_reg_limits.xlsx`**~~ **DONE.** Added a `standard_types` sheet to `master_reg_limits.xlsx` with columns: `standard_type` (code), `display_label`, `regulatory_authority`, `review_needed`. Contains 20 rows covering all standard type codes from both the spreadsheet and `threshold_table.R`. Updated `threshold_table.R` to read from this sheet via `readxl::read_excel()` instead of hardcoded named vectors. The `pick_list` sheet is now superseded for this purpose. **Five rows flagged `review_needed = Y`** (inferred labels/authorities for codes not previously in `threshold_table.R`): `fw_acute`, `fw_chronic`, `harvest_aquatic_life`, `noncarc_aquatic_org`, `noncarc_water`, `secondary_water_recreation` — verify against 18 AAC 70 and USEPA criteria docs before final render.
+
+-   ~~**Fix Water Temperature and Fecal Coliform threshold values so they survive renders**~~ **DONE.** Root cause: these values had been added directly to `all_reg_vals.csv`, but that file is regenerated on every render from `master_reg_limits.xlsx` via `static_boxplot_function.R`, so direct edits were silently lost. Fix applied in three places (matching the Iron pipeline pattern):
+
+    1.  **`master_reg_limits.xlsx` → `static_regulatory_values` sheet** — 5 new rows with `static_category = "field_bio_standards"`: Water Temp (20/15/13°C, `deg_c`) and Fecal Coliform (400/40 CFU/100mL, `cfu/100ml`), all sourced to ADEC 18 AAC 70.020.
+    2.  **`reg_limits.qmd`** — new export block after the Iron block: filters `static_category == "field_bio_standards"`, writes `other/input/regulatory_limits/formatted_reg_vals/field_bio_reg_vals.csv`.
+    3.  **`functions/static_boxplot_function.R`** — reads `field_bio_reg_vals.csv` and includes it in the `bind_rows()` call.
+
+-   ~~**Revise boxplot legend for clarity and correctness**~~ **DONE.** Both the ggplot2 (DOCX) and plotly (HTML) legends now reflect the distinction between static and hardness-dependent thresholds. Changes to `functions/static_boxplot_function.R`:
+
+    -   **`std_labels` moved to top level** of the script (computed once on source, shared by `create_facet_plots()` and `clean_plotly_legend()`). Reads from the `standard_types` sheet in `master_reg_limits.xlsx`; labels are `str_wrap()`'d at 20 characters.
+    -   **`linetype_map` expanded** to cover all 20 known standard type codes (previously only 8 were defined; new codes for FC, Water Temp, Iron, etc. would fall back to default linetypes and raw code strings).
+    -   **`scale_linetype_manual()` now uses `labels = std_labels[present_standards]` and `breaks = present_standards`**, so only standards actually present for the current parameter appear in the legend, with human-readable wrapped labels.
+    -   **Legend sub-titles:** `scale_linetype_manual(name = "Static regulatory\nthresholds")` and `scale_color/shape_manual(name = "Hardness-dependent\nexceedance type")`. Guides are ordered (static thresholds first) and stacked vertically inside a single bordered box.
+    -   **`clean_plotly_legend()` extended** to handle both ggplotly trace naming patterns (facet-suffix `(NAME,N)` and bare names, which occur when no color/shape aesthetic is mapped). Traces are classified into `legendgroup = "threshold"` or `"exceedance"`. Per-group title text (`legendgrouptitle`) was removed — it caused duplicate label rendering in the HTML output. Instead, a single "Legend" title is applied at the layout level. All layout properties (title, bgcolor, bordercolor, borderwidth, `tracegroupgap = 20`) are set via **direct property assignment** rather than `plotly::layout()`, because `layout()` does not reliably override properties already set by `ggplotly()`.
+
+### Tasks for next session (in order)
+
+1.  ~~**Verify corrected `station.csv` in WQP and HMW.**~~ **DONE (April 2, 2026).** All 22 tributary and mainstem KWF sites are now visible in HMW with their associated monitoring data. GPS-Unspecified fix confirmed working.
+
+    **Two HMW data display issues identified (April 2, 2026) - see Tasks 1a and 1b below.**
+
+1a. **\[HIGH PRIORITY\] Standardize sample fraction names across all years for HMW display.** HMW displays data filtered by sample fraction and cannot simultaneously show records with different fraction names that represent the same thing. Known inconsistency: dissolved metals (e.g., Copper, Zinc) appear as both `"Filtered, field"` and `"Dissolved"` across different data years — HMW can only display one at a time, splitting the record of the same parameter across two views. **Action items:** (a) audit all distinct `ResultSampleFractionText` values in WQP across all KWF years using `dataRetrieval`; (b) identify all cases where multiple fraction names describe the same physical sample type; (c) determine the correct WQX domain value for each (WQX domain list is authoritative); (d) implement a normalization step in `appendix_a.qmd`'s CDX export block that maps all variants to the canonical value; (e) apply the same normalization in the annual QA/QC pipeline in `kenai-river-wqx-qaqc`; (f) generate corrected CDX upload files for all historical years with non-canonical fraction names and re-upload. This will require a full CDX re-upload for affected years.
+
+1b. **\[HIGH PRIORITY\] Standardize characteristic (parameter) names across all years for HMW display.** HMW treats differently-named characteristics as separate parameters, preventing unified display. Known inconsistency: Nitrate + Nitrite data exists under at least three names across KWF's historical and 2021 records: `"Nitrate + Nitrite"`, `"Nitrite"` (likely mislabeled), and `"Inorganic nitrogen (nitrate and nitrite) ***retired***use Nitrate + Nitrite"` (a retired WQX domain value). These appear to all represent the same analyte (method 4500-NO3(F) measures combined nitrate + nitrite). **Action items:** (a) audit all distinct `CharacteristicName` values in WQP across all KWF years; (b) cross-reference against current WQX domain list to identify retired or non-canonical names; (c) map all variants to the current canonical WQX characteristic name; (d) implement normalization in the CDX export block and annual pipeline; (e) re-upload corrected files for affected historical years. **Note:** changing a `CharacteristicName` in WQX may change the `ActivityID` for associated records — verify whether a delete + re-upload is required rather than a simple update.
+
+2.  **\[HIGH PRIORITY\] Fix HMW visibility for 15 legacy numeric-ID stations - move process to `kenai-river-wqx-qaqc` repo and carry out the upload.** During session 3/31/2026, a corrective station upload file was generated at `other/output/epa_wqp_uploads/corrected_epa_wqp_uploads/station_historical_correction.csv` for 15 historical stations (IDs `KENAI_WQX-10000063` through `KENAI_WQX-10000131`, named `KBX_m_*`, covering 2002-2009, 3,884 results). These stations have `HorizontalCollectionMethodName = "Unknown"` and blank `HUCEightDigitCode` in WQP. **This process belongs in `kenai-river-wqx-qaqc`, not here.** Action items: (a) recreate the corrective upload script in `kenai-river-wqx-qaqc`; (b) upload to CDX; (c) verify HUC codes in WQP; (d) delete `station_historical_correction.csv` from this repo.
+
+2a. **HMW tributary visibility - ADEC liaison.** Contact ADEC liaison to request that KWF tributaries be added to a future Integrated Report assessment cycle — KWF's WQP dataset is the primary data source for these streams, and assessed waterbody status in ATTAINS is required for tributaries to show condition status in HMW (not just monitoring data). Note: `WaterbodyName` cannot be batch-imported via the WQX Web CSV import UI (field not available in the Elements list); set manually via WQX Web Review if desired.
+
+3.  **Verify boxplot DOCX sizing fix.** Render DOCX and confirm that jitter points, facet strip text, and legend text are visibly larger than in HTML output. The fix is in `functions/static_boxplot_function.R` - the `is_docx` detection uses `Sys.getenv("QUARTO_PROFILE") == "docx"` as the primary check. If still not working, add `cat(Sys.getenv("QUARTO_PROFILE"), "\n")` in a temporary test chunk to confirm the environment variable is set during rendering.
+
+4.  **Verify `review_needed = Y` rows in the `standard_types` sheet of `master_reg_limits.xlsx`.** Six standard type codes have inferred labels/authorities: `fw_acute`, `fw_chronic`, `harvest_aquatic_life`, `noncarc_aquatic_org`, `noncarc_water`, `secondary_water_recreation`. Confirm display labels and regulatory authority against 18 AAC 70 and USEPA criteria documents before final render. Once confirmed, set `review_needed = N` for each.
 
 #### Acute and Chronic Hardness-Dependent Regulatory Threshold Values
 
@@ -327,9 +352,9 @@ xylene_isomers <- c("m,p-Xylene" = "Xylene","o-Xylene" = "Xylene")
 
 # 1.) aggregate all volatiles data to sum into "`Benzene, toluene, ethyl benzene, xylenes mix"
 btex_dat <- dat %>%
-  filter(result_sample_fraction_text == "Volatile") %>%
-  
-  select(activity_identifier,characteristic_name,result_measure_value) %>%
+| `functions/static_boxplot_function.R` | Builds `plots` list (tributary + river mile faceted boxplots); defines `clean_plotly_legend()`. Reads `std_labels` from `master_reg_limits.xlsx` → `standard_types` sheet at top level (shared by both functions). |
+| `functions/render_plots.R` | Defines `render_parameter_plots(plots)`: returns `htmltools::tagList` for HTML, calls `print()` for DOCX |
+| `functions/threshold_table.R` | Defines `show_threshold_table(characteristic, no_threshold_note = NULL)`. Reads display labels and regulatory authority from `master_reg_limits.xlsx` → `standard_types` sheet. |
   # round all values to two decimals
   mutate(result_measure_value = round(result_measure_value,2)) %>%
     # if duplicate samples exist, take their average
@@ -394,12 +419,26 @@ nutrients <- dat %>%
 
 # nitrogen only
 nitrogen <- nutrients %>%
-  filter(characteristic_name %in% c("Nitrate + Nitrite"))
+## Regulatory Limits
 
-# how many observations of "Nitrate"?
-nitrate_count <- dat %>%
-  filter(characteristic_name == "Nitrate") %>%
-  count() %>%
+-   Standards are Alaska and Federal freshwater aquatic life criteria
+-   Some metal thresholds (Cadmium, Chromium, Copper, Lead, Zinc) are **hardness-dependent** - threshold values are calculated per-sample based on measured hardness
+-   Regulatory values are stored in `output/regulatory_values/`
+-   Session variables `static_metals_thresholds`, `static_metals_reg_vals`, `diss_metals_hard_param` hold processed threshold data
+
+### Regulatory Threshold Architecture
+
+`master_reg_limits.xlsx` is the **single source of truth** for all regulatory threshold data. Sheets:
+
+| Sheet | Contents |
+|---|---|
+| `static_regulatory_values` | All static threshold values by parameter and standard type. Categories: `static_metals`, `hydrocarbons`, `nutrients`, `other`, `total_metals_aquatic_life` (Iron), `field_bio_standards` (Water Temp, Fecal Coliform). |
+| `calculated_regulatory_values` | Hardness-dependent threshold formulas (Cd, Cr, Cu, Pb, Zn). |
+| `diss_metals_hard_parameters` | Parameters for hardness-dependent calculations. |
+| `standard_types` | Display labels and regulatory authority for all standard type codes. Used by `threshold_table.R` and `static_boxplot_function.R`. Six rows flagged `review_needed = Y` — verify before final render. |
+| `pick_list` | Legacy list of standard type codes — superseded by `standard_types` sheet. |
+
+**Adding a new static threshold:** add a row to `static_regulatory_values` with the appropriate `static_category`, add or confirm the `standard_types` entry, add an export block in `reg_limits.qmd` if a new category is needed, and add the resulting CSV to the `bind_rows()` in `static_boxplot_function.R`. See the Iron and field_bio_standards entries as examples.
   as.character()
 
 # how many observations of "Nitrate + Nitrite"
@@ -421,9 +460,13 @@ dat <- dat %>%
 
 The following nurtient parameters names are present in the dataset:
 
--   "Phosphorus"
+-   **Output CSVs regenerated (March 27, 2026, clean).** Both `other/output/wqx_formatted/2021_kwf_baseline_results_wqx.csv` and `2021_export_data_flagged.csv` have been regenerated with corrected Ca/Mg/Fe values and correct RM 1.5 site IDs. **2021 CDX re-upload completed 3/31/2026** (all three files: `results_activities.csv`, `project.csv`, `station.csv`). WQP download on 3/31/2026 confirms 835 records present. **Corrected `station.csv` re-uploaded 4/2/2026** with `HorizontalCollectionMethodName = "GPS-Unspecified"` and `HUCEightDigitCode = 19020302` for all 22 stations. Verify in WQP after 24–72 hours propagation (see Task 1).
 -   "Inorganic nitrogen (nitrate and nitrite)"
--   "Nitrate"
+-   **Hydrocarbon data** missing from 2025 WQP download (uploaded Jan 2024 but not appearing in download).
+
+-   **Sample fraction name inconsistency across years (identified April 2, 2026).** Dissolved metals (e.g., Copper, Zinc) appear in WQP under both `"Filtered, field"` and `"Dissolved"` depending on the data year. HMW filters by fraction and cannot display both simultaneously, splitting what should be a unified parameter record. Needs audit and corrective CDX upload for affected years. See Task 1a.
+
+-   **Characteristic name inconsistency across years (identified April 2, 2026).** Nitrate + Nitrite data exists in WQP under at least three names: `"Nitrate + Nitrite"`, `"Nitrite"`, and `"Inorganic nitrogen (nitrate and nitrite) ***retired***use Nitrate + Nitrite"`. These are all believed to represent the same analyte (method 4500-NO3(F)). The retired name was a WQX domain value that has since been superseded. Needs audit of all characteristic names across all KWF years against the current WQX domain list, followed by corrective CDX re-upload. See Task 1b.
 
 The previous reports on these data (Guerron Orejuela 2016 and McCard 2007) use only the terms "Nitrate" and "Phosphorus" to describe nutrients.
 
