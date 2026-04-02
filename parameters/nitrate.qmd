@@ -19,9 +19,7 @@ In the mainstem, the highest concentration of nitrate was 0.706 mg/L at Mile 70 
 
 The tributaries generally had lower levels of nitrate than the mainstem, with the exception of Russian River. The highest level of nitrate in the tributaries occurred at Russian River with a concentration of 1.11 mg/L during spring 2005, and the lowest levels occurred at many locations below the MDL of 0.015 mg/L (Table 41). Of the tributaries, Russian River had the highest medians in the summer and especially in the spring, which may explain the high median at Mile 70 in the mainstem. Juneau Creek in the spring and Slikok Creek in the summer had the next highest medians. Russian River had a higher median in the spring than the summer, while the other tributaries had too many values below the MDL and MRL to establish a clear seasonal trend (Figures 102 & 103).
 
-
 ```{r echo=FALSE, warning=FALSE, message=FALSE, results='asis'}
-
 # set parameter
 characteristic <- "Nitrate + Nitrite"
 
