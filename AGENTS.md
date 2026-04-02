@@ -114,7 +114,7 @@
 
 -   **HMW partial visibility observed (3/31/2026).** Before any corrective steps were taken, some KWF sites with historical data were already appearing in HMW. This was unexpected given that all 37 station records in WQP show `HUCEightDigitCode = NA`. The reason is not yet fully understood - HMW may have alternate geographic lookup paths, or some station records may have been partially corrected previously. This finding does not eliminate the need for the station corrections (HUC codes should be populated for all stations regardless), but it does mean HMW visibility is not entirely broken at present. Investigate further when picking up Task 2.
 
-### Completed this session (April 1, 2026)
+### Completed this session (April 1, 2026) — continued (evening)
 
 -   ~~**Correct CMA and CMB narrative errors in `appendix_a.qmd` (Q25–Q26)**~~ **DONE.** Root cause: an older version of the flagging logic had treated dissolved metals (EPA Method 200.8) as Rejected when RPD could not be calculated. That decision was later reversed (see Q19 narrative, line ~1921): below-LOQ results are retained as Accepted, not flagged. The flag decisions CSV (`2021_data_flag_decisions.csv`) correctly reflects this - only Fecal Coliform (both seasons) and spring Total Nitrate/Nitrite-N are flagged - but the Q25/Q26 prose had never been updated to match.
 
@@ -143,6 +143,19 @@
     - Upload corrected `station.csv` (Task 1 below) - fixes the WQP metadata issue for monitoring data visibility.
     - Populate `WaterbodyName` for all tributary stations (e.g., "Moose River", "Funny River") before upload - this may improve NHD reach linking in HMW.
     - Contact ADEC liaison to ask whether KWF tributaries can be added to a future Integrated Report assessment cycle. KWF's WQP data is the primary data source for these streams and strengthens the case for assessment.
+
+-   ~~**Refactor parameter chapter boilerplate: `render_plots.R` + `knit_child()` template**~~ **DONE (April 1, 2026, evening).** All 19 active parameter chapters previously repeated identical plot-rendering and function-call boilerplate (~20 lines each). Replaced with two new files and a 3-line calling pattern:
+
+    1.  **`functions/render_plots.R`** — defines `render_parameter_plots(plots)`, which returns an `htmltools::tagList` for HTML output (capturing widgets as a top-level expression) or calls `print()` for DOCX. This solves the core problem: `source()` cannot capture widget output, but calling a function that *returns* a tagList can.
+    2.  **`templates/_parameter_chunk.Rmd`** — a knitr child template containing the four source+call pairs (boxplot function, render function, table download, threshold table). The threshold table call checks for an optional `no_threshold_note` variable so TSS and Turbidity's custom notes are handled without chapter-specific template variants.
+    3.  Each chapter chunk now just sets `characteristic`, optionally `sample_fraction` and/or `no_threshold_note`, then calls:
+        ```r
+        res <- knitr::knit_child("templates/_parameter_chunk.Rmd", envir = environment(), quiet = TRUE)
+        cat(res, sep = "\n")
+        ```
+        with `results='asis'` on the chunk. `envir = environment()` passes the calling chunk's variables (including `characteristic`, `sample_fraction`) into the template.
+
+    **Adding a new parameter chapter in future:** create the `.qmd` with the 3-line calling pattern, set `characteristic` (and optionally `sample_fraction`, `no_threshold_note`), add to `_quarto.yml`. No changes to template or function files needed. `diesel_range_organics.qmd` was left untouched (has `eval = F` and uses a legacy API).
 
 ### Tasks for next session (in order)
 
@@ -315,9 +328,13 @@ A Quarto book/website publishing to HTML and DOCX simultaneously. Key source fil
 | `data_qa_qc.qmd` | QA/QC overview |
 | `reg_limits.qmd` | Regulatory limits framework |
 | `appendix_a.qmd` | Detailed 2021 QA/QC example |
-| `functions/static_boxplot_function.R` | Reusable boxplot function |
+| `functions/static_boxplot_function.R` | Builds `plots` list (tributary + river mile faceted boxplots); defines `clean_plotly_legend()` |
+| `functions/render_plots.R` | Defines `render_parameter_plots(plots)`: returns `htmltools::tagList` for HTML, calls `print()` for DOCX |
+| `functions/threshold_table.R` | Defines `show_threshold_table(characteristic, no_threshold_note = NULL)` |
+| `functions/table_download.R` | Defines `download_tbl(char)` |
+| `templates/_parameter_chunk.Rmd` | Shared knitr child template used by all parameter chapters via `knit_child()` |
 
-Parameter result chapters (one per water quality parameter) follow a consistent structure: boxplot, regulatory comparison, downloadable data table.
+Parameter result chapters (one per water quality parameter) follow a consistent structure: boxplot, regulatory comparison, downloadable data table. Each chapter sets `characteristic` (and optionally `sample_fraction`, `no_threshold_note`), then delegates all rendering to `templates/_parameter_chunk.Rmd` via `knitr::knit_child()`. To add a new parameter chapter, create the `.qmd`, set the variables, call `knit_child()`, and add to `_quarto.yml` — no changes to any function or template file needed.
 
 ## Annual CDX Submission Steps
 
