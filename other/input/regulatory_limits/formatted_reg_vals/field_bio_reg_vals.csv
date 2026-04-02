@@ -1,0 +1,6 @@
+"static_category","characteristic_name","Standard","value","reg_unit"
+"field_bio_standards","Temperature, water","temp_all_freshwaters",20,"deg_c"
+"field_bio_standards","Temperature, water","temp_rearing_migration",15,"deg_c"
+"field_bio_standards","Temperature, water","temp_egg_fry_spawning",13,"deg_c"
+"field_bio_standards","Fecal Coliform","recreation_single_sample",400,"cfu/100ml"
+"field_bio_standards","Fecal Coliform","drinking_water_single_sample",40,"cfu/100ml"

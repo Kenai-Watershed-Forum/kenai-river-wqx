@@ -53,12 +53,28 @@ ph_reg_vals <- read.csv("other/input/regulatory_limits/formatted_reg_vals/ph_reg
 # total metals with freshwater aquatic life standards (e.g. Iron 1 mg/L chronic)
 total_metals_aq_reg_vals <- read.csv("other/input/regulatory_limits/formatted_reg_vals/total_metals_aq_reg_vals.csv")
 
+# field and biological parameters (Water Temperature, Fecal Coliform)
+field_bio_reg_vals <- read.csv("other/input/regulatory_limits/formatted_reg_vals/field_bio_reg_vals.csv")
+
 # join all static regulatory value dataframes
-reg_vals <- bind_rows(static_metals_reg_vals, hydrocarbon_reg_vals, ph_reg_vals, total_metals_aq_reg_vals)
+reg_vals <- bind_rows(static_metals_reg_vals, hydrocarbon_reg_vals, ph_reg_vals,
+                      total_metals_aq_reg_vals, field_bio_reg_vals)
 
 # write combined csv of all static regulatory values
 reg_vals_path <- "other/output/regulatory_values/all_reg_vals.csv"
 write.csv(reg_vals, reg_vals_path)
+
+# Read display labels for regulatory standard type codes once, at the top level,
+# so both create_facet_plots() and clean_plotly_legend() can use them.
+# Source of truth: "standard_types" sheet in master_reg_limits.xlsx.
+std_types  <- readxl::read_excel(
+  "other/input/regulatory_limits/master_reg_limits.xlsx",
+  sheet = "standard_types"
+)
+std_labels <- setNames(
+  stringr::str_wrap(std_types$display_label, width = 20),
+  std_types$standard_type
+)
 
 
 
@@ -148,6 +164,32 @@ create_facet_plots <- function(data_path, reg_vals_path, characteristic, sample_
       )
   }
   
+  # Linetype assignments for all known standard type codes.
+  # Only the codes that are present for the current parameter will appear
+  # in the legend; the rest are silently ignored by ggplot2.
+  linetype_map <- c(
+    drinking_water               = "solid",
+    irrigation_water             = "longdash",
+    stock_water                  = "dotted",
+    wildlife                     = "twodash",
+    recreation                   = "dotdash",
+    aquaculture_maximum_water    = "dashed",
+    aquaculture_minimum_water    = "dotted",
+    aquaculture_water            = "solid",
+    aquatic_life_chronic         = "longdash",
+    temp_all_freshwaters         = "solid",
+    temp_rearing_migration       = "dashed",
+    temp_egg_fry_spawning        = "dotted",
+    recreation_single_sample     = "longdash",
+    drinking_water_single_sample = "dotdash",
+    harvest_aquatic_life         = "twodash",
+    secondary_water_recreation   = "dotdash",
+    noncarc_aquatic_org          = "dotdash",
+    noncarc_water                = "solid",
+    fw_acute                     = "solid",
+    fw_chronic                   = "dashed"
+  )
+
   create_plot <- function(subset_data, x_var) {
     if (nrow(subset_data) == 0) {
       stop("No data available for plotting after preprocessing.")
@@ -189,27 +231,27 @@ create_facet_plots <- function(data_path, reg_vals_path, characteristic, sample_
       scale_y_continuous(limits = c(y_min, y_max))
     
     if (exceedance_present) {
-      plot <- plot + scale_color_manual(name = "Hardness Dependent\nExceedance Type",
+      plot <- plot + scale_color_manual(name = "Hardness-dependent\nexceedance type",
                                         values = c("None" = "#7F7F7F", "Chronic" = "#E69F00", "Acute" = "#0072B2"))
-      plot <- plot + scale_shape_manual(name = "Hardness Dependent\nExceedance Type",
+      plot <- plot + scale_shape_manual(name = "Hardness-dependent\nexceedance type",
                                         values = c("None" = 16, "Chronic" = 16, "Acute" = 8))
     }
     
-    plot <- plot + scale_linetype_manual(name = "Regulatory Standard",
-                                         values = c("drinking_water" = "solid", 
-                                                    "irrigation_water" = "dotdash", 
-                                                    "stock_water" = "dotted", 
-                                                    "wildlife" = "twodash", 
-                                                    "recreation" = "dotdash", 
-                                                    "aquaculture_maximum_water" = "dashed", 
-                                                    "aquaculture_minimum_water" = "dotted", 
-                                                    "aquaculture_water" = "solid"))
+    # Only show legend entries for standards actually present in this parameter's
+    # hline_data; labels come from std_labels (read from master_reg_limits.xlsx).
+    present_standards <- unique(hline_data$linetype)
+    plot <- plot + scale_linetype_manual(
+      name   = "Static regulatory\nthresholds",
+      values = linetype_map,
+      labels = std_labels[present_standards],
+      breaks = present_standards
+    )
     
     
     plot <- plot + guides(
-      linetype = guide_legend(override.aes = list(color = "red", size = 1.2)),
-      color = if (exceedance_present) guide_legend(override.aes = list(size = 4, linetype = 0)) else "none",
-      shape = if (exceedance_present) guide_legend(override.aes = list(size = 4, linetype = 0)) else "none"
+      linetype = guide_legend(order = 1, override.aes = list(color = "red", size = 1.2)),
+      color    = if (exceedance_present) guide_legend(order = 2, override.aes = list(size = 4, linetype = 0)) else "none",
+      shape    = if (exceedance_present) guide_legend(order = 2, override.aes = list(size = 4, linetype = 0)) else "none"
     )
     
     plot <- plot + theme(
@@ -217,8 +259,12 @@ create_facet_plots <- function(data_path, reg_vals_path, characteristic, sample_
       axis.text.y = element_text(size = axis_y_size),
       strip.text = element_text(size = strip_size),
       axis.title.y = element_text(size = title_size),
-      legend.text = element_text(size = legend_size),
-      legend.position = "right"
+      legend.text           = element_text(size = legend_size),
+      legend.position       = "right",
+      legend.box            = "vertical",
+      legend.box.background = element_rect(fill = "white", colour = "grey70", linewidth = 0.5),
+      legend.box.margin     = margin(6, 6, 6, 6),
+      legend.background     = element_blank()
     ) +
       labs(y = paste0(characteristic, " (", names(which.max(table(subset_data$result_measure_measure_unit_code))), ")"), x = "")
     
@@ -238,24 +284,77 @@ create_facet_plots <- function(data_path, reg_vals_path, characteristic, sample_
 
 
 
-# Helper: deduplicate plotly legend entries created by facet_wrap.
-# ggplotly generates one trace per layer per facet panel, naming them e.g.
-# "(Acute,1)" / "(Acute,2)". This collapses them to a single legend entry each.
+# Helper: deduplicate and style the plotly legend produced by ggplotly().
+#
+# ggplotly() generates one trace per layer per facet panel, e.g.
+# "(recreation_single_sample,1)" / "(recreation_single_sample,2)".
+# This function:
+#   1. Strips the facet suffix to get the base trace name.
+#   2. Assigns traces to one of two legend groups:
+#        "threshold"  - static regulatory threshold lines (geom_hline)
+#        "exceedance" - hardness-dependent exceedance points (geom_jitter color/shape)
+#   3. Replaces raw standard-type code names with human-readable display labels
+#      (read from std_labels, which is built at the top of this script from
+#       the standard_types sheet in master_reg_limits.xlsx).
+#   4. Suppresses duplicate legend entries within each group.
+#   5. Applies a border box and group-gap to the overall legend layout.
 clean_plotly_legend <- function(p) {
+  exceedance_names <- c("None", "Chronic", "Acute")
   seen <- character(0)
+
   for (i in seq_along(p$x$data)) {
     nm <- p$x$data[[i]]$name
-    # Strip facet suffix: "(NAME,N)" or "(NAME,N,NA)" -> "NAME"
+
+    # Strip facet suffix if present: "(NAME,N)" or "(NAME,N,NA)" -> "NAME"
     base_nm <- sub("^\\((.+),\\d+(?:,NA)?\\)$", "\\1", nm, perl = TRUE)
-    if (base_nm == nm || nchar(base_nm) == 0) next
-    p$x$data[[i]]$legendgroup <- base_nm
+
+    # When the regex doesn't match (base_nm == nm), ggplotly has already stripped
+    # the facet suffix (happens when no color/shape aesthetic is mapped). In that
+    # case, only continue if the name is a known standard-type code or exceedance
+    # label; skip all other traces (boxplot outlines, plain jitter points, etc.).
+    if (base_nm == nm) {
+      if (!(nm %in% c(names(std_labels), exceedance_names))) next
+    } else if (nchar(base_nm) == 0) {
+      next
+    }
+
+    is_exceedance <- base_nm %in% exceedance_names
+
+    # Assign legend group for deduplication and gap spacing.
+    # legendgrouptitle is intentionally omitted — it renders unreliably in the
+    # current plotly R package version, producing duplicate title entries.
+    # Visual separation between groups is achieved via tracegroupgap in layout().
+    p$x$data[[i]]$legendgroup <- if (is_exceedance) "exceedance" else "threshold"
+
     if (base_nm %in% seen) {
       p$x$data[[i]]$showlegend <- FALSE
     } else {
       seen <- c(seen, base_nm)
-      p$x$data[[i]]$name <- base_nm
+      # Replace raw standard-type code with human-readable label for display
+      display_nm <- if (!is_exceedance && base_nm %in% names(std_labels)) {
+        # plotly uses <br> for line breaks, str_wrap uses \n
+        gsub("\n", "<br>", std_labels[[base_nm]])
+      } else {
+        base_nm
+      }
+      p$x$data[[i]]$name <- display_nm
     }
   }
+
+  # Apply legend title, border box, and group spacing.
+  # A single "Legend" title is used at the top; per-group subtitles are omitted
+  # because legendgrouptitle renders unreliably in the current plotly R package.
+  # The visual gap between threshold lines and exceedance dots communicates the
+  # distinction; the ggplot2 (DOCX) version shows explicit sub-titles.
+  # Direct assignment is used throughout because plotly::layout() does not
+  # reliably override properties already set by ggplotly() (e.g. the legend title
+  # that ggplotly auto-generates from ggplot2 scale names).
+  p$x$layout$legend$title$text  <- "<b>Legend</b>"
+  p$x$layout$legend$bgcolor     <- "white"
+  p$x$layout$legend$bordercolor <- "rgba(119, 119, 119, 0.7)"
+  p$x$layout$legend$borderwidth <- 1
+  p$x$layout$legend$tracegroupgap <- 20
+
   p
 }
 

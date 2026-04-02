@@ -54,3 +54,8 @@
 "53","pH","none","aquaculture_minimum_water",6.5,"other"
 "54","pH","none","aquaculture_maximum_water",8.5,"other"
 "55","Iron","mg/l","aquatic_life_chronic",1,"total_metals_aquatic_life"
+"56","Temperature, water","deg_c","temp_all_freshwaters",20,"field_bio_standards"
+"57","Temperature, water","deg_c","temp_rearing_migration",15,"field_bio_standards"
+"58","Temperature, water","deg_c","temp_egg_fry_spawning",13,"field_bio_standards"
+"59","Fecal Coliform","cfu/100ml","recreation_single_sample",400,"field_bio_standards"
+"60","Fecal Coliform","cfu/100ml","drinking_water_single_sample",40,"field_bio_standards"

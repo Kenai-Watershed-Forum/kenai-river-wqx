@@ -14,43 +14,22 @@
 
 library(dplyr)
 library(knitr)
+library(readxl)
 
 show_threshold_table <- function(characteristic, no_threshold_note = NULL) {
 
   # --- Lookup tables: Standard code -> display label and regulatory authority ---
-  standard_labels <- c(
-    drinking_water               = "Drinking water (MCL)",
-    stock_water                  = "Stock water",
-    irrigation_water             = "Irrigation water",
-    aquaculture_maximum_water    = "Aquaculture (maximum pH)",
-    aquaculture_minimum_water    = "Aquaculture (minimum pH)",
-    aquaculture_water            = "Aquaculture",
-    wildlife                     = "Wildlife",
-    recreation                   = "Recreation",
-    aquatic_life_chronic         = "Aquatic life \u2013 chronic",
-    temp_all_freshwaters         = "All freshwaters (maximum)",
-    temp_rearing_migration       = "Rearing areas and migration routes",
-    temp_egg_fry_spawning        = "Egg and fry incubation and spawning areas",
-    recreation_single_sample     = "Recreation (single-sample limit)",
-    drinking_water_single_sample = "Drinking water (single-sample limit)"
+  # Source of truth: "standard_types" sheet in master_reg_limits.xlsx.
+  # To add or edit a standard type, update that sheet directly.
+  # Rows with review_needed = "Y" have inferred labels/authorities that should
+  # be verified against 18 AAC 70 and USEPA criteria documents before final render.
+  std_types <- readxl::read_excel(
+    "other/input/regulatory_limits/master_reg_limits.xlsx",
+    sheet = "standard_types"
   )
 
-  standard_authority <- c(
-    drinking_water               = "USEPA",
-    stock_water                  = "ADEC",
-    irrigation_water             = "ADEC",
-    aquaculture_maximum_water    = "ADEC",
-    aquaculture_minimum_water    = "ADEC",
-    aquaculture_water            = "ADEC",
-    wildlife                     = "ADEC",
-    recreation                   = "ADEC",
-    aquatic_life_chronic         = "ADEC, USEPA",
-    temp_all_freshwaters         = "ADEC",
-    temp_rearing_migration       = "ADEC",
-    temp_egg_fry_spawning        = "ADEC",
-    recreation_single_sample     = "ADEC",
-    drinking_water_single_sample = "ADEC"
-  )
+  standard_labels    <- setNames(std_types$display_label,        std_types$standard_type)
+  standard_authority <- setNames(std_types$regulatory_authority, std_types$standard_type)
 
   unit_labels <- c(
     "ug/l"      = "\u00b5g/L",
