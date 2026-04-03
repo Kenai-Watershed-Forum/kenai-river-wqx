@@ -190,6 +190,10 @@
     -   **Grab samples may be treated as representative of averaging periods** (CALM Section 3.2), confirming that our approach of comparing individual sample values to thresholds is valid.
     -   New tasks added below (see Tasks 1c and 5a).
 
+### Completed this session (April 3, 2026)
+
+-   **Planned duplicate RPD summary table for `data_qa_qc.qmd`** (not yet implemented). See task 16 below.
+
 ### Tasks for next session (in order)
 
 1.  ~~**Verify corrected `station.csv` in WQP and HMW.**~~ **DONE (April 2, 2026).** All 22 tributary and mainstem KWF sites are now visible in HMW with their associated monitoring data. GPS-Unspecified fix confirmed working.
@@ -254,6 +258,17 @@
     ```
 
 15. **Dynamically generate numerical values in parameter chapter narratives.** Hardcoded statistics in prose (e.g. "the highest concentration of magnesium was 582 mg/L and occurred at Mile 1.5 during spring 2011") should be replaced with inline R expressions so they update automatically when new data years are added. This applies to all parameter chapters. The approach: create a helper function in `functions/` (e.g. `summarise_parameter.R`) that accepts a filtered data frame and returns a named list of common summary values (e.g. `max_val`, `max_site`, `max_season`, `max_year`, `min_val`, `min_site`, etc.). Each chapter sources this function and calls it in a single, minimal setup chunk - keeping chapter `.qmd` files uncluttered. Inline values are then referenced in prose as `` `r stats$max_val` `` etc., formatted consistently (e.g. `round()` or `format()` as appropriate for the parameter's units and precision). Scope: all parameter chapters that contain hardcoded numerical summaries - scan each `.qmd` in `parameters/` before implementing.
+
+16. **Add duplicate RPD summary table to `data_qa_qc.qmd`.** Modeled on Table 5 (page 193) of @guerronorejuela2016, which shows — for each parameter — the number of duplicate sample pairs with RPD > 10%, split by spring and summer. Our version should cover **all available years of data**, not just 2021.
+
+    **Implementation approach:**
+    - Source: pull field replicate pairs from the WQP download (`other/input/WQX_downloads/`) using `dataRetrieval`. Filter to KWF organization (`KENAI_WQX`), then identify duplicate/replicate pairs by matching on site + date + characteristic + sample fraction where `ActivityTypeCode` indicates a QC replicate (e.g., `"Quality Control Sample-Field Replicate"`).
+    - Compute RPD for each eligible pair: `RPD = abs(A - B) / ((A + B) / 2) * 100`. Eligibility criterion: both values must be above the LOQ (consistent with the 2021 pipeline logic in `appendix_a.qmd` Q19).
+    - Derive season from `ActivityStartDate` Julian day: ≤ 155 = Spring, > 155 = Summer.
+    - Summarize to a table with columns: Parameter, Spring pairs (n), Spring RPD > 10% (n), Summer pairs (n), Summer RPD > 10% (n). Optionally add a "% exceeding" column for each season.
+    - Place the table in `data_qa_qc.qmd` **before** the `knitr::knit_exit()` call, in a new section (e.g., "## Duplicate Sample Quality Control").
+    - The 2021-only `rpd_check_dat.csv` was a useful prototype but is not the right source for this multi-year table.
+    - Note for caption: the 2016 report's Table 5 covered 2000–2014; our table will cover all years in WQP (2000–present) and will update automatically on re-render as new years are added to WQP.
 
 ------------------------------------------------------------------------
 
@@ -519,3 +534,8 @@ Note: `magrittr` pipe (`%>%`) appears in existing legacy code. For all new code,
 -   **Funding Proposal** - KWF 2024 BOR WaterSMART CWMP Proposal
 -   **ADEC Water Quality Standards** - Alaska Dept of Environmental Conservation Water Quality Standards (18 AAC 70)
 -   **DL/LOD/LOQ Interpretation** - SGS Laboratories document on detection limit terminology
+
+## Useful External Links (for future narrative use)
+
+-   **ADEC Kenai River "exceptional river" press release (Nov 2023):** <https://dec.alaska.gov/commish/newsroom/23-11-kenai-river-an-exceptional-river-with-clean-water/> — ADEC Commissioner statement on Kenai River water quality; useful for intro/context narrative.
+-   **ADEC Ambient Water Quality Data page:** <https://dec.alaska.gov/water/water-quality/ambient-water-quality-data> — Landing page for ADEC's ambient water quality monitoring data; relevant for data sourcing and cross-reference sections.
