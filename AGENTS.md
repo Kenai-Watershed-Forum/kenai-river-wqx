@@ -173,7 +173,22 @@
     -   **`linetype_map` expanded** to cover all 20 known standard type codes (previously only 8 were defined; new codes for FC, Water Temp, Iron, etc. would fall back to default linetypes and raw code strings).
     -   **`scale_linetype_manual()` now uses `labels = std_labels[present_standards]` and `breaks = present_standards`**, so only standards actually present for the current parameter appear in the legend, with human-readable wrapped labels.
     -   **Legend sub-titles:** `scale_linetype_manual(name = "Static regulatory\nthresholds")` and `scale_color/shape_manual(name = "Hardness-dependent\nexceedance type")`. Guides are ordered (static thresholds first) and stacked vertically inside a single bordered box.
-    -   **`clean_plotly_legend()` extended** to handle both ggplotly trace naming patterns (facet-suffix `(NAME,N)` and bare names, which occur when no color/shape aesthetic is mapped). Traces are classified into `legendgroup = "threshold"` or `"exceedance"`. Per-group title text (`legendgrouptitle`) was removed — it caused duplicate label rendering in the HTML output. Instead, a single "Legend" title is applied at the layout level. All layout properties (title, bgcolor, bordercolor, borderwidth, `tracegroupgap = 20`) are set via **direct property assignment** rather than `plotly::layout()`, because `layout()` does not reliably override properties already set by `ggplotly()`.
+    -   **`clean_plotly_legend()` extended** to handle both ggplotly trace naming patterns (facet-suffix `(NAME,N)` and bare names, which occur when no color/shape aesthetic is mapped). Traces are classified into `legendgroup = "threshold"` or `"exceedance"`. Per-group title text (`legendgrouptitle`) was initially removed to fix a duplicate-label bug; see April 2 evening session for the final working implementation.
+
+### Completed this session (April 2, 2026 - evening)
+
+-   ~~**Clean up AGENTS.md text accidentally pasted into `reg_limits.qmd`**~~ **DONE.** Five separate blocks of AGENTS.md content had been pasted into `reg_limits.qmd` at various points: (1) two task bullets displacing a `{r echo=F}` code fence in the hardness section; (2) a large task block inside the hardness `write.csv` chunk with its closing ` ``` ` missing; (3) three markdown table rows in the middle of the `btex_dat %>%` pipeline; (4) a "Regulatory Limits" section replacing missing `nitrate_count` code; (5) three Known Data Issues bullets mixed into the nutrients list. All five blocks removed; missing code fence and closing fence restored; `nitrate_count <- dat %>% filter(characteristic_name == "Nitrate") %>% count() %>% as.character()` reconstructed from context. File went from 615 to 553 lines. Also cleaned stale AGENTS.md text from the bottom of `other/notes.txt` (lines 46–48).
+
+-   ~~**Fix HTML plotly legend group subtitles**~~ **DONE (Task 3).** Root cause of previous failure: `legendgrouptitle` had been removed entirely from `clean_plotly_legend()` to fix a duplication bug, but the duplication was actually caused by setting it on every trace in each group. Fix: `group_titled` list tracks whether each group's subtitle has been applied; `legendgrouptitle` is set only on the **first visible trace** of each group, and explicitly set to `list(text = "")` for all subsequent traces in the same group to prevent plotly from duplicating the title. Result: HTML legend now shows **"Legend"** as the main title (bold), **"Static regulatory thresholds"** as a subheading above the linetype entries, and **"Hardness-dependent criteria"** as a subheading above the exceedance color/shape entries. Verified against Copper (has both groups) — all duplicate facet-panel traces correctly hidden, subtitle appears exactly once per group. Change is in `functions/static_boxplot_function.R`.
+
+-   **Reviewed ADEC CALM document (`other/agent_context/calm-rev-2021-acc.pdf`).** CALM = Alaska Consolidated Assessment and Listing Methodology (revised March 2021). Determines how ADEC evaluates KWF's submitted data for the Integrated Report. Key findings:
+
+    -   **Core pipeline is sound.** `Result Status ID = Accepted/Rejected` and QAPP documentation directly satisfy ADEC's Assessment Level data qualification requirements.
+    -   **Assessment Level minimum: 10 samples (5 for toxics) over 2+ years within the most recent 5-year period.** KWF's biannual sampling gives exactly 10 samples over 5 years — the bare minimum for conventional pollutants. Any flagged/rejected results that reduce accepted count below 10 drop a site/parameter to Screening Level (Category 3, no decision).
+    -   **Binomial impairment thresholds:** For 10–11 samples, 2 exceedances are needed to list as impaired (both for conventional and chronic-toxic uses). For acute toxic: not more than once in the most recent 3-year period.
+    -   **Fecal coliform, turbidity, and petroleum hydrocarbons are explicitly excluded** from the standard CALM methodology — each has its own separate ADEC listing methodology. The chapter narratives for `fecal_coliform.qmd`, `turbidity.qmd`, and `btex.qmd` should reference this.
+    -   **Grab samples may be treated as representative of averaging periods** (CALM Section 3.2), confirming that our approach of comparing individual sample values to thresholds is valid.
+    -   New tasks added below (see Tasks 1c and 5a).
 
 ### Tasks for next session (in order)
 
@@ -189,11 +204,15 @@
 
 2a. **HMW tributary visibility - ADEC liaison.** Contact ADEC liaison to request that KWF tributaries be added to a future Integrated Report assessment cycle — KWF's WQP dataset is the primary data source for these streams, and assessed waterbody status in ATTAINS is required for tributaries to show condition status in HMW (not just monitoring data). Note: `WaterbodyName` cannot be batch-imported via the WQX Web CSV import UI (field not available in the Elements list); set manually via WQX Web Review if desired.
 
-3.  **\[HIGH PRIORITY\] Fix missing legend group subtitles in HTML boxplots.** The "Legend" title appears correctly, but the two group subtitles — "Static regulatory thresholds" (for linetype legend) and "Hardness-dependent exceedance type" (for color/shape legend) — are not rendering. Root cause is likely that `legendgrouptitle` was removed from `clean_plotly_legend()` to fix a prior duplicate-label bug, but no replacement mechanism was implemented. Need to find an approach that displays the group labels without duplicating them. The ggplot2 (DOCX) guide names are set correctly via `scale_linetype_manual(name = ...)` and `scale_color_manual(name = ...)`; the problem is specific to the plotly (HTML) output. Investigate whether `legendgrouptitle` can be applied selectively to only the first trace of each group, or whether a different plotly API approach (e.g., invisible dummy traces as headers) is needed.
+3.  ~~**Fix missing legend group subtitles in HTML boxplots.**~~ **DONE (April 2, 2026 evening).** See "Completed this session (April 2, 2026 - evening)" above.
+
+1c. **\[NEW - from CALM review\] Check 5-year window sample counts.** For the current Integrated Report cycle, ADEC uses only data from the most recent 5-year period (approximately 2017–2021). Run a count of **accepted** results per parameter + site combination within that window. Any combination with fewer than 10 accepted results (or fewer than 5 for toxic pollutants) falls to Screening Level and will not influence an impairment/attainment decision. Flag these combinations in the report and/or notify ADEC. Data needed: `other/output/wqx_formatted/intermediate/2021_export_data_flagged.csv` filtered to `result_status_identifier == "Accepted"` and `activity_start_date >= 2017-01-01`.
 
 4.  **Verify boxplot DOCX sizing fix.** Render DOCX and confirm that jitter points, facet strip text, and legend text are visibly larger than in HTML output. The fix is in `functions/static_boxplot_function.R` - the `is_docx` detection uses `Sys.getenv("QUARTO_PROFILE") == "docx"` as the primary check. If still not working, add `cat(Sys.getenv("QUARTO_PROFILE"), "\n")` in a temporary test chunk to confirm the environment variable is set during rendering.
 
 5.  **Verify `review_needed = Y` rows in the `standard_types` sheet of `master_reg_limits.xlsx`.** Six standard type codes have inferred labels/authorities: `fw_acute`, `fw_chronic`, `harvest_aquatic_life`, `noncarc_aquatic_org`, `noncarc_water`, `secondary_water_recreation`. Confirm display labels and regulatory authority against 18 AAC 70 and USEPA criteria documents before final render. Once confirmed, set `review_needed = N` for each.
+
+5a. **\[NEW - from CALM review\] Add CALM references to fecal coliform, turbidity, and BTEX chapter narratives.** The ADEC CALM explicitly excludes these three parameter types from the standard binomial listing methodology — each has its own separate ADEC methodology (pathogens 2021, turbidity 2016, petroleum hydrocarbons 2015). Each chapter narrative should note this so readers understand why standard exceedance counting doesn't apply. Links to the separate methodologies are at: https://dec.alaska.gov/water/water-quality/integrated-report/
 
 6.  **Benzene chapter (`parameters/benzene.qmd`) has no narrative text.** Needs prose added noting that: (a) no separate standard exists for individual benzene in freshwater; (b) the applicable ADEC standard is 10 µg/L for total aromatic hydrocarbons (BTEX combined) - see BTEX chapter.
 
@@ -255,7 +274,7 @@ Extract processing logic from `appendix_a.qmd` into sourced `.R` scripts. This m
 Planned script breakdown:
 
 | Script | Content |
-|----|----|
+|------------------------------------|------------------------------------|
 | `R/ingest_sgs_als.R` | SGS EDD + ALS CSV read-in, column normalization, site name mapping, method code mapping (Parts A–E of current appendix) |
 | `R/ingest_fc.R` | SWWTP + Taurianen fecal coliform read-in |
 | `R/ingest_tss.R` | SWWTP TSS read-in |
@@ -271,7 +290,7 @@ Each script should accept year-specific inputs (file paths, sample dates) as arg
 Full audit was completed. Section-by-section status. **Note: line numbers are approximate and have shifted with each editing session. As of March 26, 2026 edits, add \~15 lines to the original estimates.**
 
 | Approx. Lines | Section | Status |
-|----|----|----|
+|------------------------|------------------------|------------------------|
 | 1–518 | SGS/ALS ingestion (Parts A–E) | Working. Includes Ca/Mg/Fe unit correction (March 2026). Dense - priority candidate for extraction to `R/ingest_sgs_als.R`. |
 | 520–983 | FC and TSS ingestion | Mostly working. TSS has a documented QA gap: SWWTP did not report lab QA results (blanks, duplicates, check standards) as required by QAPP in 2021/2022. Lab QA export block is commented out. |
 | 985–1260 | Lookup joins + first WQX export | Working (March 26, 2026). The write chunk was `eval = F` and is now `eval = T`. A `dat_raw`/`dat` save-restore pattern was added so the WQX CSV is written without corrupting the raw-column `dat` used by downstream QA/QC. The full column-rename block is redundantly repeated later for the CDX export - consolidate in the script extraction step. |
@@ -347,7 +366,7 @@ This is a 25+ year monitoring project. Code must remain readable and maintainabl
 A Quarto book/website publishing to HTML and DOCX simultaneously. Key source files:
 
 | File | Purpose |
-|----|----|
+|------------------------------------|------------------------------------|
 | `_quarto.yml` | Project configuration |
 | `index.qmd` | Front matter / introduction |
 | `data_sourcing.qmd` | Data download and preparation pipeline |
@@ -413,7 +432,7 @@ other/
 ## Parameters Monitored
 
 | Category | Parameters |
-|----|----|
+|------------------------------------|------------------------------------|
 | Dissolved Metals | Arsenic, Cadmium, Chromium, Copper, Lead, Zinc |
 | Total Metals | Calcium, Iron, Magnesium |
 | Nutrients | Nitrate + Nitrite, Phosphorus |
@@ -433,7 +452,7 @@ other/
 `master_reg_limits.xlsx` is the **single source of truth** for all regulatory threshold data. Sheets:
 
 | Sheet | Contents |
-|----|----|
+|------------------------------------|------------------------------------|
 | `static_regulatory_values` | All static threshold values by parameter and standard type. Categories: `static_metals`, `hydrocarbons`, `nutrients`, `other`, `total_metals_aquatic_life` (Iron), `field_bio_standards` (Water Temp, Fecal Coliform). |
 | `calculated_regulatory_values` | Hardness-dependent threshold formulas (Cd, Cr, Cu, Pb, Zn). |
 | `diss_metals_hard_parameters` | Parameters for hardness-dependent calculations. |
