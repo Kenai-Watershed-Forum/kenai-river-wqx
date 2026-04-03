@@ -177,7 +177,7 @@
 
 ### Completed this session (April 2, 2026 - evening)
 
--   ~~**Clean up AGENTS.md text accidentally pasted into `reg_limits.qmd`**~~ **DONE.** Five separate blocks of AGENTS.md content had been pasted into `reg_limits.qmd` at various points: (1) two task bullets displacing a `{r echo=F}` code fence in the hardness section; (2) a large task block inside the hardness `write.csv` chunk with its closing ` ``` ` missing; (3) three markdown table rows in the middle of the `btex_dat %>%` pipeline; (4) a "Regulatory Limits" section replacing missing `nitrate_count` code; (5) three Known Data Issues bullets mixed into the nutrients list. All five blocks removed; missing code fence and closing fence restored; `nitrate_count <- dat %>% filter(characteristic_name == "Nitrate") %>% count() %>% as.character()` reconstructed from context. File went from 615 to 553 lines. Also cleaned stale AGENTS.md text from the bottom of `other/notes.txt` (lines 46–48).
+-   ~~**Clean up AGENTS.md text accidentally pasted into `reg_limits.qmd`**~~ **DONE.** Five separate blocks of AGENTS.md content had been pasted into `reg_limits.qmd` at various points: (1) two task bullets displacing a `{r echo=F}` code fence in the hardness section; (2) a large task block inside the hardness `write.csv` chunk with its closing ```` ``` ```` missing; (3) three markdown table rows in the middle of the `btex_dat %>%` pipeline; (4) a "Regulatory Limits" section replacing missing `nitrate_count` code; (5) three Known Data Issues bullets mixed into the nutrients list. All five blocks removed; missing code fence and closing fence restored; `nitrate_count <- dat %>% filter(characteristic_name == "Nitrate") %>% count() %>% as.character()` reconstructed from context. File went from 615 to 553 lines. Also cleaned stale AGENTS.md text from the bottom of `other/notes.txt` (lines 46–48).
 
 -   ~~**Fix HTML plotly legend group subtitles**~~ **DONE (Task 3).** Root cause of previous failure: `legendgrouptitle` had been removed entirely from `clean_plotly_legend()` to fix a duplication bug, but the duplication was actually caused by setting it on every trace in each group. Fix: `group_titled` list tracks whether each group's subtitle has been applied; `legendgrouptitle` is set only on the **first visible trace** of each group, and explicitly set to `list(text = "")` for all subsequent traces in the same group to prevent plotly from duplicating the title. Result: HTML legend now shows **"Legend"** as the main title (bold), **"Static regulatory thresholds"** as a subheading above the linetype entries, and **"Hardness-dependent criteria"** as a subheading above the exceedance color/shape entries. Verified against Copper (has both groups) — all duplicate facet-panel traces correctly hidden, subtitle appears exactly once per group. Change is in `functions/static_boxplot_function.R`.
 
@@ -274,7 +274,7 @@ Extract processing logic from `appendix_a.qmd` into sourced `.R` scripts. This m
 Planned script breakdown:
 
 | Script | Content |
-|------------------------------------|------------------------------------|
+|----|----|
 | `R/ingest_sgs_als.R` | SGS EDD + ALS CSV read-in, column normalization, site name mapping, method code mapping (Parts A–E of current appendix) |
 | `R/ingest_fc.R` | SWWTP + Taurianen fecal coliform read-in |
 | `R/ingest_tss.R` | SWWTP TSS read-in |
@@ -290,7 +290,7 @@ Each script should accept year-specific inputs (file paths, sample dates) as arg
 Full audit was completed. Section-by-section status. **Note: line numbers are approximate and have shifted with each editing session. As of March 26, 2026 edits, add \~15 lines to the original estimates.**
 
 | Approx. Lines | Section | Status |
-|------------------------|------------------------|------------------------|
+|----|----|----|
 | 1–518 | SGS/ALS ingestion (Parts A–E) | Working. Includes Ca/Mg/Fe unit correction (March 2026). Dense - priority candidate for extraction to `R/ingest_sgs_als.R`. |
 | 520–983 | FC and TSS ingestion | Mostly working. TSS has a documented QA gap: SWWTP did not report lab QA results (blanks, duplicates, check standards) as required by QAPP in 2021/2022. Lab QA export block is commented out. |
 | 985–1260 | Lookup joins + first WQX export | Working (March 26, 2026). The write chunk was `eval = F` and is now `eval = T`. A `dat_raw`/`dat` save-restore pattern was added so the WQX CSV is written without corrupting the raw-column `dat` used by downstream QA/QC. The full column-rename block is redundantly repeated later for the CDX export - consolidate in the script extraction step. |
@@ -366,7 +366,7 @@ This is a 25+ year monitoring project. Code must remain readable and maintainabl
 A Quarto book/website publishing to HTML and DOCX simultaneously. Key source files:
 
 | File | Purpose |
-|------------------------------------|------------------------------------|
+|----|----|
 | `_quarto.yml` | Project configuration |
 | `index.qmd` | Front matter / introduction |
 | `data_sourcing.qmd` | Data download and preparation pipeline |
@@ -432,7 +432,7 @@ other/
 ## Parameters Monitored
 
 | Category | Parameters |
-|------------------------------------|------------------------------------|
+|----|----|
 | Dissolved Metals | Arsenic, Cadmium, Chromium, Copper, Lead, Zinc |
 | Total Metals | Calcium, Iron, Magnesium |
 | Nutrients | Nitrate + Nitrite, Phosphorus |
@@ -452,7 +452,7 @@ other/
 `master_reg_limits.xlsx` is the **single source of truth** for all regulatory threshold data. Sheets:
 
 | Sheet | Contents |
-|------------------------------------|------------------------------------|
+|----|----|
 | `static_regulatory_values` | All static threshold values by parameter and standard type. Categories: `static_metals`, `hydrocarbons`, `nutrients`, `other`, `total_metals_aquatic_life` (Iron), `field_bio_standards` (Water Temp, Fecal Coliform). |
 | `calculated_regulatory_values` | Hardness-dependent threshold formulas (Cd, Cr, Cu, Pb, Zn). |
 | `diss_metals_hard_parameters` | Parameters for hardness-dependent calculations. |
