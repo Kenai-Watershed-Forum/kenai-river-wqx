@@ -300,7 +300,8 @@ create_facet_plots <- function(data_path, reg_vals_path, characteristic, sample_
 #   5. Applies a border box and group-gap to the overall legend layout.
 clean_plotly_legend <- function(p) {
   exceedance_names <- c("None", "Chronic", "Acute")
-  seen <- character(0)
+  seen         <- character(0)
+  group_titled <- list(threshold = FALSE, exceedance = FALSE)
 
   for (i in seq_along(p$x$data)) {
     nm <- p$x$data[[i]]$name
@@ -319,20 +320,33 @@ clean_plotly_legend <- function(p) {
     }
 
     is_exceedance <- base_nm %in% exceedance_names
+    group <- if (is_exceedance) "exceedance" else "threshold"
 
-    # Assign legend group for deduplication and gap spacing.
-    # legendgrouptitle is intentionally omitted — it renders unreliably in the
-    # current plotly R package version, producing duplicate title entries.
-    # Visual separation between groups is achieved via tracegroupgap in layout().
-    p$x$data[[i]]$legendgroup <- if (is_exceedance) "exceedance" else "threshold"
+    p$x$data[[i]]$legendgroup <- group
 
     if (base_nm %in% seen) {
       p$x$data[[i]]$showlegend <- FALSE
     } else {
       seen <- c(seen, base_nm)
-      # Replace raw standard-type code with human-readable label for display
+
+      # Set the group subtitle on the first visible trace of each group only.
+      # Subsequent traces in the same group get an empty string to prevent
+      # plotly from rendering the subtitle multiple times.
+      if (!group_titled[[group]]) {
+        subtitle <- if (group == "threshold") {
+          "<b>Static regulatory thresholds</b>"
+        } else {
+          "<b>Hardness-dependent<br>criteria</b>"
+        }
+        p$x$data[[i]]$legendgrouptitle <- list(text = subtitle, font = list(size = 11))
+        group_titled[[group]] <- TRUE
+      } else {
+        p$x$data[[i]]$legendgrouptitle <- list(text = "")
+      }
+
+      # Replace raw standard-type code with human-readable label for display.
+      # plotly uses <br> for line breaks; str_wrap uses \n.
       display_nm <- if (!is_exceedance && base_nm %in% names(std_labels)) {
-        # plotly uses <br> for line breaks, str_wrap uses \n
         gsub("\n", "<br>", std_labels[[base_nm]])
       } else {
         base_nm
@@ -341,18 +355,12 @@ clean_plotly_legend <- function(p) {
     }
   }
 
-  # Apply legend title, border box, and group spacing.
-  # A single "Legend" title is used at the top; per-group subtitles are omitted
-  # because legendgrouptitle renders unreliably in the current plotly R package.
-  # The visual gap between threshold lines and exceedance dots communicates the
-  # distinction; the ggplot2 (DOCX) version shows explicit sub-titles.
   # Direct assignment is used throughout because plotly::layout() does not
-  # reliably override properties already set by ggplotly() (e.g. the legend title
-  # that ggplotly auto-generates from ggplot2 scale names).
-  p$x$layout$legend$title$text  <- "<b>Legend</b>"
-  p$x$layout$legend$bgcolor     <- "white"
-  p$x$layout$legend$bordercolor <- "rgba(119, 119, 119, 0.7)"
-  p$x$layout$legend$borderwidth <- 1
+  # reliably override properties already set by ggplotly().
+  p$x$layout$legend$title$text    <- "<b>Legend</b>"
+  p$x$layout$legend$bgcolor       <- "white"
+  p$x$layout$legend$bordercolor   <- "rgba(119, 119, 119, 0.7)"
+  p$x$layout$legend$borderwidth   <- 1
   p$x$layout$legend$tracegroupgap <- 20
 
   p
