@@ -194,13 +194,29 @@
 
 -   **Planned duplicate RPD summary table for `data_qa_qc.qmd`** (not yet implemented). See task 16 below.
 
+### Completed this session (April 6, 2026)
+
+-   ~~**Task 1a (this repo): Standardize sample fraction names in the 2021 pipeline**~~ **DONE.** Full audit of all `ResultSampleFractionText` values in WQP across all KWF years. Canonical scheme decided and implemented (see Sample Fraction Canonical Scheme below). Three changes made:
+
+    1.  **`other/input/wqx_templates/wqx_template_matching_table.xlsx` → `result_sample_fraction` sheet:** Changed dissolved metals (method 200.8) from `"Filtered, field"` → `"Dissolved"`. Rationale: `"Dissolved"` was already used in historical submissions (2000–2013) and unifies the HMW time series without re-uploading historical data. It also future-proofs for 2023+ data where lab filtration replaced field filtration — the fraction describes *what was measured*, not *how filtration was done*.
+    2.  **`appendix_a.qmd` (after line \~1007, the fraction join):** Added explicit `mutate()` to handle TSS (`"Suspended"`) and Fecal Coliform (`"None"`). Both were previously `NA` because their long method code strings (`"SM21-2540-+D"`, `"9222 D ~ Membrane filtration test..."`) didn't match the lookup table join key.
+    3.  **`other/documents/sample_fraction_correction_handoff.md` created:** Full handoff document for the `kenai-river-wqx-qaqc` repo covering all historical corrections needed, the canonical scheme, CDX re-upload workflow, and items requiring investigation before correcting (2006 Ethylbenzene, 2007 Chromium(VI)).
+
+    **2021 CDX re-upload required:** The 2021 dissolved metals records were already submitted to WQX with `"Filtered, field"`. A corrective delete + re-upload is needed after re-rendering `appendix_a.qmd`. See Task 1a-reupload below.
+
+    **Historical years (2000–2013):** `"Dissolved"` is already the correct value — no re-upload needed for dissolved metals. The only historical fraction corrections needed are `Total Recoverable` → `Unfiltered` for Ca/Fe/Mg, and a few single-year anomalies. All of this is addressed in the qaqc repo via the handoff document.
+
+    **Key context for 2023+ data:** Starting spring 2023, KWF switched dissolved metals from field filtration to lab filtration (both 0.45 µm, both method 200.8). The fraction `"Dissolved"` correctly applies to both. For total metals (unfiltered 200.8), use `"Unfiltered"`. The method ID alone no longer distinguishes dissolved from total for 2023+ data — the fraction field is the only distinguishing factor.
+
 ### Tasks for next session (in order)
 
 1.  ~~**Verify corrected `station.csv` in WQP and HMW.**~~ **DONE (April 2, 2026).** All 22 tributary and mainstem KWF sites are now visible in HMW with their associated monitoring data. GPS-Unspecified fix confirmed working.
 
     **Two HMW data display issues identified (April 2, 2026) - see Tasks 1a and 1b below.**
 
-1a. **\[HIGH PRIORITY\] Standardize sample fraction names across all years for HMW display.** HMW displays data filtered by sample fraction and cannot simultaneously show records with different fraction names that represent the same thing. Known inconsistency: dissolved metals (e.g., Copper, Zinc) appear as both `"Filtered, field"` and `"Dissolved"` across different data years — HMW can only display one at a time, splitting the record of the same parameter across two views. **Action items:** (a) audit all distinct `ResultSampleFractionText` values in WQP across all KWF years using `dataRetrieval`; (b) identify all cases where multiple fraction names describe the same physical sample type; (c) determine the correct WQX domain value for each (WQX domain list is authoritative); (d) implement a normalization step in `appendix_a.qmd`'s CDX export block that maps all variants to the canonical value; (e) apply the same normalization in the annual QA/QC pipeline in `kenai-river-wqx-qaqc`; (f) generate corrected CDX upload files for all historical years with non-canonical fraction names and re-upload. This will require a full CDX re-upload for affected years.
+1a. ~~**\[HIGH PRIORITY\] Standardize sample fraction names across all years for HMW display.**~~ **DONE for this repo (April 6, 2026).** See April 6 session notes above. The 2021 pipeline now uses the canonical fraction scheme. Historical year corrections and the 2021 CDX re-upload are addressed in Tasks 1a-reupload and the `kenai-river-wqx-qaqc` handoff document (`other/documents/sample_fraction_correction_handoff.md`).
+
+1a-reupload. **\[HIGH PRIORITY\] Re-upload 2021 dissolved metals records to CDX with corrected fraction (`"Dissolved"`).** The 2021 dissolved metals records in WQX currently have `ResultSampleFractionText = "Filtered, field"`. After re-rendering `appendix_a.qmd`, the new `results_activities.csv` will have `"Dissolved"`. Steps: (a) re-render `appendix_a.qmd` to regenerate `results_activities.csv`; (b) generate a DELETE file for only the dissolved metals Activity IDs from 2021 (strip `KENAI_WQX-` prefix — see 3/31/2026 notes); (c) upload DELETE file to CDX; (d) upload corrected `results_activities.csv`; (e) verify in WQP that dissolved metals now show `"Dissolved"` fraction; (f) confirm in HMW that the full time series for e.g. Zinc shows as a single unified series (no more fraction dropdown split). **Note: only dissolved metals records need to be deleted and re-uploaded — all other 2021 records are unaffected by this change.**
 
 1b. **\[HIGH PRIORITY\] Standardize characteristic (parameter) names across all years for HMW display.** HMW treats differently-named characteristics as separate parameters, preventing unified display. Known inconsistency: Nitrate + Nitrite data exists under at least three names across KWF's historical and 2021 records: `"Nitrate + Nitrite"`, `"Nitrite"` (likely mislabeled), and `"Inorganic nitrogen (nitrate and nitrite) ***retired***use Nitrate + Nitrite"` (a retired WQX domain value). These appear to all represent the same analyte (method 4500-NO3(F) measures combined nitrate + nitrite). **Action items:** (a) audit all distinct `CharacteristicName` values in WQP across all KWF years; (b) cross-reference against current WQX domain list to identify retired or non-canonical names; (c) map all variants to the current canonical WQX characteristic name; (d) implement normalization in the CDX export block and annual pipeline; (e) re-upload corrected files for affected historical years. **Note:** changing a `CharacteristicName` in WQX may change the `ActivityID` for associated records — verify whether a delete + re-upload is required rather than a simple update.
 
@@ -273,7 +289,23 @@
 
 ------------------------------------------------------------------------
 
-## Decisions Made - March 2026
+## Decisions Made - March/April 2026
+
+### Sample Fraction Canonical Scheme (settled April 6, 2026)
+
+The canonical `ResultSampleFractionText` values for all KWF CDX submissions, all years:
+
+| Parameter type | Canonical fraction | Notes |
+|---|---|---|
+| Dissolved metals (field- or lab-filtered, any method) | `Dissolved` | Describes the analytical fraction, not filtration procedure. Consistent for 200.8 across all years including 2023+ lab-filtered samples. |
+| Total metals (unfiltered, any method) | `Unfiltered` | Correct for 200.7 (pre-2023) and 200.8 unfiltered (2023+). **Critical for 2023+:** method ID alone no longer distinguishes dissolved from total — fraction is the only distinguishing field. |
+| Nutrients (nitrate/nitrite, phosphorus) | `Total` | |
+| TSS | `Suspended` | |
+| BTEX / volatile organics | `Volatile` | |
+| Fecal Coliform | `None` | No fraction applies to a whole-water biological parameter. |
+
+**2021 pipeline status:** lookup table and explicit mutate corrected April 6, 2026. Re-upload of 2021 dissolved metals records needed (see Task 1a-reupload).  
+**Historical years (2000–2013):** dissolved metals already use `"Dissolved"` — no change needed. `Total Recoverable` → `Unfiltered` correction for Ca/Fe/Mg to be addressed in `kenai-river-wqx-qaqc`. See `other/documents/sample_fraction_correction_handoff.md`.
 
 ### EPA WQX Flagging Convention (settled)
 
@@ -501,7 +533,7 @@ Note: The original vendor template file `AWQMS_KWF_Baseline_2021.xlsx` retains i
 
 -   **Hydrocarbon data** missing from 2025 WQP download (uploaded Jan 2024 but not appearing in download).
 
--   **Sample fraction name inconsistency across years (identified April 2, 2026).** Dissolved metals (e.g., Copper, Zinc) appear in WQP under both `"Filtered, field"` and `"Dissolved"` depending on the data year. HMW filters by fraction and cannot display both simultaneously, splitting what should be a unified parameter record. Needs audit and corrective CDX upload for affected years. See Task 1a.
+-   **Sample fraction name inconsistency across years (identified April 2, 2026; partially resolved April 6, 2026).** Dissolved metals appeared in WQP under both `"Filtered, field"` (2021 submission) and `"Dissolved"` (2000–2013), splitting the HMW time series. **Fix applied in this repo:** 2021 pipeline lookup table updated to use `"Dissolved"` for all dissolved metals (method 200.8); TSS now correctly assigned `"Suspended"`; FC now correctly assigned `"None"`. **Remaining:** 2021 CDX re-upload needed to correct the already-submitted records (see Task 1a-reupload). Historical Ca/Fe/Mg total metals (`Total Recoverable` → `Unfiltered`) and other minor anomalies to be addressed in `kenai-river-wqx-qaqc` — see `other/documents/sample_fraction_correction_handoff.md`.
 
 -   **Characteristic name inconsistency across years (identified April 2, 2026).** Nitrate + Nitrite data exists in WQP under at least three names: `"Nitrate + Nitrite"`, `"Nitrite"`, and `"Inorganic nitrogen (nitrate and nitrite) ***retired***use Nitrate + Nitrite"`. These are all believed to represent the same analyte (method 4500-NO3(F)). The retired name was a WQX domain value that has since been superseded. Needs audit of all characteristic names across all KWF years against the current WQX domain list, followed by corrective CDX re-upload. See Task 1b.
 
