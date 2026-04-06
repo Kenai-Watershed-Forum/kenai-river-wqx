@@ -296,15 +296,15 @@
 The canonical `ResultSampleFractionText` values for all KWF CDX submissions, all years:
 
 | Parameter type | Canonical fraction | Notes |
-|---|---|---|
+|----|----|----|
 | Dissolved metals (field- or lab-filtered, any method) | `Dissolved` | Describes the analytical fraction, not filtration procedure. Consistent for 200.8 across all years including 2023+ lab-filtered samples. |
 | Total metals (unfiltered, any method) | `Unfiltered` | Correct for 200.7 (pre-2023) and 200.8 unfiltered (2023+). **Critical for 2023+:** method ID alone no longer distinguishes dissolved from total — fraction is the only distinguishing field. |
-| Nutrients (nitrate/nitrite, phosphorus) | `Total` | |
-| TSS | `Suspended` | |
-| BTEX / volatile organics | `Volatile` | |
+| Nutrients (nitrate/nitrite, phosphorus) | `Total` |  |
+| TSS | `Suspended` |  |
+| BTEX / volatile organics | `Volatile` |  |
 | Fecal Coliform | `None` | No fraction applies to a whole-water biological parameter. |
 
-**2021 pipeline status:** lookup table and explicit mutate corrected April 6, 2026. Re-upload of 2021 dissolved metals records needed (see Task 1a-reupload).  
+**2021 pipeline status:** lookup table and explicit mutate corrected April 6, 2026. Re-upload of 2021 dissolved metals records needed (see Task 1a-reupload).\
 **Historical years (2000–2013):** dissolved metals already use `"Dissolved"` — no change needed. `Total Recoverable` → `Unfiltered` correction for Ca/Fe/Mg to be addressed in `kenai-river-wqx-qaqc`. See `other/documents/sample_fraction_correction_handoff.md`.
 
 ### EPA WQX Flagging Convention (settled)
