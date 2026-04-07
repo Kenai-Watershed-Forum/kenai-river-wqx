@@ -1006,6 +1006,20 @@ result_sample_fraction <- read_excel("other/input/wqx_templates/wqx_template_mat
 ## join to table
 dat <- left_join(dat,result_sample_fraction)
 
+# The fraction join above keys on analytical_method, but TSS and FC use long
+# method strings that don't match the lookup table keys. Assign their fractions
+# explicitly. All other parameters are handled by the join above.
+# - TSS (SM 2540-D): "Suspended" is the correct WQX domain value for a
+#   settled/filtered solids measurement on an unfiltered whole-water sample.
+# - Fecal Coliform (9222D): "None" is the correct WQX domain value when no
+#   sample fraction applies (whole-water biological parameter).
+dat <- dat %>%
+  mutate(result_sample_fraction = case_when(
+    grepl("2540", analytical_method, ignore.case = TRUE) ~ "Suspended",
+    grepl("9222", analytical_method, ignore.case = TRUE) ~ "None",
+    TRUE ~ result_sample_fraction
+  ))
+
 
 ################ d.) assign "result detection condition"##############
 
