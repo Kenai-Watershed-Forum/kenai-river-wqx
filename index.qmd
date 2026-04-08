@@ -51,6 +51,9 @@ When the report is complete, it will be available for download as a PDF in this 
 All project files and source code are hosted in a public GitHub repository at <https://github.com/Kenai-Watershed-Forum/kenai-river-wqx>, also accessible by clicking the GitHub symbol (cat shape) in the upper left corner.
 
 <br>
+
+## Artificial Intelligence Note
+Some refinement aspects of the codebase that generates this report were refined using ChatGPT (v5.3) and Posit Assistant (Claude Opus v4.6).
 :::
 
 ::: {.content-visible when-format="docx"}
@@ -75,3 +78,22 @@ knitr::include_graphics("other/documents/images/KWF_logo.jpg")
 :::
 
 \newpage
+### Completed this session (April 8, 2026)
+
+-   **2021 CDX batch delete — BLOCKED. Contact EPA WQX support before next session.** Attempted to delete all 835 existing 2021 WQX records (required before re-uploading corrected `results_activities.csv` with updated sample fractions and characteristic names). Generated DELETE files v3–v5; all failed. Full findings:
+
+    -   **Output files confirmed ready (no re-render needed).** `results_activities.csv` (April 6, 20:11) has correct sample fractions (`"Dissolved"` for dissolved metals, `"Suspended"` for TSS, `"None"` for FC, etc.). `station.csv` has `GPS-Unspecified` + `HUCEightDigitCode = 19020302` for all 22 stations (uploaded to CDX April 2). `project.csv` is unchanged. Only `results_activities.csv` needs to be re-uploaded.
+
+    -   **v3 failure (835 errors):** Column named `Activity ID` instead of `ActivityIdentifier` — WQX rejected all rows with "Domain Value Invalid."
+
+    -   **v4 failure (835 errors):** Fixed column name to `ActivityIdentifier`. Same "Domain Value Invalid" for all 835 rows. This is identical content to v2 (which worked on 3/31), so the error is not caused by the file format.
+
+    -   **v5 failure (286 errors + system crash):** Attempted CRLF line endings to match v2. File was corrupted during generation (837 lines instead of 836 = extra blank line), causing a system process halt after 286 rows.
+
+    -   **Key finding:** v4 and v2 have byte-for-byte identical Activity IDs and identical column names. v2 worked on 3/31; v4 fails today. The batch delete function appears to be broken on WQX's side, or its validation behavior has changed. **835 records confirmed still present in WQP.**
+
+    -   **Files in `other/output/epa_wqp_uploads/corrected_epa_wqp_uploads/`:** `resultphyschem_DELETE_v4.csv` is the correct, clean DELETE file to use when the WQX issue is resolved. Do not use v5 (corrupted).
+
+    **Next action: contact EPA WQX support.** The WQX system itself directs users to wqx@epa.gov or 1-800-424-9067. Reference Kevin Christian (wqx@epa.gov) from the 3/31/2026 call. Key message: batch Activity ID delete (`resultphyschem_DELETE_v4.csv`, column `ActivityIdentifier`, no org prefix, 835 rows) returns "Domain Value Invalid" for all rows; identical file worked on 3/31/2026. **Fallback:** use WQX Web Review tab → filter Activities by start date 2021 → bulk delete from there.
+
+### Completed this session (April 6, 2026)

@@ -194,6 +194,24 @@
 
 -   **Planned duplicate RPD summary table for `data_qa_qc.qmd`** (not yet implemented). See task 16 below.
 
+### Completed this session (April 8, 2026)
+
+-   **2021 CDX batch delete — BLOCKED. Contact EPA WQX support before next session.** Attempted to delete all 835 existing 2021 WQX records (required before re-uploading corrected `results_activities.csv` with updated sample fractions and characteristic names). Generated DELETE files v3–v5; all failed. Full findings:
+
+    -   **Output files confirmed ready (no re-render needed).** `results_activities.csv` (April 6, 20:11) has correct sample fractions (`"Dissolved"` for dissolved metals, `"Suspended"` for TSS, `"None"` for FC, etc.). `station.csv` has `GPS-Unspecified` + `HUCEightDigitCode = 19020302` for all 22 stations (uploaded to CDX April 2). `project.csv` is unchanged. Only `results_activities.csv` needs to be re-uploaded.
+
+    -   **v3 failure (835 errors):** Column named `Activity ID` instead of `ActivityIdentifier` — WQX rejected all rows with "Domain Value Invalid."
+
+    -   **v4 failure (835 errors):** Fixed column name to `ActivityIdentifier`. Same "Domain Value Invalid" for all 835 rows. This is identical content to v2 (which worked on 3/31), so the error is not caused by the file format.
+
+    -   **v5 failure (286 errors + system crash):** Attempted CRLF line endings to match v2. File was corrupted during generation (837 lines instead of 836 = extra blank line), causing a system process halt after 286 rows.
+
+    -   **Key finding:** v4 and v2 have byte-for-byte identical Activity IDs and identical column names. v2 worked on 3/31; v4 fails today. The batch delete function appears to be broken on WQX's side, or its validation behavior has changed. **835 records confirmed still present in WQP.**
+
+    -   **Files in `other/output/epa_wqp_uploads/corrected_epa_wqp_uploads/`:** `resultphyschem_DELETE_v4.csv` is the correct, clean DELETE file to use when the WQX issue is resolved. Do not use v5 (corrupted).
+
+    **Next action: contact EPA WQX support.** The WQX system itself directs users to wqx@epa.gov or 1-800-424-9067. Reference Kevin Christian (wqx@epa.gov) from the 3/31/2026 call. Key message: batch Activity ID delete (`resultphyschem_DELETE_v4.csv`, column `ActivityIdentifier`, no org prefix, 835 rows) returns "Domain Value Invalid" for all rows; identical file worked on 3/31/2026. **Fallback:** use WQX Web Review tab → filter Activities by start date 2021 → bulk delete from there.
+
 ### Completed this session (April 6, 2026)
 
 -   ~~**Task 1a (this repo): Standardize sample fraction names in the 2021 pipeline**~~ **DONE.** Full audit of all `ResultSampleFractionText` values in WQP across all KWF years. Canonical scheme decided and implemented (see Sample Fraction Canonical Scheme below). Three changes made:
@@ -216,7 +234,11 @@
 
 1a. ~~**\[HIGH PRIORITY\] Standardize sample fraction names across all years for HMW display.**~~ **DONE for this repo (April 6, 2026).** See April 6 session notes above. The 2021 pipeline now uses the canonical fraction scheme. Historical year corrections and the 2021 CDX re-upload are addressed in Tasks 1a-reupload and the `kenai-river-wqx-qaqc` handoff document (`other/documents/sample_fraction_correction_handoff.md`).
 
-1a-reupload. **\[HIGH PRIORITY\] Re-upload 2021 dissolved metals records to CDX with corrected fraction (`"Dissolved"`).** The 2021 dissolved metals records in WQX currently have `ResultSampleFractionText = "Filtered, field"`. After re-rendering `appendix_a.qmd`, the new `results_activities.csv` will have `"Dissolved"`. Steps: (a) re-render `appendix_a.qmd` to regenerate `results_activities.csv`; (b) generate a DELETE file for only the dissolved metals Activity IDs from 2021 (strip `KENAI_WQX-` prefix — see 3/31/2026 notes); (c) upload DELETE file to CDX; (d) upload corrected `results_activities.csv`; (e) verify in WQP that dissolved metals now show `"Dissolved"` fraction; (f) confirm in HMW that the full time series for e.g. Zinc shows as a single unified series (no more fraction dropdown split). **Note: only dissolved metals records need to be deleted and re-uploaded — all other 2021 records are unaffected by this change.**
+1a-reupload. **\[HIGH PRIORITY — BLOCKED\] Re-upload all 835 2021 records to CDX with corrected fractions and characteristic names.** The scope expanded beyond dissolved metals: `results_activities.csv` (April 6) also corrects characteristic names (`Nitrate_Nitrite-N` → `Total Nitrate/Nitrite-N`, individual xylene names replacing `Total xylenes`) and adds missing RM 1.5 spring records. A full delete + re-upload of all 835 records is required.
+
+    **Files are ready — delete is blocked by WQX system issue (April 8, 2026).** `results_activities.csv` (April 6) is correct. DELETE file `resultphyschem_DELETE_v4.csv` (`ActivityIdentifier` column, 835 rows, no org prefix) is correct but returns "Domain Value Invalid" for all rows in WQX. Identical content worked on 3/31/2026.
+
+    **Steps once WQX issue is resolved:** (a) contact wqx@epa.gov / 1-800-424-9067 or try WQX Web Review tab bulk delete; (b) upload `resultphyschem_DELETE_v4.csv` to CDX → Import a batch of IDs for records to delete → CSV → Ignore First Row checked; (c) upload `other/output/wqx_formatted/results_activities.csv`; (d) verify in WQP that dissolved metals show `"Dissolved"` fraction; (e) confirm in HMW that Zinc etc. appear as unified time series. Do NOT re-upload `station.csv` or `project.csv` — both already correct in CDX.
 
 1b. **\[HIGH PRIORITY\] Standardize characteristic (parameter) names across all years for HMW display.** HMW treats differently-named characteristics as separate parameters, preventing unified display. Known inconsistency: Nitrate + Nitrite data exists under at least three names across KWF's historical and 2021 records: `"Nitrate + Nitrite"`, `"Nitrite"` (likely mislabeled), and `"Inorganic nitrogen (nitrate and nitrite) ***retired***use Nitrate + Nitrite"` (a retired WQX domain value). These appear to all represent the same analyte (method 4500-NO3(F) measures combined nitrate + nitrite). **Action items:** (a) audit all distinct `CharacteristicName` values in WQP across all KWF years; (b) cross-reference against current WQX domain list to identify retired or non-canonical names; (c) map all variants to the current canonical WQX characteristic name; (d) implement normalization in the CDX export block and annual pipeline; (e) re-upload corrected files for affected historical years. **Note:** changing a `CharacteristicName` in WQX may change the `ActivityID` for associated records — verify whether a delete + re-upload is required rather than a simple update.
 
