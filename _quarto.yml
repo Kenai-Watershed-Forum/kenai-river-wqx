@@ -10,21 +10,21 @@ book:
   page-navigation: true
   chapters:
     - index.qmd
-    - acknowledgements.qmd
-    - abstract.qmd
-    - units.qmd
-    - acronyms.qmd
+    - chapters/acknowledgements.qmd
+    - chapters/abstract.qmd
+    - chapters/units.qmd
+    - chapters/acronyms.qmd
     - part: "Introduction & Methods"
       chapters:
-      - intro.qmd
-      - study_area.qmd
-      - methods.qmd
+      - chapters/intro.qmd
+      - chapters/study_area.qmd
+      - chapters/methods.qmd
     - part: "Data"
       chapters:
-      - data_sourcing.qmd
-      - data_qa_qc.qmd
-      - interpreting_boxplots.qmd
-      - reg_limits.qmd
+      - chapters/data_sourcing.qmd
+      - chapters/data_qa_qc.qmd
+      - chapters/interpreting_boxplots.qmd
+      - chapters/reg_limits.qmd
     - part: "Results"
       chapters:
       - parameters/arsenic.qmd
@@ -52,10 +52,10 @@ book:
       - parameters/summary.qmd
       - parameters/references.qmd
   appendices:
-    - appendix_a.qmd
-    - cdx_upload.qmd
-    - appendix_b.qmd
-    - finance_history.qmd
+    - chapters/appendix_a.qmd
+    - chapters/cdx_upload.qmd
+    - chapters/appendix_b.qmd
+    - chapters/finance_history.qmd
     
 
   repo-url: https://github.com/Kenai-Watershed-Forum/kenai-river-wqx

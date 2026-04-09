@@ -194,6 +194,21 @@
 
 -   **Planned duplicate RPD summary table for `data_qa_qc.qmd`** (not yet implemented). See task 16 below.
 
+### Completed this session (April 9, 2026)
+
+-   ~~**Reorganize Quarto project: move chapter .qmd files to `chapters/` subfolder**~~ **DONE.** 19 `.qmd` files moved from the project root to `chapters/`. `index.qmd` stays at root (required by Quarto books). `_quarto.yml` updated with `chapters/` prefix on all 15 non-parameter chapter and appendix paths. Image paths in `study_area.qmd` (25 images) and `interpreting_boxplots.qmd` (1 image) updated from `other/...` to `../other/...`. R code paths unaffected — `execute-dir: project` means all R code runs from the project root regardless of `.qmd` file location. Re-render confirmed working. Scratch/dev files (`test.qmd`, `appendix_a_v2.qmd`, `updated_boxplot_test.qmd`, `wqx_corrections.qmd`) also moved to `chapters/` but are not listed in `_quarto.yml`.
+
+-   ~~**Diagnose CDX batch delete failure (Task 1a-reupload)**~~ **DONE (diagnosis only — fix requires EPA intervention).** Root cause identified: the 835 2021 records exist in WQP/STORET but are absent from WQX Web's internal database. WQX Web and WQP are out of sync. Evidence:
+
+    1.  `dataRetrieval::readWQPdata()` confirms 835 records for KENAI_WQX, 2021, all from STORET.
+    2.  DELETE v4 Activity IDs match current WQP records exactly (835/835 after stripping `KENAI_WQX-` prefix) — the file is not the problem.
+    3.  WQX Web Review tab shows zero 2021 records for the organization.
+    4.  CDX batch delete returns "Domain Value Invalid" for all 835 rows — WQX cannot find these IDs in its own database.
+
+    **Email sent to wqx@epa.gov on April 9, 2026** with attachments: `Screenshot 2026-04-09 082314.png`, `Import Log(3).xlsx`, `resultphyschem_DELETE_v4.csv`. Key message: CDX 3/31 upload populated WQP/STORET but did not sync to WQX Web. Requesting EPA to reconcile the databases or delete the 835 orphaned records directly. **Awaiting response.**
+
+    **WQX Web Review fallback is NOT available** — confirmed that WQX Web Review shows no 2021 data, so bulk delete from the UI is not possible.
+
 ### Completed this session (April 8, 2026)
 
 -   **2021 CDX batch delete — BLOCKED. Contact EPA WQX support before next session.** Attempted to delete all 835 existing 2021 WQX records (required before re-uploading corrected `results_activities.csv` with updated sample fractions and characteristic names). Generated DELETE files v3–v5; all failed. Full findings:
@@ -210,7 +225,7 @@
 
     -   **Files in `other/output/epa_wqp_uploads/corrected_epa_wqp_uploads/`:** `resultphyschem_DELETE_v4.csv` is the correct, clean DELETE file to use when the WQX issue is resolved. Do not use v5 (corrupted).
 
-    **Next action: contact EPA WQX support.** The WQX system itself directs users to wqx@epa.gov or 1-800-424-9067. Reference Kevin Christian (wqx@epa.gov) from the 3/31/2026 call. Key message: batch Activity ID delete (`resultphyschem_DELETE_v4.csv`, column `ActivityIdentifier`, no org prefix, 835 rows) returns "Domain Value Invalid" for all rows; identical file worked on 3/31/2026. **Fallback:** use WQX Web Review tab → filter Activities by start date 2021 → bulk delete from there.
+    **Next action: contact EPA WQX support.** The WQX system itself directs users to wqx\@epa.gov or 1-800-424-9067. Reference Kevin Christian (wqx\@epa.gov) from the 3/31/2026 call. Key message: batch Activity ID delete (`resultphyschem_DELETE_v4.csv`, column `ActivityIdentifier`, no org prefix, 835 rows) returns "Domain Value Invalid" for all rows; identical file worked on 3/31/2026. **Fallback:** use WQX Web Review tab → filter Activities by start date 2021 → bulk delete from there.
 
 ### Completed this session (April 6, 2026)
 
@@ -236,9 +251,13 @@
 
 1a-reupload. **\[HIGH PRIORITY — BLOCKED\] Re-upload all 835 2021 records to CDX with corrected fractions and characteristic names.** The scope expanded beyond dissolved metals: `results_activities.csv` (April 6) also corrects characteristic names (`Nitrate_Nitrite-N` → `Total Nitrate/Nitrite-N`, individual xylene names replacing `Total xylenes`) and adds missing RM 1.5 spring records. A full delete + re-upload of all 835 records is required.
 
-    **Files are ready — delete is blocked by WQX system issue (April 8, 2026).** `results_activities.csv` (April 6) is correct. DELETE file `resultphyschem_DELETE_v4.csv` (`ActivityIdentifier` column, 835 rows, no org prefix) is correct but returns "Domain Value Invalid" for all rows in WQX. Identical content worked on 3/31/2026.
+```         
+**Files are ready — delete is blocked by WQX/STORET sync issue (diagnosed April 9, 2026).** `results_activities.csv` (April 6) is correct. DELETE file `resultphyschem_DELETE_v4.csv` (`ActivityIdentifier` column, 835 rows, no org prefix) is correct — all 835 IDs match current WQP records exactly. The problem is that the 3/31 CDX upload populated WQP/STORET but did not sync to WQX Web's internal database. WQX Web Review shows zero 2021 records; CDX batch delete fails because WQX cannot find the IDs in its own DB. WQX Web Review bulk-delete fallback is NOT available (no records visible there).
 
-    **Steps once WQX issue is resolved:** (a) contact wqx@epa.gov / 1-800-424-9067 or try WQX Web Review tab bulk delete; (b) upload `resultphyschem_DELETE_v4.csv` to CDX → Import a batch of IDs for records to delete → CSV → Ignore First Row checked; (c) upload `other/output/wqx_formatted/results_activities.csv`; (d) verify in WQP that dissolved metals show `"Dissolved"` fraction; (e) confirm in HMW that Zinc etc. appear as unified time series. Do NOT re-upload `station.csv` or `project.csv` — both already correct in CDX.
+**Email sent to wqx@epa.gov on April 9, 2026. Awaiting response.**
+
+**Steps once EPA resolves the sync issue:** (a) upload `resultphyschem_DELETE_v4.csv` to CDX → Import a batch of IDs for records to delete → CSV → Ignore First Row checked; (b) upload `other/output/wqx_formatted/results_activities.csv`; (c) verify in WQP that dissolved metals show `"Dissolved"` fraction; (d) confirm in HMW that Zinc etc. appear as unified time series. Do NOT re-upload `station.csv` or `project.csv` — both already correct in CDX.
+```
 
 1b. **\[HIGH PRIORITY\] Standardize characteristic (parameter) names across all years for HMW display.** HMW treats differently-named characteristics as separate parameters, preventing unified display. Known inconsistency: Nitrate + Nitrite data exists under at least three names across KWF's historical and 2021 records: `"Nitrate + Nitrite"`, `"Nitrite"` (likely mislabeled), and `"Inorganic nitrogen (nitrate and nitrite) ***retired***use Nitrate + Nitrite"` (a retired WQX domain value). These appear to all represent the same analyte (method 4500-NO3(F) measures combined nitrate + nitrite). **Action items:** (a) audit all distinct `CharacteristicName` values in WQP across all KWF years; (b) cross-reference against current WQX domain list to identify retired or non-canonical names; (c) map all variants to the current canonical WQX characteristic name; (d) implement normalization in the CDX export block and annual pipeline; (e) re-upload corrected files for affected historical years. **Note:** changing a `CharacteristicName` in WQX may change the `ActivityID` for associated records — verify whether a delete + re-upload is required rather than a simple update.
 
@@ -438,11 +457,11 @@ A Quarto book/website publishing to HTML and DOCX simultaneously. Key source fil
 | File | Purpose |
 |----|----|
 | `_quarto.yml` | Project configuration |
-| `index.qmd` | Front matter / introduction |
-| `data_sourcing.qmd` | Data download and preparation pipeline |
-| `data_qa_qc.qmd` | QA/QC overview |
-| `reg_limits.qmd` | Regulatory limits framework |
-| `appendix_a.qmd` | Detailed 2021 QA/QC example |
+| `index.qmd` | Front matter / introduction (stays at project root) |
+| `chapters/data_sourcing.qmd` | Data download and preparation pipeline |
+| `chapters/data_qa_qc.qmd` | QA/QC overview |
+| `chapters/reg_limits.qmd` | Regulatory limits framework |
+| `chapters/appendix_a.qmd` | Detailed 2021 QA/QC example |
 | `functions/static_boxplot_function.R` | Builds `plots` list (tributary + river mile faceted boxplots); defines `clean_plotly_legend()`. Reads `std_labels` from `master_reg_limits.xlsx` → `standard_types` sheet at top level (shared by both functions). |
 | `functions/render_plots.R` | Defines `render_parameter_plots(plots)`: returns `htmltools::tagList` for HTML, calls `print()` for DOCX |
 | `functions/threshold_table.R` | Defines `show_threshold_table(characteristic, no_threshold_note = NULL)`. Reads display labels and regulatory authority from `master_reg_limits.xlsx` → `standard_types` sheet. |
