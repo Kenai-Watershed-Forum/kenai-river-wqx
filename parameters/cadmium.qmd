@@ -11,7 +11,7 @@ format:
     code-summary: "Show the code"
 ---
 
-From 2016 report:
+*The following narrative is from the 2016 Kenai River Baseline Water Quality Assessment and reflects data collected through 2014.*
 
 Cadmium is a rare elemental metal that can occur naturally in freshwater at concentrations of less than 0.1 μg/L, but at slightly increased concentrations, it can be toxic to aquatic life (USEPA, 2001). Additional cadmium can enter the hydrologic cycle as a component of fertilizer, pesticide, pigment, and as a result of iron and steel production, coal combustion, and mining waste (USEPA, 2001). The ADEC and the USEPA have set the standard for cadmium at a range of 0.0650 μg/L to 0.64 μg/L, depending on hardness, for chronically exposed freshwater aquatic life (Appendix 2) (USEPA, 2014; ADEC, 2008).
 

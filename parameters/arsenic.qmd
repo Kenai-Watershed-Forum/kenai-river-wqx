@@ -11,7 +11,7 @@ format:
     code-summary: "Show the code"
 ---
 
-From 2016 report:
+*The following narrative is from the 2016 Kenai River Baseline Water Quality Assessment and reflects data collected through 2014.*
 
 Natural sources of arsenic in the Cook Inlet Basin include volcanic ash, glaciation, and mineral deposits. Only a minimal contribution of arsenic results from human activities like wood preservation (Glass and Frenzel, 2001). Arsenic is naturally present as a compound in rocks within the Kenai River Watershed, and as a dissolved metal, it can be acutely or chronically toxic to fish (Glass, 1999). The Alaska Department of Environmental Conservation (ADEC) and the United States Environmental Protection Agency (USEPA) have set the standard at 150 micrograms per liter (µg/L) for freshwater aquatic life chronically exposed to arsenic and 10 micrograms per liter (µg/L) for drinking water (Appendix X) (USEPA, 2014; ADEC, 2008).
 

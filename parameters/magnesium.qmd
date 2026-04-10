@@ -11,6 +11,8 @@ format:
     code-summary: "Show the code"
 ---
 
+*The following narrative is from the 2016 Kenai River Baseline Water Quality Assessment and reflects data collected through 2014.*
+
 As an essential element, magnesium concentrations can significantly impact plants and animals, and magnesium also influences water quality because it contributes to hardness (Glass, 2001). Neither the USEPA nor the ADEC has set a water quality standard for magnesium concentrations in freshwater for chronically exposed aquatic life.
 
 In the mainstem, the highest concentration of magnesium was 582 mg/L and occurred at Mile 1.5 during spring 2011, while the lowest level was 0.729 mg/L at Mile 50 in summer 2001 (Table X). In both the spring and the summer, Mile 1.5 had the highest median followed by Mile 6.5. There was a general upward trend in magnesium levels from Kenai Lake to the estuary in both the spring and the summer. Magnesium levels were higher upstream of Skilak Lake, and at the outlet, magnesium dropped to the lowest levels recorded in the watershed. In the mainstem, magnesium concentrations were higher in the spring than in the summer (Figures X & X).

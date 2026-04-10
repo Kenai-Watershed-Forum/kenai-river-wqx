@@ -190,7 +190,7 @@ create_facet_plots <- function(data_path, reg_vals_path, characteristic, sample_
     fw_chronic                   = "dashed"
   )
 
-  create_plot <- function(subset_data, x_var) {
+  create_plot <- function(subset_data, x_var, title = "") {
     if (nrow(subset_data) == 0) {
       stop("No data available for plotting after preprocessing.")
     }
@@ -258,6 +258,7 @@ create_facet_plots <- function(data_path, reg_vals_path, characteristic, sample_
       axis.text.x = element_text(angle = 60, hjust = 1, size = axis_x_size),
       axis.text.y = element_text(size = axis_y_size),
       strip.text = element_text(size = strip_size),
+      plot.title   = element_text(size = title_size, face = "bold", hjust = 0.5),
       axis.title.y = element_text(size = title_size),
       legend.text           = element_text(size = legend_size),
       legend.position       = "right",
@@ -266,7 +267,11 @@ create_facet_plots <- function(data_path, reg_vals_path, characteristic, sample_
       legend.box.margin     = margin(6, 6, 6, 6),
       legend.background     = element_blank()
     ) +
-      labs(y = paste0(characteristic, " (", names(which.max(table(subset_data$result_measure_measure_unit_code))), ")"), x = "")
+      labs(
+        title = title,
+        y = paste0(characteristic, " (", names(which.max(table(subset_data$result_measure_measure_unit_code))), ")"),
+        x = ""
+      )
     
     return(plot)
   }
@@ -275,8 +280,8 @@ create_facet_plots <- function(data_path, reg_vals_path, characteristic, sample_
   river_mile_data <- preprocess_data("river_mile")
   
   return(list(
-    tributary_plot = create_plot(tributary_data, "tributary_name"),
-    river_mile_plot = create_plot(river_mile_data, "river_mile")
+    tributary_plot  = create_plot(tributary_data,  "tributary_name", title = "Tributary Sites"),
+    river_mile_plot = create_plot(river_mile_data, "river_mile",     title = "Main Stem Sites")
   ))
 }
 

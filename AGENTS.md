@@ -47,7 +47,7 @@
 
 -   ~~**Fix site count discrepancy (21 vs 22)**~~ **DONE.** `README.md` line 57 comment said "21 sites"; `AGENTS.md` said "21 sites: 13 mainstem + 8 tributaries." Both corrected to 22 sites: 13 mainstem + 9 tributaries (verified from `baseline_sites.csv`).
 
--   ~~**Set up Quarto render profile dropdown**~~ **DONE (March 28, 2026; bug fix April 10, 2026).** Created `_quarto-html.yml` and `_quarto-docx.yml` profile files. Moved `format:` blocks out of `_quarto.yml` into the respective profile files. Added `profile: default: html` and `group: [[html, docx]]` to `_quarto.yml`. Default profile is HTML. **Bug fix April 10, 2026:** The `group:` block originally listed `html` and `docx` as two separate single-item groups (`- [html]` / `- [docx]`), which did not produce a dropdown in RStudio. Fixed to `- [html, docx]` (both profiles in the same group), which makes them mutually exclusive and shows the dropdown. **Verified April 10, 2026:** `_quarto.yml` confirmed to contain `- [html, docx]`; Quarto version 1.8.26 installed (well above the 1.4 requirement). Dropdown requires **File → Close Project → reopen project** in RStudio to take effect after the YAML change.
+-   ~~**Set up Quarto render profile dropdown**~~ **DONE (March 28, 2026).** Created `_quarto-html.yml` and `_quarto-docx.yml` profile files. Moved `format:` blocks out of `_quarto.yml` into the respective profile files. Added `profile: default: html` and `group: - [html, docx]` to `_quarto.yml`. Default profile is HTML. **Note (April 10, 2026):** A profile-selection dropdown in RStudio's Render button does not appear to be an implemented feature in RStudio (a GitHub feature request for it was filed Sept 2023 and may not have been resolved). The YAML is correctly structured for CLI use. **Use the Terminal instead:** `quarto render --profile docx` for DOCX, `quarto render` for HTML (default). From R console: `quarto::quarto_render(profile = "docx")`.
 
 -   ~~**Fix code print leakage in `data_sourcing.qmd`**~~ **DONE.** Two root causes: (1) YAML front matter (including `execute: echo: false` and `date: "\`r Sys.Date()\`"`) was placed *after* the`\# Data Sourcing`heading on line 1, so Quarto did not parse it as document front matter - the date expression appeared as raw text in DOCX. Fixed by moving YAML to the top of the file. (2) The`knitr::knit_exit()`chunk had no`echo = FALSE`, so the source code could appear in DOCX. Fixed by adding`echo = FALSE\` to that chunk.
 
@@ -196,7 +196,14 @@
 
 ### Completed this session (April 10, 2026)
 
--   ~~**Fix Quarto render profile dropdown not appearing in RStudio**~~ **DONE.** Root cause: `profile.group` in `_quarto.yml` listed `html` and `docx` as two separate single-item groups (`- [html]` on one line, `- [docx]` on another). RStudio only shows a dropdown for groups with multiple mutually exclusive options. Fix: changed to `- [html, docx]` (both in the same group). After reopening the project/restarting RStudio the dropdown appears correctly.
+-   **Quarto render profile dropdown — confirmed not an RStudio feature.** Investigated why the dropdown was not appearing despite correct YAML (`- [html, docx]`). Confirmed via a GitHub feature request (filed Sept 2023, status unknown) that a profile-selection dropdown in RStudio's Render button has not been implemented. The YAML is correct for CLI use. **Use the Terminal:** `quarto render --profile docx` for DOCX, `quarto render` for HTML. Or from R console: `quarto::quarto_render(profile = "docx")`. Render instructions added to `other/notes.txt`.
+
+-   ~~**Add "Tributary Sites" / "Main Stem Sites" plot titles to parameter boxplots**~~ **DONE.** Added a `title` parameter to the `create_plot()` inner function in `functions/static_boxplot_function.R`. Passed `"Tributary Sites"` and `"Main Stem Sites"` in the `return()` call. Title is styled bold, centered, at `title_size` (scales up for DOCX). No changes needed in any parameter chapter files — takes effect automatically on next render.
+
+-   ~~**Add consistent 2016 report attribution to all parameter chapters**~~ **DONE.** All 18 active parameter chapters now carry a consistent italic attribution note: *"The following narrative is from the 2016 Kenai River Baseline Water Quality Assessment and reflects data collected through 2014."* Changes:
+    -   **6 chapters** (arsenic, btex, cadmium, calcium, chromium, nitrate): standardized from the inconsistent "From 2016 report:" / "From the 2016 report:" variants.
+    -   **10 chapters** (copper, iron, lead, magnesium, phosphorus, pH, specific conductance, TSS, turbidity, zinc): note added — these had no attribution at all.
+    -   **2 partial-update chapters** (water_temp, fecal_coliform): note added before the historical data-summary paragraph only (intro paragraphs in those chapters were rewritten and are not from the 2016 report); note reads "The data summary below is from the 2016…"
 
 ### Completed this session (April 9, 2026)
 

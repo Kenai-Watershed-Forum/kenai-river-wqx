@@ -11,7 +11,7 @@ format:
     code-summary: "Show the code"
 ---
 
-From 2016 report:
+*The following narrative is from the 2016 Kenai River Baseline Water Quality Assessment and reflects data collected through 2014.*
 
 
 In rivers and streams, chromium is an elemental metal that typically exists as hexavalent or trivalent chromium (USEPA, 1980a). Non-natural sources of chromium salts include the metal finishing industry, textile manufacturing, leather tanning, paint, fungicides, and wood preservatives (USEPA, 1980a). At a concentration of 21 µg/L of hexavalent chromium, river algae cannot photosynthesize, and the growth in weight of Chinook salmon can be reduced by approximately ten percent at a concentration of 16 µg/L (USEPA, 1980a). Consequently, the ADEC and the USEPA have set the standard for hexavalent chromium at 11 µg/L and at a range of 15.52 µg/L to 230.67 µg/L for trivalent chromium, depending on hardness, for chronically exposed freshwater aquatic life (Appendix 2) (USEPA, 2014; ADEC, 2008). The standard for hexavalent chromium is not displayed on the following graphs because the analysis did not distinguish between trivalent and hexavalent chromium.
