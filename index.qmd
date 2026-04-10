@@ -53,6 +53,7 @@ All project files and source code are hosted in a public GitHub repository at <h
 <br>
 
 ## Artificial Intelligence Note
+
 Some refinement aspects of the codebase that generates this report were refined using ChatGPT (v5.3) and Posit Assistant (Claude Opus v4.6).
 :::
 
@@ -78,6 +79,7 @@ knitr::include_graphics("other/documents/images/KWF_logo.jpg")
 :::
 
 \newpage
+
 ### Completed this session (April 8, 2026)
 
 -   **2021 CDX batch delete — BLOCKED. Contact EPA WQX support before next session.** Attempted to delete all 835 existing 2021 WQX records (required before re-uploading corrected `results_activities.csv` with updated sample fractions and characteristic names). Generated DELETE files v3–v5; all failed. Full findings:
@@ -94,6 +96,6 @@ knitr::include_graphics("other/documents/images/KWF_logo.jpg")
 
     -   **Files in `other/output/epa_wqp_uploads/corrected_epa_wqp_uploads/`:** `resultphyschem_DELETE_v4.csv` is the correct, clean DELETE file to use when the WQX issue is resolved. Do not use v5 (corrupted).
 
-    **Next action: contact EPA WQX support.** The WQX system itself directs users to wqx@epa.gov or 1-800-424-9067. Reference Kevin Christian (wqx@epa.gov) from the 3/31/2026 call. Key message: batch Activity ID delete (`resultphyschem_DELETE_v4.csv`, column `ActivityIdentifier`, no org prefix, 835 rows) returns "Domain Value Invalid" for all rows; identical file worked on 3/31/2026. **Fallback:** use WQX Web Review tab → filter Activities by start date 2021 → bulk delete from there.
+    **Next action: contact EPA WQX support.** The WQX system itself directs users to wqx\@epa.gov or 1-800-424-9067. Reference Kevin Christian (wqx\@epa.gov) from the 3/31/2026 call. Key message: batch Activity ID delete (`resultphyschem_DELETE_v4.csv`, column `ActivityIdentifier`, no org prefix, 835 rows) returns "Domain Value Invalid" for all rows; identical file worked on 3/31/2026. **Fallback:** use WQX Web Review tab → filter Activities by start date 2021 → bulk delete from there.
 
 ### Completed this session (April 6, 2026)
