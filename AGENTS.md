@@ -205,7 +205,7 @@
     3.  WQX Web Review tab shows zero 2021 records for the organization.
     4.  CDX batch delete returns "Domain Value Invalid" for all 835 rows — WQX cannot find these IDs in its own database.
 
-    **Email sent to wqx@epa.gov on April 9, 2026** with attachments: `Screenshot 2026-04-09 082314.png`, `Import Log(3).xlsx`, `resultphyschem_DELETE_v4.csv`. Key message: CDX 3/31 upload populated WQP/STORET but did not sync to WQX Web. Requesting EPA to reconcile the databases or delete the 835 orphaned records directly. **Awaiting response.**
+    **Email sent to wqx\@epa.gov on April 9, 2026** with attachments: `Screenshot 2026-04-09 082314.png`, `Import Log(3).xlsx`, `resultphyschem_DELETE_v4.csv`. Key message: CDX 3/31 upload populated WQP/STORET but did not sync to WQX Web. Requesting EPA to reconcile the databases or delete the 835 orphaned records directly. **Awaiting response.**
 
     **WQX Web Review fallback is NOT available** — confirmed that WQX Web Review shows no 2021 data, so bulk delete from the UI is not possible.
 
@@ -316,7 +316,15 @@
 
 15. **Dynamically generate numerical values in parameter chapter narratives.** Hardcoded statistics in prose (e.g. "the highest concentration of magnesium was 582 mg/L and occurred at Mile 1.5 during spring 2011") should be replaced with inline R expressions so they update automatically when new data years are added. This applies to all parameter chapters. The approach: create a helper function in `functions/` (e.g. `summarise_parameter.R`) that accepts a filtered data frame and returns a named list of common summary values (e.g. `max_val`, `max_site`, `max_season`, `max_year`, `min_val`, `min_site`, etc.). Each chapter sources this function and calls it in a single, minimal setup chunk - keeping chapter `.qmd` files uncluttered. Inline values are then referenced in prose as `` `r stats$max_val` `` etc., formatted consistently (e.g. `round()` or `format()` as appropriate for the parameter's units and precision). Scope: all parameter chapters that contain hardcoded numerical summaries - scan each `.qmd` in `parameters/` before implementing.
 
-16. **Add duplicate RPD summary table to `data_qa_qc.qmd`.** Modeled on Table 5 (page 193) of @guerronorejuela2016, which shows — for each parameter — the number of duplicate sample pairs with RPD \> 10%, split by spring and summer. Our version should cover **all available years of data**, not just 2021.
+16. **Parameter chapter review workflow — post-2025 data integration.** Once data through 2025 is populated in WQP and flowing through the report pipeline, review each parameter chapter individually with Posit Assistant. The goals for each chapter:
+
+    -   **Numerical values:** Confirm all summary statistics in prose are driven by inline R (Task 15 must be complete first). No hardcoded numbers should remain.
+    -   **Verbal descriptions:** Written narrative (trend interpretation, ecological context, site-specific observations) is **not automated** — it must be reviewed and updated by KWF staff for each new data period. Posit Assistant can flag where narrative may be stale relative to the data, but text changes are human decisions.
+    -   **References:** Use Quarto's built-in citation tooling (`@key` notation) with the project's Zotero library. Add or update citations during narrative review; do not hardcode citation text in prose.
+    -   **Order of review:** prioritize parameters most likely to show new patterns or exceedances with extended data (e.g., dissolved metals at lower-river sites, temperature, turbidity), then work through remaining chapters.
+    -   **One chapter per session** is a reasonable pace; complete numerical automation, narrative review, and reference check together in a single session for each parameter before moving on.
+
+17. **Add duplicate RPD summary table to `data_qa_qc.qmd`.** Modeled on Table 5 (page 193) of @guerronorejuela2016, which shows — for each parameter — the number of duplicate sample pairs with RPD \> 10%, split by spring and summer. Our version should cover **all available years of data**, not just 2021.
 
     **Implementation approach:**
 
