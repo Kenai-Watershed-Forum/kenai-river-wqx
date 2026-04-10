@@ -6,8 +6,7 @@ project:
 profile:
   default: html
   group:
-    - [html]
-    - [docx]
+    - [html, docx]
 
 book:
   title: "Water Quality Assessment of the Kenai River Watershed from 2000 to 2021 [DRAFT]"
