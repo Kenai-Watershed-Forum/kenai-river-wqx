@@ -11,6 +11,8 @@ format:
     code-summary: "Show the code"
 ---
 
+*The following narrative is from the 2016 Kenai River Baseline Water Quality Assessment and reflects data collected through 2014.*
+
 Zinc enters surface water naturally through the weathering of bedrock and is an essential micronutrient for all plants and animals (USEPA, 1987). Additional zinc can enter surface water because it is widely used for galvanizing steel, as an alloy, in rubber, and in paint (USEPA, 1987). More recent studies suggest that higher concentrations of Zinc in suburban areas can be caused by tire wear (USGS, 2012). The ADEC and the USEPA have set the standard for zinc ranging from 23.4 to 382.4 μg/L, depending on hardness, for the chronic exposure of freshwater aquatic life (see Appendix X) (ADEC, 2008; USEPA, 2014).
 
 The highest level recorded in the mainstem was 2900 μg/L in summer 2000 at Mile 21, and the lowest level occurred at Mile 31 in summer 2006 with a concentration of 0.521 μg/L. In the spring, exceedances occurred at every sampling station except Mile 40 and Mile 50. More exceedances in the mainstem occurred during the summer with eight exceedances at Mile 10.1, seven exceedances at Mile 18, five exceedances at both Mile 6.5 and Mile 12.5. Mile 21 and Mile 23 present four exceedances. Mile 1.5 and Mile 31 present three exceedances. Miles 40, 50, 70 and 82 all present two exceedances. Mile 40 one exceedance (Table 11). The Kenai River estuary had higher median concentrations than the rest of the river in spring, during the summer events this pattern was not clear. Relatively higher medians also occurred at Mile 31, Mile 21, and Mile 10.1 in the summer (Figure X & X).

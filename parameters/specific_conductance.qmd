@@ -11,6 +11,8 @@ format:
     code-summary: "Show the code"
 ---
 
+*The following narrative is from the 2016 Kenai River Baseline Water Quality Assessment and reflects data collected through 2014.*
+
 The capacity of water to conduct electricity is measured by specific conductance, and the level of specific conductance also correlates with the concentration of calcium, dissolved solids, and the water’s hardness (Glass, 1999). There is not currently an ADEC or USEPA standard for specific conductance for aquatic life in freshwater.
 
 The highest level of specific conductance in the mainstem was 29398 µS/cm, which was sampled at Mile 1.5 in spring 2011, and the lowest level was 37.7 µS/cm at Mile 50 in spring 2004 (Table X). Mile 1.5 had the greatest variance and the highest median in both the spring and the summer, followed by Mile 6.5 in the spring and Mile 70 in the summer. From Mile 10.1 to Mile 50, the specific conductivity medians only varied within a span of 15 µS/cm in both spring and summer, with the lowest median at Mile 43. Above Skilak Lake at Mile 70 and Mile 80, specific conductivity was higher relative to the rest of the mainstem, excluding the estuary. Specific conductivity was higher in the spring than in the summer throughout the mainstem, except at Mile 50 where specific conductance was higher during the summer (Figures X & X).

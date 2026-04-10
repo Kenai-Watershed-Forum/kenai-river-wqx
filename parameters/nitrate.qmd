@@ -11,7 +11,7 @@ format:
     code-summary: "Show the code"
 ---
 
-From the 2016 report:
+*The following narrative is from the 2016 Kenai River Baseline Water Quality Assessment and reflects data collected through 2014.*
 
 Inorganic nitrogen is generally present in well-aerated, natural streams in the form of nitrate (Glass, 1999). Nitrate enters the hydrologic cycle as a result of precipitation, plant residue, natural minerals, fertilizer, and septic tanks (Glass, 2001). Neither the USEPA nor the ADEC have set a nitrate standard for chronically exposed freshwater aquatic life.
 

@@ -11,7 +11,7 @@ format:
     code-summary: "Show the code"
 ---
 
-From the 2016 report:
+*The following narrative is from the 2016 Kenai River Baseline Water Quality Assessment and reflects data collected through 2014.*
 
 Both plants and animals require calcium as an essential element, and calcium is important to water quality because it is directly linked to the hardness of water (Glass, 2001). There is not an ADEC or USEPA standard for the chronic exposure of freshwater aquatic life to calcium.
 
