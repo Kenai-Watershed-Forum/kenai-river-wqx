@@ -47,7 +47,7 @@
 
 -   ~~**Fix site count discrepancy (21 vs 22)**~~ **DONE.** `README.md` line 57 comment said "21 sites"; `AGENTS.md` said "21 sites: 13 mainstem + 8 tributaries." Both corrected to 22 sites: 13 mainstem + 9 tributaries (verified from `baseline_sites.csv`).
 
--   ~~**Set up Quarto render profile dropdown**~~ **DONE.** Created `_quarto-html.yml` and `_quarto-docx.yml` profile files. Moved `format:` blocks out of `_quarto.yml` into the respective profile files. Added `profile: default: html / group: [[html, docx]]` to `_quarto.yml`. RStudio now shows "html" and "docx" as selectable profiles in the Render button dropdown. Default profile is HTML.
+-   ~~**Set up Quarto render profile dropdown**~~ **DONE (March 28, 2026; bug fix April 10, 2026).** Created `_quarto-html.yml` and `_quarto-docx.yml` profile files. Moved `format:` blocks out of `_quarto.yml` into the respective profile files. Added `profile: default: html` and `group: [[html, docx]]` to `_quarto.yml`. Default profile is HTML. **Bug fix April 10, 2026:** The `group:` block originally listed `html` and `docx` as two separate single-item groups (`- [html]` / `- [docx]`), which did not produce a dropdown in RStudio. Fixed to `- [html, docx]` (both profiles in the same group), which makes them mutually exclusive and shows the dropdown. Reopen the project/restart RStudio after this change for the dropdown to appear.
 
 -   ~~**Fix code print leakage in `data_sourcing.qmd`**~~ **DONE.** Two root causes: (1) YAML front matter (including `execute: echo: false` and `date: "\`r Sys.Date()\`"`) was placed *after* the`\# Data Sourcing`heading on line 1, so Quarto did not parse it as document front matter - the date expression appeared as raw text in DOCX. Fixed by moving YAML to the top of the file. (2) The`knitr::knit_exit()`chunk had no`echo = FALSE`, so the source code could appear in DOCX. Fixed by adding`echo = FALSE\` to that chunk.
 
@@ -193,6 +193,10 @@
 ### Completed this session (April 3, 2026)
 
 -   **Planned duplicate RPD summary table for `data_qa_qc.qmd`** (not yet implemented). See task 16 below.
+
+### Completed this session (April 10, 2026)
+
+-   ~~**Fix Quarto render profile dropdown not appearing in RStudio**~~ **DONE.** Root cause: `profile.group` in `_quarto.yml` listed `html` and `docx` as two separate single-item groups (`- [html]` on one line, `- [docx]` on another). RStudio only shows a dropdown for groups with multiple mutually exclusive options. Fix: changed to `- [html, docx]` (both in the same group). After reopening the project/restarting RStudio the dropdown appears correctly.
 
 ### Completed this session (April 9, 2026)
 
