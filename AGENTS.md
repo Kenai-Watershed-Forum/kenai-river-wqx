@@ -205,6 +205,8 @@
     -   **10 chapters** (copper, iron, lead, magnesium, phosphorus, pH, specific conductance, TSS, turbidity, zinc): note added — these had no attribution at all.
     -   **2 partial-update chapters** (water_temp, fecal_coliform): note added before the historical data-summary paragraph only (intro paragraphs in those chapters were rewritten and are not from the 2016 report); note reads "The data summary below is from the 2016…"
 
+-   ~~**Annual funding request email template created.**~~ Drafted and saved to `other/documents/financial/annual_funding_request_template.md`. Template is addressed to funding partners, references 22 monitoring sites, the long-term dataset, and includes the project website URL. Placeholders: `[Name]`, `[$AMOUNT]`, `[Agency Name]`, and two inline links (most recently published report; in-progress interactive report) that should be updated each year before sending.
+
 ### Completed this session (April 9, 2026)
 
 -   ~~**Reorganize Quarto project: move chapter .qmd files to `chapters/` subfolder**~~ **DONE.** 19 `.qmd` files moved from the project root to `chapters/`. `index.qmd` stays at root (required by Quarto books). `_quarto.yml` updated with `chapters/` prefix on all 15 non-parameter chapter and appendix paths. Image paths in `study_area.qmd` (25 images) and `interpreting_boxplots.qmd` (1 image) updated from `other/...` to `../other/...`. R code paths unaffected — `execute-dir: project` means all R code runs from the project root regardless of `.qmd` file location. Re-render confirmed working. Scratch/dev files (`test.qmd`, `appendix_a_v2.qmd`, `updated_boxplot_test.qmd`, `wqx_corrections.qmd`) also moved to `chapters/` but are not listed in `_quarto.yml`.
