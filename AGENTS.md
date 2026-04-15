@@ -1,8 +1,22 @@
 # Kenai River Baseline Water Quality Monitoring - Project Context for Posit Assistant
 
-## Next Session - Start Here
+## Next Session - Start Here (April 15, 2026)
 
-**Goal:** Revise, complete, and solidify `appendix_a.qmd` as a clean, well-documented pipeline for: (1) intake raw lab data → (2) apply QA/QC → (3) flag data → (4) format for EPA CDX upload. Once stable, extract the logic into sourced `.R` scripts so it can be reused for each year in the separate qaqc project.
+**EPA WQX sync issue is BLOCKED — no action needed until EPA confirms ETL is restored (~April 23).** Do not attempt CDX delete or re-upload until then.
+
+**Priority order for this session:**
+
+1. **Task 1c — CALM 5-year window sample count check (HIGH, start here).** Count accepted results per parameter + site for 2017–2021. Any combination below 10 (or 5 for toxics) falls to ADEC Screening Level. Source: `other/output/wqx_formatted/intermediate/2021_export_data_flagged.csv`, filter `result_status_identifier == "Accepted"` and `activity_start_date >= 2017-01-01`. Produce a summary table; flag combinations that fall below threshold. Consider sharing results with ADEC.
+
+2. **Task 1b — Characteristic name audit across all KWF years.** Audit all distinct `CharacteristicName` values in WQP for org `KENAI_WQX`; cross-reference against current WQX domain list; map variants to canonical names. This feeds directly into the next CDX re-upload (so corrections to fractions and names can be done in one pass). See task detail in the Tasks section below.
+
+3. **Task 5 — Verify `review_needed = Y` rows in `master_reg_limits.xlsx` → `standard_types` sheet.** Six codes need confirmation against 18 AAC 70 and USEPA criteria docs: `fw_acute`, `fw_chronic`, `harvest_aquatic_life`, `noncarc_aquatic_org`, `noncarc_water`, `secondary_water_recreation`. Once confirmed, set `review_needed = N`.
+
+4. **Task 5a — Add CALM methodology notes to fecal coliform, turbidity, and BTEX chapter narratives.** Short narrative edits noting that these parameters are excluded from ADEC's standard binomial listing methodology and each has a separate ADEC methodology. Links at https://dec.alaska.gov/water/water-quality/integrated-report/
+
+---
+
+**Previous session goal (still valid, lower priority):** Revise, complete, and solidify `appendix_a.qmd` as a clean, well-documented pipeline for: (1) intake raw lab data → (2) apply QA/QC → (3) flag data → (4) format for EPA CDX upload. Once stable, extract the logic into sourced `.R` scripts so it can be reused for each year in the separate qaqc project.
 
 ### Completed this session (March 25, 2026)
 
