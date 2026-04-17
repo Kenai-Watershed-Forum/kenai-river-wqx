@@ -1,6 +1,6 @@
 # Kenai River Baseline Water Quality Monitoring - Project Context for Posit Assistant
 
-## Next Session - Start Here (April 15, 2026)
+## Next Session - Start Here (April 17, 2026)
 
 **EPA WQX sync issue is BLOCKED — no action needed until EPA confirms ETL is restored (~April 23).** Do not attempt CDX delete or re-upload until then.
 
@@ -13,6 +13,69 @@
 3. **Task 5 — Verify `review_needed = Y` rows in `master_reg_limits.xlsx` → `standard_types` sheet.** Six codes need confirmation against 18 AAC 70 and USEPA criteria docs: `fw_acute`, `fw_chronic`, `harvest_aquatic_life`, `noncarc_aquatic_org`, `noncarc_water`, `secondary_water_recreation`. Once confirmed, set `review_needed = N`.
 
 4. **Task 5a — Add CALM methodology notes to fecal coliform, turbidity, and BTEX chapter narratives.** Short narrative edits noting that these parameters are excluded from ADEC's standard binomial listing methodology and each has a separate ADEC methodology. Links at https://dec.alaska.gov/water/water-quality/integrated-report/
+
+---
+
+### Completed this session (April 16, 2026)
+
+-   ~~**Book acronyms chapter expanded.**~~ **DONE.** Updated `chapters/acronyms.qmd` from 7 entries (with a duplicate MDL) to 24 entries, sorted alphabetically. Added: ADEC, BTEX, CDX, EPA, FC, J (flag), KWF, LOD, LOQ, QAPP, QC, RM, RPD, SGS, SWWTP, TSS, U (flag), USEPA, WQP, WQX. Fixed duplicate: one MDL corrected to MRL (Method Reporting Limit). Now incorporates and expands all acronyms from the 2025 preliminary report.
+
+-   ~~**2025 Preliminary Report made year-agnostic.**~~ **DONE.** `other/documents/preliminary_report_2025/2025_preliminary_summary.qmd` refactored so only a single line needs changing each year: `report_year <- 2025` at the top of the setup chunk. All file paths constructed from `report_year` via `file.path()` and `paste0()`. DOCX cover subtitle and HTML title heading use `` `r report_year` `` via inline R / `output: asis` chunk. Cover date auto-generates from `format(Sys.Date(), "%B %Y")`. YAML `pagetitle:` is set to a generic string (YAML cannot use inline R). Note: SWWTP filenames include sampling dates (e.g., "05-01-25") so those path comments still require a brief manual update each year.
+
+-   ~~**Spring SWWTP TSS file format standardized.**~~ **DONE.** The spring 2025 SWWTP TSS file had a transposed layout (rows = variables, cols = sites); the summer file already used a tidy columnar "Updated_Formatting" tab. Created a new `.xlsx` file (`other/input/2025_data/spring_2025/SWWTP/KRWF TSS MONITORING 05-01-25.xlsx`) replacing the original `.xls`, with one sheet (`Updated_Formatting`) containing 28 rows in tidy format (4 field blanks `sample_type = "MB"`, 22 primary samples `"PS"`, 2 field duplicates `"PS"`). Columns: `Sample_Location`, `sample_type`, `Field_Sample_Date`, `Sample_Time`, `ML`, `Dried_WT`, `Paper_WT`, `Tare_WT_kg`, `S.S.mg/L`. Updated the preliminary report QMD: `spring_swwtp_path` now points to `.xlsx`; removed the custom `parse_swwtp_sheet()` function; spring reading code now matches summer (`read_excel(..., sheet = "Updated_Formatting")`). Note: summer file uses `skip = 1` (has a title row); spring file does not — both work correctly as-is.
+
+-   ~~**Preliminary report render failure fixed.**~~ **DONE.** `report_year` was used in inline R expressions on line 21 (HTML title heading) and in the `docx-subtitle` chunk, but was not defined until the main setup chunk at line ~156. Fix: added a minimal 4-line `report-year` chunk immediately after the YAML front matter (`report_year <- 2025` with a comment explaining its purpose). Both HTML and DOCX now render successfully.
+
+-   ~~**Preliminary report structural and layout fixes.**~~ **DONE.** Three issues resolved:
+    1.  **Acronyms moved to first content section** — cut from end of document and inserted before `## Overview`, making it the first section after the DOCX TOC / HTML content.
+    2.  **KWF logo fixed in DOCX** — replaced unreliable `eval: !expr knitr::is_html_output()` (which was evaluating to FALSE during HTML renders, showing logo in HTML) with a Quarto-native `::: {.content-visible when-format="docx"}` wrapper. Logo now appears only in DOCX.
+    3.  **HTML layout fixed** — added `toc-location: left` (standard Quarto sidebar layout; content in center-right column) and `embed-resources: true` (images base64-encoded into the HTML file, fixing missing map images and making the file fully self-contained for sharing).
+
+-   ~~**Preliminary report content and caption fixes.**~~ **DONE.** Several small fixes applied:
+    -   Renamed "SGS sites" → "Monitoring sites" in the Sampling Events table (Table 1) — the sites are laboratory-agnostic.
+    -   Removed two em-dashes from prose: one Unicode `—` in the PRELIMINARY RESULTS callout (replaced with `:`), one `---` in the Lead QC note (replaced with commas). Note: `---` is converted to an em-dash by pandoc; use different punctuation instead.
+    -   Added 2025 raw data download link and KDLL media coverage link (August 2025, "Peninsula water monitoring project aims to improve salmon habitat") to the Overview resources table.
+    -   Fixed typo `pe"rformed` → `performed` in the Overview paragraph.
+    -   All table captions moved from freestanding markdown italic lines to `#| tbl-cap:` chunk options (dynamic year via `!expr paste0(...)`). Removed all `*Table N. ...*` lines below chunks. In-text references to "Table 5" and "Table 8" updated to `@tbl-exceedances` and `@tbl-duplicates` cross-references.
+
+-   ~~**FC and TSS incorporated into preliminary report tables.**~~ **DONE.** FC and TSS from SWWTP were absent from the Parameters Analyzed table and the spring/summer results tables. Three changes applied:
+    1.  **FC data loading** — added `spring_fc_path` / `summer_fc_path` to the path configuration (with same annual-update comment pattern as TSS paths). Added `parse_fc()` function: reads SWWTP FC `.xls` files using `skip = 10` (skips 10-row metadata header), renames columns, filters out blanks/positives/DUPs/N/A sites, computes CFU/100mL from the `Colony Count/100mL` column. Returns `season, SAMPLE_ID, ANALYTE, UNITS, fraction, RESULT, RESULTFLAG, REPDL` (REPDL = NA for SWWTP). Combined as `swwtp_fc`. FC files: `KRWF Fecal 04-30-25.xls` (spring), `KRWF Fecal 07-23-25.xls` (summer).
+    2.  **`param_labels` and `param_groups` updated** — added `"Total Suspended Solids"` and `"Fecal Coliform"` under the `"Field parameters"` group.
+    3.  **`results_summary()` extended** — now binds `swwtp_tss` (with `REPDL = NA_real_`) and `swwtp_fc` into the SGS data before summarising. Non-detect range display made robust to NA REPDL (shows "Non-detect" without LOD when REPDL is unavailable).
+    4.  **`tbl-params` extended** — `bind_rows()` of `sgs`, `swwtp_tss`, and `swwtp_fc` before the `distinct()` call, so FC and TSS appear in the Parameters Analyzed table under "Field parameters."
+    -   The "Fecal Coliform and TSS" placeholder section updated to note results are now included in the tables above.
+
+-   ~~**YSI RPD join bug fixed.**~~ **DONE.** The `ysi_rpd_rows` left join was keyed only on `season` and `primary_id = SAMPLE_ID`, omitting `ANALYTE`. This caused cross-parameter value mismatches in Table 9 (e.g., a pH DUP row was matched to a conductance primary value, producing pH = 99.950 uS/cm). Fix: added `ANALYTE` to both the `select()` and `by =` clauses of the join. All parameter-unit pairings in the RPD table are now correct.
+
+-   ~~**DO instrument error excluded from YSI data.**~~ **DONE.** Soldotna Creek spring Dissolved Oxygen had a primary value of 91.1 mg/L (physically impossible; almost certainly a % saturation reading recorded in the wrong column — freshwater DO cannot exceed ~15 mg/L). Excluded using the same filter pattern as the negative pH exclusion: `!(Parameter == "DO" & Value > 20)` added to the `ysi_all` filter block, with a comment explaining the reason. The remaining primary replicate (14.9 mg/L) and DUP replicates (13.8, 13.7 mg/L) are plausible.
+
+-   ~~**Table 9 (field duplicate RPD) simplified and site names normalized.**~~ **DONE.** The original table had one row per season + site + parameter (~30+ rows, 7 columns including raw Primary and Duplicate values) — too detailed for a preliminary report. Replaced with a 4-row summary (one row per duplicate site) showing: Season, Site, n pairs, n with RPD > 20%, and a text list of flagged parameters. Site names were inconsistent across sources (SGS: `RM 18-Poacher's Cove`, `RM10-Beaver Creek`; YSI: `Poachers Cove`, `Beaver Creek`; TSS: `RM 18`, `RM 22`). Normalized via a `dup_site_map` named vector applied with `coalesce(dup_site_map[Site], Site)` before the summary. The RPD threshold (20%) is stored in `rpd_threshold` at the top of the block for easy adjustment. Table caption updated to describe the summary format.
+
+-   ~~**2025 funding note drafted.**~~ **DONE.** Created `other/documents/preliminary_report_2025/2025_funding_note.docx` (also `.txt`) covering: how 2025 funds ($2,500) were spent (lab analysis at SGS, FC/TSS at SWWTP, field parameters via YSI); what was accomplished (22 sites, spring + summer sampling, parameters analyzed, preliminary results); 2026 funding request ($2,500); and how 2026 funds will be spent. Several fields left as placeholders for manual completion before sending: sampling completion dates, sample counts, and a brief characterization of results.
+
+---
+
+### Completed this session (April 16, 2026) — earlier in session
+
+-   ~~**2025 Preliminary Report — initial build and refinement.**~~ **DONE.** Created `other/documents/preliminary_report_2025/2025_preliminary_summary.qmd`, a standalone Quarto document covering the 2025 spring and summer field season. Renders to both HTML and DOCX from the same source. Key features and fixes applied during this session:
+
+    **Structure and layout:**
+    -   **Dual HTML/DOCX format.** YAML `format:` block includes both `html:` (with `toc: true`) and `docx:`. `{=openxml}` blocks (cover, TOC, landscape section) are silently ignored in HTML; conditional `{.content-visible when-format="..."}` divs handle format-specific prose.
+    -   **Custom DOCX cover page** restored as `{=openxml}` blocks: KWF logo (2 in, centered), bold title/subtitle, PRELIMINARY notice in red, horizontal rule, "Prepared by: Kenai Watershed Forum" block, April 2026. A `{r cover-logo}` chunk using `knitr::include_graphics("../images/KWF_logo_resized.png")` is evaluated only in non-HTML output (`eval: !expr knitr::is_latex_output() || !knitr::is_html_output()`).
+    -   **HTML title** provided as a `when-format="html"` markdown div (bold title, PRELIMINARY notice, author/date line, horizontal rule) since the YAML has no `title:` (uses `pagetitle:` instead to avoid a duplicate title block in DOCX).
+    -   **DOCX TOC** embedded as an openxml `TOC` field (not Quarto's `toc: true` for DOCX, which would conflict with the custom cover page ordering). AI disclosure in italics appears at the bottom of the TOC page in DOCX via the openxml block; HTML gets it at the bottom of the document in a `when-format="html"` div.
+    -   **Page breaks before every `##` section in DOCX.** Created `other/documents/preliminary_report_2025/pagebreak-h2.lua` (same pattern as the project's existing `filters/pagebreak-h1.lua`; guards on `if FORMAT == "docx"` then targets `el.level == 2`). Referenced under `filters:` in the YAML — filter applies globally but DOCX-guards prevent any HTML effect.
+    -   **Section order:** Overview → Study Area (Figures 2.1 and 2.2: watershed map + sites map) → 2025 Sampling Events → Parameters Analyzed → Preliminary Results → Preliminary Threshold Comparison → Field Quality Control → Next Steps → Acronyms.
+    -   **Tables don't split across pages.** `fmt_table()` helper now calls `keep_with_next(i = seq_len(nrow(df) - 1), value = TRUE)` before returning — sets Word's "Keep with next" on all body rows except the last.
+
+    **Data / content fixes:**
+    -   **Nitrate/Nitrite missing from results.** Root cause: SGS reports `Total Nitrate/Nitrite-N` only as `ANALYTICAL_CUT == 2` (metals are cut 1); the pipeline's `filter(ANALYTICAL_CUT == 1)` silently dropped it entirely. Fix: replaced with `group_by(season, SAMPLE_ID, ANALYTE, DISSOLVED) |> filter(ANALYTICAL_CUT == min(ANALYTICAL_CUT)) |> ungroup()` so each analyte keeps its lowest available cut.
+    -   **Field blanks text corrected.** Field blanks are metals-only; prior text said "metals and nutrients." Corrected to "metals" with an explicit note that nutrients are not included. Trip blanks (BTEX) noted as the only other blank type used in this project.
+    -   **Bibliography added.** `other/documents/preliminary_report_2025/references.bib` contains: `adec-aac-70` (18 AAC 70, 2023), `adec-aac-80` (18 AAC 80, 2023), `usepa1976` (USEPA 1976 Red Book — iron criterion), `usepa-nrwqc` (USEPA national recommended criteria table), `adec-qapp` (KWF QAPP). Citations added in the Preliminary Threshold Comparison section (aquatic life standards, drinking water standards, hardness formula, iron exceedance discussion). Quarto auto-generates a References section at the end of the document.
+
+    **File organization:**
+    -   All preliminary report files collected into `other/documents/preliminary_report_2025/`. Contents: `2025_preliminary_summary.qmd`, `pagebreak-h2.lua`, `references.bib`, and rendered outputs (`2025_preliminary_summary.html`, `2025_preliminary_summary.docx`, `2025_preliminary_summary_files/`).
+    -   Images (KWF logo, maps) remain in `other/documents/images/` (shared with the main book). QMD references them as `../images/...`. Rendered HTML and DOCX confirmed working with correct paths.
 
 ---
 
@@ -364,6 +427,12 @@
     -   Note for caption: the 2016 report's Table 5 covered 2000–2014; our table will cover all years in WQP (2000–present) and will update automatically on re-render as new years are added to WQP.
 
 ------------------------------------------------------------------------
+
+## Style Preferences
+
+- **No em-dashes.** Replace with a colon, comma, semicolon, or parentheses depending on context. This applies to all documents in this project — prose in `.qmd` files, comments, and any generated text. Note: pandoc converts `---` to an em-dash; use a different punctuation mark instead.
+
+---
 
 ## Decisions Made - March/April 2026
 

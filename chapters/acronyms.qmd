@@ -1,19 +1,28 @@
 # Acronyms {.unnumbered}
 
--   USEPA (United States Environmental Protection Agency)
-
 -   ADEC (Alaska Department of Environmental Conservation)
-
+-   BTEX (Benzene, Toluene, Ethylbenzene, and Xylenes; petroleum hydrocarbons)
+-   CDX (EPA Central Data Exchange; data submission portal)
 -   DRO (Diesel Range Organics)
-
+-   FC (Fecal Coliform)
 -   GRO (Gasoline Range Organics)
-
--   RRO (Residual Range Organics)
-
--   BTEX (Benzene, Toluene, Ethylbenzene, and Xylenes)
-
--   MDL (Method Reporting Limit)
-
+-   J (lab qualifier: qualified detection; value is between the LOD and the LOQ)
+-   KWF (Kenai Watershed Forum)
+-   LOD (Laboratory Detection Limit; the lowest concentration at which a compound can be reliably detected)
+-   LOQ (Laboratory Quantitation Limit; the lowest concentration that can be reliably measured and reported)
 -   MDL (Method Detection Limit)
+-   MRL (Method Reporting Limit)
+-   QAPP (Quality Assurance Project Plan)
+-   QC (Quality Control)
+-   RM (River Mile)
+-   RPD (Relative Percent Difference; a measure of agreement between two measurements of the same sample)
+-   RRO (Residual Range Organics)
+-   SGS (SGS North America; environmental laboratory)
+-   SWWTP (Soldotna Wastewater Treatment Plant)
+-   TSS (Total Suspended Solids)
+-   U (lab qualifier: non-detect; the compound was not detected at or above the LOD)
+-   USEPA (United States Environmental Protection Agency)
+-   WQP (EPA Water Quality Portal; public data repository)
+-   WQX (Water Quality Exchange; EPA data standard and submission system)
 
 \newpage
