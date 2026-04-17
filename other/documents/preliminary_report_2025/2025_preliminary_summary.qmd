@@ -21,8 +21,17 @@ execute:
 
 ```{r report-year}
 # Define report_year early so inline R expressions in headings and cover chunks can use it.
-# The full setup chunk (libraries, paths, data loading) runs later in the document.
+# The full setup chunk (paths, data loading) runs later in the document.
 report_year <- 2025
+```
+
+```{r libraries}
+# Load packages here so they are available to all subsequent chunks and inline R
+# expressions, including those that appear before the main setup chunk.
+library(tidyverse)
+library(readxl)
+library(flextable)
+library(officer)
 ```
 
 ::: {.content-visible when-format="html"}
@@ -46,9 +55,17 @@ knitr::include_graphics("../images/KWF_logo_resized.png")
 ```
 :::
 
-```{=openxml}
-<w:p><w:pPr><w:jc w:val="center"/><w:spacing w:before="240" w:after="0"/></w:pPr></w:p>
+-   ~~**2025 funding note drafted.**~~ **DONE.** Created `other/documents/preliminary_report_2025/2025_funding_note.docx` (also `.txt`) covering: how 2025 funds (\$2,500) were spent (lab analysis at SGS, FC/TSS at SWWTP, field parameters via YSI); what was accomplished (22 sites, spring + summer sampling, parameters analyzed, preliminary results); 2026 funding request (\$2,500); and how 2026 funds will be spent. Several fields left as placeholders for manual completion before sending: sampling completion dates, sample counts, and a brief characterization of results.
 
+-   ~~**Executive summary added to 2025 preliminary report.**~~ **DONE.** Added `## Executive Summary` as the first content section (before Acronyms), positioned after the `setup` chunk so all computed values are available. The section uses inline R for dynamic values: site counts (`n_spring_sites`, `n_summer_sites`), sampling dates, and exceedance counts (`n_iron`, `n_lead`). Key findings summarized: iron exceedances at multiple sites (expected, consistent with long-term record), lead flag at Beaver Creek with duplicate discrepancy, BTEX all non-detect at four sites, no other exceedances. Includes the PRELIMINARY caveat and a next-steps sentence.
+
+-   ~~**Library calls moved to early `libraries` chunk.**~~ **DONE.** Moved `library(tidyverse/readxl/flextable/officer)` from the `setup` chunk to a new dedicated `libraries` chunk placed immediately after `report-year` (before cover page content). Ensures packages are available from the start of execution, which is required for RStudio's Render button to work reliably.
+
+-   ~~**Redundant `report_year <- 2025` removed from `setup` chunk.**~~ **DONE.** The assignment was already present in the `report-year` chunk at the top of the document. Removed the duplicate from `setup`; `report_year` is now defined only once (in `report-year`), and the `setup` chunk uses it directly for file path construction.
+
+-   ~~**Exceedance computation consolidated into single `exceedances-prep` chunk.**~~ **DONE.** Eliminated the `exec-summary-calcs` chunk (which was a partial duplicate of `exceedances-prep`) by moving the full `exceedances-prep` chunk to just before `## Executive Summary`. The single chunk computes `exceedance_tbl`, `n_iron`, `n_lead`, and `lead_row` once; all are available to both the executive summary inline R and the threshold comparison table later in the document. The old `exec-summary-calcs` chunk and the original `exceedances-prep` location (in the Threshold Comparison section) were both removed.
+
+------------------------------------------------------------------------
 <w:p>
   <w:pPr><w:jc w:val="center"/><w:spacing w:before="0" w:after="120"/></w:pPr>
   <w:r><w:rPr><w:b/><w:sz w:val="52"/><w:szCs w:val="52"/></w:rPr>
@@ -147,21 +164,13 @@ cat(paste0(
 <w:p>
   <w:pPr><w:spacing w:before="480" w:after="0"/></w:pPr>
   <w:r><w:rPr><w:i/><w:sz w:val="16"/><w:szCs w:val="16"/></w:rPr>
-    <w:t xml:space="preserve">AI disclosure: This document was drafted with assistance from Posit Assistant, an AI tool developed by Posit PBC. Posit Assistant was used to help write data processing code, interpret preliminary results, and draft text. All analytical decisions, data quality judgments, and factual content were reviewed and approved by KWF staff. The preliminary findings and regulatory comparisons in this document reflect KWF&#x2019;s own evaluation of unreviewed data.</w:t>
+    <w:t xml:space="preserve">AI disclosure: This document was drafted with assistance from Posit Assistant, an AI tool developed by Posit PBC. Posit Assistant was used to help write data processing code, interpret preliminary results, and draft text. All analytical decisions, data quality judgments, and factual content were reviewed and approved by KWF staff. The preliminary findings and regulatory comparisons in this document reflect KWF&#x2019;s own evaluation of preliminary data.</w:t>
   </w:r>
 </w:p>
 
 <w:p><w:r><w:br w:type="page"/></w:r></w:p>
 ```
 ```{r setup}
-library(tidyverse)
-library(readxl)
-library(flextable)
-library(officer)
-
-# ---- Year configuration (change this for each new field season) -------------
-report_year <- 2025
-
 # ---- Input file paths (update for each year) --------------------------------
 # SGS files follow a consistent naming convention built from report_year:
 sgs_base        <- file.path("../../input", paste0(report_year, "_data"))
@@ -541,6 +550,63 @@ results_summary <- function(season_filter) {
 > **PRELIMINARY RESULTS**: Data in this summary have not undergone full QA/QC review and have not been submitted to the U.S. EPA Water Quality Exchange (WQX). Values are subject to change. This document is intended for internal and partner communication only.
 :::
 
+## Executive Summary
+
+```{r exceedances-prep}
+# Dissolved metals vs hardness-dependent chronic + Arsenic drinking water
+exceed_dissolved <- sgs |>
+  filter(fraction == "Dissolved",
+         ANALYTE %in% c("Arsenic", "Cadmium", "Chromium", "Copper", "Lead", "Zinc")) |>
+  left_join(hardness_by_site |> select(season, SAMPLE_ID, hardness),
+            by = c("season", "SAMPLE_ID")) |>
+  add_chronic_threshold() |>
+  mutate(exceeds = RESULTFLAG != "U" & RESULT > threshold)
+
+# Total Iron vs aquatic life chronic (1 mg/L)
+exceed_iron <- sgs |>
+  filter(ANALYTE == "Iron", fraction == "Total") |>
+  mutate(threshold = 1,
+         standard_ref = "Aquatic life chronic (ADEC 18 AAC 70 / USEPA 1976)",
+         exceeds = RESULTFLAG != "U" & RESULT > threshold)
+
+exceedance_tbl <- bind_rows(
+  exceed_dissolved |> filter(exceeds),
+  exceed_iron      |> filter(exceeds)
+) |>
+  mutate(
+    site_clean = SAMPLE_ID |>
+      str_replace_all("(?i)rm\\s+", "RM ") |>
+      str_squish(),
+    ratio = round(RESULT / threshold, 1)
+  ) |>
+  arrange(ANALYTE, season, site_clean) |>
+  transmute(
+    Season     = season,
+    Site       = site_clean,
+    Parameter  = ANALYTE,
+    `Measured`  = round(RESULT, 3),
+    `Threshold` = round(threshold, 2),
+    Unit       = UNITS,
+    `Ratio`    = ratio,
+    Standard   = standard_ref
+  )
+
+n_iron   <- exceedance_tbl |> filter(Parameter == "Iron") |> nrow()
+n_lead   <- exceedance_tbl |> filter(Parameter == "Lead") |> nrow()
+lead_row <- exceedance_tbl |> filter(Parameter == "Lead")
+```
+
+The Kenai Watershed Forum (KWF) coordinated bi-annual baseline water quality monitoring events on the Kenai River and its major tributaries in `r report_year`. Sampling was completed at `r n_spring_sites` sites in spring (`r spring_date`) and `r n_summer_sites` sites in summer (`r summer_date`), spanning from Kenai Lake (River Mile 82) to the river mouth (River Mile 1.5). Laboratory analysis of metals, nutrients, and hydrocarbons was performed by SGS North America; fecal coliform (FC) and total suspended solids (TSS) were analyzed by the City of Soldotna Wastewater Treatment Plant; and field parameters (temperature, specific conductance, dissolved oxygen, turbidity, and pH) were measured with a YSI ProQuatro field meter.
+
+Results for most parameters were within applicable water quality standards. Notable preliminary findings include:
+
+-   **Iron** exceeded the 1 mg/L aquatic life chronic criterion at `r n_iron` site-events across both seasons. Elevated iron is a recurring pattern in the Kenai River watershed, particularly at lower-river and wetland-draining tributary sites, and is consistent with the long-term monitoring record.
+-   **Lead** (dissolved) exceeded its hardness-adjusted aquatic life chronic threshold at one summer site (Beaver Creek, RM 10). The corresponding field duplicate at that site was non-detect, raising a question about the result's validity; this result will receive additional scrutiny during full QA/QC review.
+-   **Hydrocarbons (BTEX)** were below laboratory detection limits at all four summer sampling sites.
+-   No threshold exceedances were identified for Arsenic, Cadmium, Chromium, Copper, Zinc, Nitrate + Nitrite, or Fecal Coliform.
+
+**These results are preliminary.** Data have not undergone full QA/QC review and have not been submitted to the U.S. EPA Water Quality Exchange (WQX). Values are subject to change. Next steps include formal QA/QC evaluation per the KWF Quality Assurance Project Plan, data submission to EPA WQX, and integration of `r report_year` results into the KWF long-term baseline water quality report.
+
 ## Acronyms
 
 ```{r tbl-acronyms}
@@ -576,7 +642,7 @@ tibble(
 
 ## Overview
 
-The Kenai Watershed Forum (KWF) has conducted baseline water quality monitoring on the Kenai River and its major tributaries since 2000. More information about the project and access to data and reports are available at the links below.
+The Kenai Watershed Forum (KWF) has coordinated baseline water quality monitoring on the Kenai River and its major tributaries since 2000. More information about the project and access to data and reports are available at the links below.
 
 | Resource | Link |
 |------------------------------------|------------------------------------|
@@ -606,8 +672,8 @@ tibble(
   Date        = c(spring_date, summer_date),
   `Monitoring sites` = c(n_spring_sites, n_summer_sites),
   Notes       = c(
-    "Metals and nutrients; TSS and FC at 6 mainstem sites",
-    "Metals, nutrients, and hydrocarbons (BTEX); TSS and FC at mainstem sites"
+    "Metals and nutrients; TSS and FC",
+    "Metals, nutrients, and hydrocarbons (BTEX); TSS and FC"
   )
 ) |>
   fmt_table(col_widths = c(0.7, 1.1, 0.75, 3.45))
@@ -665,50 +731,6 @@ The table below identifies measurements that preliminarily exceed applicable wat
 -   **Drinking water standards** [@adec-aac-80]: included for context; the Kenai River is not a designated drinking water source.
 
 Thresholds for hardness-dependent metals (Cadmium, Chromium, Copper, Lead, Zinc) are computed per site using measured calcium and magnesium concentrations, following ADEC criteria formulas [@adec-aac-70]. Those input values are themselves preliminary and may change after QA/QC. **No regulatory determination can be made from these data.**
-
-```{r exceedances-prep}
-# Dissolved metals vs hardness-dependent chronic + Arsenic drinking water
-exceed_dissolved <- sgs |>
-  filter(fraction == "Dissolved",
-         ANALYTE %in% c("Arsenic", "Cadmium", "Chromium", "Copper", "Lead", "Zinc")) |>
-  left_join(hardness_by_site |> select(season, SAMPLE_ID, hardness),
-            by = c("season", "SAMPLE_ID")) |>
-  add_chronic_threshold() |>
-  mutate(exceeds = RESULTFLAG != "U" & RESULT > threshold)
-
-# Total Iron vs aquatic life chronic (1 mg/L)
-exceed_iron <- sgs |>
-  filter(ANALYTE == "Iron", fraction == "Total") |>
-  mutate(threshold = 1,
-         standard_ref = "Aquatic life chronic (ADEC 18 AAC 70 / USEPA 1976)",
-         exceeds = RESULTFLAG != "U" & RESULT > threshold)
-
-exceedance_tbl <- bind_rows(
-  exceed_dissolved |> filter(exceeds),
-  exceed_iron      |> filter(exceeds)
-) |>
-  mutate(
-    site_clean = SAMPLE_ID |>
-      str_replace_all("(?i)rm\\s+", "RM ") |>
-      str_squish(),
-    ratio = round(RESULT / threshold, 1)
-  ) |>
-  arrange(ANALYTE, season, site_clean) |>
-  transmute(
-    Season    = season,
-    Site      = site_clean,
-    Parameter = ANALYTE,
-    `Measured` = round(RESULT, 3),
-    `Threshold` = round(threshold, 2),
-    Unit      = UNITS,
-    `Ratio`   = ratio,
-    Standard  = standard_ref
-  )
-
-n_iron   <- exceedance_tbl |> filter(Parameter == "Iron") |> nrow()
-n_lead   <- exceedance_tbl |> filter(Parameter == "Lead") |> nrow()
-lead_row <- exceedance_tbl |> filter(Parameter == "Lead")
-```
 
 ```{=openxml}
 <w:p><w:pPr><w:sectPr><w:pgSz w:w="12240" w:h="15840"/><w:pgMar w:top="1440" w:right="1440" w:bottom="1440" w:left="1440"/></w:sectPr></w:pPr></w:p>
@@ -786,7 +808,7 @@ summer_sgs_raw |>
 
 ### Field Duplicates
 
-Field duplicate samples were collected at two sites per season. The RPD between a primary sample and its duplicate indicates measurement precision. Values below 10–20% RPD are generally considered acceptable. Only pairs where both the primary and duplicate produced detectable results are shown; non-detect pairs are excluded from RPD calculation.
+Field duplicate samples were collected for all parameters at two sites per season. The RPD between a primary sample and its duplicate indicates measurement precision. Values below 10–20% RPD are generally considered acceptable. Only pairs where both the primary and duplicate produced detectable results are shown; non-detect pairs are excluded from RPD calculation.
 
 ```{r tbl-duplicates}
 #| tbl-cap: "Field duplicate precision summary by site. RPD = relative percent difference between primary and duplicate samples. Parameters with RPD > 20% are listed; non-detect pairs are excluded."
