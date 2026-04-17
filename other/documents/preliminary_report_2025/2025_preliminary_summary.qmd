@@ -41,7 +41,7 @@ library(officer)
 
 *Kenai Watershed Forum \| 44129 Sterling Highway, Soldotna, AK 99669 \| www.kenaiwatershed.org*
 
-*Benjamin Meyer, Research Coordinator \| (907) 260-5449 \| hydrology@kenaiwatershed.org*
+*Benjamin Meyer, Research Coordinator \| (907) 260-5449 \| hydrology\@kenaiwatershed.org*
 
 *`r format(Sys.Date(), "%B %Y")`*
 
@@ -189,7 +189,6 @@ cat(paste0(
 
 <w:p><w:r><w:br w:type="page"/></w:r></w:p>
 ```
-
 ::: {.content-visible when-format="docx"}
 ```{r fieldwork-image-docx}
 #| fig-align: center
@@ -630,7 +629,7 @@ The Kenai Watershed Forum (KWF) coordinated bi-annual baseline water quality mon
 Results for most parameters were within applicable water quality standards. Notable preliminary findings include:
 
 -   **Iron** exceeded the 1 mg/L aquatic life chronic criterion at `r n_iron` site-events across both seasons. Elevated iron is a recurring pattern in the Kenai River watershed, particularly at lower-river and wetland-draining tributary sites, and is consistent with the long-term monitoring record.
--   **Lead** (dissolved) exceeded its hardness-adjusted aquatic life chronic threshold at one summer site (Beaver Creek, RM 10). The corresponding field duplicate at that site was non-detect, raising a question about the result's validity; this result will receive additional scrutiny during full QA/QC review.
+-   **Lead** (dissolved) exceeded its hardness-adjusted aquatic life chronic threshold at one summer site (Beaver Creek, RM 10). The corresponding field duplicate at that site was non-detect, raising a question about the result's veracity; this result will receive additional scrutiny during full QA/QC review.
 -   **Hydrocarbons (BTEX)** were below laboratory detection limits at all four summer sampling sites.
 -   No threshold exceedances were identified for Arsenic, Cadmium, Chromium, Copper, Zinc, Nitrate + Nitrite, or Fecal Coliform.
 
@@ -671,10 +670,10 @@ tibble(
 
 ## Overview
 
-The Kenai Watershed Forum (KWF) has coordinated baseline water quality monitoring on the Kenai River and its major tributaries since 2000. More information about the project and access to data and reports are available at the links below.
+Kenai Watershed Forum (KWF) has coordinated baseline water quality monitoring on the Kenai River and its major tributaries since 2000. More information about the project and access to data and reports are available at the links below.
 
 | Resource | Link |
-|------------------------------------|------------------------------------|
+|----|----|
 | Project website | [kenaiwatershed.org/kenai-river-baseline-water-quality-monitoring](https://www.kenaiwatershed.org/kenai-river-baseline-water-quality-monitoring/) |
 | 2025 raw data files | [kenaiwatershed.org/news-media/summer-2025-kenai-river-water-quality-monitoring-data-preliminary-results-available](https://www.kenaiwatershed.org/news-media/summer-2025-kenai-river-water-quality-monitoring-data-preliminary-results-available/) |
 | Media coverage (KDLL, August 2025) | [kdll.org: "Peninsula water monitoring project aims to improve salmon habitat"](https://www.kdll.org/local-news/2025-08-01/peninsula-water-monitoring-project-aims-to-improve-salmon-habitat) |
