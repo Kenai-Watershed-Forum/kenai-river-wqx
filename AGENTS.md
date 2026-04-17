@@ -65,6 +65,12 @@
 
 -   ~~**Exceedance computation consolidated into single `exceedances-prep` chunk.**~~ **DONE.** Eliminated the `exec-summary-calcs` chunk (which was a partial duplicate of `exceedances-prep`) by moving the full `exceedances-prep` chunk to just before `## Executive Summary`. The single chunk computes `exceedance_tbl`, `n_iron`, `n_lead`, and `lead_row` once; all are available to both the executive summary inline R and the threshold comparison table later in the document. The old `exec-summary-calcs` chunk and the original `exceedances-prep` location (in the Threshold Comparison section) were both removed.
 
+-   ~~**Fieldwork photo added to preliminary report.**~~ **DONE.** Image `other/documents/images/2025_pictures/IMG_6103.jpeg` added with `out-width: "50%"` and italic `fig-cap`. Two placements: (1) HTML-only chunk (`fieldwork-image`) in the `{.content-visible when-format="html"}` title div, below the author/date line; (2) DOCX-only chunk (`fieldwork-image-docx`) in a `{.content-visible when-format="docx"}` div inserted after the TOC page break and before `setup`, so it appears on its own page between the TOC and the Executive Summary in the rendered DOCX. Path uses `../images/...` relative to the QMD location (not project-root-relative).
+
+-   ~~**`pagetitle` updated to include year.**~~ **DONE.** Hardcoded `2025` into the YAML `pagetitle` field: "Kenai River Baseline Water Quality Monitoring: 2025 Preliminary Field Season Summary". Note: YAML front matter cannot use inline R, so this is a manual annual update alongside `report_year <- 2025` in the `report-year` chunk.
+
+-   ~~**Contact info added to cover page and HTML header.**~~ **DONE.** Added Benjamin Meyer, Research Coordinator / Phone: (907) 260-5449 / hydrology@kenaiwatershed.org to: (1) DOCX cover page openxml block, below the KWF website line, in the same 10pt centered style; (2) HTML title div, as two italic lines below the title (org/address/website on one line, contact on the second).
+
 ------------------------------------------------------------------------
 
 ### Completed this session (April 16, 2026) — earlier in session

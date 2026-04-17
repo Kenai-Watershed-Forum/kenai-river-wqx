@@ -1,5 +1,5 @@
 ---
-pagetitle: "Kenai River Baseline Water Quality Monitoring: Preliminary Field Season Summary"
+pagetitle: "Kenai River Baseline Water Quality Monitoring: 2025 Preliminary Field Season Summary"
 format:
   html:
     toc: true
@@ -39,7 +39,19 @@ library(officer)
 
 **PRELIMINARY** - Results subject to change pending QA/QC review and EPA WQX submission.
 
-*Kenai Watershed Forum \| `r format(Sys.Date(), "%B %Y")`*
+*Kenai Watershed Forum \| 44129 Sterling Highway, Soldotna, AK 99669 \| www.kenaiwatershed.org*
+
+*Benjamin Meyer, Research Coordinator \| (907) 260-5449 \| hydrology@kenaiwatershed.org*
+
+*`r format(Sys.Date(), "%B %Y")`*
+
+```{r fieldwork-image}
+#| fig-align: center
+#| out-width: "50%"
+#| fig-cap: "*Alaska Department of Environmental Conservation staff collect water samples on the middle Kenai River in 2025.*"
+
+knitr::include_graphics("../images/2025_pictures/IMG_6103.jpeg")
+```
 
 ------------------------------------------------------------------------
 :::
@@ -55,17 +67,9 @@ knitr::include_graphics("../images/KWF_logo_resized.png")
 ```
 :::
 
--   ~~**2025 funding note drafted.**~~ **DONE.** Created `other/documents/preliminary_report_2025/2025_funding_note.docx` (also `.txt`) covering: how 2025 funds (\$2,500) were spent (lab analysis at SGS, FC/TSS at SWWTP, field parameters via YSI); what was accomplished (22 sites, spring + summer sampling, parameters analyzed, preliminary results); 2026 funding request (\$2,500); and how 2026 funds will be spent. Several fields left as placeholders for manual completion before sending: sampling completion dates, sample counts, and a brief characterization of results.
+```{=openxml}
+<w:p><w:pPr><w:jc w:val="center"/><w:spacing w:before="240" w:after="0"/></w:pPr></w:p>
 
--   ~~**Executive summary added to 2025 preliminary report.**~~ **DONE.** Added `## Executive Summary` as the first content section (before Acronyms), positioned after the `setup` chunk so all computed values are available. The section uses inline R for dynamic values: site counts (`n_spring_sites`, `n_summer_sites`), sampling dates, and exceedance counts (`n_iron`, `n_lead`). Key findings summarized: iron exceedances at multiple sites (expected, consistent with long-term record), lead flag at Beaver Creek with duplicate discrepancy, BTEX all non-detect at four sites, no other exceedances. Includes the PRELIMINARY caveat and a next-steps sentence.
-
--   ~~**Library calls moved to early `libraries` chunk.**~~ **DONE.** Moved `library(tidyverse/readxl/flextable/officer)` from the `setup` chunk to a new dedicated `libraries` chunk placed immediately after `report-year` (before cover page content). Ensures packages are available from the start of execution, which is required for RStudio's Render button to work reliably.
-
--   ~~**Redundant `report_year <- 2025` removed from `setup` chunk.**~~ **DONE.** The assignment was already present in the `report-year` chunk at the top of the document. Removed the duplicate from `setup`; `report_year` is now defined only once (in `report-year`), and the `setup` chunk uses it directly for file path construction.
-
--   ~~**Exceedance computation consolidated into single `exceedances-prep` chunk.**~~ **DONE.** Eliminated the `exec-summary-calcs` chunk (which was a partial duplicate of `exceedances-prep`) by moving the full `exceedances-prep` chunk to just before `## Executive Summary`. The single chunk computes `exceedance_tbl`, `n_iron`, `n_lead`, and `lead_row` once; all are available to both the executive summary inline R and the threshold comparison table later in the document. The old `exec-summary-calcs` chunk and the original `exceedances-prep` location (in the Threshold Comparison section) were both removed.
-
-------------------------------------------------------------------------
 <w:p>
   <w:pPr><w:jc w:val="center"/><w:spacing w:before="0" w:after="120"/></w:pPr>
   <w:r><w:rPr><w:b/><w:sz w:val="52"/><w:szCs w:val="52"/></w:rPr>
@@ -128,6 +132,21 @@ cat(paste0(
   <w:r><w:rPr><w:sz w:val="20"/><w:szCs w:val="20"/></w:rPr>
     <w:t>www.kenaiwatershed.org</w:t></w:r>
 </w:p>
+<w:p>
+  <w:pPr><w:jc w:val="center"/><w:spacing w:before="120" w:after="0"/></w:pPr>
+  <w:r><w:rPr><w:sz w:val="20"/><w:szCs w:val="20"/></w:rPr>
+    <w:t>Benjamin Meyer, Research Coordinator</w:t></w:r>
+</w:p>
+<w:p>
+  <w:pPr><w:jc w:val="center"/><w:spacing w:before="0" w:after="0"/></w:pPr>
+  <w:r><w:rPr><w:sz w:val="20"/><w:szCs w:val="20"/></w:rPr>
+    <w:t>Phone: (907) 260-5449</w:t></w:r>
+</w:p>
+<w:p>
+  <w:pPr><w:jc w:val="center"/><w:spacing w:before="0" w:after="60"/></w:pPr>
+  <w:r><w:rPr><w:sz w:val="20"/><w:szCs w:val="20"/></w:rPr>
+    <w:t>hydrology@kenaiwatershed.org</w:t></w:r>
+</w:p>
 ```
 ```{r docx-cover-date}
 #| output: asis
@@ -170,6 +189,16 @@ cat(paste0(
 
 <w:p><w:r><w:br w:type="page"/></w:r></w:p>
 ```
+
+::: {.content-visible when-format="docx"}
+```{r fieldwork-image-docx}
+#| fig-align: center
+#| out-width: "50%"
+#| fig-cap: "*Alaska Department of Environmental Conservation staff collect water samples on the middle Kenai River in 2025.*"
+knitr::include_graphics("../images/2025_pictures/IMG_6103.jpeg")
+```
+:::
+
 ```{r setup}
 # ---- Input file paths (update for each year) --------------------------------
 # SGS files follow a consistent naming convention built from report_year:
