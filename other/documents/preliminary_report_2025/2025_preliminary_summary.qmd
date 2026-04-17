@@ -624,7 +624,7 @@ n_lead   <- exceedance_tbl |> filter(Parameter == "Lead") |> nrow()
 lead_row <- exceedance_tbl |> filter(Parameter == "Lead")
 ```
 
-The Kenai Watershed Forum (KWF) coordinated bi-annual baseline water quality monitoring events on the Kenai River and its major tributaries in `r report_year`. Sampling was completed at `r n_spring_sites` sites in spring (`r spring_date`) and `r n_summer_sites` sites in summer (`r summer_date`), spanning from Kenai Lake (River Mile 82) to the river mouth (River Mile 1.5). Laboratory analysis of metals, nutrients, and hydrocarbons was performed by SGS North America; fecal coliform (FC) and total suspended solids (TSS) were analyzed by the City of Soldotna Wastewater Treatment Plant; and field parameters (temperature, specific conductance, dissolved oxygen, turbidity, and pH) were measured with a YSI ProQuatro field meter.
+Kenai Watershed Forum (KWF) coordinated bi-annual baseline water quality monitoring events on the Kenai River and its major tributaries in `r report_year`. Sampling was completed at `r n_spring_sites` sites in spring (`r spring_date`) and `r n_summer_sites` sites in summer (`r summer_date`), spanning from Kenai Lake (River Mile 82) to the river mouth (River Mile 1.5). Laboratory analysis of metals, nutrients, and hydrocarbons was performed by SGS North America; fecal coliform (FC) and total suspended solids (TSS) were analyzed by the City of Soldotna Wastewater Treatment Plant; field parameters (temperature, specific conductance, dissolved oxygen, and pH) were measured with a YSI ProQuatro field meter, and turbidity was measured with a Hach 2100P portable turbidimeter.
 
 Results for most parameters were within applicable water quality standards. Notable preliminary findings include:
 
@@ -673,7 +673,7 @@ tibble(
 Kenai Watershed Forum (KWF) has coordinated baseline water quality monitoring on the Kenai River and its major tributaries since 2000. More information about the project and access to data and reports are available at the links below.
 
 | Resource | Link |
-|----|----|
+|------------------------------------|------------------------------------|
 | Project website | [kenaiwatershed.org/kenai-river-baseline-water-quality-monitoring](https://www.kenaiwatershed.org/kenai-river-baseline-water-quality-monitoring/) |
 | 2025 raw data files | [kenaiwatershed.org/news-media/summer-2025-kenai-river-water-quality-monitoring-data-preliminary-results-available](https://www.kenaiwatershed.org/news-media/summer-2025-kenai-river-water-quality-monitoring-data-preliminary-results-available/) |
 | Media coverage (KDLL, August 2025) | [kdll.org: "Peninsula water monitoring project aims to improve salmon habitat"](https://www.kdll.org/local-news/2025-08-01/peninsula-water-monitoring-project-aims-to-improve-salmon-habitat) |
@@ -712,7 +712,7 @@ Hydrocarbon (BTEX) analysis is not conducted in spring by design: boat activity 
 ## Parameters Analyzed
 
 ```{r tbl-params}
-#| tbl-cap: 'Parameters analyzed by season and analytical fraction. "Dissolved" metals were filtered through a 0.45 µm membrane prior to analysis; "Total" metals were unfiltered. FC and TSS were analyzed by SWWTP; field parameters by YSI ProQuatro meter.'
+#| tbl-cap: 'Parameters analyzed by season and analytical fraction. "Dissolved" metals were filtered through a 0.45 µm membrane prior to analysis; "Total" metals were unfiltered. FC and TSS were analyzed by SWWTP; temperature, specific conductance, dissolved oxygen, and pH by YSI ProQuatro meter; turbidity by Hach 2100P portable turbidimeter.'
 bind_rows(
   sgs         |> distinct(ANALYTE, season, fraction),
   swwtp_tss   |> distinct(ANALYTE, season, fraction),
