@@ -673,7 +673,7 @@ tibble(
 Kenai Watershed Forum (KWF) has coordinated baseline water quality monitoring on the Kenai River and its major tributaries since 2000. More information about the project and access to data and reports are available at the links below.
 
 | Resource | Link |
-|------------------------------------|------------------------------------|
+|----|----|
 | Project website | [kenaiwatershed.org/kenai-river-baseline-water-quality-monitoring](https://www.kenaiwatershed.org/kenai-river-baseline-water-quality-monitoring/) |
 | 2025 raw data files | [kenaiwatershed.org/news-media/summer-2025-kenai-river-water-quality-monitoring-data-preliminary-results-available](https://www.kenaiwatershed.org/news-media/summer-2025-kenai-river-water-quality-monitoring-data-preliminary-results-available/) |
 | Media coverage (KDLL, August 2025) | [kdll.org: "Peninsula water monitoring project aims to improve salmon habitat"](https://www.kdll.org/local-news/2025-08-01/peninsula-water-monitoring-project-aims-to-improve-salmon-habitat) |

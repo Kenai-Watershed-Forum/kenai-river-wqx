@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Benjamin Meyer, Kenai Watershed Forum">
-<meta name="dcterms.date" content="2026-04-10">
+<meta name="dcterms.date" content="2026-04-20">
 
 <title>Water Quality Assessment of the Kenai River Watershed from 2000 to 2025 [DRAFT]</title>
 <style>
@@ -449,11 +449,7 @@ div.csl-indent {
   </ul></li>
   <li><a href="#downloads" id="toc-downloads" class="nav-link" data-scroll-target="#downloads">Downloads</a></li>
   <li><a href="#github" id="toc-github" class="nav-link" data-scroll-target="#github">Github</a></li>
-  <li><a href="#artificial-intelligence-note" id="toc-artificial-intelligence-note" class="nav-link" data-scroll-target="#artificial-intelligence-note">Artificial Intelligence Note</a>
-  <ul class="collapse">
-  <li><a href="#completed-this-session-april-8-2026" id="toc-completed-this-session-april-8-2026" class="nav-link" data-scroll-target="#completed-this-session-april-8-2026">Completed this session (April 8, 2026)</a></li>
-  <li><a href="#completed-this-session-april-6-2026" id="toc-completed-this-session-april-6-2026" class="nav-link" data-scroll-target="#completed-this-session-april-6-2026">Completed this session (April 6, 2026)</a></li>
-  </ul></li>
+  <li><a href="#artificial-intelligence-note" id="toc-artificial-intelligence-note" class="nav-link" data-scroll-target="#artificial-intelligence-note">Artificial Intelligence Note</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -480,7 +476,7 @@ div.csl-indent {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">2026-04-10</p>
+      <p class="date">2026-04-20</p>
     </div>
   </div>
   
@@ -539,23 +535,6 @@ div.csl-indent {
 </div>
 </div>
 <div style="page-break-after: always;"></div>
-<section id="completed-this-session-april-8-2026" class="level3">
-<h3 class="anchored" data-anchor-id="completed-this-session-april-8-2026">Completed this session (April 8, 2026)</h3>
-<ul>
-<li><p><strong>2021 CDX batch delete — BLOCKED. Contact EPA WQX support before next session.</strong> Attempted to delete all 835 existing 2021 WQX records (required before re-uploading corrected <code>results_activities.csv</code> with updated sample fractions and characteristic names). Generated DELETE files v3–v5; all failed. Full findings:</p>
-<ul>
-<li><p><strong>Output files confirmed ready (no re-render needed).</strong> <code>results_activities.csv</code> (April 6, 20:11) has correct sample fractions (<code>"Dissolved"</code> for dissolved metals, <code>"Suspended"</code> for TSS, <code>"None"</code> for FC, etc.). <code>station.csv</code> has <code>GPS-Unspecified</code> + <code>HUCEightDigitCode = 19020302</code> for all 22 stations (uploaded to CDX April 2). <code>project.csv</code> is unchanged. Only <code>results_activities.csv</code> needs to be re-uploaded.</p></li>
-<li><p><strong>v3 failure (835 errors):</strong> Column named <code>Activity ID</code> instead of <code>ActivityIdentifier</code> — WQX rejected all rows with “Domain Value Invalid.”</p></li>
-<li><p><strong>v4 failure (835 errors):</strong> Fixed column name to <code>ActivityIdentifier</code>. Same “Domain Value Invalid” for all 835 rows. This is identical content to v2 (which worked on 3/31), so the error is not caused by the file format.</p></li>
-<li><p><strong>v5 failure (286 errors + system crash):</strong> Attempted CRLF line endings to match v2. File was corrupted during generation (837 lines instead of 836 = extra blank line), causing a system process halt after 286 rows.</p></li>
-<li><p><strong>Key finding:</strong> v4 and v2 have byte-for-byte identical Activity IDs and identical column names. v2 worked on 3/31; v4 fails today. The batch delete function appears to be broken on WQX’s side, or its validation behavior has changed. <strong>835 records confirmed still present in WQP.</strong></p></li>
-<li><p><strong>Files in <code>other/output/epa_wqp_uploads/corrected_epa_wqp_uploads/</code>:</strong> <code>resultphyschem_DELETE_v4.csv</code> is the correct, clean DELETE file to use when the WQX issue is resolved. Do not use v5 (corrupted).</p></li>
-</ul>
-<p><strong>Next action: contact EPA WQX support.</strong> The WQX system itself directs users to wqx@epa.gov or 1-800-424-9067. Reference Kevin Christian (wqx@epa.gov) from the 3/31/2026 call. Key message: batch Activity ID delete (<code>resultphyschem_DELETE_v4.csv</code>, column <code>ActivityIdentifier</code>, no org prefix, 835 rows) returns “Domain Value Invalid” for all rows; identical file worked on 3/31/2026. <strong>Fallback:</strong> use WQX Web Review tab → filter Activities by start date 2021 → bulk delete from there.</p></li>
-</ul>
-</section>
-<section id="completed-this-session-april-6-2026" class="level3">
-<h3 class="anchored" data-anchor-id="completed-this-session-april-6-2026">Completed this session (April 6, 2026)</h3>
 
 
 <!-- -->
@@ -568,7 +547,6 @@ Guerron Orejuela, Edgar. 2016. <span>“Water Quality Assessment of the Kenai Ri
 McCard, Jennifer J. 2007. <span>“Water Quality Assessment of the Kenai River Watershed from July 2000 to July 2006.”</span>
 </div>
 </div>
-</section>
 </section>
 </section>
 
@@ -1113,27 +1091,7 @@ McCard, Jennifer J. 2007. <span>“Water Quality Assessment of the Kenai River W
 <span id="cb1-78"><a href="#cb1-78" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb1-79"><a href="#cb1-79" aria-hidden="true" tabindex="-1"></a>:::</span>
 <span id="cb1-80"><a href="#cb1-80" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-81"><a href="#cb1-81" aria-hidden="true" tabindex="-1"></a>\newpage</span>
-<span id="cb1-82"><a href="#cb1-82" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-83"><a href="#cb1-83" aria-hidden="true" tabindex="-1"></a><span class="fu">### Completed this session (April 8, 2026)</span></span>
-<span id="cb1-84"><a href="#cb1-84" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-85"><a href="#cb1-85" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**2021 CDX batch delete — BLOCKED. Contact EPA WQX support before next session.** Attempted to delete all 835 existing 2021 WQX records (required before re-uploading corrected <span class="in">`results_activities.csv`</span> with updated sample fractions and characteristic names). Generated DELETE files v3–v5; all failed. Full findings:</span>
-<span id="cb1-86"><a href="#cb1-86" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-87"><a href="#cb1-87" aria-hidden="true" tabindex="-1"></a><span class="ss">    -   </span>**Output files confirmed ready (no re-render needed).** <span class="in">`results_activities.csv`</span> (April 6, 20:11) has correct sample fractions (<span class="in">`"Dissolved"`</span> for dissolved metals, <span class="in">`"Suspended"`</span> for TSS, <span class="in">`"None"`</span> for FC, etc.). <span class="in">`station.csv`</span> has <span class="in">`GPS-Unspecified`</span> + <span class="in">`HUCEightDigitCode = 19020302`</span> for all 22 stations (uploaded to CDX April 2). <span class="in">`project.csv`</span> is unchanged. Only <span class="in">`results_activities.csv`</span> needs to be re-uploaded.</span>
-<span id="cb1-88"><a href="#cb1-88" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-89"><a href="#cb1-89" aria-hidden="true" tabindex="-1"></a><span class="ss">    -   </span>**v3 failure (835 errors):** Column named <span class="in">`Activity ID`</span> instead of <span class="in">`ActivityIdentifier`</span> — WQX rejected all rows with "Domain Value Invalid."</span>
-<span id="cb1-90"><a href="#cb1-90" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-91"><a href="#cb1-91" aria-hidden="true" tabindex="-1"></a><span class="ss">    -   </span>**v4 failure (835 errors):** Fixed column name to <span class="in">`ActivityIdentifier`</span>. Same "Domain Value Invalid" for all 835 rows. This is identical content to v2 (which worked on 3/31), so the error is not caused by the file format.</span>
-<span id="cb1-92"><a href="#cb1-92" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-93"><a href="#cb1-93" aria-hidden="true" tabindex="-1"></a><span class="ss">    -   </span>**v5 failure (286 errors + system crash):** Attempted CRLF line endings to match v2. File was corrupted during generation (837 lines instead of 836 = extra blank line), causing a system process halt after 286 rows.</span>
-<span id="cb1-94"><a href="#cb1-94" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-95"><a href="#cb1-95" aria-hidden="true" tabindex="-1"></a><span class="ss">    -   </span>**Key finding:** v4 and v2 have byte-for-byte identical Activity IDs and identical column names. v2 worked on 3/31; v4 fails today. The batch delete function appears to be broken on WQX's side, or its validation behavior has changed. **835 records confirmed still present in WQP.**</span>
-<span id="cb1-96"><a href="#cb1-96" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-97"><a href="#cb1-97" aria-hidden="true" tabindex="-1"></a><span class="ss">    -   </span>**Files in `other/output/epa_wqp_uploads/corrected_epa_wqp_uploads/`:** <span class="in">`resultphyschem_DELETE_v4.csv`</span> is the correct, clean DELETE file to use when the WQX issue is resolved. Do not use v5 (corrupted).</span>
-<span id="cb1-98"><a href="#cb1-98" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-99"><a href="#cb1-99" aria-hidden="true" tabindex="-1"></a>    **Next action: contact EPA WQX support.** The WQX system itself directs users to wqx\@epa.gov or 1-800-424-9067. Reference Kevin Christian (wqx\@epa.gov) from the 3/31/2026 call. Key message: batch Activity ID delete (`resultphyschem_DELETE_v4.csv`, column `ActivityIdentifier`, no org prefix, 835 rows) returns "Domain Value Invalid" for all rows; identical file worked on 3/31/2026. **Fallback:** use WQX Web Review tab → filter Activities by start date 2021 → bulk delete from there.</span>
-<span id="cb1-100"><a href="#cb1-100" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-101"><a href="#cb1-101" aria-hidden="true" tabindex="-1"></a><span class="fu">### Completed this session (April 6, 2026)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
+<span id="cb1-81"><a href="#cb1-81" aria-hidden="true" tabindex="-1"></a>\newpage</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 

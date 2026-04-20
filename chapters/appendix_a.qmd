@@ -7,7 +7,7 @@ format:
   html:
     code-fold: true
     code-tools: true
-    code-summary: "Show the code"
+    code-summary: "Show code"
 ---
 
 # Appendix: Data Review and Upload {#appendix_a}
@@ -93,422 +93,61 @@ library(anytime)
 xfun::pkg_load2(c("htmltools", "mime"))
 
 
-# Assign 2021 Field Sample Dates 
+# ── Year Configuration ────────────────────────────────────────────────────────
+# Change these values to adapt this pipeline to a different data year.
+year <- 2021
 
-# Spring 2021 sampling date
-spring21_sample_date <- "5/11/2021"
+# Field sampling dates for SGS/ALS/TSS ingestion (mdy() format)
+spring_sample_date <- "5/11/2021"
+summer_sample_date <- "7/27/2021"
 
-# Summer 2021 Sampling Date
-summer21_sample_date <-"7/27/2021"
+# Lab receipt dates used in FC and TSS ingestion (ymd() format)
+spring_rec_date <- "2021-05-11"
+summer_rec_date <- "2021-07-27"
+
+# FC lab analysis dates: the date FC samples were processed at the lab
+# (typically the day after field collection). Only used in FC ingestion.
+spring_fc_analysis_date <- mdy("5/12/2021")
+summer_fc_analysis_date <- mdy("7/28/2021")
+
+# FC lab source for each season. Determines which format parser runs in
+# ingest_fc.R. Options: "SWWTP", "Taurianen".
+# Note: Taurianen closed after 2021; 2022+ seasons use "SWWTP" for both.
+spring_fc_lab <- "SWWTP"
+summer_fc_lab <- "Taurianen"   # change to "SWWTP" for 2022+
+
+# Explicit FC file paths (not derived from year — filenames embed sampling
+# dates and vary by lab, making pattern construction unreliable).
+spring_fc_path <- "other/input/2021_wqx_data/spring_2021_wqx_data/SWWTP/KRWF Fecal 05-11-21.xls"
+summer_fc_path <- "other/input/2021_wqx_data/summer_2021_wqx_data/Taurianen/Fecal_Coliform_Results_Spreadsheet.xlsx"
+
+# Explicit TSS file paths (same reason as FC).
+spring_tss_path <- "other/input/2021_wqx_data/spring_2021_wqx_data/SWWTP/KRWF TSS MONITORING 05-11-21.xlsx"
+summer_tss_path <- "other/input/2021_wqx_data/summer_2021_wqx_data/SWWTP/KRWF TSS MONITORING 07-28-21.xlsx"
+
+# Derived directory paths for SGS/ALS data (consistent naming pattern).
+data_dir        <- file.path("other/input", paste0(year, "_wqx_data"))
+spring_data_dir <- file.path(data_dir, paste0("spring_", year, "_wqx_data"))
+summer_data_dir <- file.path(data_dir, paste0("summer_", year, "_wqx_data"))
+output_qaqc_dir <- file.path("other/output/lab_qaqc_data",
+                              paste0(year, "_lab_qaqc_data"))
+
+# Derived intermediate output paths
+wqx_intermediate_path <- file.path("other/output/wqx_formatted/intermediate",
+                                    paste0(year, "_kwf_baseline_results_wqx.csv"))
+flagged_export_path   <- file.path("other/output/wqx_formatted/intermediate",
+                                    paste0(year, "_export_data_flagged.csv"))
+flag_decisions_path   <- file.path("other/input/wqx_templates",
+                                    paste0(year, "_data_flag_decisions.csv"))
 ```
 
-```{r message = FALSE, echo = F, include = F}
-
-#| warning: false
-#| message: false
-
-
-################################################################################################################
-######################################### Read in  and Clean SGS/ALS Data ######################################
-################################################################################################################
-
-
-############################ Part A: SGS Data Read In #############################
-
-## Reformat SGS data downloaded from their server client (SGS Engage, full EDD files) to match WQX template
-
-# read in
-spring_batch_sgs21 <- read.csv("other/input/2021_wqx_data/spring_2021_wqx_data/SGS/spring_2021_sgs_batch_info.csv")
-summer_batch_sgs21 <- read.csv("other/input/2021_wqx_data/summer_2021_wqx_data/SGS/summer_2021_sgs_batch_info.csv")
-
-# clean up and retain only useful columns
-sgs21 <- bind_rows(spring_batch_sgs21,summer_batch_sgs21) %>%
-  clean_names() %>%
-  remove_empty() %>%
-  
-  # remove unneeded columns
-  select(-project_id)%>%
-  rename(sample = sample_id,
-         lab_sample = lab_sample_id,
-         detection_limit = dl) %>%
-  transform(lab_sample = as.character(lab_sample),
-            sample_rpd = as.character(sample_rpd)) %>%
-  # add lab name
-  mutate(lab_name = "SGS North America, Anchorage, Alaska",
-         matrix = "Water") %>%
-  
-  # split a.) lab sample run & b.) collect time and date in prep for future join with ALS data
-          ##### NOTE: SGS data has date and time, ALS has date only. 
-  transform(collect_date_time = mdy_hm(collect_date),
-            rec_date_time = mdy_hm(rec_date),
-            run_date_time = mdy_hm(run_date_time),
-            extracted_date_time = mdy_hm(extracted_date)) %>%
-  mutate(collect_time = as_hms(collect_date_time),
-         collect_date = date(collect_date_time),
-         rec_date = date(rec_date_time),
-         rec_time = as_hms(rec_date_time),
-         run_time = as_hms(run_date_time),
-         run_date = date(run_date_time),
-         extracted_time = as_hms(extracted_date_time),
-         extracted_date = date(extracted_date_time)) %>%
-  select(-collect_date_time,-rec_date_time,-run_date_time) %>%
-  rename(sample = sample)
-
-# Correct SGS EDD unit error for dissolved Calcium, Iron, and Magnesium
-#
-# The summer 2021 SGS EDD reports dissolved Ca, Fe, and Mg (method EP200.8)
-# with a unit label of "ug/L", but the numeric values are on the mg/L scale.
-# For example, Calcium at KR RM 0 NNC is recorded as 16,200 "ug/L" - which
-# is 16.2 mg/L, a physically plausible concentration for the Kenai River.
-# 16.2 ug/L would be unrealistically low for freshwater calcium.
-#
-# Cross-referencing with the ALS total metals data (which correctly labels mg/L)
-# and the SGS PDF lab reports confirms that the EDD unit label is wrong:
-# the values themselves are correct but the unit should be mg/L.
-#
-# Spring 2021 SGS data includes no dissolved Ca/Fe/Mg runs (confirmed), so this
-# correction applies to summer 2021 observations only.
-#
-# This correction is applied here at ingestion so all downstream calculations -
-# including hardness and hardness-dependent regulatory thresholds for Cd, Cr,
-# Cu, Pb, and Zn - use the correct unit and value.
-sgs21 %<>%
-  mutate(
-    result = case_when(
-      analyte %in% c("Calcium", "Iron", "Magnesium") & units == "ug/L" ~ result / 1000,
-      TRUE ~ result
-    ),
-    units = case_when(
-      analyte %in% c("Calcium", "Iron", "Magnesium") & units == "ug/L" ~ "mg/L",
-      TRUE ~ units
-    )
-  )
-
-rm(spring_batch_sgs21,summer_batch_sgs21)
-
-
-
-###################### Part B: ALS Data Read In #############################
-
-## SGS subcontracted analyses of Ca, Fe, and Mg to ALS laboratories (Kelso, WA). These results are not included in the spreadsheet download from SGS engage and were entered manually in to seperate spring and summer "ALS" named spreadsheets
-
-
-#### read in spring 2021 results from ALS 
-spring_als21 <- read.csv("other/input/2021_wqx_data/spring_2021_wqx_data/SGS/spring_2021_als_batch_info.csv") %>%
-    clean_names() 
-summer_als21 <- read.csv("other/input/2021_wqx_data/summer_2021_wqx_data/SGS/summer_2021_als_batch_info.csv") %>%
-    clean_names()
-
-
-# bind spring and summer
-als21 <- bind_rows(spring_als21,summer_als21) %>%
-  remove_empty() %>%
-  
-# proceed left to right of existing ALS dataframe to make its naming structure match the sgs21 dataframe. Add, remove, modify column names as needed
-  select(-client,
-         -project,
-         -service_request) %>%
-  rename(lab_sample = lab_code) %>%
-  rename(
-         collect_date = date_collected,
-         collect_time = time_collected,
-         rec_date = date_received,
-         rec_time = time_received,
-         # sample_type ::: not sure where to match with sgs data yet or where to put in WQX output, but is important for qa/qc
-         
-         extracted_date = date_extracted,
-         extracted_time = time_extracted,
-         extraction_code = extraction_method,
-         run_date = date_analyzed,
-         run_time = time_analyzed,
-         analytical_method = method,
-         #units = units,
-         analyte = component,
-         resultflag = result_notes,
-         amount_spiked = spike_concentration,
-         percent_recovered = percent_recovery,
-         allowable_limit = acceptance_limits,
-         sample_rpd = rpd,
-        # change report/detection limit terminology  See SGS document, "SGS DL, LOD, LOQ Interpretation"
-         loq = reporting_limit) %>%
-  
-  mutate(lab_name = "ALS Environmental, Kelso, Washington"
-         #,
-         #run_time = ""
-         ) %>%
-  # prep column classes to bind with sgs dataframe
-  transform(analytical_method = as.character(analytical_method),
-            run_date = mdy(run_date),
-            run_time = as_hms(as.POSIXct(run_time, format = "%H:%M")),
-            #run_time = as_hms(run_time),
-            collect_date = mdy(collect_date),
-            rec_date = mdy(rec_date),
-            rec_time = as_hms(as.POSIXct(rec_time, format = "%H:%M")),
-            extracted_date = mdy(extracted_date),
-            extracted_time = as_hms(as.POSIXct(extracted_time, format = "%H:%M")),
-            result = as.double(result),
-            collect_time = as_hms(as.POSIXct(collect_time, format = "%H:%M")))
-
-```
-
-```{r echo = F, message = F, warning = F}
-
-
-# join SGS data with ALS data
-dat <- bind_rows(sgs21,als21)  
-
-# remove old dataframes
-rm(als21,sgs21,spring_als21,summer_als21)
-
-
-# export table of sample types
-
-## assign sample type acronyms just like with sgs21 samples. see excel file for full definitions
-
-# --> make sure doesn't conflict with other sample_type designations in rest of document. use same acronyms
-
-### export table of sample types, then manually translate their abbreviations
-sample_types <- dat %>%
-  select(sample_type,lab_name) %>%
-  distinct()
-
-# remove old version and write new one
-unlink("other/input/wqx_templates/sample_type_abbreviations.xlsx")
-write.xlsx(sample_types, "other/input/wqx_templates/sample_type_abbreviations.xlsx")
-
-# manually created a translation of all the acronyms in an accompanying file. removed inconsistencies in sample type abbreviations into one consistent schema between SGS and ALS labs
-
-
-
-
-############### Part C: Address spelling/format issues and inconsistent sample/site names ######################
-
-# Upon visual inspection of site names, we can see that the location names in the WQX template differ slightly from the place names in the SGS report (spelling and name inconsistencies).
-
-
-# 3/28/2022 - A note on addressing "Duplicate" designations. 
-# In QA/QC data review in March 2022 the following was clarified through trial and error: we must make a careful distinction between "Field Duplicates" and "Lab duplicates" when preparing this data. The sample names contain info about whether a result is from a "Field Duplicate," e.g., two field collections made at the same location/day/time. However the ALS lab also created "Lab Duplicates," which are not from the same sites as field duplicates, and designates these as "DUP1" in the "sample_type" column.
-
-# See WQX Activity Type column assign distinctions
-
-# Decision - we will designate the field duplicates simply as a Field Duplicate
-
-
-# move info about duplicate sample and/or sample blank status into separate new column, "sample_condition"
-dat %<>%
-  mutate(sample_condition = case_when(
-    grepl("Method Blank",sample) ~ "Method Blank",
-    grepl("Trip Blank",sample) ~ "Trip Blank",
-    grepl("DUP",sample) ~ "Field Duplicate",
-    grepl("Dup",sample) ~ "Field Duplicate")) 
-# %>%
-  # remove "DUP" designation from "sample" column
- # mutate(sample = str_replace(sample, "DUP|Dup", "")) 
-
-#z <- dat %>% 
- # filter(sample_condition == "Field Duplicate") %>%
- # select(sample, sample_condition)
-
-
-  
-# remove from "sample" names the text containing the suffixes Diss/Dis (Dissolved metals sample) since we only  want location info in this column. (Solution for this step was found at https://stackoverflow.com/questions/29271549/replace-all-occurrences-of-a-string-in-a-data-frame)
-dat %<>%  
-  mutate(sample = (str_replace(sample, "Diss|Dis|DUP|Dup",""))) %>%
-  
-  # remove "Diss" suffix and "EP" prefix from "analytical_method" column
-  mutate(analytical_method = str_replace(analytical_method, "Diss", "")) %>%
-  # note trailing space after "EP200.8 "
-  mutate(analytical_method = str_replace(analytical_method,"EP200.8 ","200.8")) %>%
-
-  # address the one stubborn site name still containing "Diss"
-  mutate(sample = case_when(
-    sample == "RM0-No Name Creek  Diss" ~ "RM0-No Name Creek",
-    TRUE ~ sample)) 
-
-
-# Sample name clean up
-# We need to remove white spaces, apostrophes, and dashes; because join functions such as "left_join" are often uncooperative with these types of string characters. We will need to use joins with site names in next steps.
-  
-dat %<>%
-    # remove excess white spaces
-  mutate(sample = str_trim(sample,"both")) %>%
-  mutate(sample = str_squish(sample)) %>%
-  
-  # make remaining white spaces underscores
-  mutate(sample = gsub("\\s+","_",sample)) %>%
-  
-  # remove apostrophes
-  mutate(sample = gsub("\\'","",sample)) %>%
-  
-  # replace dashes with underscores
-  mutate(sample = gsub("\\-","_",sample)) %>%
-  
-  # replace multiple underscores with single
-  mutate(sample = gsub("\\__","_",sample)) %>%
-  mutate(sample = gsub("\\___","_",sample)) %>%
-
-  # again replace multiple underscores with single
-  mutate(sample = gsub("\\__","_",sample)) 
-
-# apply note regarding trip blanks (for BTEX organics)
-# assigned in sequence as encountered on chain of custody
-dat %<>%
-  mutate(note = case_when(
-    grepl("Trip_Blank_1", sample) ~ "KWF Crew, RM1.5_Kenai_City_Dock",
-    grepl("Trip_Blank_2", sample) ~ "USFWS Crew, RM6.5_Cunningham_Park",
-    grepl("Trip_Blank_3", sample) ~ "DEC Crew, RM40_Bings_Landing",
-    grepl("Trip_Blank_4", sample) ~ "DEC Crew, RM43_Upstream_of_Dow_Island"))
-  
-  
-# seperate result qualifiers (U, J, B) in to a new column
-#sgs21 %<>%
-  # account for fact that als data already has qualifier column and has characters in results column
- # mutate(qualifier = case_when(
-  #  result == "ND" ~ qualifier,
-  #  result != "ND" ~ str_extract(result,"[aA-zZ]+"))) %>%
-#  mutate(result = str_remove(result,"[aA-zZ]+")) 
-
-
-
-
-############## Part D: Prepare SGS/ALS Location/Site Names ##########################
-
-# NOTE: The SGS and ALS 2021 sample name results have a variety of misspelling and typos. For 2022, we should provide labs with a csv file of site names that they can use
-
-# In preparation for a join to WQX table, we will manually generate a match table csv file that we can use 
-
-## generate list of unique site names from 2021 SGS data
-sgs21_sitenames <- data.table(unique(dat$sample)) %>%
-  arrange(V1)
-  
-
-# generate list of unique site names from 2021 WQX template. These are the names we want in the final product
-wqx_sitenames <- read_excel("other/input/wqx_templates/AWQMS_KWF_Baseline_2021.xlsx", sheet = "Monitoring Locations") %>%
-  select("Monitoring Location Name", "Monitoring Location ID") %>%
-  distinct()
-
-# write 2021 sgs site names to an excel file
-site_match_table_path <- "other/input/wqx_templates/sgs_site_names_matching_table.xlsx"
-write.xlsx(sgs21_sitenames, site_match_table_path) 
-
-# create an excel file with two sheets: a.) SGS site names, and b.) WQX site names
-wb <- loadWorkbook(site_match_table_path)
-addWorksheet(wb,"Sheet2")
-writeData(wb,"Sheet2",wqx_sitenames)
-saveWorkbook(wb,site_match_table_path,overwrite = TRUE)
-
-
-# Using these two tables, we will manually create a new file titled "sgs_site_names_matching_table_manual_edit.xlsx" and manually match up the two disparate naming systems. 
-
-# Site name matching performed manually by B Meyer, March 18, 2022.
-
-# append "Monitoring Location Name" and "Monitoring Location ID" info from WQX to spring 2021 SGS data
-
-## read in site names join table
-sitenames21_match <- read_excel("other/input/wqx_templates/sgs_site_names_matching_table_manual_edit.xlsx") %>%
-  select(`Monitoring Location Name`,`Monitoring Location ID`,sgs_sitenames) %>%
-  rename(sample = sgs_sitenames) %>%
-  filter(!is.na(`Monitoring Location ID`))
-
-# append monitoring location names
-dat %<>%
-  left_join(sitenames21_match, by = "sample") %>%
-  clean_names()
-
-# remove extraneous dataframes
-rm(sgs21_sitenames,wqx_sitenames,sitenames21_match)
-
-
-
-
-######################## Part E: "Result Analytical Method Context" name rectification ######################
-
-# In the WQX template, the EPA names for chemical analyses that will go in the column "Result Analytical Method ID" do not exactly match the names provided by the laboratory (SGS). After communicating with SGS and ADEC on 2/8/2022, we are able to cross-walk between the two naming systems. These matches are documented in the excel file "analysis_code_matching_table.xlsx."
-
-# assign "Result Analytical Method ID" and "Result Analytical Method Context" to dataset using matching table
-
-# read in matching table
-analysis_code_matching_table <- read_excel("other/input/wqx_templates/analysis_code_matching_table.xlsx") %>%
-  select(-Comments,-`EPA Name`) %>%
-  clean_names() %>%
-  rename(analytical_method = sgs_analysis_code) %>%
-  # remove "EP" prefix from method "EP200.8"
-  mutate(analytical_method = str_replace(analytical_method,"EP200.8","200.8"))
-  
-
-# read in WQX analytical methods list
-wqx_analytical_methods <- read_excel("other/input/wqx_templates/AWQMS_KWF_Baseline_2021.xlsx", sheet = "Analytical Methods") %>%
-  select("ID","Context Code") %>%
-  clean_names() %>%
-  rename(epa_analysis_id = id) %>%
-  distinct()
-
-# join two tables above
-epa_analysis_codes <- inner_join(wqx_analytical_methods,analysis_code_matching_table, by = "epa_analysis_id") %>%
-  filter(!context_code %in% c("USEPA Rev 5.4",
-                              "APHA (1997)",
-                              "APHA (1999)")) 
-
-# join EPA analysis IDs and context codes to overall dataset
-dat %<>%
-  mutate(analytical_method = str_replace(analytical_method,"EP200.8","200.8")) %>%
-  left_join(epa_analysis_codes, by = "analytical_method") 
-
-
-# remove unneeded dfs
-rm(analysis_code_matching_table,wqx_analytical_methods,epa_analysis_codes)
-
-```
-
-```{r message = FALSE, echo = F, include = F}
-
-#| warning: false
-#| message: false
-
-########################## Miscellaneous Steps for SGS values #########################################
-
-
-########### Address Non-Detect values #########################
-
-# Note on non-detect values
-# Non-detect values should be left blank. A non-detect does not necessarily mean there was a zero observation of an analyte in a sample, it could be just be present at a level lower than the method detection level (lower than what the lab equipment can detect). 
-
-# Instead of putting 0 in the results, we’ll leave it blank. The Practical Quantitation Limit (or Limit of Quantitation) is presented alongside the result in each row. When DEC evaluates a waterbody, they’ll use ½ the PQL as a stand-in for a non-detect. 
-
-# See explanatory document at "other/documents/references/SGS DL, LOD, LOQ Interpretation.pdf" for more details.
-
-# modify non-detect values from "0" to "NA" if resultflag = U or ND
-dat %<>%
-  mutate(result1 = na_if(result,0)) %>%
-  select(-result) %>%
-  rename(result = result1)
-
-
-###### Segregate laboratory QA/QC data from field data ########
-
-# These lab-only data will be evaluated at a later step of QA/QC evaluation. See excel file "other/input/wqx_templates/sample_type_abbreviations_manual_edit.xlsx" for sample_type naming schema.
-
-# Within this data evaluation, we will create two dataframes. One containing the full output of both lab QA data and field data, and the other containing field data only.
-
-sgs21_als21_qaqc_dat <- dat %>%
-  
-    # retain only results not from field sampling program (project samples and trip blanks)
-  
-    # also filter out hydrocarbon surrogate results ("surr"). Surrogate standards are compounds spiked into all samples, blanks, Laboratory Control Samples, and matrix spikes to monitor the efficacy of sample extraction, chromatographic, and calibration systems. They do not represent environmental observations.
-   filter(!sample_type %in% c("PS","SMPL","TB") | 
-            grepl("(surr)",analyte))
-
-write.csv(sgs21_als21_qaqc_dat, "other/output/lab_qaqc_data/2021_lab_qaqc_data/sgs21_als21_qaqc_dat.csv")
-
-
-# for this dataframe, retain only non-field sample results for WQX export
-dat %<>%
-  filter(sample_type %in% c("PS","SMPL","TB")) %>%
-  filter(!grepl("(surr)",analyte))
-
-rm(sgs21_als21_qaqc_dat)
-
-
+```{r ingest-sgs-als, echo = F, message = F, warning = F, include = F}
+
+# Parts A–E: SGS/ALS ingestion, site-name join, analytical method join,
+# non-detect handling, and lab QA/QC segregation.
+# Requires: year, spring_data_dir, summer_data_dir, output_qaqc_dir (from year-config)
+# Produces: dat (field results ready for FC/TSS bind)
+source("functions/appendix_a_scripts/ingest_sgs_als.R")
 ```
 
 <br>
@@ -533,269 +172,12 @@ embed_if_html('other/input/2021_wqx_data/spring_2021_wqx_data/SWWTP/SWWTP_Spring
 embed_if_html('other/input/2021_wqx_data/summer_2021_wqx_data/Taurianen/FC_CoC_Taurianen_Summer2021.pdf', text = "Download Summer 2021 Fecal Coliform Chain of Custody")
 ```
 
-```{r include = F}
+```{r ingest-fc, echo = F, message = F, warning = F, include = F}
 
-############################################################################################################
-##################################### Read in  and Clean SWWTP / Taurianen FC Data #########################
-############################################################################################################
-
-########################### Part A: SWWTP FC Data Read In ##################################################
-swwtp_spring21 <- read_excel("other/input/2021_wqx_data/spring_2021_wqx_data/SWWTP/KRWF Fecal 05-11-21.xls", skip = 11) %>%
-  clean_names() %>%
-
-## fix site naming and terminology
-
-# move info about duplicate sample and/or sample blank status into separate column
-  # sample type abbreviations
-  mutate(sample_type = case_when(
-    grepl("BLANK",sample_location_rm) ~ "MB", # method blank
-    grepl("POSITIVE",sample_location_rm) ~ "LCS")) %>% # laboratory control sample
- # assign all other samples as "PS" (project sample)
-  mutate_at(vars(sample_type),~replace_na(.,"PS")) %>%
-
-  # field dup designation
-  mutate(sample_condition = case_when(
-    grepl("DUP",sample_location_rm) ~ "Field Duplicate")) %>%
-  # remove "BLANK", and "POSITIVE designation from sample_location column
-  mutate(sample_location_rm = (str_replace(sample_location_rm, "BLANK|POSITIVE", ""))) 
-
-
-# remove "DUP" from site name column and trim white spaces in site name column
-swwtp_spring21 %<>%
-  mutate(sample_location_rm = str_remove(sample_location_rm,"DUP")) %>%
-  mutate(sample_location_rm = str_trim(sample_location_rm,"right"))
-
-
-# address different site naming systems
-# use manually generated matching table
-# read in matching table and match
-swwtp_spring21_site_matching <- read_excel("other/input/wqx_templates/swwtp_site_names_matching_table_manual_edit.xlsx") 
-
-# join
-# modify join table to contain "sample" column w/ format RM_0_No_Name_Creek
-swwtp_spring21 %<>%  
-  full_join(swwtp_spring21_site_matching) %>%
-  select(-sample_location_rm)
-
-rm(swwtp_spring21_site_matching)
-
-
-## fix lab analysis times and dates
-swwtp_spring21 %<>%
-  # lab processing time/date
-  mutate(analysis_time_in = as_hms(time_in),
-         analysis_date_in = mdy(spring21_sample_date),
-         analysis_time_out = as_hms(time_out),
-         # see file "other/input/2021_wqx_data/spring_2021_wqx_data/SWWTP/KRWF Fecal 05-11-21.xls for out analysis date
-         analysis_date_out = ymd("2021-05-12")) %>%
-  select(-time_in,-time_out) %>%
-  transform(time_sampled = as_hms(time_sampled)) %>%
-  # field sample date and time
-  mutate(time_sampled = as_hms(time_sampled), 
-         sample_date = mdy(spring21_sample_date))
-
-## assign time/date received at lab. info from chain of custody
-swwtp_spring21_rec_time <- "13:31:00"
-swwtp_spring21_rec_date <- "2021-05-11"
-swwtp_spring21 %<>%
-  mutate(rec_date = ymd(swwtp_spring21_rec_date),
-         rec_time = as_hms(swwtp_spring21_rec_time))
-  
-
-## rename existing column names and create new ones to match sgs21 data format at end of prior code chunk
-swwtp_spring21 %<>% 
-  rename(lab_sample = dish_number,
-         result = colony_count_100m_l,
-         collect_time = time_sampled,
-         run_time = analysis_time_in,
-         run_date = analysis_date_in,
-         # = analysis_time_out,
-         # = analysis_date_out,
-         collect_date = sample_date) %>%
-  mutate(note = paste0("Lab analysis volume = ",ml," mL"),
-         matrix = "Water (Surface, Eff., Ground)",
-         analytical_method = "9222 D ~ Membrane filtration test for fecal coliforms",
-         analyte = "Fecal Coliform",
-         units = "cfu/100ml",
-         # reporting limit ("loq") value from 2019 QAPP, pg 17
-         loq = 1.0,
-         lab_name = "Soldotna Wastewater Treatment Plant, Soldotna, Alaska",
-         units = "cfu/100ml",
-         epa_analysis_id = "9222D",
-         context_code = "APHA",
-         analyst = "AW") %>%
-  clean_names() %>%
-  select(-ml,-colony_count) %>%
-  
-  # transform to prep for bind with sgs21
-  transform(lab_sample = as.character(lab_sample),
-            result = as.double(result)) %>%
-  
-  # apply correction to the one "TNTC" result (Too Numerous To Count), since we can't have characters and integers in same column
-  mutate(note = case_when(
-    lab_sample == "30" ~ paste("Lab analysis volume = 0.5 mL, result = TNTC"),
-    TRUE ~ note))
-
-
-
-########### Address Non-Detect values in SWWTP Fecal Coliform Data #########################
-
-# Non-detect values should be left blank. A non-detect does not necessarily mean there was a zero observation of an analyte in a sample, it could be just be present at a level lower than the method detection level (lower than what the lab equipment can detect). Instead of 0, we’ll leave it blank. The Practical Quantitation Limit (or Limit of Quantitation) is presented alongside the result. When DEC evaluates a waterbody, they’ll use ½ the PQL as a stand-in for a non-detect. See explanatory document at "other/documents/references/SGS DL, LOD, LOQ Interpretation.pdf" for more details.
-
-# Assign a resultflag column. Use "=" if result > 1.0 cfu and "U" if result < 1.0 cfu. See pg 20 of 2023 QAPP at "other/documents/QAPP/qapp_draft_v4.2.pdf"
-
-swwtp_spring21 %<>%
-  mutate(resultflag = case_when(
-    result < 1 ~ "U",
-    TRUE ~ "="))
-
-# modify non-detect values from "0" to "NA" if resultflag = U or ND
-swwtp_spring21 %<>%
-  mutate(result1 = na_if(result,0)) %>%
-  select(-result) %>%
-  rename(result = result1)
-
-
-# segregate lab results from field results, and write lab qa/qc results to external csv
-swwtp_spring21_qaqc_dat <- swwtp_spring21 %>%
-  filter(sample_type %in% c("MB","LCS"))
-write.csv(swwtp_spring21_qaqc_dat, "other/output/lab_qaqc_data/2021_lab_qaqc_data/swwtp_spring21_fc_qaqc_dat.csv", row.names = F)
-
-swwtp_spring21 %<>%
-  filter(!sample_type %in% c("MB","LCS"))
-
-
-## join SGS 2021 data to Spring 2021 Fecal Coliform data from SWWTP
-dat <- bind_rows(dat,swwtp_spring21) %>%
-  select(-location)
-
-rm(swwtp_spring21)
-
-
-
-## NOTE - after this join, there is no content in the "sample" column for FC samples. This column does not exist
-## If we need this column to exist, do a table_join similar to what was done for the SGS and ALS data. May not need it though, since we have monitoring location name & monitoring location id columns already.
-```
-
-```{r echo = F, message = F, warning = F}
-
-########################### Part B: Taurianen FC Data Read In (Summer 2021) ########################
-
-taur_summer21_rec_date <- "2021-07-27"
-taur_summer21_rec_time <- "13:37:00"
-
-
-## read in taurianen summer 2021 results
-taur_summer21 <- read_excel("other/input/2021_wqx_data/summer_2021_wqx_data/Taurianen/Fecal_Coliform_Results_Spreadsheet.xlsx", skip = 3) %>%
-  clean_names() %>%
-  select(-qc1,-data_entry,-qc2) %>%
-  
-## move info about duplicate sample and/or sample blank status into separate column
-  mutate(sample_condition = case_when(
-    grepl("DUP",sample_location) ~ "Field Duplicate")) %>%
-  # remove "DUP" designation from sample_location column
-  mutate(sample_location = (str_replace(sample_location, "_DUP", ""))) %>%
-  # trim white spaces in site name column
-  mutate(sample_location = str_trim(sample_location,"right")) %>%
-  
-## add known info about times/dates, correct formats and column names
-  mutate(collect_date = mdy(summer21_sample_date),
-         run_date = mdy(summer21_sample_date),
-         run_time = as_hms(time_relinquished),
-         analysis_date_out = mdy("7/28/2021"),
-         analysis_time_out = as_hms(time_tested), 
-         
-         # time/date received at lab from chain of custody
-         rec_date = ymd(taur_summer21_rec_date),
-         rec_time = as_hms(taur_summer21_rec_time),
-         
-         # drop old columns
-         .keep = "unused") %>%
-  select(-date_of_testing,-neg_pos) %>%
-  transform(time_sampled = as_hms(time_sampled)) %>%
-  
-## add lab name
-  mutate(lab_name = "Taurianen Engineering and Testing, Soldotna, Alaska") %>%
-  
-  # rename columns
-  rename(sample = sample_location,
-         collect_time = time_sampled)
-
-# NOTE: for Taurianan QA/QC practices, see email from from Taurianen at "other/documents/references/Taurianen QA Technique (Email march 2022).docx" (folder in this project repo)
-  
-
-## fix site naming and terminology
-
-# generate spreadsheet of unique site names from taurianen dataset 
-taur_summer21_sites <- data.frame(unique(taur_summer21$sample)) %>%
-  rename(sample = unique.taur_summer21.sample.)
-
-# export site names list to spreadsheet
-write.xlsx(taur_summer21_sites, "other/input/wqx_templates/taurianen_site_names_matching_table.xlsx")
-
-# manually edit a new spreadsheet such that taurianen site names are paired iwth AWQMS site names
-# read in manually edited site names sheet
-taur_summer21_sites <- read_excel("other/input/wqx_templates/taurianen_site_names_matching_table_manual_edit.xlsx") 
-
-# join AWQMS site names to taurianen data
-taur_summer21 <- left_join(taur_summer21,taur_summer21_sites,by = "sample") 
-
-
-
-## add and/or rename other columns to match SWWTP dataframe structure
-taur_summer21 %<>%
-  clean_names() %>%
-  select(-direct_count) %>%
-  rename(result = number_of_colonies) %>%
-  mutate(note = "",
-         matrix = "Water",
-         analytical_method = "9222 D ~ Membrane filtration test for fecal coliforms",
-         analyte = "Fecal Coliform", 
-         units = "cfu/100ml",
-         # loq = reporting limit
-         loq = 1,
-         epa_analysis_id = "9222D",
-         context_code = "APHA") %>%
-  transform(result = as.double(result))
-
-
-# assign "sample_type"
-taur_summer21 %<>%  mutate(sample_type = case_when(
-    sample_condition == "Lab Blank" ~ "MB", # method blank
-    sample_condition == "Positive Control" ~ "LCS", # laboratory control sample
-    TRUE ~ "PS"
-    ))
-
-########### Address Non-Detect values #########################
-
-# Non-detect values should be left blank. A non-detect does not necessarily mean there was a zero observation of an analyte in a sample, it could be just be present at a level lower than the method detection level (lower than what the lab equipment can detect). Instead of 0, we’ll leave it blank. The Practical Quantitation Limit (or Limit of Quantitation) is presented alongside the result. When DEC evaluates a waterbody, they’ll use ½ the PQL as a stand-in for a non-detect. See explanatory document at other/documents/references/SGS DL, LOD, LOQ Interpretation.pdf for more details.
-
-# Assign resultflag column. Use "=" if result > 1 and "U" if result < 1. See pg 17 of 2020 QAPP at "other/documents/QAPP/QAPP-2020-KenaiRiverWatershed_ZnCu.pdf"
-
-taur_summer21 %<>%
-  mutate(resultflag = case_when(
-    result < 1 ~ "U",
-    TRUE ~ "="))
-
-# modify non-detect values from "0" to "NA" if resultflag = U or ND
-taur_summer21 %<>%
-  mutate(result1 = na_if(result,0)) %>%
-  select(-result) %>%
-  rename(result = result1)
-
-
-# segregate lab results from field results, and write lab qa/qc results to external csv
-taur_summer21_qaqc_dat <- taur_summer21 %>%
-  filter(sample_type %in% c("MB","LCS"))
-write.csv(taur_summer21_qaqc_dat, "other/output/lab_qaqc_data/2021_lab_qaqc_data/taur_summer21_qaqc_dat.csv", row.names = F)
-
-
-# join 2021 Taurianen Fecal Coliform data into overall dataframe so far
-dat <- bind_rows(dat,taur_summer21)
-
-# rmeove old dfs
-rm(taur_summer21,taur_summer21_sites,taur_summer21_qaqc_dat,swwtp_spring21_qaqc_dat)
-
+# Spring and summer FC ingestion. Lab format determined by spring_fc_lab / summer_fc_lab.
+# Requires: dat, spring/summer_fc_path, spring/summer_fc_lab, dates, output_qaqc_dir
+# Produces: dat (with FC rows added)
+source("functions/appendix_a_scripts/ingest_fc.R")
 ```
 
 <br>
@@ -803,11 +185,11 @@ rm(taur_summer21,taur_summer21_sites,taur_summer21_qaqc_dat,swwtp_spring21_qaqc_
 ##### 2021 Total Suspended Solids Lab Results (Soldotna Wastewater Treatment Plant (SWWTP))
 
 ```{r, echo = F}
-embed_if_html('other/input/2021_wqx_data/spring_2021_wqx_data/SWWTP/KRWF TSS MONITORING 05-11-21.xlsx', text = "Download Original Spring 2021 Total Suspended Solids Results from SWWTP.xlsx")
+embed_if_html(spring_tss_path, text = "Download Original Spring 2021 Total Suspended Solids Results from SWWTP.xlsx")
 ```
 
 ```{r, echo = F}
-embed_if_html('other/input/2021_wqx_data/summer_2021_wqx_data/SWWTP/KRWF TSS MONITORING 07-28-21.xlsx', text = "Download Original Summer 2021 Total Suspended Solids Results from SWWTP.xlsx")
+embed_if_html(summer_tss_path, text = "Download Original Summer 2021 Total Suspended Solids Results from SWWTP.xlsx")
 ```
 
 ```{r, echo = F}
@@ -820,441 +202,21 @@ embed_if_html('other/input/2021_wqx_data/summer_2021_wqx_data/SWWTP/TSS_CoC_SWWT
 
 <br>
 
-```{r include = F}
-# SWWTP Spring 2021 TSS data
-## Reformat TSS data to match WQX template
+```{r ingest-tss, echo = F, message = F, warning = F, include = F}
 
-
-# read in
-swwtp_tss_spring21 <- read_excel('other/input/2021_wqx_data/spring_2021_wqx_data/SWWTP/KRWF TSS MONITORING 05-11-21.xlsx', skip = 1, sheet = "Updated_Formatting") %>%
-  clean_names() %>%
-  transform(date_of_analysis = anydate(date_of_analysis)) %>%
-  # add info from lab COC
-  mutate(rec_date = ymd_hms("2021-05-11 14:00:00"))
-
-swwtp_tss_summer21 <- read_excel('other/input/2021_wqx_data/summer_2021_wqx_data/SWWTP/KRWF TSS MONITORING 07-28-21.xlsx', skip = 1, sheet = "Updated_Formatting") %>%
-  clean_names() %>%
-  transform(sample_time = anytime(sample_time)) %>%
-  # add info from lab COC
-  mutate(rec_date = ymd_hms("2021-07-27 14:00:00"))
-
-
-# combine spring & summer
-swwtp_tss21 <- bind_rows(swwtp_tss_spring21,swwtp_tss_summer21) %>%
-  remove_empty() 
-rm(swwtp_tss_spring21,swwtp_tss_summer21)
-
-# prepare and format to match larger dataset
-## miscellaneous steps
-
-swwtp_tss21 %<>%
-  select(-qc1,-data_entry,-x8) %>%
-  rename(analysis_time = time) %>%
-  transform(sample_time = as_hms(sample_time),
-            analysis_time = as_hms(analysis_time)) %>%
-
-  # move info about duplicate sample and/or sample blank status into separate column
-  mutate(sample_condition = case_when(
-    grepl("DUP",sample_location) ~ "Field Duplicate")) %>%
-  # remove "DUP" designation from locations column
-  mutate(sample_location = str_replace(sample_location, "_DUP", "")) %>%
-  # replace "O" with zeros in location column
-  mutate(sample_location = str_replace(sample_location, "RM_O", "RM_0")) %>%
-  # add units of suspended solids
-  mutate(units = "mg/l") %>%
-  rename(result = s_s_mg_l) %>%
-  transform(result = as.numeric(result)) %>%
-  
-  # add info about EPA analysis type from AWQMS template
-  mutate(epa_analysis_id = "2540-D",
-         analytical_method = "SM21-2540-+D",
-         context_code = "APHA",
-         note = "") %>%
-  
-  # remove tare and paper weight values
-  select(-dried_wt,-paper_wt,-tare_wt_kg, -ml) %>%
-  
-  # modify date/time formats
-  mutate(collect_date = as.character(paste(field_sample_date,sample_time)),
-         run_date_time = as.character(paste(date_of_analysis,analysis_time)), .keep = "unused") %>%
-  mutate(collect_time = as_hms(as.POSIXct(collect_date))) %>%
-  mutate(collect_date = date(as.POSIXct(collect_date)),
-         run_time = as_hms(ymd_hms(run_date_time)),
-         run_date = date(ymd_hms(run_date_time)),.keep = "unused") %>%
-  
-  # rename
-  rename(analyst = signature) %>%
-  
-  # miscellaneous
-  mutate(lab_sample = "",
-         matrix = "Water",
-         analyte = "Total suspended solids",
-         # loq = reporting limit
-         loq = 1.0,
-         # lod = sensitivity, or method detection limit
-         lod = 0.31,
-         lab_name = "Soldotna Wastewater Treatment Plant, Soldotna, Alaska")
-
-  
-# assign "sample_type"
-swwtp_tss21 %<>%  
-  mutate(sample_type = case_when(
-    sample_condition == "Lab Blank" ~ "MB", # method blank
-    sample_condition == "Positive Control" ~ "LCS", # laboratory control sample
-    TRUE ~ "PS"
-    ))
-
-# get site names consistent with AWQMS format
-swwtp_tss_sitenames <- data.frame(unique(swwtp_tss21$sample_location))
-
-# delete existing csv if present
-unlink("other/input/wqx_templates/swwtp_tss_sitenames.csv")
-
-# export csv of swwtp_tss site names
-write.csv(swwtp_tss_sitenames,"other/input/wqx_templates/swwtp_tss_sitenames.csv",row.names = F)
-
-# use this list to create manually edited file, matched to AWQMS template names
-# read in manually edited file
-swwtp_tss_sitenames <- read_excel("other/input/wqx_templates/swwtp_tss_site_names_matching_table_manual_edit.xlsx")
-
-# join correct site names to overall 2021 TSS dataset
-swwtp_tss21 <- left_join(swwtp_tss21,swwtp_tss_sitenames)  %>%
-  clean_names() %>%
-  rename(sample = sample_location)
-
-
-########### Address Non-Detect values #########################
-
-# Non-detect values should be left blank. A non-detect does not necessarily mean there was a zero observation of an analyte in a sample, it could be just be present at a level lower than the method detection level (lower than what the lab equipment can detect). Instead of 0, we’ll leave it blank. The Practical Quantitation Limit (or Limit of Quantitation) is presented alongside the result. When DEC evaluates a waterbody, they’ll use ½ the PQL as a stand-in for a non-detect. See explanatory document at other/documents/references/SGS DL, LOD, LOQ Interpretation.pdf for more details.
-
-# Assign resultflag column. Use "=" if result > 1 and "U" if result < 1. See pg 20 of 2023 QAPP at "other/documents/QAPP/qapp_draft_v4.2.pdf"
-swwtp_tss21 %<>%
-  mutate(resultflag = case_when(
-    result < 1 & result > 0.31 ~ "J",
-    result < 0.31 ~ "U",
-    TRUE ~ "="))
-
-# modify non-detect values from "0" to "NA" if resultflag = U or ND
-swwtp_tss21 %<>%
-  mutate(result1 = na_if(result,0)) %>%
-  select(-result) %>%
-  rename(result = result1)
-
-# in future scripts need to ensure that non-detect "0" results (resultflag = "U") are shown as "NA" rather than zero.
-
-###### In this next step is where we would normally export lab QA/QC sample data as a seperate csv. However, I have discovered that at least for 2021-2022 this lab QA data was not reported by SWWTP for Total Suspended Solids
-
-######## The SWWTP TSS Standard Opeating Procedure at "other\documents\references". The SOP does not describe the the kind of QA we need for baseline, as described in our QAPP
-
-####### The QAPP specifies the need for the following QA measurements for TSS: lab blank, lab duplicate sample, external QC check sample. These QA results were not reported in 2021 and 2022, likely not produced either. Check previous years
-
-####### The SWWTP SOP for TSS specifies the following for QA practices: "Every year the Soldotna WWTP must participate in the DMR QA as part of our NPDES permit.  Part of the DMR QA test set is the TSS PE sample.  This test must be performed and we must pass the sample to be able to report data for the year." Further details on the DMR QA test at https://www.epa.gov/compliance/discharge-monitoring-report-quality-assurance-study-program
-
-####### Bottom line: need to re-instate recommended QA for TSS for 2023. This topic has been added to the agenda of the technical advisory committee meeting March 20th, 2023.
-
-####### Update code here for 2023 and/or other previous years 2014-2020
-
-
-
-# segregate lab results from field results, and write lab qa/qc results to external csv
-#swwtp_tss21_qaqc_dat <- swwtp_tss21 %>%
-#  filter(sample_type %in% c("MB","LCS"))
-#write.csv(swwtp_tss21_qaqc_dat, "other/output/lab_qaqc_data/2021_lab_qaqc_data/swwtp_tss21_qaqc_dat.csv", row.names = F)
-
-#rm(swwtp_tss21_qaqc_dat)
-
-
-# join TSS data with overall dataset
-dat <- bind_rows(dat,swwtp_tss21)
-
-rm(swwtp_tss_spring21,swwtp_tss_sitenames,swwtp_tss21)
-
-# 2/14/23 go back to FC section and see if sample name is already bad up there
-# (unnecessary??)
-
-
+# SWWTP TSS ingestion (spring + summer). See ingest_tss.R for QA gap notes.
+# Requires: dat, spring_tss_path, summer_tss_path, spring/summer_rec_date
+# Produces: dat (with TSS rows added)
+source("functions/appendix_a_scripts/ingest_tss.R")
 ```
 
-```{r include = F}
-
-############### Miscellaneous Steps for Overall Field Results Dataframe #################
-
-
-
-############# a.)  filter out lab blanks and positive lab controls ##################
-#dat %<>%
-#  filter(!sample_condition %in% c("Lab Blank","Positive Control")) # should already be gone now 3/4/22
-
-
-############ b.) match latitude and longitude coordinates to sites ##################
-
-## read in coordinates
-site_coords <- read_excel("other/input/wqx_templates/wqx_template_matching_table.xlsx", sheet = "site_coordinates") %>%
-  remove_empty()
-
- ## join coords to overall df
-dat <- left_join(dat,site_coords)
-
-
-############ c.) assign "result sample fraction" (e.g. filtered, dissolved, etc.) ############
-
-## read in manually organized table that pairs "result sample fraction" with "analytical method"
-result_sample_fraction <- read_excel("other/input/wqx_templates/wqx_template_matching_table.xlsx", sheet = "result_sample_fraction") %>%
-  filter(!is.na(analytical_method)) %>%
-  select(-description)
-
-## join to table
-dat <- left_join(dat,result_sample_fraction)
-
-# The fraction join above keys on analytical_method, but TSS and FC use long
-# method strings that don't match the lookup table keys. Assign their fractions
-# explicitly. All other parameters are handled by the join above.
-# - TSS (SM 2540-D): "Suspended" is the correct WQX domain value for a
-#   settled/filtered solids measurement on an unfiltered whole-water sample.
-# - Fecal Coliform (9222D): "None" is the correct WQX domain value when no
-#   sample fraction applies (whole-water biological parameter).
-dat <- dat %>%
-  mutate(result_sample_fraction = case_when(
-    grepl("2540", analytical_method, ignore.case = TRUE) ~ "Suspended",
-    grepl("9222", analytical_method, ignore.case = TRUE) ~ "None",
-    TRUE ~ result_sample_fraction
-  ))
-
-
-################ d.) assign "result detection condition"##############
-
-## read in manually assigned join table for "result detection condition"
-result_detection_condition <- read_excel("other/input/wqx_templates/wqx_template_matching_table.xlsx", sheet = "result_detection_condition") %>%
-  clean_names() %>%
-  filter(!is.na(resultflag))
-
-## join to table
-## z <- dat %>% left_join(dat,result_detection_condition, by = "resultflag")
-
-## the attempt at left_join above is exhibiting nonsensical result for unclear reason. For now, define programmatically instead:
-
-dat %<>%
-  mutate(result_detection_condition = case_when(
-    resultflag == "U" | resultflag == "ND" ~ "Not Detected",
-    resultflag == "J" ~ "Present Below Quantification Limit"))
-
-
-
-############### e.) assign chemical preservative type ################
-
-## read in table
-chemical_preservative <- read_excel("other/input/wqx_templates/wqx_template_matching_table.xlsx", sheet = "chemical_preservative") %>%
-  filter(!is.na(preservative)) %>%
-  select(-description)
-
-## join to overall dataframe
-dat <- left_join(dat,chemical_preservative)
-
-
-############# f.) assign bottle type and color ######################
-
-## read in external table
-bottle_type_color <- read_excel("other/input/wqx_templates/wqx_template_matching_table.xlsx", sheet = "sample_container_type_color") %>%
-  select(-description) %>%
-  filter(!is.na(sample_container_type))
-
-## join to overall dataframe
-dat <- left_join(dat,bottle_type_color)
-
-rm(site_coords, result_sample_fraction, result_detection_condition, chemical_preservative, bottle_type_color)
-
-
-
-############ g.) assign "Statistical Base Code" column ##############
-
-# this value is not applicable to most results here, usually left blank. will assign "count": to fecal coliform though
-dat %<>%
-  mutate(stat_base_code = case_when(
-    analyte == "Fecal Coliform" ~ "Count"
-  ))
-
-
-########### f.) "Activity ID" code shortening ######################
-
-# The Activity ID column consists of concatenating several columns (`Monitoring Location ID`,"-",collect_date,"-",analyte,"-", sample_condition). This field is permitted to be no longer than 55 characters. With full names of analytes included, the entries sometimes exceed 55 characters. 
-
-# To address this issue, we will do two things: 
-## a.) use analyte abbreviations: for single elements, we will use their periodic table abbreviation. TBD for other analytes.
-## b.) use abbreviations for sample_condition (designations of field blank or field dup)
-
-## a.) analyte abbreviations
-# export list of unique analytes from 2021 data
-write.csv(data.frame(unique(dat$analyte)),"other/input/wqx_templates/analytes_list.csv", row.names = F)
-
-# manually assign abbreviations for each analyte in the sister file "analytes_list_manual_edit.csv"
-
-# re-import edited list of analyte abbreviation names, then append to dataframe. Use in later step when creating Activity IDs.
-analyte_abbrev <- read.csv("other/input/wqx_templates/analytes_list_manual_edit.csv") 
-colnames(analyte_abbrev) <- c("analyte","analyte_abbreviation")
-analyte_abbrev %<>% select(analyte, analyte_abbreviation)
-dat %<>%
-  left_join(analyte_abbrev)
-
-
-```
-
-```{r include = F}
-
-## b.) sample_condition abbreviations
-
-dat %<>%
-  mutate(sample_condition_abbrv = case_when(
-    sample_condition == "Field Duplicate" ~ "DUP",
-    sample_condition == "Trip Blank" ~ "Blank")) 
-
-# temporarily reduce DF width to visually examine  errors described below; see "temp" file in wqx_templates folder
-#%>% select(sample,collect_date,sample_type,sample_condition,sample_condition_abbrv,analyte,lab_name,result)
-
-# write temporary inspection file
-#write.csv(z, "other/input/wqx_templates/temp.csv")
-
-
-########################## TO DO
-
-# issues to resolve:
-# some samples from 5/11/2021 no name creek have "PS" for sample type but have "Field Duplicate" for sample_condition. need to fix. 
-# 3/16/23:: this is a correct description; field duplicates ARE project samples
-
-# also need to disambiguate "PS" from "SMPL" (the latter is the ALS lab designation) (exploring around line 474 to diagnose)
-
-## Note: at this stage there are lots of format issues with conventions in the "sample" column, but this column is not retained in the final data export so it is not an urgent issue. For reference, these issues include:
-# inconsistency in sample_name formats too (with _)?
-# a few FC results have no sample name (possibly these are method blanks)
-# a few TSS results have only partial sample names
-# Rm10.1_Kenai_River has lowercase
-# some No Name Creek project sample names have a trailing _
-
-# steps to rectify:
-### 1.) rename SMPL Ca/Mg results as PS in line 1045. (Do so here rather than later on so as not to interfere with other previous global edits/mutates that may refer to "SMPL")
-### 2.) 
-
-
-```
-
-```{r include = F, eval = T}
-
-z1 <- dat %>%
-  filter(analyte %in% c("Magnesium","Calcium","Calcium, Total","Magnesium, Total"),
-         collect_date == "2021-5-11")
-
-
-############ g.) prepare final format ###############################
-
-# create column structure from example in WQX template. Use existing input from SGS results if applicable, specify value from "Permitted Values" tab if SGS input not applicable or not yet specified
-
-# 6/21/23:: check to see if format will still work for EPA WQX template
-
-# 10/12/2023 - there might not be a point to doing 'all' of this formatting at this stage, if we don;t have it flagged and ready for export yet
-
-# 12/4/2023 - confirmed that it was unnecessary to have the column names formatted with capital letters & spaces at this stage.
-
-# Current task - take the dataframe at the end of this long script, make so column names/structure conforms to the ADEC example. In the QA/QC process, it went through the janitor::clean_names process, thus names need to be fixed again at the end.
-
-# Save raw-column-name dat before WQX renaming, so downstream QA/QC chunks
-# (which expect original column names like analyte, collect_date, etc.) continue to work.
-dat_raw <- dat
-
-dat %<>%
-  # Proceeding left to right across columns of AWQMS template
-  # Mutate new column or rename existing column as needed
-  
-  mutate(
-    `Monitoring Location ID` = monitoring_location_id,
-    `Activity Media Name` = "Water",
-    `Activity Media Subdivision Name` = "Surface Water",
-    # create activity ID name conditionally if condition(s) present
-    `Activity ID` = case_when(
-      is.na(sample_condition) ~ paste0(`Monitoring Location ID`,"-",collect_date,"-",analyte_abbreviation),
-      !is.na(sample_condition) ~ paste0(`Monitoring Location ID`,"-",collect_date,"-",analyte_abbreviation,"-",sample_condition_abbrv)),
-    `Activity Start Date` = collect_date,
-    `Activity Start Time` = collect_time,
-    `Activity End Date` = "",
-    `Activity End Time` = "",
-    `Activity Latitude` = latitude, 
-    `Activity Longitude` = longitude, 
-    `Activity Source Map Scale` = "",
-    `Activity Type` = case_when(
-      sample_condition == "Field Duplicate" ~ "Quality Control Field Replicate Msr/Obs",
-      sample_condition == "Blank" ~ "Quality Control Sample-Trip Blank",
-      sample_type == "TB" ~ "Quality Control Sample-Trip Blank",
-      TRUE ~ "Field Msr/Obs"),
-    # All samples are surface grab samples. Depths are assigned across the board here as 6 inches (~15 cm) 
-    `Activity Depth/Height Measure` = 15,
-    `Activity Depth/Height Unit` = "cm",
-    # Next three columns not applicable for surface grab samples
-    `Activity Top Depth/Height Measure` = "",
-    `Activity Top Depth/Height Unit` = "",
-    `Activity Bottom Depth/Height Measure` = "",
-    `Activity Bottom Depth/Height Unit` = "",
-    `Activity Relative Depth Name` = "",
-    `Activity Comment` = note,
-    `Characteristic Name` = analyte,
-    `Result Analytical Method ID` = epa_analysis_id,
-    `Result Analytical Method Context` = context_code,
-    `Method Speciation` = "",
-    `Result Value` =  result,
-    `Result Unit` = units,
-    `Result Qualifier` = resultflag,
-    `Result Weight Basis` = "Sampled",
-    `Statistical Base Code` = stat_base_code,
-    `Result Sample Fraction` = result_sample_fraction, 
-    `Result Value Type` = "Actual",
-    `Result Comment` = "",
-    `Sample Collection Method ID` = "",
-    `Equipment ID` = "Water Bottle",
-    `Result Detection Condition` = result_detection_condition,
-    `Result Detection Limit Type 1` = "Limit of Quantitation",
-    `Result Detection Limit Value 1` = loq,
-    `Result Detection Limit Unit 1` = units,
-   # note: lod = "limit of detection"; equivalent to "method detection level"
-    `Result Detection Limit Type 2` = "Method Detection Level",
-    `Result Detection Limit Value 2` = lod,
-    `Result Detection Limit Unit 2` = units,
-    `Laboratory Accreditation Indicator` = "",
-    `Laboratory Name` = lab_name,
-    `Laboratory Sample ID` = lab_sample,
-    `Analysis Start Date` = run_date,
-    `Analysis Start Time` = run_time,
-    `Biological Intent` = "",
-    `Subject Taxonomic Name` = "",
-    `Thermal Preservative` = "Cold packs",
-    `Sample Container Type` = sample_container_type,
-    `Sample Container Color` = sample_container_color,
-    `Chemical Preservative` = preservative
-    # remove columns that were mutated to a new name
-    ,.keep = "unused")
-
-# Save a copy of the whole dataframe with all results and parameters prior to reducing it to just the column subset. We will use this later in QA/QC analyses.
-all_dat <- dat
-
-# next, for our WQX export, we want to retain just those columns listed in the WQX template
-# found solution to this problem here: https://gist.github.com/djhocking/62c76e63543ba9e94ebe
-
-# get all column names from WQX template
-wqx_colnames <- read_excel("other/input/wqx_templates/AWQMS_KWF_Baseline_2021.xlsx", sheet = "KWF Baseline AWQMS Template") %>%
-  colnames()
-
-# select from subset of columns in WQX template
-dat %<>%
-  select(one_of(wqx_colnames))
- 
-# export final WQX-formatted results to external csv
-write.csv(dat,"other/output/wqx_formatted/intermediate/2021_kwf_baseline_results_wqx.csv",row.names = F)
-
-
-z <- dat %>%
-  filter(`Characteristic Name` %in% c("Magnesium","Calcium","Calcium, Total","Magnesium, Total"),
-         `Activity Start Date` == "2021-5-11")
-
-# Restore dat with raw column names so downstream QA/QC chunks work correctly.
-dat <- dat_raw
-rm(dat_raw)
-
+```{r format-wqx, echo = F, message = F, warning = F, include = F}
+
+# Lookup joins (coords, fractions, detection conditions, preservative, container),
+# WQX column construction, Activity ID build, and provisional CSV export.
+# Requires: dat, year, spring_sample_date, wqx_intermediate_path
+# Produces: dat (raw cols restored), dat_raw, all_dat; writes wqx_intermediate_path
+source("functions/appendix_a_scripts/format_wqx.R")
 ```
 
 <br>
@@ -1266,13 +228,7 @@ rm(dat_raw)
 The above data sources have been collated in to a single .csv file (available for download) into a format compatible with the EPA Water Quality Exchange. ***These data have not yet been evaluated against QA/QC standards following guidance in the current project Quality Assurance Project Plan.***
 
 ```{r, echo = F}
-embed_if_html('other/output/wqx_formatted/intermediate/2021_kwf_baseline_results_wqx.csv', text = "Download All Provisional 2021 Kenai River Baseline Water Quality Monitoring Results, Formatted for EPA WQX import")
-
-
-# check unique activity types
-#z <- read.csv("other/output/wqx_formatted/intermediate/2021_kwf_baseline_results_wqx.csv")
-#z1 <- data.frame(unique(z$Characteristic.Name))
-
+embed_if_html(wqx_intermediate_path, text = "Download All Provisional 2021 Kenai River Baseline Water Quality Monitoring Results, Formatted for EPA WQX import")
 
 ```
 
@@ -1312,7 +268,7 @@ All sites were visited as planned on 5/11/2021 and 7/27/2021. Most intrinsic wat
 ```{r echo = F, message = F}
 ### First: get number of samples (results) actually collected from formatted, collated results created from the above code chunks
 ### report for each parameter and date
-total_samples_collected_2021_summary_param <- read.csv('other/output/wqx_formatted/intermediate/2021_kwf_baseline_results_wqx.csv') %>%
+total_samples_collected_2021_summary_param <- read.csv(wqx_intermediate_path) %>%
   clean_names() %>%
   group_by(result_analytical_method_id,characteristic_name,activity_start_date,activity_type) %>%
   count() %>%
@@ -1324,16 +280,16 @@ total_samples_collected_2021_summary_param <- read.csv('other/output/wqx_formatt
 ### Second: use kit request data to count "required" (planned) samples
 
 ## read in SPRING 2021 planned samples from the packing list
-spring21_planned <- read_excel("other/input/2021_wqx_data/spring_2021_wqx_data/SGS/KRBWQM_SGS_bottle_order_Spring_2021.xlsx", sheet = "bottles_analyses_spring_2021") %>%
-  mutate(activity_start_date = spring21_sample_date)
+spring_planned <- read_excel(file.path(spring_data_dir, "SGS", paste0("KRBWQM_SGS_bottle_order_Spring_", year, ".xlsx")), sheet = "bottles_analyses_spring_2021") %>%
+  mutate(activity_start_date = spring_sample_date)
 
 ## read in SUMMER 2021 planned samples from the packing list
-summer21_planned <- read_excel("other/input/2021_wqx_data/summer_2021_wqx_data/SGS/KRBWQM_SGS_bottle_order_Summer_2021.xlsx", sheet = "bottles_analyses_summer_2021") %>%
-  mutate(activity_start_date = summer21_sample_date)
+summer_planned <- read_excel(file.path(summer_data_dir, "SGS", paste0("KRBWQM_SGS_bottle_order_Summer_", year, ".xlsx")), sheet = "bottles_analyses_summer_2021") %>%
+  mutate(activity_start_date = summer_sample_date)
 
 
 ## combine spring and summer 2021 planned samples
-planned_samples_2021 <- bind_rows(spring21_planned,summer21_planned) %>%
+planned_samples <- bind_rows(spring_planned,summer_planned) %>%
   
 ## prepare and summarise table samples collected and tests performed
   clean_names() %>%
@@ -1382,11 +338,11 @@ planned_samples_2021 <- bind_rows(spring21_planned,summer21_planned) %>%
   select(-sample_type)
 
 # clear intermediary dataframes steps
-# rm(spring21_planned,summer21_planned)
+# rm(spring_planned,summer_planned)
 
 
 # create summary table of PLANNED samples
-planned_samples_2021_summary <- planned_samples_2021 %>%
+planned_samples_summary <- planned_samples %>%
   group_by(analysis,expected_results,activity_start_date,activity_type) %>%
   summarise(expected_ct = sum(expected_results)) %>%
   ungroup() %>%
@@ -1404,7 +360,7 @@ planned_samples_2021_summary <- planned_samples_2021 %>%
 
 # BY SITE
 # create summary table of PLANNED samples BY SITE
-planned_samples_2021_summary_by_site <- planned_samples_2021 %>%
+planned_samples_summary_by_site <- planned_samples %>%
   group_by(monitoring_location_id,analysis,expected_results,activity_start_date,activity_type) %>%
   summarise(expected_ct = sum(expected_results)) %>%
   ungroup() %>%
@@ -1422,7 +378,7 @@ planned_samples_2021_summary_by_site <- planned_samples_2021 %>%
 
   
 ### create table of quantity of samples (results) actually collected; not grouped by parameter, but instead by analysis type
-total_samples_collected_2021_summary <- read.csv('other/output/wqx_formatted/intermediate/2021_kwf_baseline_results_wqx.csv') %>%
+total_samples_collected_2021_summary <- read.csv(wqx_intermediate_path) %>%
   clean_names() %>%
   group_by(result_analytical_method_id,activity_start_date,activity_type) %>%
   count() %>%
@@ -1431,7 +387,7 @@ total_samples_collected_2021_summary <- read.csv('other/output/wqx_formatted/int
 
 
 # create table of planned vs actual ANALYSES
-planned_actual_analyses_2021 <- left_join(planned_samples_2021_summary,total_samples_collected_2021_summary,
+planned_actual_analyses_2021 <- left_join(planned_samples_summary,total_samples_collected_2021_summary,
                                           by = c("result_analytical_method_id",
                                                  "activity_start_date",
                                                  "activity_type")) %>%
@@ -1593,7 +549,7 @@ col_names <- c(
   "lab_name")
 
 # read in data
-total_samples_collected_2021_summary_param <- read.csv('other/output/wqx_formatted/intermediate/2021_kwf_baseline_results_wqx.csv')
+total_samples_collected_2021_summary_param <- read.csv(wqx_intermediate_path)
 
 # read in columns relevant to holding time calculations
 holdtime_dat <- dat %>%
@@ -1802,7 +758,7 @@ qaqc_sites_2021 <- read_excel("other/input/wqx_templates/wqx_qaqc/wqx_qaqc_info.
   remove_empty()
 
 # read in data formatted for export
-export_dat <- read.csv('other/output/wqx_formatted/intermediate/2021_kwf_baseline_results_wqx.csv') %>%
+export_dat <- read.csv(wqx_intermediate_path) %>%
   clean_names()
 
 # inner join
@@ -2012,7 +968,7 @@ embed_if_html('other/input/2021_wqx_data/spring_2021_wqx_data/SGS/Spring 2021 Re
 ```{r echo = F, message = F, warning = F}
 # calculate qa/qc discrepancies as detailed in PDF reports check. qapp for guidance, or check w/ qa officer...
 
-matrix_spike_limits <- read.csv("other/output/lab_qaqc_data/2021_lab_qaqc_data/sgs21_als21_qaqc_dat.csv") %>%
+matrix_spike_limits <- read.csv(file.path(output_qaqc_dir, "sgs_als_qaqc_dat.csv")) %>%
   select(lab_name,sample,collect_date,extracted_date,sample_type,result,analyte,dissolved,analytical_method,
          resultflag,percent_recovered,rec_limit_low,rec_limit_high,sample_rpd,rpd_limit_low,rpd_limit_high,
          loq,lod,detection_limit,sample_condition) %>%
@@ -2036,7 +992,7 @@ matrix_spike_recovery_fails <- matrix_spike_limits %>%
 matrix_spike_recovery_fails_tbl <- matrix_spike_limits %>%
   filter(rec_limit_pass == "N") %>%
   select(-extracted_date,-dissolved)
-write.csv(matrix_spike_recovery_fails_tbl,"other/output/lab_qaqc_data/matrix_spike_recovery_fails_2021.csv")
+write.csv(matrix_spike_recovery_fails_tbl,file.path("other/output/lab_qaqc_data", paste0("matrix_spike_recovery_fails_", year, ".csv")))
 
 # --- Summary scalars for matrix spike prose ---
 ms_recovery_min <- round(min(matrix_spike_recovery_fails_tbl$percent_recovered), 0)
@@ -2056,7 +1012,7 @@ A total of `r matrix_spike_recovery_fails` matrix spike or matrix spike duplicat
 
 ```{r matrix-spikes, echo = F, messages = F, warnings = F}
 # embed for download
-embed_if_html("other/output/lab_qaqc_data/matrix_spike_recovery_fails_2021.csv", text = "Download Matrix Spike Recovery Values Exceeding Threshold for 2021 Sample Analyses")
+embed_if_html(file.path("other/output/lab_qaqc_data", paste0("matrix_spike_recovery_fails_", year, ".csv")), text = "Download Matrix Spike Recovery Values Exceeding Threshold for 2021 Sample Analyses")
 
 ```
 
@@ -2070,7 +1026,7 @@ As of `r Sys.Date()`, "Total Nitrate/Nitrite-N" values will be flagged for the s
 
 # apply "flag = Y" to all "Total Nitrate/Nitrite-N" values for Spring 2021
 
-# this step is already accomplished in a previous code block, which imports and joins "other/input/wqx_templates/2021_data_flag_decisions.csv" to the parameters chosen in this discussion.
+# this step is already accomplished in a previous code block, which imports and joins flag_decisions_path to the parameters chosen in this discussion.
 
 ```
 
@@ -2114,45 +1070,26 @@ We calculated Completeness Measure A at the following project scales:
 -   For individual sites
 -   As a project whole
 
-```{r echo = F, message = F, warning = F}
+```{r apply-flags, echo = F, message = F, warning = F}
 
-# Apply data flags and write the flagged export CSV before completeness measures are calculated.
-# This chunk must run before Q25 and Q26, which both read from this file.
-
-# read in data formatted for export
-export_dat <- read.csv('other/output/wqx_formatted/intermediate/2021_kwf_baseline_results_wqx.csv') %>%
-  clean_names() %>%
-  transform(activity_start_date = ymd(activity_start_date))
-
-# apply manually-chosen data flags based on discussion in question 19
-# NOTE: this csv also has a column for summary rationale for each flagging decision
-flags_2021 <- read.csv('other/input/wqx_templates/2021_data_flag_decisions.csv') %>%
-  select(-notes) %>%
-  transform(activity_start_date = mdy(activity_start_date))
-
-export_dat <- full_join(export_dat, flags_2021) %>%
-  mutate(flag = case_when(
-    is.na(flag) ~ "N",
-    TRUE ~ "Y"
-  )) %>%
-  filter(!is.na(activity_id))
-
-write.csv(export_dat, "other/output/wqx_formatted/intermediate/2021_export_data_flagged.csv", row.names = F)
-
+# Join flag decisions and write flagged export CSV (must run before Q25/Q26).
+# Requires: wqx_intermediate_path, flag_decisions_path, flagged_export_path
+# Produces: export_dat (in memory for downstream QA/QC chunks)
+source("functions/appendix_a_scripts/apply_qaqc_flags.R")
 ```
 
 ```{r echo = F, message=FALSE}
 # read in list of analytes specified in QAPP
-analytes_2021 <- read.csv("other/input/wqx_templates/analytes_list_manual_edit.csv")
-colnames(analytes_2021) <- c("characteristic_name","a","param_in_qapp") 
-analytes_2021 %<>% select(-a)
+analytes_qapp <- read.csv("other/input/wqx_templates/analytes_list_manual_edit.csv")
+colnames(analytes_qapp) <- c("characteristic_name","a","param_in_qapp") 
+analytes_qapp %<>% select(-a)
 
 # BY PARAMETER
 # summarise flags by parameter
-completeness_summary_param <- read.csv('other/output/wqx_formatted/intermediate/2021_export_data_flagged.csv') %>%
+completeness_summary_param <- read.csv(flagged_export_path) %>%
   clean_names() %>%
   # reduce the list of analytes to only those specified in QAPP
-  left_join(analytes_2021) %>%
+  left_join(analytes_qapp) %>%
   filter(param_in_qapp == "Y") %>%
   # summarise
   group_by(result_analytical_method_id,characteristic_name,flag) %>%
@@ -2173,10 +1110,10 @@ write.csv(completeness_summary_param,"other/output/field_qa_qc_data/completeness
 
 ## BY SITE
 # summarise flags by site
-completeness_summary_site <- read.csv('other/output/wqx_formatted/intermediate/2021_export_data_flagged.csv') %>%
+completeness_summary_site <- read.csv(flagged_export_path) %>%
   clean_names() %>%
   # reduce the list of analytes to only those specified in QAPP
-  left_join(analytes_2021) %>%
+  left_join(analytes_qapp) %>%
   filter(param_in_qapp == "Y") %>%
   # summarise
   group_by(monitoring_location_id,flag) %>%
@@ -2197,10 +1134,10 @@ write.csv(completeness_summary_site,"other/output/field_qa_qc_data/completeness_
 
 # OVERALL
 # summarise flags for overall project
-completeness_summary_project <- read.csv('other/output/wqx_formatted/intermediate/2021_export_data_flagged.csv') %>%
+completeness_summary_project <- read.csv(flagged_export_path) %>%
   clean_names() %>%
   # reduce the list of analytes to only those specified in QAPP
-  left_join(analytes_2021) %>%
+  left_join(analytes_qapp) %>%
   filter(param_in_qapp == "Y") %>%
   # summarise
   group_by(flag) %>%
@@ -2236,9 +1173,9 @@ embed_if_html("other/output/field_qa_qc_data/completeness_measures/cma_project.c
 
 ```{r cma-narrative-values, echo = F, message = F}
 # Compute scalar values used in the CMA discussion prose below
-cma_dat_inline <- read.csv('other/output/wqx_formatted/intermediate/2021_export_data_flagged.csv') |>
+cma_dat_inline <- read.csv(flagged_export_path) |>
   clean_names() |>
-  left_join(analytes_2021) |>
+  left_join(analytes_qapp) |>
   filter(param_in_qapp == "Y")
 
 cma_total        <- nrow(cma_dat_inline)
@@ -2283,10 +1220,10 @@ For these calculations, we will consider "usable" as "unflagged," and will calcu
 
 # BY PARAMETER (by analytical method)
 # unflagged (usable) vs planned results
-cmb_by_method <- read.csv('other/output/wqx_formatted/intermediate/2021_export_data_flagged.csv') %>%
+cmb_by_method <- read.csv(flagged_export_path) %>%
   clean_names() %>%
   # reduce the list of analytes to only those specified in QAPP
-  left_join(analytes_2021) %>%
+  left_join(analytes_qapp) %>%
   filter(param_in_qapp == "Y") %>%
   group_by(result_analytical_method_id, activity_start_date, activity_type, flag) %>%
   count() %>%
@@ -2295,7 +1232,7 @@ cmb_by_method <- read.csv('other/output/wqx_formatted/intermediate/2021_export_d
   rename(flag_Y = Y,
          flag_N = N) %>%
   transform(activity_start_date = ymd(activity_start_date)) %>%
-  left_join(planned_samples_2021_summary) %>%
+  left_join(planned_samples_summary) %>%
   # CMB = unflagged / planned (per QAPP formula T - (I + NC) / T, goal 60%)
   mutate(cmb = flag_N / expected_results_n) %>%
   mutate(cmb = replace_na(cmb, 0)) %>%
@@ -2306,14 +1243,14 @@ write.csv(cmb_by_method, "other/output/field_qa_qc_data/completeness_measures/cm
 # BY SITE
 # Aggregate planned totals to one row per site (summing across methods and sampling events)
 # so the join is 1-to-1 on monitoring_location_id
-planned_by_site_totals <- planned_samples_2021_summary_by_site %>%
+planned_by_site_totals <- planned_samples_summary_by_site %>%
   group_by(monitoring_location_id) %>%
   summarise(expected_results_n = sum(expected_results_n), .groups = "drop")
 
-cmb_by_site <- read.csv('other/output/wqx_formatted/intermediate/2021_export_data_flagged.csv') %>%
+cmb_by_site <- read.csv(flagged_export_path) %>%
   clean_names() %>%
   # reduce the list of analytes to only those specified in QAPP
-  left_join(analytes_2021) %>%
+  left_join(analytes_qapp) %>%
   filter(param_in_qapp == "Y") %>%
   group_by(monitoring_location_id, flag) %>%
   count() %>%
@@ -2331,11 +1268,11 @@ write.csv(cmb_by_site, "other/output/field_qa_qc_data/completeness_measures/cmb_
 
 # BY PROJECT WHOLE
 # Sum unflagged results across entire project, divide by total planned
-total_planned_2021 <- sum(planned_samples_2021_summary$expected_results_n)
+total_planned_2021 <- sum(planned_samples_summary$expected_results_n)
 
-cmb_project <- read.csv('other/output/wqx_formatted/intermediate/2021_export_data_flagged.csv') %>%
+cmb_project <- read.csv(flagged_export_path) %>%
   clean_names() %>%
-  left_join(analytes_2021) %>%
+  left_join(analytes_qapp) %>%
   filter(param_in_qapp == "Y") %>%
   group_by(flag) %>%
   count() %>%
@@ -2396,7 +1333,7 @@ We used the leaflet package to generate a map of unique sites from the 2021 data
 ```{r echo = F, message = F, warning = F}
 
 # read in locations from exported data (export_dat)
-export_dat <- read.csv("other/output/wqx_formatted/intermediate/2021_export_data_flagged.csv")
+export_dat <- read.csv(flagged_export_path)
 
 site_check <- export_dat %>%
   distinct(monitoring_location_id,activity_latitude,activity_longitude) %>%
@@ -2454,10 +1391,10 @@ Kenai Watershed Forum's Organization ID in the EPA Water Quality Exchange is "Ke
 # Existing format does not include AKDT time zone column.
 
 # read in locations from exported data (export_dat)
-export_dat <- read.csv("other/output/wqx_formatted/intermediate/2021_export_data_flagged.csv") %>%
+export_dat <- read.csv(flagged_export_path) %>%
   mutate(time_zone = "AKDT")
 # re-write export_dat
-write.csv(export_dat,"other/output/wqx_formatted/intermediate/2021_export_data_flagged.csv")
+write.csv(export_dat,flagged_export_path)
 
 ```
 
@@ -2530,7 +1467,7 @@ chr_num <- export_dat %>%
   tally()
 
 # save
-dir <- "other/output/misc/characteristic_count_2021.csv"
+dir <- file.path("other/output/misc", paste0("characteristic_count_", year, ".csv"))
 write.csv(chr_num,dir)
 ```
 
@@ -2674,11 +1611,8 @@ if (knitr::is_html_output()) {
 
 ```{r echo = F, message = F, warning = F}
 
-# NOTE: The flagging chunk that generates 2021_export_data_flagged.csv has been moved
-# to just before Q25 (Completeness Measure A) so that both CMA and CMB calculations
-# read from a freshly-written version of the file within the same render pass.
-# export_dat (with flag column) remains in memory from that earlier chunk.
-
+# Flagging was applied at Q25 above via source("functions/appendix_a_scripts/apply_qaqc_flags.R").
+# The flagged export CSV (flagged_export_path) is available in memory as export_dat.
 ```
 
 <br>
@@ -2689,209 +1623,12 @@ Within Kenai Watershed Forum's EPA Water Quality Portal web account, we develope
 
 For this export, we identified as "Rejected" all observations that had been "flagged" throughout the QA/QC process described above. Flagged observations will be uploaded to the EPA WQX labeled as "Rejected" under the column "Result Status ID."
 
-```{r echo = F}
+```{r generate-cdx-export, echo = F, message = F, warning = F}
 
-# note all flagged observations in the 2021 dataset
-
-# label all flagged observations as "Rejected" and non-flagged as "Final."
-
-export_dat %<>%
-  mutate(`Result Status ID` = case_when(
-    flag == "Y" ~ "Rejected",
-    flag == "N" ~ "Accepted"
-  ))
-
-# Exclude Phosphorus results from EPA Method 200.8 (Dissolved Metals by ICP/MS).
-# This method was not part of the QAPP; only Total Phosphorus via SM21 4500-P-E
-# was planned and approved. The 200.8 phosphorus results are retained in the
-# flagged intermediate file but are not submitted to CDX.
-export_dat %<>%
-  filter(!(characteristic_name == "Phosphorus" & result_analytical_method_id == "200.8"))
-
-```
-
-```{r echo = F}
-
-# here, we will re-develop the "export_dat" dataframe to match desired import configuration for EPA WQP; modify import config as needed. 
-
-# before we prepare the dataframe, we need to re-prepare some columns in order to correctly create the "Activity ID". In the future we can avoid this step by using desired site names in earlier step
-
-# --> site names
-# rejoin WQP site location info (site names) to export_dat
-## use matched data at "other/input/wqx_templates/wqx_template_matching_table.xlsx
-site_name_match <- read_excel("other/input/wqx_templates/wqx_template_matching_table.xlsx", sheet = "adec_site_names") %>%
-  remove_empty()
-export_dat <- left_join(export_dat, site_name_match)
-
-# --> characteristic names
-# rejoin edited list of analyte abbreviation names, then append to dataframe. Use in creating Activity IDs.
-analyte_abbrev <- read.csv("other/input/wqx_templates/analytes_list_manual_edit.csv") 
-colnames(analyte_abbrev) <- c("characteristic_name","analyte_abbreviation")
-analyte_abbrev %<>% select(characteristic_name, analyte_abbreviation)
-export_dat %<>%
-  left_join(analyte_abbrev)
-
-# --> sample_condition names (dup or field blank)
-# this column is not present, so we will extract the info from the existing activity_id column
-export_dat %<>%
-  mutate(sample_condition_abbrv = case_when(
-    grepl("DUP",activity_id) ~ "DUP",
-    grepl("Blank", activity_id) ~ "Blank"
-  ))
-
-# --> finalize dataframe
-# Proceeding left to right across columns of AWQMS template
-# Mutated new column or rename existing column as needed
-export_dat %<>%  
-   mutate(
-    `Project ID` = 10000007,
-    `Monitoring Location ID` = MonitoringLocationIdentifier,
-    `Activity Media Name` = activity_media_name,
-    `Activity Media Subdivision Name` = activity_media_subdivision_name,
-    # create activity ID name conditionally if condition(s) present
-    `Activity ID` = case_when(
-      is.na(sample_condition_abbrv) ~ paste0(`MonitoringLocationName`,"-",activity_start_date,"-",analyte_abbreviation),
-      !is.na(sample_condition_abbrv) ~ paste0(`MonitoringLocationName`,"-",activity_start_date,"-",analyte_abbreviation,"-",sample_condition_abbrv)),
-    `Activity Start Date` = activity_start_date,
-    `Activity Start Time` = activity_start_time,
-    `Activity Start Time Zone` = "AKDT",
-    `Activity End Date` = activity_end_date,
-    `Activity End Time` = activity_end_time,
-    `Activity End Time Zone` = "AKDT",
-    `Activity Latitude` = activity_latitude, 
-    `Activity Longitude` = activity_longitude, 
-    `Activity Source Map Scale` = activity_source_map_scale,
-    `Activity Type` = activity_type,
-    # All samples are surface grab samples. Depths are assigned across the board here as 6 inches (~15 cm) 
-    `Activity Depth/Height Measure` = activity_depth_height_measure,
-    `Activity Depth/Height Unit` = activity_depth_height_unit,
-    # Next three columns not applicable for surface grab samples
-    `Activity Top Depth/Height Measure` = activity_top_depth_height_measure,
-    `Activity Top Depth/Height Unit` = activity_top_depth_height_unit,
-    `Activity Bottom Depth/Height Measure` = activity_bottom_depth_height_measure,
-    `Activity Bottom Depth/Height Unit` = activity_bottom_depth_height_unit,
-    `Activity Relative Depth Name` = activity_relative_depth_name,
-    `Activity Comment` = activity_comment,
-    `Characteristic Name` = characteristic_name,
-    `Result Analytical Method ID` = result_analytical_method_id,
-    `Result Analytical Method Context` = result_analytical_method_context,
-    `Method Speciation` = method_speciation,
-    `Result Value` =  result_value,
-    `Result Unit` = result_unit,
-    `Result Qualifier` = result_qualifier,
-    `Result Weight Basis` = result_weight_basis,
-    `Statistical Base Code` = statistical_base_code,
-    `Result Sample Fraction` = result_sample_fraction, 
-    `Result Value Type` = result_value_type,
-    `Result Comment` = result_comment,
-    `Sample Collection Method ID` = sample_collection_method_id,
-    `Equipment ID` = equipment_id,
-    `Result Detection Condition` = result_detection_condition,
-    # Detection limit columns are numbered "1" and "2" to avoid duplicate column names in R;
-    # the CDX import configuration maps these to the two allowed detection limit slots.
-    `Result Detection Limit Type 1` = result_detection_limit_type_1,        
-    `Result Detection Limit Value 1` = result_detection_limit_value_1,
-    `Result Detection Limit Unit 1` = result_detection_limit_unit_1,
-   # note: lod = "limit of detection"; equivalent to "method detection level"
-    `Result Detection Limit Type 2` = result_detection_limit_type_2,
-    `Result Detection Limit Value 2` = result_detection_limit_value_2,
-    `Result Detection Limit Unit 2` = result_detection_limit_unit_2,
-    `Laboratory Accreditation Indicator` = laboratory_accreditation_indicator,
-    `Laboratory Name` = laboratory_name,
-    `Laboratory Sample ID` = laboratory_sample_id,
-    `Analysis Start Date` = analysis_start_date,
-    `Analysis Start Time` = analysis_start_time,
-    `Biological Intent` = biological_intent,
-    `Subject Taxonomic Name` = subject_taxonomic_name,
-    `Thermal Preservative` = thermal_preservative,
-    `Sample Container Type` = sample_container_type,
-    `Sample Container Color` = sample_container_color,
-    `Chemical Preservative` = chemical_preservative
-    # remove columns that were mutated to a new name
-    ,.keep = "unused")
-
-
-# next, for our WQX export, we want to retain just those columns listed in the WQX template
-# found solution to this problem here: https://gist.github.com/djhocking/62c76e63543ba9e94ebe
-
-# get all column names from WQX template
-wqx_colnames <- read_excel("other/input/wqx_templates/AWQMS_KWF_Baseline_2021.xlsx", sheet = "KWF Baseline AWQMS Template") %>%
-  colnames()
-
-# select from subset of columns in WQX template
- export_dat %<>%
-  select(one_of(wqx_colnames))
- 
-# export final WQX-formatted results to external csv
-write.csv(export_dat,"other/output/wqx_formatted/results_activities.csv",row.names = F)
-
-
-```
-
-```{r echo = F}
-
-# --- Project CSV ---
-# Read from the WQP download, then apply corrections needed for CDX upload:
-#   - Keep only the Agency Baseline project row (this submission does not include Hydrocarbons)
-#   - Update QAPP approval status and approving agency (QAPP v3 approved by EPA Region 10, May 2023)
-#   - Set ProjectDescriptionText to the project home page URL
-#   - Attach the QAPP PDF filename and type (uploaded alongside this CSV in CDX)
-#   - Drop columns not used in the CDX import configuration
-project_upload <- read.csv("other/input/WQX_downloads/project/project.csv") |>
-  dplyr::filter(ProjectName == "Agency Baseline") |>
-  dplyr::mutate(
-    QAPPApprovedIndicator  = "Yes",
-    QAPPApprovalAgencyName = "EPA",
-    ProjectDescriptionText = "https://www.kenaiwatershed.org/kenai-river-baseline-water-quality-monitoring/",
-    ProjectAttachmentFileName = "KenaiWatershedForum_QAPP_v3_2023_with_Addendum_April_2024.pdf",
-    ProjectAttachmentType     = "QAPP"
-  ) |>
-  dplyr::select(
-    ProjectIdentifier,
-    ProjectName,
-    ProjectDescriptionText,
-    QAPPApprovedIndicator,
-    QAPPApprovalAgencyName,
-    ProjectAttachmentFileName,
-    ProjectAttachmentType
-  )
-
-write.csv(project_upload, "other/output/wqx_formatted/project.csv", row.names = FALSE)
-
-# --- Station CSV ---
-# Read from the WQP download, filter to KWF Kenai Baseline sites (prefix "KBL"),
-# and retain only the columns required by the CDX import configuration.
-# Well/aquifer columns and provider metadata are excluded - not applicable to this project.
-
-station_upload <- read.csv("other/input/WQX_downloads/station/station.csv") |>
-  dplyr::filter(grepl("KBL", MonitoringLocationName)) |>
-  dplyr::select(
-    MonitoringLocationIdentifier,
-    MonitoringLocationName,
-    MonitoringLocationTypeName,
-    MonitoringLocationDescriptionText,
-    HUCEightDigitCode,
-    LatitudeMeasure,
-    LongitudeMeasure,
-    HorizontalCollectionMethodName,
-    HorizontalCoordinateReferenceSystemDatumName,
-    StateCode,
-    CountyCode
-  ) |>
-  # "Interpolation-Satellite" is not a valid WQX domain value for
-  # HorizontalCollectionMethodName. WQX substitutes "Unknown" and drops the
-  # HUCEightDigitCode, which prevents stations from appearing in How's My Waterway.
-  # "GPS-Unspecified" is the correct WQX value for satellite-based coordinates
-  # and is what ADEC uses for nearby stations that do appear in HMW.
-  # Both "Interpolation-Satellite" and "Unknown" are corrected here as a safety net
-  # in case either value appears in a future WQP re-download.
-  dplyr::mutate(HorizontalCollectionMethodName = dplyr::case_when(
-    HorizontalCollectionMethodName %in% c("Interpolation-Satellite", "Unknown") ~ "GPS-Unspecified",
-    TRUE ~ HorizontalCollectionMethodName
-  ))
-
-write.csv(station_upload, "other/output/wqx_formatted/station.csv", row.names = FALSE)
-
+# Apply Result Status ID, finalize Results & Activities format, and write
+# results_activities.csv, project.csv, station.csv for CDX upload.
+# Requires: export_dat (with time_zone applied in Q32 chunk above)
+source("functions/appendix_a_scripts/generate_cdx_export.R")
 ```
 
 **Notes for 2021 CDX upload:**
