@@ -96,6 +96,31 @@ HMW has two distinct display mechanisms:
 
 ## Session Entries (Newest First)
 
+### Completed (April 21, 2026) — Pipeline Architecture Planning
+
+**Decision: qaqc repo pipeline template (Tasks 18 and 19 created)**
+
+Evaluated several approaches to sharing the QA/QC pipeline between the report repo (`kenai-river-wqx`) and the qaqc repo (`kenai-river-wqx-qaqc`):
+
+- **Rejected:** Shared R package (`kwfbaseline`). Data ingestion varies too much year-to-year for the ingest functions to be reliably packaged. Package overhead not justified.
+- **Rejected:** Parameterized sourced scripts only (Option 1). Doesn't address the structural problem of where the canonical template lives.
+- **Adopted:** Single-QMD-per-year template, canonically housed in the qaqc repo at `templates/pipeline_template.qmd`. The report repo's `appendix_a.qmd` is the 2021 worked example, not the source of truth.
+
+Template structure: Part A (data ingestion, **inlined**, adapted per year) + Part B (WQX formatting, sourced) + Part C (QA/QC checklist Q1-Q42) + Part D (flag application + CDX export, sourced). Full details in AGENTS.md Pipeline Architecture section.
+
+**2023-specific notes (from `2023.qmd` in qaqc repo — to use when building `2023.qmd` from template, Task 19):**
+
+1. **Spring SGS EDD split into two CSVs**: `part1` (method 200.7 / EP200.7 results) and `part2` (all other results). Different column types between parts; must be bound with type coercion before main pipeline. Part 1 receive date/time error: all project samples show `"05/09/2023 00:00"` — correct to `"05/09/2023 09:00"` (lab office open hours per COC documents).
+2. **Summer 2023: 200.8 used for both dissolved AND total metals** — no 200.7 present. Distinguish dissolved vs. total using `ANALYSIS_GROUP` column: `"Dissolved Metals by ICP/MS"` (and provisional variant `"Diss. Metals by ICP/MS (Provisional Be,Cu 652023)"`) = dissolved; `"Metals by ICP/MS"` (and provisional variant `"Metals by ICP/MS (Provisional for Be, Cu 06052023)"`) = total/unfiltered. Assign canonical `result_sample_fraction` = `"Dissolved"` and `"Unfiltered"` respectively per canonical scheme.
+3. **No ALS subcontract for 2023**: Spring 2023 200.7 analyses were run by SGS Orlando, not ALS. Results already in the SGS EDD — no separate ALS ingest needed.
+4. **Filter SW846 6010D rows**: These appear in the SGS EDD as project sample records but have no reportable values (document the digestion method only). Remove before pipeline.
+5. **Spring 2023 sample date correction**: Some `sample_type == "PS"` rows have `activity_start_date == "2023-05-03"` — should be `"2023-05-02"`. Correct via `case_when` after ingest.
+6. **TSS receive times (from COC documents)**: Spring 2023 — RM 1.5 received at 15:30, all others at 12:44. Summer 2023 — all received at 12:25.
+7. **Result sample fraction for 2023 dissolved metals**: Use `"Dissolved"` per canonical scheme (AGENTS.md). The `2023.qmd` draft used `"Filtered, lab"` — do not carry that forward.
+8. **Monitoring location ID**: The 2023.qmd draft used a fragile join from a 2021 results CSV, then patched Jim's Landing and Skilak Lake Outflow with `case_when`. Use the proper `sgs_site_names_matching_table_manual_edit.xlsx` approach from the 2021 pipeline instead. A 2023-specific matching table will need to be created in the qaqc repo.
+
+---
+
 ### Completed (April 16, 2026) — 2025 Preliminary Report + Session
 
 - **Book acronyms chapter expanded.** `chapters/acronyms.qmd` updated from 7 entries to 24, sorted alphabetically. Added: ADEC, BTEX, CDX, EPA, FC, J, KWF, LOD, LOQ, QAPP, QC, RM, RPD, SGS, SWWTP, TSS, U, USEPA, WQP, WQX. Fixed duplicate MDL → MRL.
