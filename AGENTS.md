@@ -92,7 +92,7 @@ The annual QA/QC pipeline follows a two-part template structure, with each year'
 
 **Template structure (single QMD per year):**
 
-```
+```         
 ## Year Configuration        — sampling dates, file paths; only block that changes every year
 ## Part A: Data Ingestion    — inlined code, adapted per year for EDD format quirks
    ### SGS/ALS Lab Results
@@ -104,14 +104,11 @@ The annual QA/QC pipeline follows a two-part template structure, with each year'
 ## Part D: Flag + CDX Export — sourced: functions/apply_qaqc_flags.R, generate_cdx_export.R
 ```
 
-**Key design decisions:**
-- Part A ingest code is **inlined** in the QMD (not a sourced script) so it is visibly marked for adaptation each year.
-- Parts B and D are **sourced scripts** in `functions/` because they are stable and should not change year to year.
-- The stable scripts (`format_wqx.R`, `apply_qaqc_flags.R`, `generate_cdx_export.R`) use a `cfg` config list for all paths, making them portable. The report repo's copies in `functions/appendix_a_scripts/` are secondary; the qaqc repo's `functions/` copies are canonical.
-- A shared R package was considered and rejected: ingest logic varies too much per year to package reliably. The template-per-year approach is more honest about this variation.
+**Key design decisions:** - Part A ingest code is **inlined** in the QMD (not a sourced script) so it is visibly marked for adaptation each year. - Parts B and D are **sourced scripts** in `functions/` because they are stable and should not change year to year. - The stable scripts (`format_wqx.R`, `apply_qaqc_flags.R`, `generate_cdx_export.R`) use a `cfg` config list for all paths, making them portable. The report repo's copies in `functions/appendix_a_scripts/` are secondary; the qaqc repo's `functions/` copies are canonical. - A shared R package was considered and rejected: ingest logic varies too much per year to package reliably. The template-per-year approach is more honest about this variation.
 
 **qaqc repo structure:**
-```
+
+```         
 templates/
   pipeline_template.qmd   # canonical template — copy and adapt for each new year
 functions/
@@ -121,8 +118,7 @@ functions/
 {year}.qmd                # per-year pipeline (copy of template, adapted)
 ```
 
-**Path parameterization:** All stable scripts read paths from a `cfg` list set in the Year Configuration block. Required `cfg` fields:
-`year`, `templates_dir`, `wqx_template_file`, `spring_data_dir`, `summer_data_dir`, `output_qaqc_dir`, `wqx_intermediate_path`, `flagged_export_path`, `flag_decisions_path`, `spring_sample_date`, `summer_sample_date`
+**Path parameterization:** All stable scripts read paths from a `cfg` list set in the Year Configuration block. Required `cfg` fields: `year`, `templates_dir`, `wqx_template_file`, `spring_data_dir`, `summer_data_dir`, `output_qaqc_dir`, `wqx_intermediate_path`, `flagged_export_path`, `flag_decisions_path`, `spring_sample_date`, `summer_sample_date`
 
 ### Lab Ingestion Scripts (report repo — 2021 worked example only)
 

@@ -112,7 +112,8 @@ summer_fc_analysis_date <- mdy("7/28/2021")
 
 # FC lab source for each season. Determines which format parser runs in
 # ingest_fc.R. Options: "SWWTP", "Taurianen".
-# Note: Taurianen closed after 2021; 2022+ seasons use "SWWTP" for both.
+# Note: Taurianen was used for summer FC in 2021 and some prior years.
+#       Taurianen closed after 2021; 2022+ seasons use "SWWTP" for both.
 spring_fc_lab <- "SWWTP"
 summer_fc_lab <- "Taurianen"   # change to "SWWTP" for 2022+
 
@@ -721,7 +722,7 @@ Two possible explanations are worth investigating in future years:
 
 2.  **Method-specific matrix effects.** EPA Method 200.7 (ICP-OES) and 200.8 (ICP-MS) differ in their digestion and detection approaches, and inter-method differences for specific analytes in fresh water matrices have been documented in the literature. Calcium in particular may be subject to spectral interferences or calibration differences between the two methods.
 
-It is also worth noting that the summer 2021 SGS dissolved metals data (200.8) was affected by a unit labeling error in the original EDD (values reported with "ug/L" labels but at mg/L concentrations), which was corrected at ingestion. While the corrected values are internally consistent and physically plausible, the original data anomaly introduces additional uncertainty about the SGS 200.8 dissolved metals results specifically.
+It is also worth noting that the summer 2021 SGS dissolved metals data (200.8) was affected by a unit labeling error in the original EDD (values reported with "ug/L" labels but at mg/L concentrations), which was corrected at data ingestion. While the corrected values are internally consistent and physically plausible, the original data anomaly introduces additional uncertainty about the SGS 200.8 dissolved metals results specifically.
 
 The magnesium exceptions at RM 0 NNC (`r mg_rm0_pct`) and RM 1.5 (`r mg_rm15_pct`) are small enough to fall within typical ICP analytical uncertainty and are not considered significant anomalies. Iron behaves as expected at all sites.
 
