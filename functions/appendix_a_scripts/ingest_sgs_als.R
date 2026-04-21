@@ -34,32 +34,35 @@ sgs_raw <- bind_rows(spring_sgs_raw, summer_sgs_raw) %>%
   clean_names() %>%
   remove_empty() %>%
 
-  # remove unneeded columns
+  # remove unneeded columns and rename in one pass
   rename(
-         lab_sample = lab_sample_id,
-         detection_limit = dl) %>%
-  transform(lab_sample = as.character(lab_sample),
-            sample_rpd = as.character(sample_rpd)) %>%
-  # add lab name
-  mutate(lab_name = "SGS North America, Anchorage, Alaska",
-         matrix = "Water") %>%
-
-  # split a.) lab sample run & b.) collect time and date in prep for future join with ALS data
-  ##### NOTE: SGS data has date and time, ALS has date only.
-  transform(collect_date_time = mdy_hm(collect_date),
-            rec_date_time = mdy_hm(rec_date),
-            run_date_time = mdy_hm(run_date_time),
-            extracted_date_time = mdy_hm(extracted_date)) %>%
-  mutate(collect_time = as_hms(collect_date_time),
-         collect_date = date(collect_date_time),
-         rec_date = date(rec_date_time),
-         rec_time = as_hms(rec_date_time),
-         run_time = as_hms(run_date_time),
-         run_date = date(run_date_time),
-         extracted_time = as_hms(extracted_date_time),
-         extracted_date = date(extracted_date_time)) %>%
-  select(-collect_date_time, -rec_date_time, -run_date_time) %>%
-  rename(sample = sample_id)
+    lab_sample      = lab_sample_id,
+    detection_limit = dl,
+    sample          = sample_id
+  ) %>%
+  # Parse combined datetime strings and extract date/time components.
+  # NOTE: SGS data has date and time combined; ALS has date only.
+  # dplyr mutate() processes columns in order, so intermediate columns
+  # (e.g., collect_date_time) can be referenced later in the same call.
+  mutate(
+    lab_sample          = as.character(lab_sample),
+    sample_rpd          = as.character(sample_rpd),
+    lab_name            = "SGS North America, Anchorage, Alaska",
+    matrix              = "Water",
+    collect_date_time   = mdy_hm(collect_date),
+    collect_time        = as_hms(collect_date_time),
+    collect_date        = date(collect_date_time),
+    rec_date_time       = mdy_hm(rec_date),
+    rec_time            = as_hms(rec_date_time),
+    rec_date            = date(rec_date_time),
+    run_date_time       = mdy_hm(run_date_time),
+    run_time            = as_hms(run_date_time),
+    run_date            = date(run_date_time),
+    extracted_date_time = mdy_hm(extracted_date),
+    extracted_time      = as_hms(extracted_date_time),
+    extracted_date      = date(extracted_date_time)
+  ) %>%
+  select(-collect_date_time, -rec_date_time, -run_date_time, -extracted_date_time)
 
 # Correct SGS EDD unit error for dissolved Calcium, Iron, and Magnesium
 #

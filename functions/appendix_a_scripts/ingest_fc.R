@@ -5,6 +5,8 @@
 # by the `spring_fc_lab` and `summer_fc_lab` config variables.
 #
 # For 2021: spring_fc_lab = "SWWTP", summer_fc_lab = "Taurianen"
+# For some years prior to 2021: Taurianen was also used for summer FC.
+#   Use the Taurianen parser block for those years as well.
 # For 2022+: both = "SWWTP" (Taurianen closed after 2021)
 # If a new lab is used in a future year, add a new format block below.
 #
@@ -142,7 +144,7 @@ if (spring_fc_lab == "SWWTP") {
 if (summer_fc_lab == "Taurianen") {
 
   ########################### Taurianen FC Format Parser ##############################################
-  # Used for: 2021 summer only. Taurianen closed after 2021.
+  # Used for: 2021 summer and some prior years. Taurianen closed after 2021.
   # File: .xlsx, 3 header rows to skip.
 
   summer_fc_rec_time <- "13:37:00"
