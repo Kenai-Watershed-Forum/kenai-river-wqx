@@ -11,10 +11,11 @@
 
 **EPA WQX sync issue BLOCKED — do not attempt CDX delete or re-upload until EPA confirms ETL is restored (\~April 23).**
 
-1.  **Task 1c (HIGH, start here)** — CALM 5-year window sample count check. Count `result_status_identifier == "Accepted"` results per parameter + site for `activity_start_date >= 2017-01-01`. Source: `other/output/wqx_formatted/intermediate/2021_export_data_flagged.csv`. Flag combinations below 10 (or 5 for toxics) — these fall to ADEC Screening Level. Consider sharing with ADEC.
-2.  **Task 1b (HIGH)** — Audit all distinct `CharacteristicName` values in WQP for org `KENAI_WQX`. Cross-reference against current WQX domain list. Map variants to canonical names. Feeds next CDX re-upload.
-3.  **Task 5 (Medium)** — Verify `review_needed = Y` rows in `standard_types` sheet of `master_reg_limits.xlsx`. Six codes: `fw_acute`, `fw_chronic`, `harvest_aquatic_life`, `noncarc_aquatic_org`, `noncarc_water`, `secondary_water_recreation`. Confirm against 18 AAC 70 and USEPA criteria docs; set `review_needed = N`.
-4.  **Task 5a (Medium)** — Add CALM methodology notes to FC, turbidity, and BTEX chapter narratives noting each is excluded from the standard CALM binomial methodology. Links at https://dec.alaska.gov/water/water-quality/integrated-report/
+1.  **Task 18 (HIGH, start here)** — Create `templates/pipeline_template.qmd` in the qaqc repo. This is the canonical single-QMD-per-year pipeline. See Pipeline Architecture section below for full design.
+2.  **Task 1c (HIGH)** — CALM 5-year window sample count check. Count `result_status_identifier == "Accepted"` results per parameter + site for `activity_start_date >= 2017-01-01`. Source: `other/output/wqx_formatted/intermediate/2021_export_data_flagged.csv`. Flag combinations below 10 (or 5 for toxics) — these fall to ADEC Screening Level. Consider sharing with ADEC.
+3.  **Task 1b (HIGH)** — Audit all distinct `CharacteristicName` values in WQP for org `KENAI_WQX`. Cross-reference against current WQX domain list. Map variants to canonical names. Feeds next CDX re-upload.
+4.  **Task 5 (Medium)** — Verify `review_needed = Y` rows in `standard_types` sheet of `master_reg_limits.xlsx`. Six codes: `fw_acute`, `fw_chronic`, `harvest_aquatic_life`, `noncarc_aquatic_org`, `noncarc_water`, `secondary_water_recreation`. Confirm against 18 AAC 70 and USEPA criteria docs; set `review_needed = N`.
+5.  **Task 5a (Medium)** — Add CALM methodology notes to FC, turbidity, and BTEX chapter narratives noting each is excluded from the standard CALM binomial methodology. Links at https://dec.alaska.gov/water/water-quality/integrated-report/
 
 ------------------------------------------------------------------------
 
@@ -38,6 +39,8 @@ See `other/agent_context/session_log.md` for full context on any task.
 | 9 | Low | Make `appendix_a.qmd` year-neutral (single `year` variable at top) | **Complete** |
 | 10 | Low | Extract ingestion logic to `.R` scripts (do with Task 9) | **Complete** |
 | 11 | Low | Restructure WQX data Activity → Results level (future years, qaqc repo) | Pending |
+| 18 | HIGH | Create `templates/pipeline_template.qmd` in qaqc repo — canonical single-QMD pipeline with Part A (inline ingest) and Parts B-D (sourced stable scripts). See Pipeline Architecture section. | Pending |
+| 19 | Medium | Build `2023.qmd` in qaqc repo from template; adapt Part A for 2023 EDD quirks. See 2023-specific notes in session_log.md. | Pending |
 | 12 | Low | Address historical CDX corrections (e.g., spring 2013 specific conductance) in qaqc repo | Pending |
 | 13 | Low | Move `wqx_corrections.qmd` to qaqc repo | Pending |
 | 14 | Low | Add inline tables alongside calculated-result download links in `appendix_a.qmd` | Pending |
@@ -83,9 +86,47 @@ Trip blank-to-crew associations are year-specific and stored in per-year CSVs:
 -   To add a new year: create `trip_blank_crews_{year}.csv` — no script changes needed.
 -   Used in `functions/appendix_a_scripts/ingest_sgs_als.R` via `str_extract` + `left_join`.
 
-### Lab Ingestion Scripts
+### Pipeline Architecture (qaqc repo — canonical home)
 
-Lab-specific ingestion scripts (e.g., `ingest_sgs_als.R`) are intentionally named by lab to accommodate potentially different EDD formats across labs in future years. Do not rename to a generic name.
+The annual QA/QC pipeline follows a two-part template structure, with each year's work contained in a single QMD (`{year}.qmd`). The canonical template lives at `templates/pipeline_template.qmd` in the qaqc repo. `appendix_a.qmd` in the report repo is the 2021 worked example of this template — not the source of truth.
+
+**Template structure (single QMD per year):**
+
+```
+## Year Configuration        — sampling dates, file paths; only block that changes every year
+## Part A: Data Ingestion    — inlined code, adapted per year for EDD format quirks
+   ### SGS/ALS Lab Results
+   ### Fecal Coliform (SWWTP)
+   ### Total Suspended Solids (SWWTP)
+   ### Bind and Standardize  — produces standardized `dat` (the contract between A and B)
+## Part B: WQX Formatting    — sourced: functions/format_wqx.R (stable)
+## Part C: QA/QC Checklist   — Q1–Q42; some formulaic, some manual entries
+## Part D: Flag + CDX Export — sourced: functions/apply_qaqc_flags.R, generate_cdx_export.R
+```
+
+**Key design decisions:**
+- Part A ingest code is **inlined** in the QMD (not a sourced script) so it is visibly marked for adaptation each year.
+- Parts B and D are **sourced scripts** in `functions/` because they are stable and should not change year to year.
+- The stable scripts (`format_wqx.R`, `apply_qaqc_flags.R`, `generate_cdx_export.R`) use a `cfg` config list for all paths, making them portable. The report repo's copies in `functions/appendix_a_scripts/` are secondary; the qaqc repo's `functions/` copies are canonical.
+- A shared R package was considered and rejected: ingest logic varies too much per year to package reliably. The template-per-year approach is more honest about this variation.
+
+**qaqc repo structure:**
+```
+templates/
+  pipeline_template.qmd   # canonical template — copy and adapt for each new year
+functions/
+  format_wqx.R            # stable WQX column formatting (canonical)
+  apply_qaqc_flags.R      # stable flag join + write (canonical)
+  generate_cdx_export.R   # stable CDX export (canonical)
+{year}.qmd                # per-year pipeline (copy of template, adapted)
+```
+
+**Path parameterization:** All stable scripts read paths from a `cfg` list set in the Year Configuration block. Required `cfg` fields:
+`year`, `templates_dir`, `wqx_template_file`, `spring_data_dir`, `summer_data_dir`, `output_qaqc_dir`, `wqx_intermediate_path`, `flagged_export_path`, `flag_decisions_path`, `spring_sample_date`, `summer_sample_date`
+
+### Lab Ingestion Scripts (report repo — 2021 worked example only)
+
+The sourced scripts in `functions/appendix_a_scripts/` (`ingest_sgs_als.R`, `ingest_fc.R`, `ingest_tss.R`) remain in the report repo for `appendix_a.qmd`. They are NOT the canonical approach for future years. In the qaqc repo pipeline template, ingest code is inlined directly in Part A of the QMD. Lab-specific script names (e.g., `ingest_sgs_als.R`) reflect that EDD formats vary by lab — do not rename.
 
 ### appendix_a.qmd Year-Config Variables (2021)
 
