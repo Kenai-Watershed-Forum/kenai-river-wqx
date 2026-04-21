@@ -1,0 +1,32 @@
+# Useful Terminal / Console Commands
+# Kenai River Baseline Water Quality Monitoring
+
+------------------------------------------------------------------------
+
+## Git
+
+# Stage all changes and commit
+git add -A && git commit -m 'staging all files'
+
+# Push to remote
+git push
+
+------------------------------------------------------------------------
+
+## Quarto
+
+# Render HTML (default)
+quarto render
+
+# Render DOCX profile
+quarto render --profile docx
+
+# Render with cache cleared
+quarto render --cache-refresh
+
+------------------------------------------------------------------------
+
+## R Console
+
+# Exit a render early (e.g., to stop at a specific chunk during debugging)
+knitr::knit_exit()
