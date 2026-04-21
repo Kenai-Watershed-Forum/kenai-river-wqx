@@ -7,7 +7,7 @@
 
 ------------------------------------------------------------------------
 
-## Next Session Priorities (April 20, 2026)
+## Next Session Priorities
 
 **EPA WQX sync issue BLOCKED — do not attempt CDX delete or re-upload until EPA confirms ETL is restored (\~April 23).**
 
@@ -73,6 +73,28 @@ See `other/agent_context/session_log.md` for full context on any task.
 -   The binary `flag` (Y/N) in `2021_data_flag_decisions.csv` maps to `Result Status ID` at CDX export
 -   Do not add FQC or other custom codes
 
+### Trip Blank Crew Assignments
+
+Trip blank-to-crew associations are year-specific and stored in per-year CSVs:
+
+-   Location: `other/input/wqx_templates/trip_blank_crews_{year}.csv`
+-   Columns: `blank_id` (e.g., `Trip_Blank_1`), `note` (crew + site string)
+-   Number of rows varies by year (2, 3, or 4 blanks). Non-blank rows get `NA` for `note` via `left_join`.
+-   To add a new year: create `trip_blank_crews_{year}.csv` — no script changes needed.
+-   Used in `functions/appendix_a_scripts/ingest_sgs_als.R` via `str_extract` + `left_join`.
+
+### Lab Ingestion Scripts
+
+Lab-specific ingestion scripts (e.g., `ingest_sgs_als.R`) are intentionally named by lab to accommodate potentially different EDD formats across labs in future years. Do not rename to a generic name.
+
+### appendix_a.qmd Year-Config Variables (2021)
+
+The year-config block at the top of the first chunk sets all year-specific values. For 2021:
+
+-   `spring_sample_date <- "5/11/2021"`, `summer_sample_date <- "7/27/2021"`
+-   `spring_rec_date <- "2021-05-11"` (same day as collection), `summer_rec_date <- "2021-07-27"`
+-   `spring_fc_analysis_date <- mdy("5/12/2021")` (from cell G2 of SWWTP FC lab sheet), `summer_fc_analysis_date <- mdy("7/28/2021")`
+
 ------------------------------------------------------------------------
 
 ## Data Storage Structure
@@ -83,7 +105,8 @@ other/
 ├── input/
 │   ├── WQX_downloads/     # Downloaded EPA data (excluded from GitHub)
 │   ├── wqx_templates/     # WQX reference files, matching tables, lookup CSVs
-│   │   └── wqx_qaqc/      # QA/QC info spreadsheets
+│   │   ├── wqx_qaqc/      # QA/QC info spreadsheets
+│   │   └── trip_blank_crews_{year}.csv  # Year-specific trip blank crew assignments
 │   ├── 2021_wqx_data/     # Raw lab results (SGS, SWWTP, Taurianen)
 │   ├── outliers/          # Manually identified outliers
 │   ├── regulatory_limits/ # master_reg_limits.xlsx + hardness-dependent CSVs
@@ -103,7 +126,9 @@ other/
 
 | File | Purpose |
 |----|----|
-| `_quarto.yml` | Project configuration |
+| `_quarto.yml` | Project configuration. `margin-header` logo path is correct for `index.qmd` only. |
+| `chapters/_metadata.yml` | Overrides `margin-header` with `../other/...` path for all chapter pages. |
+| `parameters/_metadata.yml` | Overrides `margin-header` with `../other/...` path for all parameter pages. |
 | `index.qmd` | Front matter / introduction (stays at project root) |
 | `chapters/data_sourcing.qmd` | Data download and preparation |
 | `chapters/data_qa_qc.qmd` | QA/QC overview |
@@ -116,6 +141,8 @@ other/
 | `templates/_parameter_chunk.Rmd` | Shared knitr child template for all parameter chapters |
 
 **Adding a new parameter chapter:** create `.qmd`, set `characteristic` (+ optionally `sample_fraction`, `no_threshold_note`), call `knitr::knit_child("templates/_parameter_chunk.Rmd", envir = environment(), quiet = TRUE)` with `results='asis'`, add to `_quarto.yml`. No changes to function or template files needed.
+
+**Logo path note:** The KWF logo is in `other/documents/images/KWF_logo_resized.png`. Because chapters and parameter pages are in subdirectories, `_quarto.yml` alone cannot serve the correct relative path for all pages. `_metadata.yml` files in `chapters/` and `parameters/` override `margin-header` with the corrected `../` prefix. If a new subdirectory level is added (e.g., `appendices/`), a matching `_metadata.yml` will be needed.
 
 **Render commands:** `quarto render` (HTML default) \| `quarto render --profile docx` \| `quarto::quarto_render(profile = "docx")`
 
