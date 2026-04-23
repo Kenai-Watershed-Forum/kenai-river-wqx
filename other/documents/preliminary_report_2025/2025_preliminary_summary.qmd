@@ -628,10 +628,10 @@ Kenai Watershed Forum (KWF) coordinated bi-annual baseline water quality monitor
 
 Results for most parameters were within applicable water quality standards. Notable preliminary findings include:
 
--   **Iron** exceeded the 1 mg/L aquatic life chronic criterion at `r n_iron` site-events across both seasons. Elevated iron is a recurring pattern in the Kenai River watershed, particularly at lower-river and wetland-draining tributary sites, and is consistent with the long-term monitoring record.
--   **Lead** (dissolved) exceeded its hardness-adjusted aquatic life chronic threshold at one summer site (Beaver Creek, RM 10). The corresponding field duplicate at that site was non-detect, raising a question about the result's veracity; this result will receive additional scrutiny during full QA/QC review.
--   **Hydrocarbons (BTEX)** were below laboratory detection limits at all four summer sampling sites.
--   No threshold exceedances were identified for Arsenic, Cadmium, Chromium, Copper, Zinc, Nitrate + Nitrite, or Fecal Coliform.
+- **Iron** exceeded the 1 mg/L aquatic life chronic criterion at `r n_iron` site-events across both seasons. Elevated iron is a recurring pattern in the Kenai River watershed, particularly at lower-river and wetland-draining tributary sites, and is consistent with the long-term monitoring record.
+- **Lead** (dissolved) exceeded its hardness-adjusted aquatic life chronic threshold at one summer site (Beaver Creek, RM 10). The corresponding field duplicate at that site was non-detect, raising a question about the result's veracity; this result will receive additional scrutiny during full QA/QC review.
+- **Hydrocarbons (BTEX)** were below laboratory detection limits at all four summer sampling sites.
+- No threshold exceedances were identified for Arsenic, Cadmium, Chromium, Copper, Zinc, Nitrate + Nitrite, or Fecal Coliform.
 
 **These results are preliminary.** Data have not undergone full QA/QC review and have not been submitted to the U.S. EPA Water Quality Exchange (WQX). Values are subject to change. Next steps include formal QA/QC evaluation per the KWF Quality Assurance Project Plan, data submission to EPA WQX, and integration of `r report_year` results into the KWF long-term baseline water quality report.
 
@@ -755,8 +755,8 @@ BTEX compounds were analyzed at 4 sites: RM 1.5 (Kenai City Dock), RM 6.5 (Cunni
 
 The table below identifies measurements that preliminarily exceed applicable water quality standards. Two categories of standards are referenced:
 
--   **Aquatic life chronic standards** [@adec-aac-70; @usepa-nrwqc]: protect aquatic organisms and salmon habitat; these are the primary regulatory standards for the Kenai River.
--   **Drinking water standards** [@adec-aac-80]: included for context; the Kenai River is not a designated drinking water source.
+- **Aquatic life chronic standards** [@adec-aac-70; @usepa-nrwqc]: protect aquatic organisms and salmon habitat; these are the primary regulatory standards for the Kenai River.
+- **Drinking water standards** [@adec-aac-80]: included for context; the Kenai River is not a designated drinking water source.
 
 Thresholds for hardness-dependent metals (Cadmium, Chromium, Copper, Lead, Zinc) are computed per site using measured calcium and magnesium concentrations, following ADEC criteria formulas [@adec-aac-70]. Those input values are themselves preliminary and may change after QA/QC. **No regulatory determination can be made from these data.**
 
@@ -961,24 +961,24 @@ The following organizations provided in-kind and/or financial support for baseli
 
 **Current Entities Contributing In-kind and/or Financial Support**
 
--   Alaska Department of Environmental Conservation
--   Alaska Department of Fish and Game
--   Alaska Department of Natural Resources
--   City of Kenai
--   City of Soldotna
--   Cook Inlet Aquaculture Association
--   Defenders of Wildlife
--   Kenai National Wildlife Refuge
--   Kenai Peninsula Borough
--   Kenai Peninsula Fish Habitat Partnership
--   Kenai Peninsula Trout Unlimited
--   Kenaitze Indian Tribe
--   Mister Kenai Sportfishing
--   Salamatof Tribe
--   SGS North America, Inc.
--   Tyonek Tribal Conservation District
--   U.S. Fish and Wildlife Service
--   U.S. Forest Service
+- Alaska Department of Environmental Conservation
+- Alaska Department of Fish and Game
+- Alaska Department of Natural Resources
+- City of Kenai
+- City of Soldotna
+- Cook Inlet Aquaculture Association
+- Defenders of Wildlife
+- Kenai National Wildlife Refuge
+- Kenai Peninsula Borough
+- Kenai Peninsula Fish Habitat Partnership
+- Kenai Peninsula Trout Unlimited
+- Kenaitze Indian Tribe
+- Mister Kenai Sportfishing
+- Salamatof Tribe
+- SGS North America, Inc.
+- Tyonek Tribal Conservation District
+- U.S. Fish and Wildlife Service
+- U.S. Forest Service
 
 ::: {.content-visible when-format="html"}
 
