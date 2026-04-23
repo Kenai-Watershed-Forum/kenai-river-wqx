@@ -2,14 +2,14 @@
 
 ## Companion Files (load on demand, not every session)
 
--   `other/agent_context/session_log.md` — full log of completed session work, resolved data issues, appendix_a.qmd audit, CDX delete workflow, HMW architecture detail, planned script refactor structure
--   `other/documents/sample_fraction_correction_handoff.md` — CDX fraction correction handoff for the qaqc repo
+- `other/agent_context/session_log.md` — full log of completed session work, resolved data issues, appendix_a.qmd audit, CDX delete workflow, HMW architecture detail, planned script refactor structure
+- `other/documents/sample_fraction_correction_handoff.md` — CDX fraction correction handoff for the qaqc repo
 
 ------------------------------------------------------------------------
 
 ## Next Session Priorities
 
-**EPA WQX sync issue BLOCKED — do not attempt CDX delete or re-upload until EPA confirms ETL is restored (\~April 23).**
+**EPA WQX sync issue BLOCKED — do not attempt CDX delete or re-upload until EPA confirms ETL is restored. As of April 23, 2026 (WQX/WQP monthly user call), the WQX-to-portal ETL pipeline remains disrupted; April has reached a similar 3-4 week outage as March. WQX inbound (CDX uploads) is operational, but corrections will not propagate to WQP/HMW until ETL is restored. Continue waiting; check status at next monthly call or via WQX help desk.**
 
 1.  **Task 18 (HIGH, start here)** — Create `templates/pipeline_template.qmd` in the qaqc repo. This is the canonical single-QMD-per-year pipeline. See Pipeline Architecture section below for full design.
 2.  **Task 1c (HIGH)** — CALM 5-year window sample count check. Count `result_status_identifier == "Accepted"` results per parameter + site for `activity_start_date >= 2017-01-01`. Source: `other/output/wqx_formatted/intermediate/2021_export_data_flagged.csv`. Flag combinations below 10 (or 5 for toxics) — these fall to ADEC Screening Level. Consider sharing with ADEC.
@@ -25,7 +25,7 @@ See `other/agent_context/session_log.md` for full context on any task.
 
 | \# | Priority | Description | Status |
 |----|----|----|----|
-| 1a-reupload | HIGH, BLOCKED | Re-upload 835 2021 records (delete + re-upload). Files ready: `results_activities.csv`, `resultphyschem_DELETE_v4.csv`. Waiting for EPA ETL fix. | Blocked \~April 23 |
+| 1a-reupload | HIGH, BLOCKED | Re-upload 835 2021 records (delete + re-upload). Files ready: `results_activities.csv`, `resultphyschem_DELETE_v4.csv`. Waiting for EPA ETL fix. | Blocked — ETL still disrupted as of April 23, 2026 |
 | 1b | HIGH | Characteristic name audit across all KWF years in WQP | Pending |
 | 1c | HIGH | CALM 5-year window sample count check (2017–2021) | Pending |
 | 2 | Medium | Fix HMW visibility for 15 legacy numeric-ID stations — move process to qaqc repo | Pending |
@@ -52,7 +52,7 @@ See `other/agent_context/session_log.md` for full context on any task.
 
 ## Style Preferences
 
--   **No em-dashes.** Replace with colon, comma, semicolon, or parentheses. Applies to all `.qmd` files, comments, and generated text. Note: pandoc converts `---` to an em-dash; use different punctuation instead.
+- **No em-dashes.** Replace with colon, comma, semicolon, or parentheses. Applies to all `.qmd` files, comments, and generated text. Note: pandoc converts `---` to an em-dash; use different punctuation instead.
 
 ------------------------------------------------------------------------
 
@@ -71,20 +71,20 @@ See `other/agent_context/session_log.md` for full context on any task.
 
 ### EPA WQX Flagging Convention (complete — do not change)
 
--   `Result Qualifier`: lab qualifiers from EDD (`U` = non-detect, `J` = below LOQ, `=` = detected)
--   `Result Status ID`: KWF QA/QC decision — `Accepted` or `Rejected`
--   The binary `flag` (Y/N) in `2021_data_flag_decisions.csv` maps to `Result Status ID` at CDX export
--   Do not add FQC or other custom codes
+- `Result Qualifier`: lab qualifiers from EDD (`U` = non-detect, `J` = below LOQ, `=` = detected)
+- `Result Status ID`: KWF QA/QC decision — `Accepted` or `Rejected`
+- The binary `flag` (Y/N) in `2021_data_flag_decisions.csv` maps to `Result Status ID` at CDX export
+- Do not add FQC or other custom codes
 
 ### Trip Blank Crew Assignments
 
 Trip blank-to-crew associations are year-specific and stored in per-year CSVs:
 
--   Location: `other/input/wqx_templates/trip_blank_crews_{year}.csv`
--   Columns: `blank_id` (e.g., `Trip_Blank_1`), `note` (crew + site string)
--   Number of rows varies by year (2, 3, or 4 blanks). Non-blank rows get `NA` for `note` via `left_join`.
--   To add a new year: create `trip_blank_crews_{year}.csv` — no script changes needed.
--   Used in `functions/appendix_a_scripts/ingest_sgs_als.R` via `str_extract` + `left_join`.
+- Location: `other/input/wqx_templates/trip_blank_crews_{year}.csv`
+- Columns: `blank_id` (e.g., `Trip_Blank_1`), `note` (crew + site string)
+- Number of rows varies by year (2, 3, or 4 blanks). Non-blank rows get `NA` for `note` via `left_join`.
+- To add a new year: create `trip_blank_crews_{year}.csv` — no script changes needed.
+- Used in `functions/appendix_a_scripts/ingest_sgs_als.R` via `str_extract` + `left_join`.
 
 ### Pipeline Architecture (qaqc repo — canonical home)
 
@@ -128,9 +128,9 @@ The sourced scripts in `functions/appendix_a_scripts/` (`ingest_sgs_als.R`, `ing
 
 The year-config block at the top of the first chunk sets all year-specific values. For 2021:
 
--   `spring_sample_date <- "5/11/2021"`, `summer_sample_date <- "7/27/2021"`
--   `spring_rec_date <- "2021-05-11"` (same day as collection), `summer_rec_date <- "2021-07-27"`
--   `spring_fc_analysis_date <- mdy("5/12/2021")` (from cell G2 of SWWTP FC lab sheet), `summer_fc_analysis_date <- mdy("7/28/2021")`
+- `spring_sample_date <- "5/11/2021"`, `summer_sample_date <- "7/27/2021"`
+- `spring_rec_date <- "2021-05-11"` (same day as collection), `summer_rec_date <- "2021-07-27"`
+- `spring_fc_analysis_date <- mdy("5/12/2021")` (from cell G2 of SWWTP FC lab sheet), `summer_fc_analysis_date <- mdy("7/28/2021")`
 
 ------------------------------------------------------------------------
 
@@ -205,10 +205,10 @@ other/
 
 Long-term cooperative monitoring led by Kenai Watershed Forum (KWF), south-central Alaska. Biannual (spring + summer) sampling at 22 sites (13 mainstem + 9 tributaries) since 2000. Current deliverable: Quarto book covering 2000–2025, modeled on 2007 and 2016 comprehensive reports (PDFs in `other/agent_context/`).
 
--   **Project home:** https://www.kenaiwatershed.org/kenai-river-baseline-water-quality-monitoring/
--   **GitHub:** https://github.com/Kenai-Watershed-Forum/kenai-river-wqx
--   **QA/QC repo:** https://github.com/Kenai-Watershed-Forum/kenai-river-wqx-qaqc
--   **Public data:** https://www.waterqualitydata.us/ (org: `KENAI_WQX`)
+- **Project home:** https://www.kenaiwatershed.org/kenai-river-baseline-water-quality-monitoring/
+- **GitHub:** https://github.com/Kenai-Watershed-Forum/kenai-river-wqx
+- **QA/QC repo:** https://github.com/Kenai-Watershed-Forum/kenai-river-wqx-qaqc
+- **Public data:** https://www.waterqualitydata.us/ (org: `KENAI_WQX`)
 
 Primary downstream consumer: **ADEC**, which draws from EPA CDX every two years for the Integrated Report (impairment decisions). Also serves KWF scientists, general public, and funding partners. A primary goal is that all data is publicly visible in [How's My Waterway](https://mywaterway.epa.gov/).
 
@@ -233,24 +233,24 @@ Primary downstream consumer: **ADEC**, which draws from EPA CDX every two years 
 
 ## Known Data Issues (Active / Unresolved)
 
--   **WQX/STORET sync (BLOCKED):** 835 2021 records in WQP but absent from WQX Web internal DB. CDX batch delete fails. Wait for EPA ETL fix (\~April 23). Ready files: `resultphyschem_DELETE_v4.csv` (column `ActivityIdentifier`, no org prefix), `results_activities.csv`.
--   **Characteristic name inconsistency:** Nitrate+Nitrite appears under 3+ names across KWF years. Full audit needed (Task 1b).
--   **Sample fraction inconsistency:** 2021 dissolved metals submitted as `"Filtered, field"` in CDX — needs re-upload with `"Dissolved"` (blocked by Task 1a-reupload).
--   **Turbidity:** one spurious `uS/cm` unit record; anomalously high value at RM 1.5 spring (\~3,200 NTU).
--   **Hydrocarbon data** missing from 2025 WQP download (uploaded Jan 2024 but not appearing).
--   **ALS lab duplicates:** 4 results with unexpected DUP status (Task 7) — does not block CDX upload.
--   **TSS lab QA gap:** SWWTP did not report required lab QA results in 2021/2022.
--   **Spring 2013 specific conductance:** values stored as `mS/cm` but should be `uS/cm`. Correction not yet applied — address in qaqc repo (Task 12).
+- **WQX/STORET sync (BLOCKED):** 835 2021 records in WQP but absent from WQX Web internal DB. CDX batch delete fails. Wait for EPA ETL fix (\~April 23). Ready files: `resultphyschem_DELETE_v4.csv` (column `ActivityIdentifier`, no org prefix), `results_activities.csv`.
+- **Characteristic name inconsistency:** Nitrate+Nitrite appears under 3+ names across KWF years. Full audit needed (Task 1b).
+- **Sample fraction inconsistency:** 2021 dissolved metals submitted as `"Filtered, field"` in CDX — needs re-upload with `"Dissolved"` (blocked by Task 1a-reupload).
+- **Turbidity:** one spurious `uS/cm` unit record; anomalously high value at RM 1.5 spring (\~3,200 NTU).
+- **Hydrocarbon data** missing from 2025 WQP download (uploaded Jan 2024 but not appearing).
+- **ALS lab duplicates:** 4 results with unexpected DUP status (Task 7) — does not block CDX upload.
+- **TSS lab QA gap:** SWWTP did not report required lab QA results in 2021/2022.
+- **Spring 2013 specific conductance:** values stored as `mS/cm` but should be `uS/cm`. Correction not yet applied — address in qaqc repo (Task 12).
 
 ------------------------------------------------------------------------
 
 ## QA/QC Notes
 
--   Flagging design is complete and correct — do not change it.
--   Outliers: visually identified (especially pre-2014) excluded from visualizations, retained in archive.
--   Lab qualifiers (U, J, =) are distinct from KWF QA/QC flags (Accepted/Rejected).
--   **QA/QC Decision Authority:** KWF staff have final say. All decisions must be thoroughly documented.
--   **CMA = 87.4%, CMB = 92.2%** (498/540) — both above 60% QAPP goal. Only flagged methods: FC (both seasons) and spring Total Nitrate/Nitrite-N. All dissolved metals Accepted at 100%.
+- Flagging design is complete and correct — do not change it.
+- Outliers: visually identified (especially pre-2014) excluded from visualizations, retained in archive.
+- Lab qualifiers (U, J, =) are distinct from KWF QA/QC flags (Accepted/Rejected).
+- **QA/QC Decision Authority:** KWF staff have final say. All decisions must be thoroughly documented.
+- **CMA = 87.4%, CMB = 92.2%** (498/540) — both above 60% QAPP goal. Only flagged methods: FC (both seasons) and spring Total Nitrate/Nitrite-N. All dissolved metals Accepted at 100%.
 
 ------------------------------------------------------------------------
 
@@ -264,17 +264,17 @@ Use base pipe `|>` for all new code. Do not mass-convert legacy `%>%` usage.
 
 ## Governance Documents (`other/agent_context/`)
 
--   QAPP (approved ADEC + EPA Region 10, 2023 + April 2024 addendum)
--   MOU — Baseline Water Quality MOU 2025 Final
--   Funding Proposal — KWF 2024 BOR WaterSMART CWMP
--   ADEC Water Quality Standards — 18 AAC 70
--   DL/LOD/LOQ Interpretation — SGS Laboratories
--   CALM — `calm-rev-2021-acc.pdf` (Alaska Consolidated Assessment and Listing Methodology, revised March 2021)
+- QAPP (approved ADEC + EPA Region 10, 2023 + April 2024 addendum)
+- MOU — Baseline Water Quality MOU 2025 Final
+- Funding Proposal — KWF 2024 BOR WaterSMART CWMP
+- ADEC Water Quality Standards — 18 AAC 70
+- DL/LOD/LOQ Interpretation — SGS Laboratories
+- CALM — `calm-rev-2021-acc.pdf` (Alaska Consolidated Assessment and Listing Methodology, revised March 2021)
 
 ------------------------------------------------------------------------
 
 ## Useful External Links
 
--   ADEC Kenai River "exceptional river" press release (Nov 2023): https://dec.alaska.gov/commish/newsroom/23-11-kenai-river-an-exceptional-river-with-clean-water/
--   ADEC Ambient Water Quality Data: https://dec.alaska.gov/water/water-quality/ambient-water-quality-data
--   ADEC Integrated Report / CALM methodologies: https://dec.alaska.gov/water/water-quality/integrated-report/
+- ADEC Kenai River "exceptional river" press release (Nov 2023): https://dec.alaska.gov/commish/newsroom/23-11-kenai-river-an-exceptional-river-with-clean-water/
+- ADEC Ambient Water Quality Data: https://dec.alaska.gov/water/water-quality/ambient-water-quality-data
+- ADEC Integrated Report / CALM methodologies: https://dec.alaska.gov/water/water-quality/integrated-report/
