@@ -24,7 +24,7 @@
 See `other/agent_context/session_log.md` for full context on any task.
 
 | \# | Priority | Description | Status |
-|----|----|----|----|
+|------------------|------------------|------------------|------------------|
 | 1a-reupload | HIGH, BLOCKED | Re-upload 835 2021 records (delete + re-upload). Files ready: `results_activities.csv`, `resultphyschem_DELETE_v4.csv`. Waiting for EPA ETL fix. | Blocked — ETL still disrupted as of April 23, 2026 |
 | 1b | HIGH | Characteristic name audit across all KWF years in WQP | Pending |
 | 1c | HIGH | CALM 5-year window sample count check (2017–2021) | Pending |
@@ -61,7 +61,7 @@ See `other/agent_context/session_log.md` for full context on any task.
 ### Sample Fraction Canonical Scheme
 
 | Parameter type | Canonical fraction | Notes |
-|----|----|----|
+|------------------------|------------------------|------------------------|
 | Dissolved metals (any method, any filtration) | `Dissolved` | Consistent all years including 2023+ lab-filtered |
 | Total metals (unfiltered) | `Unfiltered` | For 2023+: method alone no longer distinguishes dissolved from total |
 | Nutrients | `Total` |  |
@@ -162,7 +162,7 @@ other/
 ## Report Structure
 
 | File | Purpose |
-|----|----|
+|------------------------------------|------------------------------------|
 | `_quarto.yml` | Project configuration. `margin-header` logo path is correct for `index.qmd` only. |
 | `chapters/_metadata.yml` | Overrides `margin-header` with `../other/...` path for all chapter pages. |
 | `parameters/_metadata.yml` | Overrides `margin-header` with `../other/...` path for all parameter pages. |
@@ -190,7 +190,7 @@ other/
 `master_reg_limits.xlsx` is the **single source of truth** for all regulatory threshold data.
 
 | Sheet | Contents |
-|----|----|
+|------------------------------------|------------------------------------|
 | `static_regulatory_values` | All static thresholds. Categories: `static_metals`, `hydrocarbons`, `nutrients`, `other`, `total_metals_aquatic_life` (Iron), `field_bio_standards` (Water Temp, FC) |
 | `calculated_regulatory_values` | Hardness-dependent formulas (Cd, Cr, Cu, Pb, Zn) |
 | `diss_metals_hard_parameters` | Parameters for hardness calculations |
@@ -221,7 +221,7 @@ Primary downstream consumer: **ADEC**, which draws from EPA CDX every two years 
 ## Parameters Monitored
 
 | Category | Parameters |
-|----|----|
+|------------------------------------|------------------------------------|
 | Dissolved Metals | Arsenic, Cadmium, Chromium, Copper, Lead, Zinc |
 | Total Metals | Calcium, Iron, Magnesium |
 | Nutrients | Nitrate + Nitrite, Phosphorus |
