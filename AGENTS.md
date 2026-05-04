@@ -1,5 +1,38 @@
 # Kenai River Baseline Water Quality Monitoring — Project Context
 
+## Repo Relationship
+
+This repo is one of two that together form the full data pipeline for Kenai River Baseline Water Quality Monitoring:
+
+- **`kenai-river-wqx`** (this repo — report repo):
+  https://github.com/Kenai-Watershed-Forum/kenai-river-wqx
+  Hosts the Quarto book that integrates and displays long-term monitoring data.
+  Data is accessed directly from EPA's Water Quality Portal (WQP), which serves
+  as the authoritative public source. The report does not hold raw data locally;
+  it reads from WQP and applies regulatory thresholds, visualizations, and
+  narrative interpretation.
+
+- **`kenai-river-wqx-qaqc`** (qaqc repo):
+  https://github.com/Kenai-Watershed-Forum/kenai-river-wqx-qaqc
+  Prepares annual monitoring data for submission to EPA WQX via CDX. Each year's
+  pipeline ingests raw lab EDDs, applies QA/QC, formats data to WQX schema, and
+  produces CDX-ready upload files. Once submitted, that data becomes publicly
+  available through WQP — where the report repo accesses it.
+
+The two repos form a complete pipeline: qaqc repo submits data to EPA WQX →
+EPA publishes to WQP → report repo reads from WQP and displays it. Changes
+in either repo — new annual pipelines, CDX corrections, WQX submission status,
+regulatory threshold updates — are relevant to both. This shared context file
+keeps the AI assistant aware of work across both repos regardless of which one
+is active.
+
+**`other/agent_context/session_log.md`** is auto-synced to the qaqc repo via
+GitHub Actions on every push to main that touches it. Each repo maintains its
+own `AGENTS.md` (not synced); only `session_log.md` is shared.
+**Edit `session_log.md` only from this repo (`kenai-river-wqx`).**
+
+------------------------------------------------------------------------
+
 ## Companion Files (load on demand, not every session)
 
 - `other/agent_context/session_log.md` — full log of completed session work, resolved data issues, appendix_a.qmd audit, CDX delete workflow, HMW architecture detail, planned script refactor structure
@@ -9,13 +42,16 @@
 
 ## Next Session Priorities
 
-**EPA WQX sync issue BLOCKED — do not attempt CDX delete or re-upload until EPA confirms ETL is restored. As of April 23, 2026 (WQX/WQP monthly user call), the WQX-to-portal ETL pipeline remains disrupted; April has reached a similar 3-4 week outage as March. WQX inbound (CDX uploads) is operational, but corrections will not propagate to WQP/HMW until ETL is restored. Continue waiting; check status at next monthly call or via WQX help desk.**
+**EPA WQX sync issue — PARTIALLY RESOLVED but batch delete still blocked.** WQP warehouse refresh completed 2026-05-01 (Kevin Christian email). ETL pipeline restored for new submissions. However, batch delete of 835 orphaned 2021 records still fails: "Domain Value Invalid" for all 835 Activity IDs (attempted 2026-05-04, datasetUid=113161). Root cause: records exist in WQP/STORET but are absent from WQX Web's internal DB. ETL fix restored WQX → WQP sync but did not retroactively restore these records into WQX Web. Follow-up email sent to wqx@epa.gov 2026-05-04 requesting EPA either (1) delete orphaned records from WQP directly, or (2) restore them into WQX Web so batch delete can proceed.
 
-1.  **Task 18 (HIGH, start here)** — Create `templates/pipeline_template.qmd` in the qaqc repo. This is the canonical single-QMD-per-year pipeline. See Pipeline Architecture section below for full design.
-2.  **Task 1c (HIGH)** — CALM 5-year window sample count check. Count `result_status_identifier == "Accepted"` results per parameter + site for `activity_start_date >= 2017-01-01`. Source: `other/output/wqx_formatted/intermediate/2021_export_data_flagged.csv`. Flag combinations below 10 (or 5 for toxics) — these fall to ADEC Screening Level. Consider sharing with ADEC.
-3.  **Task 1b (HIGH)** — Audit all distinct `CharacteristicName` values in WQP for org `KENAI_WQX`. Cross-reference against current WQX domain list. Map variants to canonical names. Feeds next CDX re-upload.
-4.  **Task 5 (Medium)** — Verify `review_needed = Y` rows in `standard_types` sheet of `master_reg_limits.xlsx`. Six codes: `fw_acute`, `fw_chronic`, `harvest_aquatic_life`, `noncarc_aquatic_org`, `noncarc_water`, `secondary_water_recreation`. Confirm against 18 AAC 70 and USEPA criteria docs; set `review_needed = N`.
-5.  **Task 5a (Medium)** — Add CALM methodology notes to FC, turbidity, and BTEX chapter narratives noting each is excluded from the standard CALM binomial methodology. Links at https://dec.alaska.gov/water/water-quality/integrated-report/
+**GitHub Actions session_log.md sync — ALMOST COMPLETE (2026-05-04).** PAT created (`kwf-report-to-qaqc-sync`, scoped to qaqc repo, Contents R/W). Secret `QAQC_SYNC_PAT` added to `kenai-river-wqx`. Workflow file created at `.github/workflows/sync-agent-context.yml`. qaqc repo `AGENTS.md` updated with Repo Relationship section; `other/agent_context/.gitkeep` added. **Remaining: commit and push both repos** (qaqc first, then report). See push commands in session log.
+
+1.  **Complete GitHub Actions sync setup (start here)** — push qaqc repo, then report repo. Verify Action runs successfully in the Actions tab on GitHub.
+2.  **Task 18 (HIGH)** — Create `templates/pipeline_template.qmd` in the qaqc repo. This is the canonical single-QMD-per-year pipeline. See Pipeline Architecture section below for full design.
+3.  **Task 1c (HIGH)** — CALM 5-year window sample count check. Count `result_status_identifier == "Accepted"` results per parameter + site for `activity_start_date >= 2017-01-01`. Source: `other/output/wqx_formatted/intermediate/2021_export_data_flagged.csv`. Flag combinations below 10 (or 5 for toxics) — these fall to ADEC Screening Level. Consider sharing with ADEC.
+4.  **Task 1b (HIGH)** — Audit all distinct `CharacteristicName` values in WQP for org `KENAI_WQX`. Cross-reference against current WQX domain list. Map variants to canonical names. Feeds next CDX re-upload.
+5.  **Task 5 (Medium)** — Verify `review_needed = Y` rows in `standard_types` sheet of `master_reg_limits.xlsx`. Six codes: `fw_acute`, `fw_chronic`, `harvest_aquatic_life`, `noncarc_aquatic_org`, `noncarc_water`, `secondary_water_recreation`. Confirm against 18 AAC 70 and USEPA criteria docs; set `review_needed = N`.
+6.  **Task 5a (Medium)** — Add CALM methodology notes to FC, turbidity, and BTEX chapter narratives noting each is excluded from the standard CALM binomial methodology. Links at https://dec.alaska.gov/water/water-quality/integrated-report/
 
 ------------------------------------------------------------------------
 
@@ -25,7 +61,7 @@ See `other/agent_context/session_log.md` for full context on any task.
 
 | \# | Priority | Description | Status |
 |------------------|------------------|------------------|------------------|
-| 1a-reupload | HIGH, BLOCKED | Re-upload 835 2021 records (delete + re-upload). Files ready: `results_activities.csv`, `resultphyschem_DELETE_v4.csv`. Waiting for EPA ETL fix. | Blocked — ETL still disrupted as of April 23, 2026 |
+| 1a-reupload | HIGH | Re-upload 835 2021 records (delete + re-upload). Files ready: `results_activities.csv`, `resultphyschem_DELETE_v4.csv`. ETL restored 2026-05-01 but batch delete still fails (records absent from WQX Web internal DB). Follow-up sent to wqx@epa.gov 2026-05-04. | **Blocked** — awaiting EPA action on orphaned records |
 | 1b | HIGH | Characteristic name audit across all KWF years in WQP | Pending |
 | 1c | HIGH | CALM 5-year window sample count check (2017–2021) | Pending |
 | 2 | Medium | Fix HMW visibility for 15 legacy numeric-ID stations — move process to qaqc repo | Pending |

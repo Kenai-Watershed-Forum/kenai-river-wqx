@@ -1,0 +1,35 @@
+name: Sync agent context to qaqc repo
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - other/agent_context/session_log.md
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout report repo
+        uses: actions/checkout@v4
+
+      - name: Checkout qaqc repo
+        uses: actions/checkout@v4
+        with:
+          repository: Kenai-Watershed-Forum/kenai-river-wqx-qaqc
+          token: ${{ secrets.QAQC_SYNC_PAT }}
+          path: qaqc-repo
+
+      - name: Copy files
+        run: |
+          mkdir -p qaqc-repo/other/agent_context
+          cp other/agent_context/session_log.md qaqc-repo/other/agent_context/session_log.md
+
+      - name: Commit and push to qaqc repo
+        run: |
+          cd qaqc-repo
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add other/agent_context/session_log.md
+          git diff --cached --quiet || git commit -m "chore: sync session log from report repo"
+          git push

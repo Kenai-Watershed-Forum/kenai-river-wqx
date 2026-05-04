@@ -1,8 +1,38 @@
 # Kenai River WQX — Session Log & Archived Reference
 
+> **Shared context file.** This log is maintained in `kenai-river-wqx` (report repo)
+> and auto-synced to `kenai-river-wqx-qaqc` (qaqc repo). It covers work in both repos.
+> The qaqc repo prepares and submits annual monitoring data to EPA WQX via CDX; the
+> report repo reads that data from EPA's Water Quality Portal and displays it.
+> Edit this file only from the report repo (`kenai-river-wqx`).
+
 This file is **not loaded automatically** — reference it on demand when you need history on a completed task, a resolved issue, or the appendix_a.qmd audit. It is the companion to `AGENTS.md`.
 
----
+------------------------------------------------------------------------
+
+### Session Entry (2026-05-04)
+
+**EPA WQX batch delete — still blocked after ETL restoration.**
+- Received Kevin Christian email 2026-05-01 confirming WQP warehouse refresh complete; WQX Last Content Change updated to 2026-05-01.
+- Attempted CDX batch delete using `resultphyschem_DELETE_v4.csv`. Result: "Domain Value Invalid" for all 835 Activity IDs (datasetUid=113161). Same error as before ETL fix.
+- Root cause confirmed: ETL restoration fixed the WQX → WQP forward pipeline but did not retroactively restore the 835 orphaned 2021 records into WQX Web's internal database. WQX Web still shows zero 2021 records; batch delete requires WQX Web to own the records.
+- Follow-up email sent to wqx@epa.gov 2026-05-04. Attachments: `Import Log.xlsx` (from CDX, datasetUid=113161) and `resultphyschem_DELETE_v4.csv`. Requested EPA either (1) delete orphaned records from WQP/STORET directly or (2) restore them into WQX Web so batch delete can proceed.
+- Correct DELETE file confirmed: `resultphyschem_DELETE_v4.csv` (835 rows, `ActivityIdentifier` column, no org prefix). v5 is corrupted (837 lines) — do not use.
+- `other/epa_cdx.txt` corruption fixed (task notes had been appended to password line); CDX status notes updated to reflect current blocked state.
+
+**GitHub Actions session_log.md sync — set up, not yet pushed.**
+- Goal: auto-sync `other/agent_context/session_log.md` from report repo to qaqc repo on every push to main that touches it. AGENTS.md is NOT synced — each repo has its own repo-specific file.
+- PAT created: `kwf-report-to-qaqc-sync`, fine-grained, scoped to `kenai-river-wqx-qaqc`, Contents: Read/Write. Secret `QAQC_SYNC_PAT` added to `kenai-river-wqx`.
+- Workflow created: `.github/workflows/sync-agent-context.yml` in report repo.
+- qaqc repo `AGENTS.md` updated with Repo Relationship section (pulled from remote, prepended, saved locally). `other/agent_context/.gitkeep` added locally.
+- session_log.md updated with shared-context blockquote header.
+- Report repo `AGENTS.md` Repo Relationship section updated to reflect that only session_log.md is synced (not AGENTS.md).
+- **Remaining push steps:**
+  1. In `kenai-river-wqx-qaqc`: `git add AGENTS.md other/agent_context/.gitkeep && git commit -m "chore: add repo relationship section and agent context directory" && git push`
+  2. In `kenai-river-wqx`: `git add AGENTS.md other/agent_context/session_log.md .github/workflows/sync-agent-context.yml && git commit -m "chore: add repo relationship section and session log sync workflow" && git push`
+  3. Verify Action runs in the Actions tab on GitHub (`kenai-river-wqx`).
+
+------------------------------------------------------------------------
 
 ## Resolved Known Data Issues
 
@@ -28,32 +58,32 @@ This file is **not loaded automatically** — reference it on demand when you ne
 
 - **Water Temp and FC thresholds not surviving renders: RESOLVED (April 2, 2026).** Same root cause as Iron. Fix: added 5 rows to `master_reg_limits.xlsx → static_regulatory_values` (category `field_bio_standards`), new export block in `reg_limits.qmd`, added to `bind_rows()` in `static_boxplot_function.R`.
 
-- **AGENTS.md content pasted into `index.qmd`: RESOLVED (April 20, 2026).** ~20 lines of session notes accidentally pasted after `\newpage` on line 81. Removed.
+- **AGENTS.md content pasted into `index.qmd`: RESOLVED (April 20, 2026).** \~20 lines of session notes accidentally pasted after `\newpage` on line 81. Removed.
 
----
+------------------------------------------------------------------------
 
 ## appendix_a.qmd Audit (March 2026)
 
-Line numbers are approximate and shift with editing. As of March 26, 2026 edits, add ~15 lines to original estimates.
+Line numbers are approximate and shift with editing. As of March 26, 2026 edits, add \~15 lines to original estimates.
 
 | Approx. Lines | Section | Status |
-|---|---|---|
+|----|----|----|
 | 1–518 | SGS/ALS ingestion (Parts A–E) | Working. Includes Ca/Fe/Mg unit correction. Dense — priority candidate for extraction to `R/ingest_sgs_als.R`. |
 | 520–983 | FC and TSS ingestion | Mostly working. TSS has documented QA gap: SWWTP did not report lab QA results in 2021/2022. Lab QA export block commented out. |
 | 985–1260 | Lookup joins + first WQX export | Working. Write chunk was `eval = F`, now `eval = T`. `dat_raw`/`dat` save-restore pattern added so WQX CSV is written without corrupting raw-column `dat`. |
-| 1268–2410 | QA/QC Checklist (Questions 1–42) | Mostly complete. Gap: Completeness Measure B block is `eval = F` and produces nonsensical results — unfinished (~line 2141). Q39 (range check) defers to visual review in report chapters. |
+| 1268–2410 | QA/QC Checklist (Questions 1–42) | Mostly complete. Gap: Completeness Measure B block is `eval = F` and produces nonsensical results — unfinished (\~line 2141). Q39 (range check) defers to visual review in report chapters. |
 | 2411–2533 | Flagging and flagged export | Working. Ca/Mg/Fe unit error corrected upstream at ingestion. |
 | 2535–2680 | CDX export (Results and Activities) | Working but nearly duplicates format block at lines 985–1243. Consolidate when extracting to scripts. |
 | 2705–2786 | Post-hoc corrections + `knitr::knit_exit()` | Incomplete placeholder. Chunk is `eval = F`. `knitr::knit_exit()` stops rendering prematurely. |
 
----
+------------------------------------------------------------------------
 
 ## Planned File Structure (Future Refactor — Task 10)
 
 Extract processing logic from `appendix_a.qmd` into sourced `.R` scripts for reuse in the qaqc repo.
 
 | Script | Content |
-|---|---|
+|----|----|
 | `R/ingest_sgs_als.R` | SGS EDD + ALS CSV read-in, column normalization, site name mapping, method code mapping (Parts A–E) |
 | `R/ingest_fc.R` | SWWTP + Taurianen fecal coliform read-in |
 | `R/ingest_tss.R` | SWWTP TSS read-in |
@@ -62,7 +92,7 @@ Extract processing logic from `appendix_a.qmd` into sourced `.R` scripts for reu
 
 Each script should accept year-specific inputs (file paths, sample dates) as arguments or via a config object.
 
----
+------------------------------------------------------------------------
 
 ## CDX WQX Delete Workflow (Reference)
 
@@ -72,27 +102,27 @@ Each script should accept year-specific inputs (file paths, sample dates) as arg
 
 **Correct DELETE file:** `other/output/epa_wqp_uploads/corrected_epa_wqp_uploads/resultphyschem_DELETE_v4.csv` — column `ActivityIdentifier`, 835 rows, no org prefix.
 
----
+------------------------------------------------------------------------
 
 ## HMW Architecture Detail (Confirmed April 1, 2026)
 
 HMW has two distinct display mechanisms:
 
-1. **Monitoring data** (Past Water Conditions tab): WQP-driven. HMW uses client-side HUC12 spatial operations to find monitoring locations — does not rely solely on stored `HUCEightDigitCode`. Correct station metadata (GPS-Unspecified, populated HUC, correct coordinates) is sufficient.
+1.  **Monitoring data** (Past Water Conditions tab): WQP-driven. HMW uses client-side HUC12 spatial operations to find monitoring locations — does not rely solely on stored `HUCEightDigitCode`. Correct station metadata (GPS-Unspecified, populated HUC, correct coordinates) is sufficient.
 
-2. **Waterbody condition status** (Overview/Aquatic Life/Fishing/Swimming tabs): ATTAINS-driven. Only assessed waterbodies with ATTAINS assessment units appear. HUC 19020302 has ATTAINS assessment units only for the Kenai River mainstem (3 segments) and Kenai Lake. No tributary streams have ATTAINS assessment units — this requires ADEC action in a future Integrated Report cycle (Task 2a).
+2.  **Waterbody condition status** (Overview/Aquatic Life/Fishing/Swimming tabs): ATTAINS-driven. Only assessed waterbodies with ATTAINS assessment units appear. HUC 19020302 has ATTAINS assessment units only for the Kenai River mainstem (3 segments) and Kenai Lake. No tributary streams have ATTAINS assessment units — this requires ADEC action in a future Integrated Report cycle (Task 2a).
 
 **Historical numeric-ID stations:** 15 legacy stations (IDs `KENAI_WQX-10000063` through `KENAI_WQX-10000131`, named `KBX_m_*`, 2002–2009, 3,884 results) have `HorizontalCollectionMethodName = "Unknown"` and blank `HUCEightDigitCode`. Corrective file at `other/output/epa_wqp_uploads/corrected_epa_wqp_uploads/station_historical_correction.csv`. Process belongs in qaqc repo (Task 2).
 
----
+------------------------------------------------------------------------
 
-## EPA WQX Support Call Notes (March 31, 2026 — Kevin Christian, wqx@epa.gov)
+## EPA WQX Support Call Notes (March 31, 2026 — Kevin Christian, wqx\@epa.gov)
 
 - Current KWF data organized at the "Activity" level (each Activity = one result). Kevin recommends organizing at the "Results" level (each Activity = one sampling event, multiple results nested under it). Performance degrades at scale with current structure. Restructuring uses the WQX Web "Review" function. Address in qaqc repo for future annual submissions (Task 11).
 
-**April 13, 2026 email response re: CDX sync issue:** Root cause confirmed — a failed PostgreSQL instance interrupted the WQX → WQP ETL process. Data added to WQX after the failure may not have fully synced back to WQX Web's internal database. Team working on new PostgreSQL instance; ~two weeks from April 9. Last confirmed WQX content change per WQP portal: 2026-03-19. No action needed from KWF until EPA confirms ETL restored.
+**April 13, 2026 email response re: CDX sync issue:** Root cause confirmed — a failed PostgreSQL instance interrupted the WQX → WQP ETL process. Data added to WQX after the failure may not have fully synced back to WQX Web's internal database. Team working on new PostgreSQL instance; \~two weeks from April 9. Last confirmed WQX content change per WQP portal: 2026-03-19. No action needed from KWF until EPA confirms ETL restored.
 
----
+------------------------------------------------------------------------
 
 ## Session Entries (Newest First)
 
@@ -110,16 +140,16 @@ Template structure: Part A (data ingestion, **inlined**, adapted per year) + Par
 
 **2023-specific notes (from `2023.qmd` in qaqc repo — to use when building `2023.qmd` from template, Task 19):**
 
-1. **Spring SGS EDD split into two CSVs**: `part1` (method 200.7 / EP200.7 results) and `part2` (all other results). Different column types between parts; must be bound with type coercion before main pipeline. Part 1 receive date/time error: all project samples show `"05/09/2023 00:00"` — correct to `"05/09/2023 09:00"` (lab office open hours per COC documents).
-2. **Summer 2023: 200.8 used for both dissolved AND total metals** — no 200.7 present. Distinguish dissolved vs. total using `ANALYSIS_GROUP` column: `"Dissolved Metals by ICP/MS"` (and provisional variant `"Diss. Metals by ICP/MS (Provisional Be,Cu 652023)"`) = dissolved; `"Metals by ICP/MS"` (and provisional variant `"Metals by ICP/MS (Provisional for Be, Cu 06052023)"`) = total/unfiltered. Assign canonical `result_sample_fraction` = `"Dissolved"` and `"Unfiltered"` respectively per canonical scheme.
-3. **No ALS subcontract for 2023**: Spring 2023 200.7 analyses were run by SGS Orlando, not ALS. Results already in the SGS EDD — no separate ALS ingest needed.
-4. **Filter SW846 6010D rows**: These appear in the SGS EDD as project sample records but have no reportable values (document the digestion method only). Remove before pipeline.
-5. **Spring 2023 sample date correction**: Some `sample_type == "PS"` rows have `activity_start_date == "2023-05-03"` — should be `"2023-05-02"`. Correct via `case_when` after ingest.
-6. **TSS receive times (from COC documents)**: Spring 2023 — RM 1.5 received at 15:30, all others at 12:44. Summer 2023 — all received at 12:25.
-7. **Result sample fraction for 2023 dissolved metals**: Use `"Dissolved"` per canonical scheme (AGENTS.md). The `2023.qmd` draft used `"Filtered, lab"` — do not carry that forward.
-8. **Monitoring location ID**: The 2023.qmd draft used a fragile join from a 2021 results CSV, then patched Jim's Landing and Skilak Lake Outflow with `case_when`. Use the proper `sgs_site_names_matching_table_manual_edit.xlsx` approach from the 2021 pipeline instead. A 2023-specific matching table will need to be created in the qaqc repo.
+1.  **Spring SGS EDD split into two CSVs**: `part1` (method 200.7 / EP200.7 results) and `part2` (all other results). Different column types between parts; must be bound with type coercion before main pipeline. Part 1 receive date/time error: all project samples show `"05/09/2023 00:00"` — correct to `"05/09/2023 09:00"` (lab office open hours per COC documents).
+2.  **Summer 2023: 200.8 used for both dissolved AND total metals** — no 200.7 present. Distinguish dissolved vs. total using `ANALYSIS_GROUP` column: `"Dissolved Metals by ICP/MS"` (and provisional variant `"Diss. Metals by ICP/MS (Provisional Be,Cu 652023)"`) = dissolved; `"Metals by ICP/MS"` (and provisional variant `"Metals by ICP/MS (Provisional for Be, Cu 06052023)"`) = total/unfiltered. Assign canonical `result_sample_fraction` = `"Dissolved"` and `"Unfiltered"` respectively per canonical scheme.
+3.  **No ALS subcontract for 2023**: Spring 2023 200.7 analyses were run by SGS Orlando, not ALS. Results already in the SGS EDD — no separate ALS ingest needed.
+4.  **Filter SW846 6010D rows**: These appear in the SGS EDD as project sample records but have no reportable values (document the digestion method only). Remove before pipeline.
+5.  **Spring 2023 sample date correction**: Some `sample_type == "PS"` rows have `activity_start_date == "2023-05-03"` — should be `"2023-05-02"`. Correct via `case_when` after ingest.
+6.  **TSS receive times (from COC documents)**: Spring 2023 — RM 1.5 received at 15:30, all others at 12:44. Summer 2023 — all received at 12:25.
+7.  **Result sample fraction for 2023 dissolved metals**: Use `"Dissolved"` per canonical scheme (AGENTS.md). The `2023.qmd` draft used `"Filtered, lab"` — do not carry that forward.
+8.  **Monitoring location ID**: The 2023.qmd draft used a fragile join from a 2021 results CSV, then patched Jim's Landing and Skilak Lake Outflow with `case_when`. Use the proper `sgs_site_names_matching_table_manual_edit.xlsx` approach from the 2021 pipeline instead. A 2023-specific matching table will need to be created in the qaqc repo.
 
----
+------------------------------------------------------------------------
 
 ### Completed (April 16, 2026) — 2025 Preliminary Report + Session
 
@@ -132,9 +162,10 @@ Template structure: Part A (data ingestion, **inlined**, adapted per year) + Par
 - **Preliminary report render failure fixed.** `report_year` was used before being defined. Fix: added minimal `report-year` chunk immediately after YAML front matter.
 
 - **Preliminary report structural and layout fixes.**
-  1. Acronyms moved to first content section.
-  2. KWF logo DOCX fix: replaced `eval: !expr knitr::is_html_output()` with `::: {.content-visible when-format="docx"}` wrapper.
-  3. HTML layout: added `toc-location: left` and `embed-resources: true`.
+
+  1.  Acronyms moved to first content section.
+  2.  KWF logo DOCX fix: replaced `eval: !expr knitr::is_html_output()` with `::: {.content-visible when-format="docx"}` wrapper.
+  3.  HTML layout: added `toc-location: left` and `embed-resources: true`.
 
 - **Preliminary report content and caption fixes.** Renamed "SGS sites" → "Monitoring sites" in Table 1. Removed two em-dashes. Added 2025 raw data download link and KDLL media link. Fixed typo `pe"rformed`. All table captions moved to `#| tbl-cap:` chunk options.
 
@@ -144,7 +175,7 @@ Template structure: Part A (data ingestion, **inlined**, adapted per year) + Par
 
 - **DO instrument error excluded.** Soldotna Creek spring DO had primary value of 91.1 mg/L (impossible; almost certainly % saturation). Excluded via `!(Parameter == "DO" & Value > 20)` in `ysi_all` filter block.
 
-- **Table 9 (field duplicate RPD) simplified.** Replaced per-row table with 4-row summary (one per duplicate site): Season, Site, n pairs, n with RPD > 20%, flagged parameters. Site names normalized via `dup_site_map` named vector.
+- **Table 9 (field duplicate RPD) simplified.** Replaced per-row table with 4-row summary (one per duplicate site): Season, Site, n pairs, n with RPD \> 20%, flagged parameters. Site names normalized via `dup_site_map` named vector.
 
 - **2025 funding note drafted.** `other/documents/preliminary_report_2025/2025_funding_note.docx` (also `.txt`). Several placeholder fields left for manual completion before sending.
 
@@ -160,9 +191,9 @@ Template structure: Part A (data ingestion, **inlined**, adapted per year) + Par
 
 - **`pagetitle` updated** to include year: "Kenai River Baseline Water Quality Monitoring: 2025 Preliminary Field Season Summary". Manual annual update alongside `report_year`.
 
-- **Contact info added** to DOCX cover page and HTML header: Benjamin Meyer, Research Coordinator, (907) 260-5449, hydrology@kenaiwatershed.org.
+- **Contact info added** to DOCX cover page and HTML header: Benjamin Meyer, Research Coordinator, (907) 260-5449, hydrology\@kenaiwatershed.org.
 
----
+------------------------------------------------------------------------
 
 ### Completed (April 16, 2026 — earlier) — 2025 Preliminary Report Initial Build
 
@@ -176,7 +207,7 @@ Created `other/documents/preliminary_report_2025/2025_preliminary_summary.qmd`. 
 - **Bibliography.** `references.bib` with adec-aac-70, adec-aac-80, usepa1976, usepa-nrwqc, adec-qapp.
 - **All files in** `other/documents/preliminary_report_2025/`.
 
----
+------------------------------------------------------------------------
 
 ### Completed (April 10, 2026)
 
@@ -188,15 +219,15 @@ Created `other/documents/preliminary_report_2025/2025_preliminary_summary.qmd`. 
 
 - **Annual funding request email template created.** `other/documents/financial/annual_funding_request_template.md`. Placeholders: `[Name]`, `[$AMOUNT]`, `[Agency Name]`, and two inline links to update annually.
 
----
+------------------------------------------------------------------------
 
 ### Completed (April 9, 2026)
 
 - **Reorganize Quarto project: move chapter `.qmd` files to `chapters/` subfolder.** 19 `.qmd` files moved. `index.qmd` stays at root. `_quarto.yml` updated with `chapters/` prefix. Image paths in `study_area.qmd` (25 images) and `interpreting_boxplots.qmd` (1 image) updated from `other/...` to `../other/...`. R code paths unaffected (`execute-dir: project`).
 
-- **Diagnosed CDX batch delete failure (Task 1a-reupload).** Root cause: 835 2021 records in WQP/STORET but absent from WQX Web internal DB. WQX Web Review shows zero 2021 records; CDX batch delete returns "Domain Value Invalid." DELETE file is correct (verified). **Email sent to wqx@epa.gov April 9, 2026.** See EPA response in CDX WQX Delete notes above.
+- **Diagnosed CDX batch delete failure (Task 1a-reupload).** Root cause: 835 2021 records in WQP/STORET but absent from WQX Web internal DB. WQX Web Review shows zero 2021 records; CDX batch delete returns "Domain Value Invalid." DELETE file is correct (verified). **Email sent to wqx\@epa.gov April 9, 2026.** See EPA response in CDX WQX Delete notes above.
 
----
+------------------------------------------------------------------------
 
 ### Completed (April 8, 2026)
 
@@ -204,26 +235,27 @@ Created `other/documents/preliminary_report_2025/2025_preliminary_summary.qmd`. 
 
 - **Output files confirmed ready (no re-render needed).** `results_activities.csv` (April 6, 20:11): correct sample fractions. `station.csv`: GPS-Unspecified + HUC code. `project.csv`: unchanged.
 
----
+------------------------------------------------------------------------
 
 ### Completed (April 6, 2026)
 
 - **Task 1a: Standardize sample fraction names in 2021 pipeline.**
-  1. `wqx_template_matching_table.xlsx → result_sample_fraction` sheet: dissolved metals (method 200.8) changed from `"Filtered, field"` → `"Dissolved"`.
-  2. `appendix_a.qmd`: added explicit `mutate()` for TSS (`"Suspended"`) and FC (`"None"`).
-  3. `other/documents/sample_fraction_correction_handoff.md` created for qaqc repo handoff.
+
+  1.  `wqx_template_matching_table.xlsx → result_sample_fraction` sheet: dissolved metals (method 200.8) changed from `"Filtered, field"` → `"Dissolved"`.
+  2.  `appendix_a.qmd`: added explicit `mutate()` for TSS (`"Suspended"`) and FC (`"None"`).
+  3.  `other/documents/sample_fraction_correction_handoff.md` created for qaqc repo handoff.
 
 - **Historical years (2000–2013):** dissolved metals already use `"Dissolved"` — no re-upload needed. Ca/Fe/Mg `Total Recoverable` → `Unfiltered` correction addressed in qaqc repo via handoff doc.
 
 - **2023+ context:** Lab switched from field to lab filtration for dissolved metals. `"Dissolved"` correctly applies to both. Method alone no longer distinguishes dissolved from total — fraction field is only distinguishing factor.
 
----
+------------------------------------------------------------------------
 
 ### Completed (April 3, 2026)
 
 - **Planned duplicate RPD summary table for `data_qa_qc.qmd`** (not yet implemented). See Task 17 in AGENTS.md for full implementation approach.
 
----
+------------------------------------------------------------------------
 
 ### Completed (April 2, 2026 — evening)
 
@@ -232,13 +264,14 @@ Created `other/documents/preliminary_report_2025/2025_preliminary_summary.qmd`. 
 - **Fixed HTML plotly legend group subtitles.** Root cause: `legendgrouptitle` was being set on every trace in each group. Fix: `group_titled` list tracks whether each group's subtitle has been applied; set only on first visible trace, `list(text = "")` on all subsequent. Result: "Static regulatory thresholds" and "Hardness-dependent criteria" each appear exactly once. Verified against Copper.
 
 - **Reviewed ADEC CALM document (`other/agent_context/calm-rev-2021-acc.pdf`).** Key findings:
+
   - Assessment Level minimum: 10 samples (5 for toxics) over 2+ years within most recent 5-year period.
   - For 10–11 samples, 2 exceedances needed to list as impaired.
   - FC, turbidity, and petroleum hydrocarbons explicitly excluded from standard CALM methodology.
   - Grab samples may be treated as representative of averaging periods (Section 3.2).
   - New tasks added: 1c (5-year sample count check) and 5a (CALM methodology notes).
 
----
+------------------------------------------------------------------------
 
 ### Completed (April 2, 2026)
 
@@ -250,7 +283,7 @@ Created `other/documents/preliminary_report_2025/2025_preliminary_summary.qmd`. 
 
 - **Revised boxplot legend.** `std_labels` moved to top level of `static_boxplot_function.R` (computed once on source, shared). `linetype_map` expanded to cover all 20 known standard type codes. `scale_linetype_manual()` uses `labels = std_labels[present_standards]`. Legend sub-titles: "Static regulatory\nthresholds" and "Hardness-dependent\nexceedance type".
 
----
+------------------------------------------------------------------------
 
 ### Completed (April 1, 2026)
 
@@ -261,11 +294,12 @@ Created `other/documents/preliminary_report_2025/2025_preliminary_summary.qmd`. 
 - **HMW visibility investigation concluded.** See HMW Architecture Detail section above.
 
 - **Refactored parameter chapter boilerplate via `render_plots.R` + `knit_child()` template.**
-  1. `functions/render_plots.R`: defines `render_parameter_plots(plots)` — returns `htmltools::tagList` for HTML, calls `print()` for DOCX.
-  2. `templates/_parameter_chunk.Rmd`: knitr child template with four source+call pairs.
-  3. Each chapter now sets `characteristic` (+ optional `sample_fraction`, `no_threshold_note`), then calls `knitr::knit_child()` with `results='asis'`.
 
----
+  1.  `functions/render_plots.R`: defines `render_parameter_plots(plots)` — returns `htmltools::tagList` for HTML, calls `print()` for DOCX.
+  2.  `templates/_parameter_chunk.Rmd`: knitr child template with four source+call pairs.
+  3.  Each chapter now sets `characteristic` (+ optional `sample_fraction`, `no_threshold_note`), then calls `knitr::knit_child()` with `results='asis'`.
+
+------------------------------------------------------------------------
 
 ### Completed (March 31, 2026)
 
@@ -281,7 +315,7 @@ Created `other/documents/preliminary_report_2025/2025_preliminary_summary.qmd`. 
 
 - **`iron.qmd` citation corrected.** `(ADEC, 2008; USEPA, 2014)` → `(ADEC, 2008; USEPA, 1976)`. Iron criterion originates from USEPA 1976 Red Book.
 
----
+------------------------------------------------------------------------
 
 ### Completed (March 28, 2026)
 
@@ -309,13 +343,13 @@ Created `other/documents/preliminary_report_2025/2025_preliminary_summary.qmd`. 
 
 - **Set up Quarto render profile files.** `_quarto-html.yml` and `_quarto-docx.yml`. `profile: default: html` and `group: - [html, docx]` in `_quarto.yml`. Confirmed profile dropdown is not an RStudio feature (April 10, 2026).
 
----
+------------------------------------------------------------------------
 
 ### Completed (March 27, 2026)
 
 - **Fixed 11 results with missing `monitoring_location_id`.** See Resolved Known Data Issues above.
 
----
+------------------------------------------------------------------------
 
 ### Completed (March 26, 2026)
 
@@ -323,7 +357,7 @@ Created `other/documents/preliminary_report_2025/2025_preliminary_summary.qmd`. 
 
 - **Replaced AQWMS/AWQWMS terminology.** See Resolved Known Data Issues above.
 
----
+------------------------------------------------------------------------
 
 ### Completed (March 25, 2026)
 
