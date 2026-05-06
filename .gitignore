@@ -24,3 +24,5 @@ other/input/WQX_downloads
 # knitr chunk caches and figure assets — regenerated on render
 *_cache/
 *_files/
+# Exception: pre-rendered figure assets in docs/ must be committed for GitHub Pages
+!docs/**/*_files/
