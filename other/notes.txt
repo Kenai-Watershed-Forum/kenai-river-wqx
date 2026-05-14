@@ -2,9 +2,13 @@
 
 ## Companion Files (load on demand, not every session)
 
--   `other/agent_context/session_log.md` — full log of completed session work, resolved data issues, appendix_a.qmd audit, CDX delete workflow, HMW architecture detail, planned script refactor structure
--   `other/documents/sample_fraction_correction_handoff.md` — CDX fraction correction handoff for the qaqc repo
+- `other/agent_context/session_log.md` — full log of completed session work, resolved data issues, appendix_a.qmd audit, CDX delete workflow, HMW architecture detail, planned script refactor structure
+- `other/documents/sample_fraction_correction_handoff.md` — CDX fraction correction handoff for the qaqc repo
+- `tasks/lessons.md` — accumulated correction patterns; review at session start when relevant to the task at hand
 
+## Memory System Note
+
+This repo contains both `AGENTS.md` (Posit Assistant memory, loaded each session) and `CLAUDE.md` (Claude Code instructions, separate tool). They are independent; changes to one do not affect the other. Do not embed `AGENTS.md` content inside `.qmd` or other source files — `AGENTS.md` applies repo-wide automatically.
 ------------------------------------------------------------------------
 
 ## Next Session Priorities
