@@ -7,13 +7,13 @@ Load this file when working on WQX formatting, CDX export, data ingestion, or an
 ## Sample Fraction Canonical Scheme
 
 | Parameter type | Canonical fraction | Notes |
-|---|---|---|
+|----|----|----|
 | Dissolved metals (any method, any filtration) | `Dissolved` | Consistent all years including 2023+ lab-filtered |
 | Total metals (unfiltered) | `Unfiltered` | For 2023+: method alone no longer distinguishes dissolved from total |
-| Nutrients | `Total` | |
-| TSS | `Suspended` | |
-| BTEX / volatiles | `Volatile` | |
-| Fecal Coliform | `None` | |
+| Nutrients | `Total` |  |
+| TSS | `Suspended` |  |
+| BTEX / volatiles | `Volatile` |  |
+| Fecal Coliform | `None` |  |
 
 ------------------------------------------------------------------------
 
@@ -44,7 +44,7 @@ The annual QA/QC pipeline follows a two-part template structure, with each year'
 
 **Template structure (single QMD per year):**
 
-```
+```         
 ## Year Configuration        — sampling dates, file paths; only block that changes every year
 ## Part A: Data Ingestion    — inlined code, adapted per year for EDD format quirks
    ### SGS/ALS Lab Results
@@ -65,7 +65,7 @@ The annual QA/QC pipeline follows a two-part template structure, with each year'
 
 **qaqc repo structure:**
 
-```
+```         
 templates/
   pipeline_template.qmd   # canonical template — copy and adapt for each new year
 functions/

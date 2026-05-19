@@ -11,7 +11,7 @@
 | `other/agent_context/context_files/known_issues.md` | Before any CDX/WQP work, troubleshooting data, or reviewing QA/QC decisions |
 | `other/agent_context/session_log.md` | Full log of completed session work, resolved issues, and task context |
 | `other/documents/sample_fraction_correction_handoff.md` | CDX fraction correction handoff for the qaqc repo |
-| `tasks/lessons.md` | Accumulated correction patterns; review when relevant to current task |
+| `other/agent_context/context_files/lessons.md` | Accumulated correction patterns; review when relevant to current task |
 
 ## Memory System Note
 
