@@ -26,3 +26,5 @@ other/input/WQX_downloads
 *_files/
 # Exception: pre-rendered figure assets in docs/ must be committed for GitHub Pages
 !docs/**/*_files/
+# Exception: agent context files are not render output
+!other/agent_context/context_files/
