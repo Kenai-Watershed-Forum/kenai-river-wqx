@@ -27,11 +27,11 @@ This repo also contains `CLAUDE.md` (Claude Code instructions, separate tool) al
 
 Top priorities (load `session_log.md` for full context on any task):
 
-1. **Task 18 (HIGH)** — Create `templates/pipeline_template.qmd` in the qaqc repo (canonical single-QMD pipeline)
-2. **Task 1c (HIGH)** — CALM 5-year window sample count check (2017-2021); source: `other/output/wqx_formatted/intermediate/2021_export_data_flagged.csv`
-3. **Task 1b (HIGH)** — Audit all distinct `CharacteristicName` values in WQP for org `KENAI_WQX`
-4. **Task 5 (Medium)** — Verify 6 `review_needed = Y` rows in `standard_types` sheet of `master_reg_limits.xlsx`
-5. **Task 5a (Medium)** — Add CALM methodology notes to FC, turbidity, and BTEX chapter narratives
+1. **Task 1a-reupload (HIGH)** — CDX re-upload: `results_activities.csv`, `project.csv`, `station.csv` (all in `other/output/wqx_formatted/`). Deletion confirmed; files ready.
+2. **Task 18 (HIGH)** — Create `templates/pipeline_template.qmd` in the qaqc repo (canonical single-QMD pipeline)
+3. **Task 1c (HIGH)** — CALM 5-year window sample count check (2017-2021); source: `other/output/wqx_formatted/intermediate/2021_export_data_flagged.csv`
+4. **Task 1b (HIGH)** — Audit all distinct `CharacteristicName` values in WQP for org `KENAI_WQX`
+5. **Task 5 (Medium)** — Verify 6 `review_needed = Y` rows in `standard_types` sheet of `master_reg_limits.xlsx`
 
 ------------------------------------------------------------------------
 
