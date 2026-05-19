@@ -23,7 +23,7 @@ This repo also contains `CLAUDE.md` (Claude Code instructions, separate tool) al
 
 ## Next Session Priorities
 
-**EPA WQX 2021 records BLOCKED — do not attempt CDX delete or re-upload until EPA confirms orphaned records are resolved. ETL was restored as of 2026-05-01 (confirmed via Kevin Christian email). However, CDX batch delete still returns "Domain Value Invalid" for all 835 Activity IDs: ETL restoration did not retroactively restore the orphaned 2021 records into WQX Web's internal DB. Follow-up email sent to wqx@epa.gov 2026-05-04 requesting EPA delete records directly or restore them into WQX Web. Awaiting EPA response.**
+**EPA WQX 2021 re-upload READY — deletion confirmed complete; proceed with CDX re-upload. WQP query on 2026-05-18 returned 0 rows for KENAI_WQX 2021 data, confirming the warehouse refresh deleted the 835 orphaned records. The "Domain Value Invalid" CDX batch delete errors were because the records were already gone from WQX Web's internal DB. Re-upload file is ready: `other/output/wqx_formatted/results_activities.csv`. Also upload `project.csv` and `station.csv`. Verify in WQP after ETL processes (~days).**
 
 Top priorities (load `session_log.md` for full context on any task):
 
@@ -39,7 +39,7 @@ Top priorities (load `session_log.md` for full context on any task):
 
 | # | Priority | Description | Status |
 |---|---|---|---|
-| 1a-reupload | HIGH, BLOCKED | Re-upload 835 2021 records. Files ready: `results_activities.csv`, `resultphyschem_DELETE_v4.csv`. ETL restored but records orphaned in WQX Web; EPA email sent 2026-05-04. | Blocked — awaiting EPA response |
+| 1a-reupload | HIGH | Re-upload 835 2021 records. Deletion confirmed complete (WQP 2026-05-18 query: 0 rows). Upload `results_activities.csv`, `project.csv`, `station.csv` to CDX. | **Ready to upload** |
 | 1b | HIGH | Characteristic name audit across all KWF years in WQP | Pending |
 | 1c | HIGH | CALM 5-year window sample count check (2017-2021) | Pending |
 | 2 | Medium | Fix HMW visibility for 15 legacy numeric-ID stations | Pending |
