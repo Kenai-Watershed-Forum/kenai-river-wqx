@@ -3,7 +3,7 @@
 ## Companion Files (load on demand)
 
 | File | Load when... |
-|---|---|
+|----|----|
 | `other/agent_context/context_files/conventions.md` | WQX formatting, CDX export, data ingestion, or any data convention question (sample fraction, flagging, trip blanks, pipeline architecture) |
 | `other/agent_context/context_files/data_architecture.md` | Navigating data storage, regulatory thresholds, or R package choices |
 | `other/agent_context/context_files/report_structure.md` | Working on the Quarto book, parameter chapters, or adding new pages |
@@ -23,22 +23,22 @@ This repo also contains `CLAUDE.md` (Claude Code instructions, separate tool) al
 
 ## Next Session Priorities
 
-**EPA WQX 2021 re-upload READY — deletion confirmed complete; proceed with CDX re-upload. WQP query on 2026-05-18 returned 0 rows for KENAI_WQX 2021 data, confirming the warehouse refresh deleted the 835 orphaned records. The "Domain Value Invalid" CDX batch delete errors were because the records were already gone from WQX Web's internal DB. Re-upload file is ready: `other/output/wqx_formatted/results_activities.csv`. Also upload `project.csv` and `station.csv`. Verify in WQP after ETL processes (~days).**
+**EPA WQX 2021 re-upload READY — deletion confirmed complete; proceed with CDX re-upload. WQP query on 2026-05-18 returned 0 rows for KENAI_WQX 2021 data, confirming the warehouse refresh deleted the 835 orphaned records. The "Domain Value Invalid" CDX batch delete errors were because the records were already gone from WQX Web's internal DB. Re-upload file is ready: `other/output/wqx_formatted/results_activities.csv`. Also upload `project.csv` and `station.csv`. Verify in WQP after ETL processes (\~days).**
 
 Top priorities (load `session_log.md` for full context on any task):
 
-1. **Task 1a-reupload (HIGH)** — CDX re-upload: `results_activities.csv`, `project.csv`, `station.csv` (all in `other/output/wqx_formatted/`). Deletion confirmed; files ready.
-2. **Task 18 (HIGH)** — Create `templates/pipeline_template.qmd` in the qaqc repo (canonical single-QMD pipeline)
-3. **Task 1c (HIGH)** — CALM 5-year window sample count check (2017-2021); source: `other/output/wqx_formatted/intermediate/2021_export_data_flagged.csv`
-4. **Task 1b (HIGH)** — Audit all distinct `CharacteristicName` values in WQP for org `KENAI_WQX`
-5. **Task 5 (Medium)** — Verify 6 `review_needed = Y` rows in `standard_types` sheet of `master_reg_limits.xlsx`
+1.  **Task 1a-reupload (HIGH)** — CDX re-upload: `results_activities.csv`, `project.csv`, `station.csv` (all in `other/output/wqx_formatted/`). Deletion confirmed; files ready.
+2.  **Task 18 (HIGH)** — Create `templates/pipeline_template.qmd` in the qaqc repo (canonical single-QMD pipeline)
+3.  **Task 1c (HIGH)** — CALM 5-year window sample count check (2017-2021); source: `other/output/wqx_formatted/intermediate/2021_export_data_flagged.csv`
+4.  **Task 1b (HIGH)** — Audit all distinct `CharacteristicName` values in WQP for org `KENAI_WQX`
+5.  **Task 5 (Medium)** — Verify 6 `review_needed = Y` rows in `standard_types` sheet of `master_reg_limits.xlsx`
 
 ------------------------------------------------------------------------
 
 ## Active Tasks
 
-| # | Priority | Description | Status |
-|---|---|---|---|
+| \# | Priority | Description | Status |
+|----|----|----|----|
 | 1a-reupload | HIGH | Re-upload 835 2021 records. Deletion confirmed complete (WQP 2026-05-18 query: 0 rows). Upload `results_activities.csv`, `project.csv`, `station.csv` to CDX. | **Ready to upload** |
 | 1b | HIGH | Characteristic name audit across all KWF years in WQP | Pending |
 | 1c | HIGH | CALM 5-year window sample count check (2017-2021) | Pending |
