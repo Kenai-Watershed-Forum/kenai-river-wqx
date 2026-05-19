@@ -10,6 +10,26 @@ This file is **not loaded automatically** — reference it on demand when you ne
 
 ------------------------------------------------------------------------
 
+### Session Entry (2026-05-18)
+
+**Agent context restructuring — AGENTS.md lean hub + companion context files.**
+
+- Reviewed the claude-project-template repo (github.com/vonchitzki/claude-project-template) as a model for improving context reliability. Adopted its core principle: separate always-loaded session context from on-demand domain knowledge.
+- Split AGENTS.md from 287 lines into a lean ~80-line hub pointing to 5 new topical companion files in `other/agent_context/context_files/`:
+  - `conventions.md` — sample fraction scheme, flagging convention, trip blank assignments, pipeline architecture, lab ingestion notes, year-config variables
+  - `data_architecture.md` — data storage structure, regulatory threshold architecture, R packages
+  - `report_structure.md` — report file table, parameter chapter pattern, logo path note, render commands
+  - `project_overview.md` — project overview, HMW/ATTAINS, parameters monitored, governance docs, external links
+  - `known_issues.md` — active data issues, QA/QC notes
+- Added `.gitignore` negation rule (`!other/agent_context/context_files/`) to prevent `*_files/` pattern from blocking the new directory.
+- Deleted `other/notes.txt` (confirmed stale duplicate of old AGENTS.md with no unique content; one historical reference in session_log.md line 214 is benign).
+- Re-added Repo Relationship section to AGENTS.md (had been dropped during restructure).
+- Updated ETL warning in AGENTS.md to reflect correct May 2026 status: ETL restored but 835 records remain orphaned in WQX Web; EPA email sent 2026-05-04.
+- Confirmed `session_log.md` is present and syncing correctly to qaqc repo via GitHub Actions.
+- Committed and pushed: `ddab2bd` — "refactor: restructure agent context into lean AGENTS.md + companion context files"
+
+------------------------------------------------------------------------
+
 ### Session Entry (2026-05-04)
 
 **EPA WQX batch delete — still blocked after ETL restoration.**
