@@ -61,6 +61,7 @@ Top priorities (load `session_log.md` for full context on any task):
 | 15 | Low | Dynamically generate numerical values in parameter chapter prose | Pending |
 | 16 | Low | Parameter chapter review workflow — post-2025 data integration | Pending |
 | 17 | Low | Add multi-year duplicate RPD summary table to `data_qa_qc.qmd` | Pending |
+| 20 | Low | Replace local WQP data downloads with live `dataRetrieval` queries in parameter chapters | Pending |
 
 ------------------------------------------------------------------------
 
