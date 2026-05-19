@@ -23,7 +23,7 @@ This repo also contains `CLAUDE.md` (Claude Code instructions, separate tool) al
 
 ## Next Session Priorities
 
-**EPA WQX sync issue BLOCKED — do not attempt CDX delete or re-upload until EPA confirms ETL is restored. As of April 23, 2026 (WQX/WQP monthly user call), the WQX-to-portal ETL pipeline remains disrupted. WQX inbound (CDX uploads) is operational, but corrections will not propagate to WQP/HMW until ETL is restored. Check status at next monthly call or via WQX help desk.**
+**EPA WQX 2021 records BLOCKED — do not attempt CDX delete or re-upload until EPA confirms orphaned records are resolved. ETL was restored as of 2026-05-01 (confirmed via Kevin Christian email). However, CDX batch delete still returns "Domain Value Invalid" for all 835 Activity IDs: ETL restoration did not retroactively restore the orphaned 2021 records into WQX Web's internal DB. Follow-up email sent to wqx@epa.gov 2026-05-04 requesting EPA delete records directly or restore them into WQX Web. Awaiting EPA response.**
 
 Top priorities (load `session_log.md` for full context on any task):
 
@@ -39,7 +39,7 @@ Top priorities (load `session_log.md` for full context on any task):
 
 | # | Priority | Description | Status |
 |---|---|---|---|
-| 1a-reupload | HIGH, BLOCKED | Re-upload 835 2021 records. Files ready: `results_activities.csv`, `resultphyschem_DELETE_v4.csv`. Waiting for EPA ETL fix. | Blocked — ETL still disrupted as of April 23, 2026 |
+| 1a-reupload | HIGH, BLOCKED | Re-upload 835 2021 records. Files ready: `results_activities.csv`, `resultphyschem_DELETE_v4.csv`. ETL restored but records orphaned in WQX Web; EPA email sent 2026-05-04. | Blocked — awaiting EPA response |
 | 1b | HIGH | Characteristic name audit across all KWF years in WQP | Pending |
 | 1c | HIGH | CALM 5-year window sample count check (2017-2021) | Pending |
 | 2 | Medium | Fix HMW visibility for 15 legacy numeric-ID stations | Pending |
