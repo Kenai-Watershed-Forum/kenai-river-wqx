@@ -18,6 +18,7 @@ The two repos form a complete pipeline: qaqc repo submits data to EPA WQX → EP
 
 - `other/agent_context/session_log.md` — full log of completed session work, resolved data issues, appendix_a.qmd audit, CDX delete workflow, HMW architecture detail, planned script refactor structure
 - `other/documents/sample_fraction_correction_handoff.md` — CDX fraction correction handoff for the qaqc repo
+- `other/documents/md/` — text-extracted `.md` versions of governance/reference PDFs (preferred for AI ingestion). See Governance Documents section for full table.
 
 ------------------------------------------------------------------------
 
@@ -279,14 +280,24 @@ Use base pipe `|>` for all new code. Do not mass-convert legacy `%>%` usage.
 
 ------------------------------------------------------------------------
 
-## Governance Documents (`other/agent_context/`)
+## Governance Documents
 
-- QAPP (approved ADEC + EPA Region 10, 2023 + April 2024 addendum)
-- MOU — Baseline Water Quality MOU 2025 Final
-- Funding Proposal — KWF 2024 BOR WaterSMART CWMP
-- ADEC Water Quality Standards — 18 AAC 70
-- DL/LOD/LOQ Interpretation — SGS Laboratories
-- CALM — `calm-rev-2021-acc.pdf` (Alaska Consolidated Assessment and Listing Methodology, revised March 2021)
+Original PDFs are in `other/agent_context/`. Text-extracted `.md` versions (preferred for AI ingestion — lower token cost) are in `other/documents/md/`. Always load from `other/documents/md/` when available.
+
+| Document | Markdown path | Notes |
+|---|---|---|
+| CALM (Alaska Consolidated Assessment and Listing Methodology, rev. March 2021) | `other/documents/md/calm-rev-2021.md` | |
+| ADEC Water Quality Standards — 18 AAC 70 | `other/documents/md/ADEC-18-aac-70.md` | |
+| QAPP (approved ADEC + EPA Region 10, 2023 + April 2024 addendum) | `other/documents/md/QAPP-v3-2023-with-Addendum-April-2024.md` | |
+| MOU — Baseline Water Quality MOU 2025 Final | `other/documents/md/Kenai-River-Baseline-WQ-MOU-2025.md` | |
+| DL/LOD/LOQ Interpretation — SGS Laboratories | `other/documents/md/DL-LOD-LOQ-Interpretation-SGS.md` | |
+| Kenai Baseline WQ Assessment 2016 | `other/documents/md/Kenai-Baseline-WQ-Assessment-2016.md` | |
+| Kenai River 2021 Monitoring Field Report | `other/documents/md/kenai-river-2021-field-report.md` | |
+| Alaska WQ Criteria Manual for Toxic Substances 2022 | `other/documents/md/alaska-water-quality-criteria-manual-2022.md` | Converted from ADEC web version (text layer present); local copy in agent_context/ is scanned |
+| Kenai Baseline WQ Assessment 2007 | PDF only — scanned, no text layer | `other/agent_context/Kenai Watershed Forum Baseline Water Quality Assessment 2007.pdf` |
+| Funding Proposal — KWF 2024 BOR WaterSMART CWMP | PDF only | `other/agent_context/` |
+
+**Convention:** When new PDFs are added as reference/governance documents, convert to `.md` using `pdftools::pdf_text()` and place in `other/documents/md/`. Raw data PDFs (field forms, lab reports, COC documents) do not need conversion.
 
 ------------------------------------------------------------------------
 

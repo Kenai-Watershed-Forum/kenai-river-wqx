@@ -13,7 +13,7 @@
 other/input/WQX_downloads
 
 /other/epa_cdx.txt
-.positai
+.posit/assistant
 
 **/*.quarto_ipynb
 
