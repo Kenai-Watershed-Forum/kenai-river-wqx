@@ -36,11 +36,11 @@ Data that has been uploaded to the EPA WQX is evaluated biannually by the Alaska
 
 The code scripts in this document assemble water quality data from the three analytical laboratories that partnered with Kenai Watershed Forum for this project in 2021:
 
--   SGS Laboratories (Anchorage, AK)
+- SGS Laboratories (Anchorage, AK)
 
--   Soldotna Wastewater Treatment Plant (Soldotna, AK)
+- Soldotna Wastewater Treatment Plant (Soldotna, AK)
 
--   Taurianen Engineering and Testing (Soldotna, AK)
+- Taurianen Engineering and Testing (Soldotna, AK)
 
 <br>
 
@@ -430,17 +430,17 @@ The laboratory reports provide results for all sites, and for all parameters, wi
 
 We worked with three separate laboratories in 2021:
 
--   SGS Laboratories, Anchorage, AK
+- SGS Laboratories, Anchorage, AK
 
-    -   Chain of Custody documents are included within the PDF laboratory reports linked above earlier in this appendix.
+  - Chain of Custody documents are included within the PDF laboratory reports linked above earlier in this appendix.
 
--   Soldotna Wastewater Treatment Plant, Soldotna, AK
+- Soldotna Wastewater Treatment Plant, Soldotna, AK
 
-    -   Chain of Custody documents are on file with Kenai Watershed Forum for fecal coliform and total suspended solids for 5/11/2021, and for total suspended solids on 7/27/2021.
+  - Chain of Custody documents are on file with Kenai Watershed Forum for fecal coliform and total suspended solids for 5/11/2021, and for total suspended solids on 7/27/2021.
 
--   Tauriainen Engineering & Testing, Soldotna, AK
+- Tauriainen Engineering & Testing, Soldotna, AK
 
-    -   An individual document for each sample reports the time and date of delivery and analysis for each sample. These documents are included with the PDF laboratory reports linked above earlier in this appendix.
+  - An individual document for each sample reports the time and date of delivery and analysis for each sample. These documents are included with the PDF laboratory reports linked above earlier in this appendix.
 
 <br>
 
@@ -462,73 +462,73 @@ The quantity of sample bottles sent to the laboratories matches the number of an
 
 We worked with three separate laboratories in 2021:
 
--   SGS Laboratories, Anchorage, AK
+- SGS Laboratories, Anchorage, AK
 
-    -   SGS provided data as PDFs which included reporting limits, as well as in the form of an Electronic Data Deliverable where this information is also included in column format.
+  - SGS provided data as PDFs which included reporting limits, as well as in the form of an Electronic Data Deliverable where this information is also included in column format.
 
--   Soldotna Wastewater Treatment Plant (SWWTP), Soldotna, AK
+- Soldotna Wastewater Treatment Plant (SWWTP), Soldotna, AK
 
-    -   SWWTP provided data in the form of .xls files. Reporting limits are described in this project's current Quality Assurance Action Plan.
+  - SWWTP provided data in the form of .xls files. Reporting limits are described in this project's current Quality Assurance Action Plan.
 
--   Tauriainen Engineering & Testing, Soldotna, AK
+- Tauriainen Engineering & Testing, Soldotna, AK
 
-    -   Tauriainen provided data in the form of PDF documents. Reporting limits are described in this project's current Quality Assurance Action Plan.
+  - Tauriainen provided data in the form of PDF documents. Reporting limits are described in this project's current Quality Assurance Action Plan.
 
 <br>
 
 **9.) Are site names, dates, and times correct and as expected?**
 
--   *Yes, after post-season correction documented in this report.* Notes: In 2021 Kenai Watershed Forum used pre-printed waterproof labels on all sample bottles, reducing opportunity for field and lab transcription errors. Remaining site name transcription errors from laboratories were corrected in post-season data review, using scripted code that did not modify the original report.
+- *Yes, after post-season correction documented in this report.* Notes: In 2021 Kenai Watershed Forum used pre-printed waterproof labels on all sample bottles, reducing opportunity for field and lab transcription errors. Remaining site name transcription errors from laboratories were corrected in post-season data review, using scripted code that did not modify the original report.
 
 <br>
 
 **10.) Were there any issues with instrument calibration?**
 
--   Instruments to measure intrinsic water quality parameters (sondes; to measure pH, dissolved oxygen, conductivity, turbidity) were not employed in 2021.
+- Instruments to measure intrinsic water quality parameters (sondes; to measure pH, dissolved oxygen, conductivity, turbidity) were not employed in 2021.
 
--   Teams did use hand-held probes to record water temperature on-site. Prior to field use, the hand-held probes were verified as measuring within the accuracy level defined in the QAPP using an ice bath in the Kenai Watershed Forum laboratory.
+- Teams did use hand-held probes to record water temperature on-site. Prior to field use, the hand-held probes were verified as measuring within the accuracy level defined in the QAPP using an ice bath in the Kenai Watershed Forum laboratory.
 
 <br>
 
 **11.) Did the instruments perform as expected?**
 
--   The hand-held water temperature probes performed as expected in 2021.
+- The hand-held water temperature probes performed as expected in 2021.
 
 <br>
 
 **12.) Was instrument calibration performed according to the QAPP and instrument recommendations?**
 
--   Water temperature is a parameter that is "verified" rather than calibrated. The hand-held water temperature probes were verified as measuring within the accuracy level defined in the QAPP using an ice bath in the laboratory, according to instrument recommendations.
+- Water temperature is a parameter that is "verified" rather than calibrated. The hand-held water temperature probes were verified as measuring within the accuracy level defined in the QAPP using an ice bath in the laboratory, according to instrument recommendations.
 
 <br>
 
 **13.) Was instrument verification during the field season performed according to the QAPP and instrument recommendations?**
 
--   The hand-held water temperature probes were verified as measuring within the accuracy level define in the QAPP using an ice bath in the laboratory, according to instrument recommendations.
+- The hand-held water temperature probes were verified as measuring within the accuracy level define in the QAPP using an ice bath in the laboratory, according to instrument recommendations.
 
 <br>
 
 **14.) Were instrument calibration verification logs or records kept?**
 
--   Yes. These records are held at Kenai Watershed Forum, 44129 Sterling Hwy, Soldotna, AK.
+- Yes. These records are held at Kenai Watershed Forum, 44129 Sterling Hwy, Soldotna, AK.
 
 <br>
 
 **15.) Do the instrument data files site IDs, time stamps and file names match?**
 
--   Instrument files were not employed in 2021. Measurements from hand held probes were recorded on waterproof paper field forms.
+- Instrument files were not employed in 2021. Measurements from hand held probes were recorded on waterproof paper field forms.
 
 <br>
 
 **16.) Is any insitu field data rejected and why?**
 
--   No insitu data is rejected from 5/11/2021 or 7/27/2021.
+- No insitu data is rejected from 5/11/2021 or 7/27/2021.
 
 <br>
 
 **17.) Were preservation, hold time and temperature requirements met?**
 
--   Yes. Summer and Spring 2021 holding time requirements were met for all samples. See downloadable files below. Laboratory result documents indicated no compromises of preservation and temperature requirements.
+- Yes. Summer and Spring 2021 holding time requirements were met for all samples. See downloadable files below. Laboratory result documents indicated no compromises of preservation and temperature requirements.
 
 ```{r hold-times, echo = F, message = F, warning = F}
 
@@ -598,15 +598,15 @@ embed_if_html("other/output/field_qa_qc_data/holding_time_calcs.csv", text = "Do
 
 **18.) Are dissolved metal quantities less than total metals quantities?**
 
--   Dissolved metals results are ***not*** consistently less than total metals results, as would be logically anticipated (see post from [Flowlink Environmental](https://www.flowlink.ca/post/2018/12/15/dissolved-total-metals-whats-the-difference-and-why-it-matters) website for description and rationale):
+- Dissolved metals results are ***not*** consistently less than total metals results, as would be logically anticipated (see post from [Flowlink Environmental](https://www.flowlink.ca/post/2018/12/15/dissolved-total-metals-whats-the-difference-and-why-it-matters) website for description and rationale):
 
-    -   [**"Dissolved metal concentration** is determined by filtering a water sample through 0.45 uM filter. Water that passes through the filter is analyzed for metals and the result is reported as dissolved metal concentration. **Total metal concentration** is determined by analyzing the unfiltered sample.]{.underline}
+  - [**"Dissolved metal concentration** is determined by filtering a water sample through 0.45 uM filter. Water that passes through the filter is analyzed for metals and the result is reported as dissolved metal concentration. **Total metal concentration** is determined by analyzing the unfiltered sample.]{.underline}
 
-        [**"Total metal concentration = Dissolved metal concentration + Particulate (insoluble) metal concentration.**]{.underline}"
+    [**"Total metal concentration = Dissolved metal concentration + Particulate (insoluble) metal concentration.**]{.underline}"
 
-    -   In 2021, there are results available for both dissolved and total metals for three elements: Ca, Fe, and Mg; for sites at and downstream of RM 31.
+  - In 2021, there are results available for both dissolved and total metals for three elements: Ca, Fe, and Mg; for sites at and downstream of RM 31.
 
-    -   Dissolved metals results are available for 7/27/2021 (summer) only, and not for 5/11/2021 (spring); see question #3 in this sequence.
+  - Dissolved metals results are available for 7/27/2021 (summer) only, and not for 5/11/2021 (spring); see question #3 in this sequence.
 
 ```{r echo = F, message = F, warning = F}
 
@@ -706,11 +706,11 @@ rm(ca, fe, mg)
 
 Results:
 
--   **Calcium:** All `r ca_n_sites` summer 2021 sites with paired dissolved and total measurements show dissolved \> total. The dissolved Ca concentration exceeds total Ca by `r ca_pct_min` to `r ca_pct_max` (median \~`r ca_pct_median`) across all sites. This is a systematic, consistent pattern that is too large and too uniform to be attributable to measurement uncertainty alone.
+- **Calcium:** All `r ca_n_sites` summer 2021 sites with paired dissolved and total measurements show dissolved \> total. The dissolved Ca concentration exceeds total Ca by `r ca_pct_min` to `r ca_pct_max` (median \~`r ca_pct_median`) across all sites. This is a systematic, consistent pattern that is too large and too uniform to be attributable to measurement uncertainty alone.
 
--   **Iron:** All `r fe_n_sites` summer 2021 sites with paired data show dissolved \< total, which is the expected relationship. Iron behaves as anticipated.
+- **Iron:** All `r fe_n_sites` summer 2021 sites with paired data show dissolved \< total, which is the expected relationship. Iron behaves as anticipated.
 
--   **Magnesium:** `r mg_n_expected` of `r mg_n_sites` summer 2021 sites show total \> dissolved, as expected. Two sites near the Kenai River mouth are exceptions: RM 0 NNC (dissolved exceeds total by `r mg_rm0_pct`) and RM 1.5 (dissolved exceeds total by `r mg_rm15_pct`). These small percentage differences are likely within the typical analytical uncertainty for ICP methods (\~5–10%) and may not represent a meaningful discrepancy. Note that the Mg concentration at RM 1.5 is anomalously high (`r mg_rm15_conc`, compared to 1–8 mg/L at other lower-river sites), possibly reflecting brackish/tidal influence near Cook Inlet.
+- **Magnesium:** `r mg_n_expected` of `r mg_n_sites` summer 2021 sites show total \> dissolved, as expected. Two sites near the Kenai River mouth are exceptions: RM 0 NNC (dissolved exceeds total by `r mg_rm0_pct`) and RM 1.5 (dissolved exceeds total by `r mg_rm15_pct`). These small percentage differences are likely within the typical analytical uncertainty for ICP methods (\~5–10%) and may not represent a meaningful discrepancy. Note that the Mg concentration at RM 1.5 is anomalously high (`r mg_rm15_conc`, compared to 1–8 mg/L at other lower-river sites), possibly reflecting brackish/tidal influence near Cook Inlet.
 
 <br>
 
@@ -734,13 +734,13 @@ The magnesium exceptions at RM 0 NNC (`r mg_rm0_pct`) and RM 1.5 (`r mg_rm15_pct
 
 In 2021, field duplicate samples were collected at two sites on both 5/11/2021 and 7/27/2021:
 
--   No Name Creek (Tributary, RM0)
--   Funny River (Tributary, RM30)
+- No Name Creek (Tributary, RM0)
+- Funny River (Tributary, RM30)
 
 Following the example in the Alaska Department of Environmental Conservation 2021 Kenai River Metals Field Report [@apsens2022]: "... a set of paired samples was evaluated for RPD only if:
 
--   a.) one or both of the samples were above the Limit of Quantitation (LOQ); AND if
--   b.) one or both of the samples were at least two times the LOQ."
+- a.) one or both of the samples were above the Limit of Quantitation (LOQ); AND if
+- b.) one or both of the samples were at least two times the LOQ."
 
 ```{r echo = F, message = F, warning = F}
 
@@ -904,12 +904,12 @@ Most other parameters have at least one available RPD value that is within proje
 
 The parameters that do *not* have at least one RPD calculation available, due to the LOQ constraints described above, are the following:
 
--   Arsenic
--   Cadmium
--   Chromium
--   Copper
--   Lead
--   Zinc
+- Arsenic
+- Cadmium
+- Chromium
+- Copper
+- Lead
+- Zinc
 
 *Other notes*
 
@@ -919,12 +919,12 @@ In 2021 the full suite of dissolved metals was run for method 200.8 on samples f
 
 We attempted to calculate RPD values for all parameters collected in 2021 at two field sites on two dates. For each pair of duplicate observations, one of the following descriptions apply:
 
--   It ***was possible*** to calculate RPD values because:
-    -   a.) one or both of the samples **were above** the LOQ; AND one or both of the samples **were** at least two times the LOQ
-        -   Project data for this parameter will be submitted unflagged to EPA WQX if RPD values meet project goals outlined in the QAPP
--   It ***was not possible*** to calculate RPD values because:
-    -   a.) one or both of the samples **were not above** the LOQ; OR one or both of the samples **were not** at least two times the LOQ
-        -   Project data for this parameter will be submitted unflagged to EPA WQX if both paired values are non-detect
+- It ***was possible*** to calculate RPD values because:
+  - a.) one or both of the samples **were above** the LOQ; AND one or both of the samples **were** at least two times the LOQ
+    - Project data for this parameter will be submitted unflagged to EPA WQX if RPD values meet project goals outlined in the QAPP
+- It ***was not possible*** to calculate RPD values because:
+  - a.) one or both of the samples **were not above** the LOQ; OR one or both of the samples **were not** at least two times the LOQ
+    - Project data for this parameter will be submitted unflagged to EPA WQX if both paired values are non-detect
 
 KWF's approach to flagging when RPD cannot be calculated follows the example of the Alaska Department of Environmental Conservation (ADEC) 2021 Kenai River Metals Field Report (Apsens and Petitt, 2021): when duplicate pairs cannot be evaluated for RPD because concentrations are at or below the LOQ, results are retained as accepted non-detect or estimated values rather than flagged. A below-LOQ result is not a precision failure; it reflects actual environmental conditions. Non-detect status is already documented in the `Result Detection Condition` column (U = not detected; J = detected below LOQ, treated as an estimate). KWF communicated with the Alaska Department of Environmental Conservation on August 22, 2023 via an inquiry on this topic. The memo includes a visual flow chart of the logic for when data is flagged, and is available for download below.
 
@@ -940,18 +940,18 @@ embed_if_html("other/documents/QAPP/memos/KWF Memo to ADEC August 2023.pdf", tex
 
 ***All 2021 field results are submitted unflagged to the EPA WQX unless discussed below.***
 
--   *Fecal Coliform*
+- *Fecal Coliform*
 
-    -   Given that `r rpd_fc_n_high` out of `r rpd_fc_n_total` RPD values for fecal coliform are \>60%, field data values for the 2021 dataset may vary from actual environmental conditions. The 2020 KWF QAPP does not specify an RPD value for fecal coliform, it only specifies control checks for sterility and temperature. We used EPA Method 9222D (drinking water) for fecal coliform analysis methods, which does not specify an RPD value. However EPA general recommendations for pathogens in sewage sludge recommends and RPD of 20% [(link)](https://www.epa.gov/biosolids/quality-assurance-project-plan-qapp).
+  - Given that `r rpd_fc_n_high` out of `r rpd_fc_n_total` RPD values for fecal coliform are \>60%, field data values for the 2021 dataset may vary from actual environmental conditions. The 2020 KWF QAPP does not specify an RPD value for fecal coliform, it only specifies control checks for sterility and temperature. We used EPA Method 9222D (drinking water) for fecal coliform analysis methods, which does not specify an RPD value. However EPA general recommendations for pathogens in sewage sludge recommends and RPD of 20% [(link)](https://www.epa.gov/biosolids/quality-assurance-project-plan-qapp).
 
-    -   Given the above considerations, KWF has submitted 2021 fecal coliform data to the EPA WQX as "flagged" (Result Status ID = Rejected). Fecal coliform data is evaluated in this report and assessed against state standards, but given the high RPD values among duplicate samples, 2021 data should be interpreted cautiously in the context of potential regulatory exceedances.
+  - Given the above considerations, KWF has submitted 2021 fecal coliform data to the EPA WQX as "flagged" (Result Status ID = Rejected). Fecal coliform data is evaluated in this report and assessed against state standards, but given the high RPD values among duplicate samples, 2021 data should be interpreted cautiously in the context of potential regulatory exceedances.
 
-    -   A comparison of fecal coliform RPD values across years (2014–2022) and against results from the 2016 comprehensive report is recommended as a future step.
+  - A comparison of fecal coliform RPD values across years (2014–2022) and against results from the 2016 comprehensive report is recommended as a future step.
 
--   *Selected Dissolved Metals (As, Cd, Cr, Cu, Pb, Zn)*
+- *Selected Dissolved Metals (As, Cd, Cr, Cu, Pb, Zn)*
 
-    -   RPD calculations could not be performed for these parameters because concentrations at both the primary and duplicate sample locations were at or below the LOQ. Following the ADEC 2021 approach described above, these results are submitted to EPA WQX as **Accepted**, with non-detect or estimated status clearly documented in the `Result Detection Condition` and `Result Qualifier` columns. This approach recognizes that a below-LOQ result is not a precision failure.
-    -   Note: beginning in Summer 2022, KWF initiated a series of changes to the QAPP that will better facilitate QA/QC decisions regarding dissolved metals results in future years. These changes include use of a dissolved metals field blank and changing from field filtration to lab filtration as standard practice, both of which will improve the ability to detect contamination and calculate RPD for dissolved metals.
+  - RPD calculations could not be performed for these parameters because concentrations at both the primary and duplicate sample locations were at or below the LOQ. Following the ADEC 2021 approach described above, these results are submitted to EPA WQX as **Accepted**, with non-detect or estimated status clearly documented in the `Result Detection Condition` and `Result Qualifier` columns. This approach recognizes that a below-LOQ result is not a precision failure.
+  - Note: beginning in Summer 2022, KWF initiated a series of changes to the QAPP that will better facilitate QA/QC decisions regarding dissolved metals results in future years. These changes include use of a dissolved metals field blank and changing from field filtration to lab filtration as standard practice, both of which will improve the ability to detect contamination and calculate RPD for dissolved metals.
 
 <br>
 
@@ -1067,9 +1067,9 @@ From the QAPP, Completeness Measure A: "the primary number of samples collected 
 
 We calculated Completeness Measure A at the following project scales:
 
--   For individual parameters
--   For individual sites
--   As a project whole
+- For individual parameters
+- For individual sites
+- As a project whole
 
 ```{r apply-flags, echo = F, message = F, warning = F}
 
@@ -1210,9 +1210,9 @@ From the QAPP, Completeness Measure B: "the planned number of samples divided by
 
 For these calculations, we will consider "usable" as "unflagged," and will calculate at the following scales:
 
--   For individual parameters (analysis methods)
--   For individual sites
--   As a project whole
+- For individual parameters (analysis methods)
+- For individual sites
+- As a project whole
 
 ```{r echo = F, message=FALSE, eval= T}
 
@@ -1531,11 +1531,11 @@ In this case, all hydrocarbon results in the Trip Blank are reported as below de
 
 Each water quality dataset that is housed in the EPA WQX consists of three uploads:
 
--   Project description
+- Project description
 
--   Monitoring locations
+- Monitoring locations
 
--   Results and activities
+- Results and activities
 
 We will prepare and finalize each of these uploads here.
 
@@ -1634,8 +1634,8 @@ source("functions/appendix_a_scripts/generate_cdx_export.R")
 
 **Notes for 2021 CDX upload:**
 
--   The 2021 dataset includes 13 "Phosphorus" results from EPA Method 200.8 (Dissolved Metals by ICP/MS), in addition to 48 "Total Phosphorus" results from SM21 4500-P-E. The Method 200.8 phosphorus results are excluded from the CDX submission because this method was not part of the QAPP. Only the `Total Phosphorus` / `4500-P-E` results are uploaded. The filter is applied in the "Results and Activities" code block above.
+- The 2021 dataset includes 13 "Phosphorus" results from EPA Method 200.8 (Dissolved Metals by ICP/MS), in addition to 48 "Total Phosphorus" results from SM21 4500-P-E. The Method 200.8 phosphorus results are excluded from the CDX submission because this method was not part of the QAPP. Only the `Total Phosphorus` / `4500-P-E` results are uploaded. The filter is applied in the "Results and Activities" code block above.
 
--   Corrections to data from years other than 2021 (e.g., spring 2013 specific conductance units) are documented in AGENTS.md and will be addressed in a dedicated chapter of the kenai-river-wqx-qaqc repo, not here.
+- Corrections to data from years other than 2021 (e.g., spring 2013 specific conductance units) are documented in AGENTS.md and will be addressed in a dedicated chapter of the kenai-river-wqx-qaqc repo, not here.
 
 \newpage

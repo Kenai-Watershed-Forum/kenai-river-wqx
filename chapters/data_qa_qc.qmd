@@ -2,24 +2,24 @@
 
 See the following:
 
--   [Appendix A: Data Review and Upload](#appendix_a) in this report provides an example of the QA/QC process used for data presented in this report, based off of procedures provided by the Alaska Department of Environmental Conservation.
+- [Appendix A: Data Review and Upload](#appendix_a) in this report provides an example of the QA/QC process used for data presented in this report, based off of procedures provided by the Alaska Department of Environmental Conservation.
 
--   For QA/QC reviews of data other than year 2021, see <https://github.com/Kenai-Watershed-Forum/kenai-river-wqx-qaqc>
+- For QA/QC reviews of data other than year 2021, see <https://github.com/Kenai-Watershed-Forum/kenai-river-wqx-qaqc>
 
--   For QA/QC review of data prior to 2013, see [@guerronorejuela2016]
+- For QA/QC review of data prior to 2013, see [@guerronorejuela2016]
 
 Note on data in figures vs. tables in the following chapters:
 
--   Boxplots: all data displayed visually in the boxplots in the following chapters has passed the QA/QC processes described in [Appendix A: Data Review and Upload](#appendix_a).
+- Boxplots: all data displayed visually in the boxplots in the following chapters has passed the QA/QC processes described in [Appendix A: Data Review and Upload](#appendix_a).
 
--   Tables: each chapter contains a downloadable table of source data for the boxplots. Data that was flagged, or did not pass the QA/QC process described in Appendix A, is listed as "Rejected" in this column.
+- Tables: each chapter contains a downloadable table of source data for the boxplots. Data that was flagged, or did not pass the QA/QC process described in Appendix A, is listed as "Rejected" in this column.
 
 Note on further QA/QC efforts:
 
--   As of `r Sys.Date()`, we are focusing on synchronizing data from years 2014 - 2021 to the EPA Water Quality Portal. When that is complete, we will investigate if additional QA/QC may need to be performed on project data already existing in the Water Quality Portal. For data scientists, use the "Show Me the Code" button in the upper right corner to see a draft example of this process.
--   In select cases, observations from 2000 - 2013 that were already in the WQP were visually identified as outliers (e.g. not realistic observations of in-situ conditions) and excluded from both the figures and tables in the following chapters. We justify this choice because prior to year 2022, the use of a field blank sample for total metals and dissolved metals was not in place, which can help identify and diagnose issues with field procedures contamination.\
-    \
-    The observations designated as outliers are available for download here below, along with a rationale for why each decision was made.
+- As of `r Sys.Date()`, we are focusing on synchronizing data from years 2014 - 2021 to the EPA Water Quality Portal. When that is complete, we will investigate if additional QA/QC may need to be performed on project data already existing in the Water Quality Portal. For data scientists, use the "Show Me the Code" button in the upper right corner to see a draft example of this process.
+- In select cases, observations from 2000 - 2013 that were already in the WQP were visually identified as outliers (e.g. not realistic observations of in-situ conditions) and excluded from both the figures and tables in the following chapters. We justify this choice because prior to year 2022, the use of a field blank sample for total metals and dissolved metals was not in place, which can help identify and diagnose issues with field procedures contamination.\
+  \
+  The observations designated as outliers are available for download here below, along with a rationale for why each decision was made.
 
 ```{r echo = F}
 

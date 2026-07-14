@@ -298,15 +298,8 @@ write.csv(dat,"other/output/analysis_format/baseline_export_format.csv",row.name
 
 ```
 
-
-
-
-
 ```{r echo = FALSE}
 # stop evaluation here
 knitr::knit_exit()
 
 ```
-
-
-
