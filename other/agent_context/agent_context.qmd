@@ -1,0 +1,8 @@
+---
+title: "agent_context"
+format: html
+---
+
+9/28/2026
+
+I have not edited this project for some months prior to today. I want to pick up where I left off. I believe the priority tasks remain to a) ensure 2021 data is ready to upload to the epa cdx, 2) upload 2021 data to the epa cdx, 3) continue preparing and uploading data from other years using the repo whose quarto book is published at <https://github.com/Kenai-Watershed-Forum/kenai-river-wqx-qaqc>. help me assess and decide where to begin again. i think the list of "Active Tasks" in AGENTS.md is a good list of project priorities but just want to confirm before proceeding.
