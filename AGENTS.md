@@ -24,7 +24,7 @@ The two repos form a complete pipeline: qaqc repo submits data to EPA WQX → EP
 
 ## Next Session Priorities
 
-**EPA WQX sync issue — PARTIALLY RESOLVED but batch delete still blocked.** WQP warehouse refresh completed 2026-05-01 (Kevin Christian email). ETL pipeline restored for new submissions. However, batch delete of 835 orphaned 2021 records still fails: "Domain Value Invalid" for all 835 Activity IDs (attempted 2026-05-04, datasetUid=113161). Root cause: records exist in WQP/STORET but are absent from WQX Web's internal DB. ETL fix restored WQX → WQP sync but did not retroactively restore these records into WQX Web. Follow-up email sent to wqx\@epa.gov 2026-05-04 requesting EPA either (1) delete orphaned records from WQP directly, or (2) restore them into WQX Web so batch delete can proceed.
+**EPA WQX sync issue — deletion confirmed complete; re-upload is the next action.** WQP warehouse refresh completed 2026-05-01 (Kevin Christian email). A follow-up EPA email (2026-05-04) indicated the 835 orphaned 2021 Activity deletions likely took effect during that refresh, and that "Domain Value Invalid" batch-delete errors were because the records were already gone. Confirmed via `dataRetrieval::readWQPdata(organization = "KENAI_WQX", startDateLo = "2021-01-01", startDateHi = "2021-12-31")`: 0 rows on 2026-05-18, and still 0 rows as re-checked 2026-09-28. No blocker remains on EPA's side. **Next action: upload the corrected 2021 files to CDX** (`other/output/wqx_formatted/results_activities.csv`, `project.csv`, `station.csv`). Re-verified 2026-09-28: all 830 result rows are dated 2021 (spring 5/11, summer 7/27); dissolved metals (As, Cd, Cr, Cu, Pb, Zn) all carry `Result Sample Fraction = "Dissolved"` (no `"Filtered, field"` remaining); `station.csv` has 22 stations with `HorizontalCollectionMethodName = "GPS-Unspecified"` and `HUCEightDigitCode = 19020302`. Files are upload-ready; the upload itself has not yet been performed.
 
 **GitHub Actions session_log.md sync — ALMOST COMPLETE (2026-05-04).** PAT created (`kwf-report-to-qaqc-sync`, scoped to qaqc repo, Contents R/W). Secret `QAQC_SYNC_PAT` added to `kenai-river-wqx`. Workflow file created at `.github/workflows/sync-agent-context.yml`. qaqc repo `AGENTS.md` updated with Repo Relationship section; `other/agent_context/.gitkeep` added. **Remaining: commit and push both repos** (qaqc first, then report). See push commands in session log.
 
@@ -43,7 +43,7 @@ See `other/agent_context/session_log.md` for full context on any task.
 
 | \# | Priority | Description | Status |
 |----|----|----|----|
-| 1a-reupload | HIGH | Re-upload 835 2021 records (delete + re-upload). Files ready: `results_activities.csv`, `resultphyschem_DELETE_v4.csv`. ETL restored 2026-05-01 but batch delete still fails (records absent from WQX Web internal DB). Follow-up sent to wqx\@epa.gov 2026-05-04. | **Blocked** — awaiting EPA action on orphaned records |
+| 1a-reupload | HIGH | Upload corrected 2021 files to CDX: `results_activities.csv`, `project.csv`, `station.csv` (dissolved metals now `"Dissolved"`, not `"Filtered, field"`). Deletion of the 835 orphaned records confirmed complete via WQP query (0 rows, checked 2026-05-18 and 2026-09-28). | **Unblocked** — ready to upload, upload not yet performed |
 | 1b | HIGH | Characteristic name audit across all KWF years in WQP | Pending |
 | 1c | HIGH | CALM 5-year window sample count check (2017–2021) | Pending |
 | 2 | Medium | Fix HMW visibility for 15 legacy numeric-ID stations — move process to qaqc repo | Pending |
@@ -251,9 +251,9 @@ Primary downstream consumer: **ADEC**, which draws from EPA CDX every two years 
 
 ## Known Data Issues (Active / Unresolved)
 
-- **WQX/STORET sync (BLOCKED):** 835 2021 records in WQP but absent from WQX Web internal DB. CDX batch delete fails. Wait for EPA ETL fix (\~April 23). Ready files: `resultphyschem_DELETE_v4.csv` (column `ActivityIdentifier`, no org prefix), `results_activities.csv`.
+- **WQX/STORET sync (RESOLVED, re-upload pending):** the 835 orphaned 2021 records are confirmed deleted from WQP (0 rows returned by live query as of 2026-09-28). No further EPA action needed. Corrected files are ready and verified (see Task 1a-reupload); the CDX upload itself is the remaining step.
 - **Characteristic name inconsistency:** Nitrate+Nitrite appears under 3+ names across KWF years. Full audit needed (Task 1b).
-- **Sample fraction inconsistency:** 2021 dissolved metals submitted as `"Filtered, field"` in CDX — needs re-upload with `"Dissolved"` (blocked by Task 1a-reupload).
+- **Sample fraction inconsistency (RESOLVED in local files, not yet uploaded):** `other/output/wqx_formatted/results_activities.csv` now has dissolved metals correctly as `"Dissolved"` (verified 2026-09-28); this fix has not yet reached CDX/WQP because the re-upload (Task 1a-reupload) hasn't been performed.
 - **Turbidity:** one spurious `uS/cm` unit record; anomalously high value at RM 1.5 spring (\~3,200 NTU).
 - **Hydrocarbon data** missing from 2025 WQP download (uploaded Jan 2024 but not appearing).
 - **ALS lab duplicates:** 4 results with unexpected DUP status (Task 7) — does not block CDX upload.
@@ -285,14 +285,14 @@ Use base pipe `|>` for all new code. Do not mass-convert legacy `%>%` usage.
 Original PDFs are in `other/agent_context/`. Text-extracted `.md` versions (preferred for AI ingestion — lower token cost) are in `other/documents/md/`. Always load from `other/documents/md/` when available.
 
 | Document | Markdown path | Notes |
-|---|---|---|
-| CALM (Alaska Consolidated Assessment and Listing Methodology, rev. March 2021) | `other/documents/md/calm-rev-2021.md` | |
-| ADEC Water Quality Standards — 18 AAC 70 | `other/documents/md/ADEC-18-aac-70.md` | |
-| QAPP (approved ADEC + EPA Region 10, 2023 + April 2024 addendum) | `other/documents/md/QAPP-v3-2023-with-Addendum-April-2024.md` | |
-| MOU — Baseline Water Quality MOU 2025 Final | `other/documents/md/Kenai-River-Baseline-WQ-MOU-2025.md` | |
-| DL/LOD/LOQ Interpretation — SGS Laboratories | `other/documents/md/DL-LOD-LOQ-Interpretation-SGS.md` | |
-| Kenai Baseline WQ Assessment 2016 | `other/documents/md/Kenai-Baseline-WQ-Assessment-2016.md` | |
-| Kenai River 2021 Monitoring Field Report | `other/documents/md/kenai-river-2021-field-report.md` | |
+|----|----|----|
+| CALM (Alaska Consolidated Assessment and Listing Methodology, rev. March 2021) | `other/documents/md/calm-rev-2021.md` |  |
+| ADEC Water Quality Standards — 18 AAC 70 | `other/documents/md/ADEC-18-aac-70.md` |  |
+| QAPP (approved ADEC + EPA Region 10, 2023 + April 2024 addendum) | `other/documents/md/QAPP-v3-2023-with-Addendum-April-2024.md` |  |
+| MOU — Baseline Water Quality MOU 2025 Final | `other/documents/md/Kenai-River-Baseline-WQ-MOU-2025.md` |  |
+| DL/LOD/LOQ Interpretation — SGS Laboratories | `other/documents/md/DL-LOD-LOQ-Interpretation-SGS.md` |  |
+| Kenai Baseline WQ Assessment 2016 | `other/documents/md/Kenai-Baseline-WQ-Assessment-2016.md` |  |
+| Kenai River 2021 Monitoring Field Report | `other/documents/md/kenai-river-2021-field-report.md` |  |
 | Alaska WQ Criteria Manual for Toxic Substances 2022 | `other/documents/md/alaska-water-quality-criteria-manual-2022.md` | Converted from ADEC web version (text layer present); local copy in agent_context/ is scanned |
 | Kenai Baseline WQ Assessment 2007 | PDF only — scanned, no text layer | `other/agent_context/Kenai Watershed Forum Baseline Water Quality Assessment 2007.pdf` |
 | Funding Proposal — KWF 2024 BOR WaterSMART CWMP | PDF only | `other/agent_context/` |

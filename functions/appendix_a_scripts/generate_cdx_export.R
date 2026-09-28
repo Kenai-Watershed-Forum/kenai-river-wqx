@@ -60,6 +60,7 @@ export_dat %<>%
   mutate(
     `Project ID` = 10000007,
     `Monitoring Location ID` = MonitoringLocationIdentifier,
+    `Monitoring Location Name` = MonitoringLocationName,
     `Activity Media Name` = activity_media_name,
     `Activity Media Subdivision Name` = activity_media_subdivision_name,
     `Activity ID` = case_when(
@@ -124,7 +125,9 @@ wqx_colnames <- read_excel("other/input/wqx_templates/AWQMS_KWF_Baseline_2021.xl
 export_dat %<>% select(one_of(wqx_colnames))
 
 # write final results and activities CSV for CDX upload
-write.csv(export_dat, "other/output/wqx_formatted/results_activities.csv", row.names = FALSE)
+# na = "" is required: WQX Web's CSV importer expects blank fields for nulls,
+# not literal "NA" text, which can trigger an unhandled parser error on import.
+write.csv(export_dat, "other/output/wqx_formatted/results_activities.csv", row.names = FALSE, na = "")
 
 
 # ── Project CSV ──────────────────────────────────────────────────────────────────
@@ -152,7 +155,7 @@ project_upload <- read.csv("other/input/WQX_downloads/project/project.csv") |>
     ProjectAttachmentType
   )
 
-write.csv(project_upload, "other/output/wqx_formatted/project.csv", row.names = FALSE)
+write.csv(project_upload, "other/output/wqx_formatted/project.csv", row.names = FALSE, na = "")
 
 
 # ── Station CSV ──────────────────────────────────────────────────────────────────
@@ -181,4 +184,4 @@ station_upload <- read.csv("other/input/WQX_downloads/station/station.csv") |>
     TRUE ~ HorizontalCollectionMethodName
   ))
 
-write.csv(station_upload, "other/output/wqx_formatted/station.csv", row.names = FALSE)
+write.csv(station_upload, "other/output/wqx_formatted/station.csv", row.names = FALSE, na = "")
