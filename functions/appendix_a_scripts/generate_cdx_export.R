@@ -110,8 +110,11 @@ export_dat %<>%
     `Laboratory Sample ID` = laboratory_sample_id,
     `Analysis Start Date` = analysis_start_date,
     `Analysis Start Time` = analysis_start_time,
-    `Biological Intent` = biological_intent,
-    `Subject Taxonomic Name` = subject_taxonomic_name,
+    # Biological Intent / Subject Taxonomic Name intentionally omitted: this
+    # project never collects biological/tissue samples, so these WQX fields
+    # are permanently out of scope. Dropping them here (rather than mapping
+    # to always-blank columns) keeps the export file column count matching
+    # the WQX Web import configuration exactly.
     `Thermal Preservative` = thermal_preservative,
     `Sample Container Type` = sample_container_type,
     `Sample Container Color` = sample_container_color,
@@ -122,7 +125,7 @@ export_dat %<>%
 wqx_colnames <- read_excel("other/input/wqx_templates/AWQMS_KWF_Baseline_2021.xlsx",
                             sheet = "KWF Baseline AWQMS Template") %>%
   colnames()
-export_dat %<>% select(one_of(wqx_colnames))
+export_dat %<>% select(any_of(wqx_colnames))
 
 # write final results and activities CSV for CDX upload
 # na = "" is required: WQX Web's CSV importer expects blank fields for nulls,
