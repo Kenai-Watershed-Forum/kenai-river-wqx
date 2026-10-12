@@ -11,6 +11,8 @@ qaqc repo submits data to EPA WQX → EPA publishes to WQP → report repo reads
 
 **`other/agent_context/session_log.md`** is auto-synced to the qaqc repo via GitHub Actions on every push to main that touches it. Each repo maintains its own `AGENTS.md` (not synced); only `session_log.md` is shared. **Edit `session_log.md` only from this repo (`kenai-river-wqx`).**
 
+**File ownership:** `AGENTS.md` (this file) is maintained by Posit Assistant and rewritten as the project evolves; the user does not edit it directly. `other/agent_context/agent_context.qmd` is the reverse: user-authored standing instructions for Posit Assistant, read only when the user points to it (not every session). Do not edit `agent_context.qmd` unless the user explicitly asks.
+
 ------------------------------------------------------------------------
 
 ## Companion Files (load on demand — not every session)
@@ -22,6 +24,7 @@ qaqc repo submits data to EPA WQX → EPA publishes to WQP → report repo reads
 | `other/agent_context/context_files/report_structure.md` | Working on the Quarto book, parameter chapters, or adding new pages |
 | `other/agent_context/context_files/parameters_and_links.md` | You need the full parameter list, governance document index, or external links |
 | `other/agent_context/context_files/lessons.md` | Session start — small file, cheap to check for standing gotchas |
+| `other/agent_context/agent_context.qmd` | The user tells you to read it, or references new instructions they've added there. User-authored; do not edit unless explicitly asked |
 | `other/agent_context/session_log.md` | You need history on a completed task, a resolved issue, or a past session's detail (recent entries, from 2026-07-13) |
 | `other/agent_context/session_log_archive.md` | You need history predating 2026-07-13 (original appendix_a.qmd audit, pipeline architecture rationale, CDX delete workflow reference, HMW architecture detail) |
 | `other/documents/sample_fraction_correction_handoff.md` | CDX fraction correction handoff notes for the qaqc repo |
@@ -54,7 +57,7 @@ See `other/agent_context/session_log.md` for full context on any task.
 
 | \# | Priority | Description | Status |
 |----|----|----|----|
-| 1a-reupload | HIGH | Upload corrected 2021 files to CDX: `results_activities.csv`, `project.csv`, `station.csv`. `project.csv`/`station.csv` submitted successfully 2026-09-28. `results_activities.csv` blocked by a mismatched WQX Web import configuration; a new 53-column configuration (Uid 9481) is being built live in WQX Web. See Next Session Priorities. | **In progress** — project/station done; new config ~80% built, needs final reorder + test import |
+| 1a-reupload | HIGH | Upload corrected 2021 files to CDX: `results_activities.csv`, `project.csv`, `station.csv`. `project.csv`/`station.csv` submitted successfully 2026-09-28. `results_activities.csv` blocked by a mismatched WQX Web import configuration; a new 53-column configuration (Uid 9481) is being built live in WQX Web. See Next Session Priorities. | **In progress** — project/station done; new config \~80% built, needs final reorder + test import |
 | 1b | HIGH | Characteristic name audit across all KWF years in WQP | Pending |
 | 1c | HIGH | CALM 5-year window sample count check (2017–2021) | Pending |
 | 2 | Medium | Fix HMW visibility for 15 legacy numeric-ID stations — move process to qaqc repo | Pending |
