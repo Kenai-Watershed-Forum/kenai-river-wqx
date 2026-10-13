@@ -57,7 +57,7 @@ See `other/agent_context/session_log.md` for full context on any task.
 
 | \# | Priority | Description | Status |
 |----|----|----|----|
-| 1a-reupload | HIGH | Upload corrected 2021 files to CDX: `results_activities.csv`, `project.csv`, `station.csv`. `project.csv`/`station.csv` submitted successfully 2026-09-28. `results_activities.csv` blocked by a mismatched WQX Web import configuration; a new 53-column configuration (Uid 9481) is being built live in WQX Web. See Next Session Priorities. | **In progress** — project/station done; new config \~80% built, needs final reorder + test import |
+| 1a-reupload | HIGH | Upload corrected 2021 files to CDX: `results_activities.csv`, `project.csv`, `station.csv`. `project.csv`/`station.csv` submitted successfully 2026-09-28. `results_activities.csv` blocked by a mismatched WQX Web import configuration; a new 53-column configuration (Uid 9481) is being built live in WQX Web. See Next Session Priorities. | **In progress** — project/station done; new config structurally complete and valid (passes WQX Web's Save validation); column reorder in progress, then test import |
 | 1b | HIGH | Characteristic name audit across all KWF years in WQP | Pending |
 | 1c | HIGH | CALM 5-year window sample count check (2017–2021) | Pending |
 | 2 | Medium | Fix HMW visibility for 15 legacy numeric-ID stations — move process to qaqc repo | Pending |
