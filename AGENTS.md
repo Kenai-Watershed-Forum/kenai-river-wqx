@@ -34,16 +34,22 @@ qaqc repo submits data to EPA WQX → EPA publishes to WQP → report repo reads
 
 ------------------------------------------------------------------------
 
+## Architecture Change In Progress (started 2026-10-14)
+
+A migration to a per-year-repo architecture is underway; see `.posit/assistant/plans/2026-10-14-1300-per-year-repo-architecture-migration.md` for the full plan and resolved decisions. Summary: `kenai-river-wqx-qaqc` will eventually be archived. A new template repo, `kenai-river-baseline-wqx-template`, will replace it; each data year will get its own standalone repo (`kenai-river-wqx-{year}`) created from that template on demand, handling ingestion, QA/QC, CDX export, and a preliminary annual report together. Phase 0 (this repo's housekeeping) is in progress; later phases (git history cleanup, template build, rollout) have not started. Check the plan file for current phase status before starting new work on this.
+
+------------------------------------------------------------------------
+
 ## Next Session Priorities
 
-**EPA WQX sync issue — Project and Station CSVs live at CDX; Results & Activities import blocked by a mismatched WQX Web import configuration.** The 835 orphaned 2021 Activity deletions are confirmed complete (0 rows via live WQP query, last checked 2026-09-28). `project.csv`/`station.csv` re-uploaded successfully 2026-09-28. `results_activities.csv` re-upload is blocked by a mismatched WQX Web import configuration (legacy 44-column `KWF_Results_Baseline_Template`, Uid 8515, column-position mismatch against the current 53-column export). **Full root-cause narrative and the three unrelated bugs fixed in `generate_cdx_export.R` along the way: see `other/agent_context/session_log.md`, Session Entry (2026-09-28).**
+**EPA WQX sync — `results_activities.csv` upload to CDX succeeded 2026-10-14.** The WQX Web config rebuild (Uid 9481, `KWF_Results_Baseline_Template_v2`) is complete and working, and all 830 rows of `results_activities.csv` imported cleanly after fixing both a config-level issue and a full set of data-level validation errors. `project.csv`/`station.csv` were already uploaded successfully 2026-09-28. **Full root-cause narrative, the config fix, and the complete list of data-level fixes (characteristic name mapping, Method Speciation, container color, detection limits, the Unicode-hyphen longitude bug fixed at its pipeline source, etc.): see `other/agent_context/session_log.md`, Session Entry (2026-10-14).**
 
-**WQX Web config rebuild — IN PROGRESS, live in the UI.** Building a replacement configuration, Uid 9481 (`KWF_Results_Baseline_Template_v2`), via screenshot-driven collaboration (the WQX Web UI is login-gated and not directly accessible to the assistant). **Full play-by-play, the resolved element mappings, the two "Ignore Column" fields (`Monitoring Location Name`, `Laboratory Sample ID`), and the target 53-column order for the final reorder: see `other/agent_context/session_log.md`, Session Entry (2026-09-29).**
+**Not yet confirmed: final CDX submission ("Step 3 of 3").** The import itself succeeded, but it wasn't confirmed in the 2026-10-14 session whether the dataset was also submitted to CDX (WQX Web: "A dataset only becomes permanent after it has been submitted to CDX"). Check this first next session if not already done.
 
-Remaining steps at a glance (detail in session log): (1) confirm the 11-element checkbox batch + both Ignore Column actions were applied; (2) add the last Generated Value `Activity End Time Zone` (constant `AKDT`); (3) full bottom-up reorder of all rows to match the 53-column export order; (4) test-import a 5-10 row subset before the full 830-row file; (5) update `chapters/cdx_upload.qmd` with the corrected walkthrough; (6) download and commit the finished config; (7) decide whether to fix the Unicode-hyphen longitude bug at its pipeline source vs. leaving it as an on-disk patch.
+Remaining steps at a glance: (1) confirm/complete Step 3 CDX submission if not already done; (2) update `chapters/cdx_upload.qmd` with the corrected walkthrough (config fix + the "Ignore Column" pattern) now that the process is proven end-to-end; (3) download and commit the finished config (Uid 9481) to the repo for version control.
 
-1.  **Complete Results & Activities WQX Web config rebuild (start here)** — see the two items above.
-2.  **Task 18 (HIGH)** — Create `templates/pipeline_template.qmd` in the qaqc repo. See `context_files/conventions.md`, Pipeline Architecture section.
+1.  **Confirm final CDX submission for `results_activities.csv` (start here)** — see the item above.
+2.  **Task 18 (CORRECTED — largely done, not "Pending")** — The qaqc repo (`kenai-river-wqx-qaqc`, local clone `D:\GitHub\kenai-river-wqx-qaqc`) already has `project_year/{2014-2025}.qmd` scaffolded, with `2025.qmd` a largely complete working pipeline (Parts A-D) and `2023.qmd` a partially-ported skeleton (chunks `eval: false`). This repo's prior "Pending" status for Task 18/19 was stale. Going forward this work feeds the per-year-repo migration above, not further edits to the qaqc repo's existing per-year-QMD structure.
 3.  **Task 1c (HIGH)** — CALM 5-year window sample count check. Count `result_status_identifier == "Accepted"` results per parameter + site for `activity_start_date >= 2017-01-01`. Source: `other/output/wqx_formatted/intermediate/2021_export_data_flagged.csv`. Flag combinations below 10 (or 5 for toxics) — these fall to ADEC Screening Level. Consider sharing with ADEC.
 4.  **Task 1b (HIGH)** — Audit all distinct `CharacteristicName` values in WQP for org `KENAI_WQX`. Cross-reference against current WQX domain list. Map variants to canonical names. Feeds next CDX re-upload.
 5.  **Task 5 (Medium)** — Verify `review_needed = Y` rows in `standard_types` sheet of `master_reg_limits.xlsx`. Six codes: `fw_acute`, `fw_chronic`, `harvest_aquatic_life`, `noncarc_aquatic_org`, `noncarc_water`, `secondary_water_recreation`. Confirm against 18 AAC 70 and USEPA criteria docs; set `review_needed = N`.
@@ -57,7 +63,7 @@ See `other/agent_context/session_log.md` for full context on any task.
 
 | \# | Priority | Description | Status |
 |----|----|----|----|
-| 1a-reupload | HIGH | Upload corrected 2021 files to CDX: `results_activities.csv`, `project.csv`, `station.csv`. `project.csv`/`station.csv` submitted successfully 2026-09-28. `results_activities.csv` blocked by a mismatched WQX Web import configuration; a new 53-column configuration (Uid 9481) is being built live in WQX Web. See Next Session Priorities. | **In progress** — project/station done; new config structurally complete and valid (passes WQX Web's Save validation); column reorder in progress, then test import |
+| 1a-reupload | HIGH | Upload corrected 2021 files to CDX: `results_activities.csv`, `project.csv`, `station.csv`. `project.csv`/`station.csv` submitted successfully 2026-09-28. `results_activities.csv` imported successfully 2026-10-14 via the rebuilt config (Uid 9481) after fixing all data-level validation errors; final Step 3 CDX submission status not yet confirmed. | **Import complete** — confirm final CDX submission next session |
 | 1b | HIGH | Characteristic name audit across all KWF years in WQP | Pending |
 | 1c | HIGH | CALM 5-year window sample count check (2017–2021) | Pending |
 | 2 | Medium | Fix HMW visibility for 15 legacy numeric-ID stations — move process to qaqc repo | Pending |
@@ -71,8 +77,8 @@ See `other/agent_context/session_log.md` for full context on any task.
 | 9 | Low | Make `appendix_a.qmd` year-neutral (single `year` variable at top) | **Complete** |
 | 10 | Low | Extract ingestion logic to `.R` scripts (do with Task 9) | **Complete** |
 | 11 | Low | Restructure WQX data Activity → Results level (future years, qaqc repo) | Pending |
-| 18 | HIGH | Create `templates/pipeline_template.qmd` in qaqc repo — canonical single-QMD pipeline. See `context_files/conventions.md`. | Pending |
-| 19 | Medium | Build `2023.qmd` in qaqc repo from template; adapt Part A for 2023 EDD quirks. See `session_log_archive.md` for 2023-specific notes. | Pending |
+| 18 | HIGH | Create `templates/pipeline_template.qmd` in qaqc repo — canonical single-QMD pipeline. See `context_files/conventions.md`. | **Superseded** — qaqc repo already has `project_year/{2014-2025}.qmd`; `2025.qmd` is largely complete. See Architecture Change In Progress note above. |
+| 19 | Medium | Build `2023.qmd` in qaqc repo from template; adapt Part A for 2023 EDD quirks. See `session_log_archive.md` for 2023-specific notes. | **In progress in qaqc repo** — `2023.qmd` skeleton rebuilt to 2025 template, chunks `eval: false`, not yet ported |
 | 12 | Low | Address historical CDX corrections (e.g., spring 2013 specific conductance) in qaqc repo | Pending |
 | 13 | Low | Move `wqx_corrections.qmd` to qaqc repo | Pending |
 | 14 | Low | Add inline tables alongside calculated-result download links in `appendix_a.qmd` | Pending |
@@ -107,9 +113,9 @@ Primary downstream consumer: **ADEC**, which draws from EPA CDX every two years 
 
 ## Known Data Issues (Active / Unresolved)
 
-- **WQX/STORET sync (RESOLVED, re-upload in progress):** the 835 orphaned 2021 records are confirmed deleted from WQP (0 rows via live query, last checked 2026-09-28). `project.csv`/`station.csv` re-uploaded successfully 2026-09-28. `results_activities.csv` re-upload is blocked by a mismatched WQX Web import configuration, not by data content — see Task 1a-reupload.
+- **WQX/STORET sync (RESOLVED):** the 835 orphaned 2021 records are confirmed deleted from WQP (0 rows via live query, last checked 2026-09-28). `project.csv`/`station.csv` re-uploaded successfully 2026-09-28. `results_activities.csv` imported successfully to WQX Web 2026-10-14 (all 830 rows, zero validation errors) — final CDX submission (Step 3) status not yet confirmed, see Task 1a-reupload.
 - **Characteristic name inconsistency:** Nitrate+Nitrite appears under 3+ names across KWF years. Full audit needed (Task 1b).
-- **Sample fraction inconsistency (RESOLVED in local files, not yet uploaded):** dissolved metals correctly `"Dissolved"` locally (verified 2026-09-28); not yet reflected in CDX/WQP pending the results_activities.csv re-upload.
+- **Sample fraction inconsistency (RESOLVED):** dissolved metals correctly `"Dissolved"` locally (verified 2026-09-28) and reflected in the `results_activities.csv` imported to WQX Web 2026-10-14.
 - Full list including Turbidity, hydrocarbon, ALS duplicate, TSS, and spring-2013 specific-conductance issues: `context_files/known_issues.md`.
 
 ------------------------------------------------------------------------
