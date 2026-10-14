@@ -64,6 +64,27 @@ Entries before **2026-07-13** are archived in `session_log_archive.md` (same dir
 
 ------------------------------------------------------------------------
 
+### Session Entry (2026-10-14) — addendum to 2026-09-29/2026-10-13 entries above
+
+**WQX Web config rebuild complete and working; all data-level validation errors in `results_activities.csv` found and fixed; CDX upload succeeded.**
+
+- **Config-level fix (corrects a wrong theory from 2026-10-13's planning).** The remaining config problem was not column order but a design-time quirk: mapping columns I/J to `Activity End Date`/`Activity End Time` (both always blank in the data) combined with the `Activity End Time Zone` constant Generated Value triggered a blanket "Activity End Time required" error on all 830 rows. Root cause: WQX Web requires a value for a Generated Value's parent element **whenever that element has a column mapping at all**, regardless of whether the mapped column's data is populated. Fix (done live in the UI): changed columns I and J to `{Ignore Column}`; the `Activity End Time Zone` Generated Value requirement disappeared automatically once nothing referenced it. Re-saved with zero validation warnings. Re-running the import against the (still pre-data-fix) 830-row CSV cleared all 830 "Activity End Time required" errors with no new errors introduced, isolating the remaining errors as pure data-content issues.
+- **Data-level fixes made in `functions/appendix_a_scripts/format_wqx.R` and `functions/appendix_a_scripts/generate_cdx_export.R`, confirmed via two full `quarto render chapters/appendix_a.qmd` passes against two successive validation logs** (`other/temporary/import_log_20261014_v2.csv`, `..._v3.csv`):
+  - Thermal Preservative `"Cold packs"` -> `"Cold Packs (4 deg C)"` (830 rows, `format_wqx.R`)
+  - Result Detection Limit Type 1 `"Limit of Quantitation"` -> `"Practical Quantitation Limit"` (830 rows, `format_wqx.R`; confirmed via SGS's own terminology doc that LOQ = renamed PQL)
+  - Sample Container Color `"Brown"` -> `"Amber"` for BTEX rows (48 rows; fixed in the `sample_container_type_color` sheet of `other/input/wqx_templates/wqx_template_matching_table.xlsx`, not in code)
+  - Characteristic Name translation added in `generate_cdx_export.R` (applied only at final export, so upstream narrative chunks can keep using lab terminology): `"Total Nitrate/Nitrite-N"` -> `"Nitrate + Nitrite"` (48 rows); `"Calcium, Total"`/`"Magnesium, Total"` -> `"Calcium"`/`"Magnesium"` (WQX conveys total vs. dissolved via Result Sample Fraction, not the name); `"P & M -Xylene"` -> `"m,p-Xylene"` (WQX id 3585, distinct from the all-isomer-sum "Total xylenes"/id 8052)
+  - Method Speciation required by WQX's synonym matching for two characteristics: `"Total Phosphorus"` (resolves to "Total Phosphorus, mixed forms") -> `"as P"`; `"Nitrate + Nitrite"` -> `"as N"` (both 48 rows; confirmed against live WQX MethodSpeciation domain CSV)
+  - Result Qualifier `"ND"` blanked out (1 row; redundant with Result Detection Condition "Not Detected")
+  - "Result Measure Value is required when Result Measure Unit is provided" (445 rows): root cause was non-detect rows correctly leaving Result Value blank but still carrying a Result Unit. Fixed by blanking Result Unit whenever `result` is NA.
+  - "Result Detection Limit Value is required" (162 rows): root cause was Result Detection Limit Type 2 ("Method Detection Level") always being populated even when `lod` was NA. Fixed to only set Type 2/Unit 2 when `lod` is non-NA.
+  - **Unicode-hyphen longitude bug, finally fixed at the pipeline source** (previously flagged in the 2026-09-28 entry as "only patched on the output file directly... not yet fixed at the pipeline source"): traced to the `site_coordinates` sheet of `wqx_template_matching_table.xlsx`, where KR RM 43's longitude cell held a Unicode HYPHEN (U+2010, byte sequence `e2 80 90`) instead of ASCII `-` (29 rows). Corrected the cell directly via `openxlsx`, and added a defensive `stringr::str_replace_all(longitude, "[\u2010-\u2015\u2212]", "-")` sanitizer immediately after the `site_coords` join in `format_wqx.R` so any future stray Unicode dash in lat/long is normalized automatically rather than silently breaking an import again.
+- **All fixes verified programmatically in R** after each render: zero remaining instances of every error condition above, full 830-row count preserved, full coordinate precision preserved (e.g. `-150.636905`).
+- **Import succeeded.** User re-imported the regenerated `results_activities.csv` into config Uid 9481 and confirmed the upload was successful. (CDX submission step -- "Step 3 of 3" -- not independently confirmed in this session; worth checking "A dataset only becomes permanent after it has been submitted to CDX" status next session if not already done live.)
+- **Clarified repo scope for this task**: all of the above code/data fixes lived entirely in this repo (`kenai-river-wqx`, `functions/appendix_a_scripts/` + `other/input/wqx_templates/`) and `chapters/appendix_a.qmd`'s render pipeline. No changes were needed in the sibling `kenai-river-wqx-qaqc` repo for the 2021 correction effort.
+
+------------------------------------------------------------------------
+
 ### Session Entry (2026-07-13)
 
 **PDF to markdown conversion — governance documents now in `other/documents/md/`.**

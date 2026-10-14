@@ -3,10 +3,38 @@ title: "agent_context"
 format: html
 ---
 
+NOTE: This file is for providing instructions to Posit Assistant. No agent should edit this file, it is only edited manually by users.
+
 9/28/2026
 
 I have not edited this project for some months prior to today. I want to pick up where I left off. I believe the priority tasks remain to a) ensure 2021 data is ready to upload to the epa cdx, 2) upload 2021 data to the epa cdx, 3) continue preparing and uploading data from other years using the repo whose quarto book is published at <https://github.com/Kenai-Watershed-Forum/kenai-river-wqx-qaqc>. help me assess and decide where to begin again. i think the list of "Active Tasks" in AGENTS.md is a good list of project priorities but just want to confirm before proceeding.
 
-10/13/2026
+10/14/2026
 
-Help me pick up where i last left off. I believe the priority is still to work in the online epa cdx to create a workable template, then upload the 2021 data
+I want to make some changes to systems architecture and organization for the task of performing qa/qc on and reporting on kenai river water quality data. i believe these changes will be valuable in order to continue being able to use posit assistant for ongoing work. as is, this project is becoming very large (\~2 gb), and as a result the context is large and attempting to use posit assistant is becoming expensive. i want to ensure the same challenge does not also propagate in to future years, as this monitoring project is intended to continue indefinitely
+
+notes:
+
+- currently, this repo has an example 2025 report at other/documents/preliminary_report_2025
+
+- this repo has a qa/qc chapter (appendix a) of this report, for performing qa/qc on year 2021 data only, which relies on a variety of sourced scripts
+
+- a seperate repo is intended to perform and document qa.qc for years other than 2021 at <https://github.com/Kenai-Watershed-Forum/kenai-river-wqx-qaqc>
+
+- the epa cdx currently contains project data up to only \~2013
+
+desired outcome:
+
+- the appendix a with 2021 data in this repo remains lcated here
+
+- the content at <https://github.com/Kenai-Watershed-Forum/kenai-river-wqx-qaqc> is instead replaced by a report template, which i can use for each year that i want to perform qa/qc on. each year's report will document the qa/qc, ( one or multiple chpaters), as well as generate basic preliminary report (in the style of the 2025 report mentioned above here)
+
+- i will use the template perform qa/qc and generate preliminary report for all project years for which all data is not yet sync'd to the epa cdx, (2013-2026). each year will be its own standalone rstudio project and its own github repo in Kenai Watershed Forum's github account (<https://github.com/Kenai-Watershed-Forum>)
+
+additional notes
+
+- i don't know if its possible to edit content at <https://github.com/Kenai-Watershed-Forum/kenai-river-wqx-qaqc> directly from this current repo. if so, it seems like that would be convenient, but we should proceed with caution. i am willing to perform whatever manual steps necessary.
+
+- do not guess on issues for how to proceed. interview me and ask questions when necessary, ask me or reference other sources when appropriate
+
+- lets make a plan and refine it before proceeding

@@ -55,6 +55,41 @@ export_dat %<>%
     grepl("Blank", activity_id) ~ "Blank"
   ))
 
+# Translate lab-friendly characteristic names to WQX domain values. Applied
+# only here (at final CDX export) so the rest of the pipeline - including the
+# Section 3.2 matrix-spike flagging narrative, which references
+# "Total Nitrate/Nitrite-N" by name - can keep using the lab's own
+# terminology. Confirmed against live WQX Characteristic.CSV domain values:
+#   - "Total Nitrate/Nitrite-N" -> "Nitrate + Nitrite" (WQX has no "Total"
+#     or "-N" variant; fraction/units already convey this is as N)
+#   - "Calcium, Total" / "Magnesium, Total" -> "Calcium" / "Magnesium" (WQX
+#     conveys total vs. dissolved via Result Sample Fraction, not the name)
+#   - "P & M -Xylene" -> "m,p-Xylene" (WQX id 3585; distinct from "Total
+#     xylenes"/id 8052, which is the sum of all three isomers)
+export_dat %<>%
+  mutate(characteristic_name = case_when(
+    characteristic_name == "Total Nitrate/Nitrite-N" ~ "Nitrate + Nitrite",
+    characteristic_name == "Calcium, Total" ~ "Calcium",
+    characteristic_name == "Magnesium, Total" ~ "Magnesium",
+    characteristic_name == "P & M -Xylene" ~ "m,p-Xylene",
+    TRUE ~ characteristic_name
+  ))
+
+# WQX requires Method Speciation when Characteristic Name resolves (via its
+# built-in synonym matching) to "Total Phosphorus, mixed forms"; our
+# "Total Phosphorus" input matches that synonym. "as P" is the correct
+# WQX MethodSpeciation domain value (confirmed against live domain list).
+# Similarly, "Nitrate + Nitrite" requires Method Speciation; the lab's own
+# name for this analyte ("Total Nitrate/Nitrite-N") indicates results are
+# reported as nitrogen, so "as N" is the correct WQX MethodSpeciation
+# domain value (confirmed against live domain list).
+export_dat %<>%
+  mutate(method_speciation = case_when(
+    characteristic_name == "Total Phosphorus" ~ "as P",
+    characteristic_name == "Nitrate + Nitrite" ~ "as N",
+    TRUE ~ method_speciation
+  ))
+
 # finalize column structure to match CDX import configuration
 export_dat %<>%
   mutate(

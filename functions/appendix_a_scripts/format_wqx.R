@@ -28,7 +28,11 @@
 ############ b.) match latitude and longitude coordinates to sites ##################
 site_coords <- read_excel("other/input/wqx_templates/wqx_template_matching_table.xlsx",
                            sheet = "site_coordinates") %>%
-  remove_empty()
+  remove_empty() %>%
+  # Guard against stray Unicode dash characters (e.g. U+2010-U+2015, U+2212)
+  # sneaking into lat/long text cells from copy-paste; WQX Web requires a
+  # plain ASCII hyphen-minus for negative coordinates.
+  mutate(longitude = stringr::str_replace_all(longitude, "[\u2010-\u2015\u2212]", "-"))
 dat <- left_join(dat, site_coords)
 
 
@@ -145,8 +149,14 @@ dat %<>%
     `Result Analytical Method Context` = context_code,
     `Method Speciation` = "",
     `Result Value` = result,
-    `Result Unit` = units,
-    `Result Qualifier` = resultflag,
+    # WQX requires Result Measure Value whenever Result Measure Unit is
+    # provided. For non-detects, result is intentionally blank, so Result
+    # Unit must be blanked too (unit info for non-detects lives in the
+    # Result Detection Limit Unit fields instead).
+    `Result Unit` = if_else(is.na(result), NA_character_, units),
+    # "ND" is not a valid WQX Result Qualifier; Result Detection Condition
+    # ("Not Detected") already conveys this, so drop the redundant qualifier.
+    `Result Qualifier` = if_else(resultflag == "ND", NA_character_, resultflag),
     `Result Weight Basis` = "Sampled",
     `Statistical Base Code` = stat_base_code,
     `Result Sample Fraction` = result_sample_fraction,
@@ -155,13 +165,19 @@ dat %<>%
     `Sample Collection Method ID` = "",
     `Equipment ID` = "Water Bottle",
     `Result Detection Condition` = result_detection_condition,
-    `Result Detection Limit Type 1` = "Limit of Quantitation",
+    # WQX domain value is "Practical Quantitation Limit"; SGS's "Limit of
+    # Quantitation (LOQ)" terminology is explicitly a renaming of the
+    # industry-standard PQL (see other/documents/md/DL-LOD-LOQ-Interpretation-SGS.md)
+    `Result Detection Limit Type 1` = "Practical Quantitation Limit",
     `Result Detection Limit Value 1` = loq,
     `Result Detection Limit Unit 1` = units,
     # lod = "limit of detection" = "method detection level"
-    `Result Detection Limit Type 2` = "Method Detection Level",
+    # WQX requires a Detection Limit Value whenever a Detection Limit Type is
+    # provided; lod is not reported for every analyte/method, so only
+    # populate Type 2/Unit 2 when a value is actually available.
+    `Result Detection Limit Type 2` = if_else(is.na(lod), NA_character_, "Method Detection Level"),
     `Result Detection Limit Value 2` = lod,
-    `Result Detection Limit Unit 2` = units,
+    `Result Detection Limit Unit 2` = if_else(is.na(lod), NA_character_, units),
     `Laboratory Accreditation Indicator` = "",
     `Laboratory Name` = lab_name,
     `Laboratory Sample ID` = lab_sample,
@@ -169,7 +185,7 @@ dat %<>%
     `Analysis Start Time` = run_time,
     `Biological Intent` = "",
     `Subject Taxonomic Name` = "",
-    `Thermal Preservative` = "Cold packs",
+    `Thermal Preservative` = "Cold Packs (4 deg C)",
     `Sample Container Type` = sample_container_type,
     `Sample Container Color` = sample_container_color,
     `Chemical Preservative` = preservative,
