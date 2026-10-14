@@ -107,7 +107,13 @@ This project uses [Quarto](https://quarto.org/). To render locally:
 quarto render
 ```
 
-Rendered output goes to `docs/` (HTML) and is hosted on GitHub Pages.
+Rendered HTML output goes to `docs/` locally, but `docs/` is gitignored and never committed to `main`. To publish the site, run:
+
+``` bash
+quarto publish gh-pages
+```
+
+This pushes the rendered site to a dedicated `gh-pages` branch, which is what GitHub Pages serves from. This keeps `main`'s history free of large rendered-HTML commits.
 
 **Requirements:** - R (≥ 4.x) with packages: `tidyverse`, `readxl`, `writexl`, `openxlsx`, `DT`, `plotly`, `janitor`, `lubridate`, `dataRetrieval`, `TADA`, `xfun` - Quarto (≥ 1.4)
 
