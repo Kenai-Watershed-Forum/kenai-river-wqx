@@ -38,3 +38,17 @@ additional notes
 - do not guess on issues for how to proceed. interview me and ask questions when necessary, ask me or reference other sources when appropriate
 
 - lets make a plan and refine it before proceeding
+
+10/14/2026 follow up
+
+Before we proceed with the work of using the materials at <https://github.com/Kenai-Watershed-Forum/kenai-river-baseline-wqx-template> to ingest water quality data from all un-sync'd years and feed it to the epa cdx, i suggest one other task/investigation, described as follows:
+
+- we just completed uploading the 2021 data to epa cdx, using the template in this repo in appendix a. it would be a good idea to make sure that all data there can be properly ingested and displayed back in the quarto book in this repo (<https://kenai-watershed-forum.github.io/kenai-river-wqx/>).
+
+- we generated the current version of the book displayed at <https://kenai-watershed-forum.github.io/kenai-river-wqx/> using the data downloaded from cdx from 2000 - 2013, and then also 2021, but the 2021 data was uploaded using the old import template
+
+- it is possible we will need to make adjustments to <https://github.com/Kenai-Watershed-Forum/kenai-river-baseline-wqx-template> based on our need to access that information from cdx and display it back in this report
+
+- this repo (<https://github.com/Kenai-Watershed-Forum/kenai-river-wqx>) is currently accessing data from a csv downloaded from the epa wqp. long-term, i wish for it to be set up to automatically download and access data directly from the epa wqp; with the option to download and utilize a local copy of that data for development purposes (e.g. local only, gitignored)
+
+- assess these notes and help plan how to proceed. do not guess, ask questions/interview or reference materials when appropriate, proceed in stepwise fashion with approval from the user

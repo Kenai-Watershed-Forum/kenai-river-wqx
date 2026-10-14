@@ -1,14 +1,83 @@
 # Acknowledgements {.unnumbered}
 
-This study could not have been completed without the assistance and cooperation of many state agencies including the Alaska Department of Environmental Conservation (ADEC), the Alaska Department of Natural Resources, and the Alaska Department of Fish and Game. The Kenaitze Indian Tribe, Salamatof Tribe, Tyonek Tribal Conservation District, Cook Inlet Aquaculture Association, SGS Alaska Laboratories, Analytica Laboratories, Kenai Peninsula Trout Unlimited, Defenders of Wildlife, and Taurianen Engineering and Testing also supported this project. Additional cooperation transpired with the United States Forest Service, the United States Fish and Wildlife Service through the Kenai National Wildlife Refuge, the Kenai Peninsula Borough, the City of Soldotna, and the City of Kenai. Finally, many landowners graciously allowed access to the Kenai River and its tributaries from their property.
+This study could not have been completed without the assistance and cooperation of the following parties:
 
-Thank you to all the staff at the Kenai Watershed Forum that made this project possible. Special thanks to ...
+Memorandum of Understanding Signatories
 
-```{r echo = F}
+- [AK Department of Environmental Conservation](http://dec.alaska.gov/)
 
-# update this with all current participants before finalizing
+<!-- -->
 
-```
+- [AK Department of Fish and Game](http://www.adfg.alaska.gov/)
+
+<!-- -->
+
+- [AK Department of Natural Resources](http://dnr.alaska.gov/)
+
+<!-- -->
+
+- [City of Kenai](https://www.kenai.city/)
+
+<!-- -->
+
+- [City of Soldotna](http://soldotna.org/)
+
+<!-- -->
+
+- [Cook Inlet Aquaculture Association](http://www.ciaanet.org/)
+
+<!-- -->
+
+- [Defenders of Wildlife](https://defenders.org/regions/alaska)
+
+<!-- -->
+
+- [Kenai National Wildlife Refuge](https://www.fws.gov/refuge/kenai)
+
+<!-- -->
+
+- [Kenai Peninsula Borough](http://www.borough.kenai.ak.us/)
+
+<!-- -->
+
+- [Kenai Peninsula Trout Unlimited](http://kenaipeninsula.tu.org/)
+
+<!-- -->
+
+- [Kenai Peninsula Fish Habitat Partnership](https://www.kenaifishpartnership.org/)
+
+<!-- -->
+
+- [Kenaitze Indian Tribe](http://www.kenaitze.org/)
+
+- [Salamatof Tribe](https://salamatoftribe.com/)
+
+<!-- -->
+
+- [SGS North America, Inc.](https://www.sgsgroup.us.com/en/environment/soil/laboratory-analysis/alaska-environmental-laboratory-services)
+
+<!-- -->
+
+- [Tyonek Tribal Conservation District](https://ttcd.org/)
+
+<!-- -->
+
+- [U.S. Fish and Wildlife Service](http://www.fws.gov/alaska/)
+
+<!-- -->
+
+- [U.S. Forest Service](http://www.fs.usda.gov/chugach/)
+
+Other Supporters and Collaborators
+
+- [Mister Kenai Sportfishing](https://www.misterkenaisportfishing.com/)
+
+- [Cook Inletkeeper](https://inletkeeper.org/)
+
+- Various private landowners
+
+Thank you to all the staff and volunteers at the Kenai Watershed Forum, past, present, and future that made this project possible. Special thanks to previous authors of the Kenai River Baseline Water Quality Assessments Jennifer McCard (2007) and Edgar Guerron-Orejuela (2014).
+
 
 
 \newpage
