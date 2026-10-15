@@ -40,6 +40,18 @@ A migration to a per-year-repo architecture is underway; see `.posit/assistant/p
 
 ------------------------------------------------------------------------
 
+## Publishing the Book
+
+The live site (https://kenai-watershed-forum.github.io/kenai-river-wqx/) is served from the `gh-pages` branch, **not** rebuilt automatically from pushes to `main`. Rendered HTML (`docs/`) is gitignored and never committed to `main`. To refresh the published site after merging changes to `main`:
+
+``` bash
+quarto publish gh-pages
+```
+
+This renders the full book and pushes the output to `gh-pages`, which GitHub Pages serves directly (source setting: "gh-pages /(root)", switched from the old "main /docs" during the Phase 1 git-history cleanup below). Run a plain `quarto render` first if you want to catch render errors without touching the live site. Full detail: `README.md`, "Rendering the Report" section.
+
+------------------------------------------------------------------------
+
 ## Next Session Priorities
 
 **EPA WQX sync — `results_activities.csv` upload to CDX succeeded 2026-10-14.** The WQX Web config rebuild (Uid 9481, `KWF_Results_Baseline_Template_v2`) is complete and working, and all 830 rows of `results_activities.csv` imported cleanly after fixing both a config-level issue and a full set of data-level validation errors. `project.csv`/`station.csv` were already uploaded successfully 2026-09-28. **Full root-cause narrative, the config fix, and the complete list of data-level fixes (characteristic name mapping, Method Speciation, container color, detection limits, the Unicode-hyphen longitude bug fixed at its pipeline source, etc.): see `other/agent_context/session_log.md`, Session Entry (2026-10-14).**
@@ -63,7 +75,7 @@ See `other/agent_context/session_log.md` for full context on any task.
 
 | \# | Priority | Description | Status |
 |----|----|----|----|
-| 1a-reupload | HIGH | Upload corrected 2021 files to CDX: `results_activities.csv`, `project.csv`, `station.csv`. `project.csv`/`station.csv` submitted successfully 2026-09-28. `results_activities.csv` imported successfully 2026-10-14 via the rebuilt config (Uid 9481) after fixing all data-level validation errors; final Step 3 CDX submission status not yet confirmed. | **Import complete** — confirm final CDX submission next session |
+| 1a-reupload | HIGH | Upload corrected 2021 files to CDX: `results_activities.csv`, `project.csv`, `station.csv`. `project.csv`/`station.csv` submitted successfully 2026-09-28. `results_activities.csv` imported successfully 2026-10-14 via the rebuilt config (Uid 9481) after fixing all data-level validation errors. Step 3 CDX submission confirmed by user 2026-10-14; WQP public visibility not yet confirmed (0 rows via live query same day; expected indexing lag). | **CDX submitted** — recheck WQP visibility next session |
 | 1b | HIGH | Characteristic name audit across all KWF years in WQP | Pending |
 | 1c | HIGH | CALM 5-year window sample count check (2017–2021) | Pending |
 | 2 | Medium | Fix HMW visibility for 15 legacy numeric-ID stations — move process to qaqc repo | Pending |
@@ -113,7 +125,7 @@ Primary downstream consumer: **ADEC**, which draws from EPA CDX every two years 
 
 ## Known Data Issues (Active / Unresolved)
 
-- **WQX/STORET sync (RESOLVED):** the 835 orphaned 2021 records are confirmed deleted from WQP (0 rows via live query, last checked 2026-09-28). `project.csv`/`station.csv` re-uploaded successfully 2026-09-28. `results_activities.csv` imported successfully to WQX Web 2026-10-14 (all 830 rows, zero validation errors) — final CDX submission (Step 3) status not yet confirmed, see Task 1a-reupload.
+- **WQX/STORET sync (RESOLVED):** the 835 orphaned 2021 records are confirmed deleted from WQP (0 rows via live query, last checked 2026-09-28). `project.csv`/`station.csv` re-uploaded successfully 2026-09-28. `results_activities.csv` imported successfully to WQX Web 2026-10-14 (all 830 rows, zero validation errors) and Step 3 CDX submission confirmed the same day — see Task 1a-reupload. Corrected 2021 data is not yet publicly visible in WQP as of 2026-10-14 (0 rows via live query); this is an expected post-submission indexing lag, recheck in a future session.
 - **Characteristic name inconsistency:** Nitrate+Nitrite appears under 3+ names across KWF years. Full audit needed (Task 1b).
 - **Sample fraction inconsistency (RESOLVED):** dissolved metals correctly `"Dissolved"` locally (verified 2026-09-28) and reflected in the `results_activities.csv` imported to WQX Web 2026-10-14.
 - Full list including Turbidity, hydrocarbon, ALS duplicate, TSS, and spring-2013 specific-conductance issues: `context_files/known_issues.md`.
