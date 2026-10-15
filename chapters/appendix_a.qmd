@@ -1337,16 +1337,7 @@ We used the leaflet package to generate a map of unique sites from the 2021 data
 export_dat <- read.csv(flagged_export_path)
 
 site_check <- export_dat %>%
-  distinct(monitoring_location_id,activity_latitude,activity_longitude) %>%
-  transform(activity_longitude = as.numeric(iconv(activity_longitude, 'utf-8', 'ascii', sub=''))) %>%
-
-  # the row for KR RM 43 longitude likely contains a non-unicode character, thus the "iconv" function, otherwise it becomes NA. The above transform also leave that row as latitude > 0, thus the "case_when" step below. Sheesh!
-  
-  mutate(activity_longitude = case_when(
-    monitoring_location_id == "KR RM 43" ~ activity_longitude*-1,
-    TRUE ~ activity_longitude
-  ))
-  
+  distinct(monitoring_location_id,activity_latitude,activity_longitude)
 
 # generate map
 library(leaflet)
