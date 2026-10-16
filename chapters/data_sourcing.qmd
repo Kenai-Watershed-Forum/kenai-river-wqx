@@ -10,7 +10,7 @@ format:
 
 # Data Sourcing
 
-```{r echo = F, message = F}
+```{r echo = F, message = F, warning = F}
 
 ## initialization
 # clear environment
@@ -20,112 +20,114 @@ rm(list=ls())
 library(tidyverse)
 library(lubridate)
 library(readr)
-library(readxl)
-library(writexl)
-library(hms)
-library(plotly)
-library(DT)
-library(readxl)
-library(openxlsx)
-library(leaflet)
-library(DT)
-library(ggpubr)
-library(plotrix)
-library(remotes)
-library(magrittr)
-library(janitor)
-library(xfun)
-library(cowplot)
-#install_github("USGS-R/EGRET")
+library(openxlsx)  # read.xlsx(), used for the manually curated outliers table
+library(janitor)   # clean_names(), remove_empty()
 
+# dplyr::select() takes precedence if another loaded package also exports select()
 select <- dplyr::select
 
-# to do: add explanatory content to this qmd document
-
-# - ref to data absence epa hows my waterway, in progress fix
-# - ref to total extent of data in epa wqx
-# - make sure outliers.xlsx doc can be downloaded & accessed
-# - modify such that outliers are labeled and present in the tabel downloads, but not shown in the boxplots
-
-# - confirm outlier removal works, org to prep to eqp wqx sync. WAIT UNTIL ALL DATA SYNCHED TO THIS DOCUMENT BEFORE EXCISING OUTLIERS
+# TODO:
+# - add a reference to EPA How's My Waterway data-absence issue (in progress fix)
+# - add a reference to the total extent of data available in EPA WQX
+# - confirm other/input/outliers/baseline_outliers.xlsx is downloadable/accessible from the rendered book
+# - outliers should be labeled and retained in table downloads, but excluded from boxplots
+# - WAIT UNTIL ALL DATA IS SYNCED TO WQP BEFORE EXCISING OUTLIERS (see below); confirm outlier removal logic once that sync is complete
 
 ```
 
 ```{r echo = F}
 
-##### Notes on initial data sourcing
+##### Notes on data sourcing
 
-# Data is sourced from the following queries at <https://waterqualitydata.us> on Feb 24, 2021:
-
-# CSV download for SAMPLE data: <https://www.waterqualitydata.us/portal/#bBox=-151.322501%2C60.274310%2C-149.216144%2C60.738915&mimeType=csv&dataProfile=narrowResult>
-
-# CSV download for STATION data: <https://www.waterqualitydata.us/portal/#countrycode=US&statecode=US%3A02&countycode=US%3A02%3A122&bBox=-151.322501%2C60.274310%2C-149.216144%2C60.738915&mimeType=csv>
-
-# Note: these CSV files are excluded from the GitHub repository because they are too large to sync. To reproduce the analysis, download and save these files locally instead. (See the ReadMe file at data/WQX_downloads in the repository).
-
-# Using these same queries in the future will download the most current csv files that may have received additional data in the interim since the last time this script was run.
-
-# We initially attempted to perform the task described above with the dataRetrieval package, but were not successful. As of 2025 this tool has transitioned to the "TADA" (tools for automated data analysis) package from EPA
-
-#library(dataRetrieval)
-
-# Note: in there future, I hope to automatically retrieve the most current water quality data from the EPA WQX
+# Data is sourced live from the EPA Water Quality Portal (WQP) via the
+# `dataRetrieval` R package, queried by organization = "KENAI_WQX":
+#   - Sample results: dataRetrieval::readWQPdata(organization = "KENAI_WQX", dataProfile = "narrowResult")
+#   - Station metadata: dataRetrieval::whatWQPsites(organization = "KENAI_WQX")
+#
+# To avoid querying the WQP API on every render, these queries are run
+# manually (not during book render) via functions/refresh_wqp_data.R, which
+# writes a local, gitignored cache to other/input/WQX_downloads/wqp_live/
+# along with a refresh_metadata.csv recording the refresh timestamp and row
+# counts. Run that script whenever new data is expected on WQP (KWF baseline
+# data is typically synced to WQP roughly once per year). This chapter reads
+# only from that local cache; it never calls the WQP API itself.
+#
+# (dataRetrieval was previously thought not to work well for this project;
+# that was resolved in October 2026 and dataRetrieval is now the standard
+# sourcing method. Its output column names differ slightly from the legacy
+# WQP web-UI CSV export: compound field names use "." instead of "/", e.g.
+# `ResultMeasure.MeasureUnitCode` instead of `ResultMeasure/MeasureUnitCode`.
+# That one field is renamed back below so the rest of this script, written
+# against the legacy naming, is otherwise unchanged.)
 
 ```
 
-We downloaded all results from the U.S. Water Quality Portal at https://www.waterqualitydata.us/ with the organization ID "Kenai Watershed Forum" on March 5, 2025. Results from this download populate the chapters throughout.
+```{r echo = F, message = F}
+# Load refresh metadata, to report the cache's last-refreshed date below and
+# to fail clearly (rather than silently reading stale/missing data) if the
+# cache has not been created yet.
+cache_dir <- "other/input/WQX_downloads/wqp_live"
+
+if (!file.exists(file.path(cache_dir, "narrowresult.csv")) ||
+    !file.exists(file.path(cache_dir, "station.csv"))) {
+  stop(
+    "Local WQP data cache not found at '", cache_dir, "'. ",
+    "Run functions/refresh_wqp_data.R to fetch and cache data from the ",
+    "Water Quality Portal before rendering this chapter."
+  )
+}
+
+refresh_metadata <- read_csv(file.path(cache_dir, "refresh_metadata.csv"), show_col_types = FALSE)
+refresh_date <- format(refresh_metadata$refreshed_at[1], "%B %d, %Y")
+
+```
+
+We source all results from the U.S. Water Quality Portal at <https://www.waterqualitydata.us/> for the organization ID "KENAI_WQX", via the `dataRetrieval` R package. A local copy of this data is cached and refreshed manually (see `functions/refresh_wqp_data.R`) rather than queried live on every render; the cache used to generate this report was last refreshed on `r refresh_date`. Results from this cache populate the chapters throughout.
 
 For an example of how data is prepared for submission to the Water Quality Portal, see Appendix A.
 
 ```{r echo = F, message = F}
-# inspect the download results queried from the same above url on 2/3/2025
-# (note that as of Feb 2025, a note at the above url describs a future transition to a v 3.0 of WQP; "improved features")
-
-
-# import sample data
-dat <- read_csv("other/input/WQX_downloads/wqp_download_20250305/narrowresult.csv") %>%
-  # retain only KWF data
-  filter(OrganizationFormalName == "Kenai Watershed Forum") %>%
+# Import sample data from the local WQP cache (see functions/refresh_wqp_data.R).
+# Read ResultMeasureValue as character to avoid parsing warnings for non-numeric
+# values like "TNTC" or "1,080"; these will be coerced to NA silently downstream.
+dat <- read_csv(
+  file.path(cache_dir, "narrowresult.csv"),
+  col_types = cols(ResultMeasureValue = col_character()),
+  show_col_types = FALSE
+) |>
+  # dataRetrieval uses "." instead of "/" in compound column names
+  rename(`ResultMeasure/MeasureUnitCode` = `ResultMeasure.MeasureUnitCode`) |>
+  # retain only KWF data (some records in WQP under this org ID are
+  # volunteer-submitted and carry a distinct OrganizationFormalName)
+  filter(OrganizationFormalName == "Kenai Watershed Forum") |>
   # remove empty columns
   select_if(~!(all(is.na(.))))
 
-
-# remove extraneous text from "Kenai Watershed Forum(Volunteer)*"
-#dat %<>%
-#  mutate(OrganizationFormalName = gsub("\\s*\\([^\\)]+\\)","",as.character(dat$OrganizationFormalName))) %>%
-#  mutate(OrganizationFormalName = str_remove(OrganizationFormalName,"\\*"))
-
-# import station data, from seperate file
-site_dat <- read_csv("other/input/WQX_downloads/wqp_download_20250203/station.csv") %>%
-  # retain only Kenai Baseline sites (contains "KBL")
-  filter(OrganizationIdentifier == "KENAI_WQX") %>%
+# Import station data from the local WQP cache.
+site_dat <- read_csv(file.path(cache_dir, "station.csv")) |>
+  # retain only KENAI_WQX stations
+  filter(OrganizationIdentifier == "KENAI_WQX") |>
   # remove empty columns
-  select_if(~!(all(is.na(.)))) 
+  select_if(~!(all(is.na(.))))
 
 # note: the MonitoringLocationName strings for sites uploaded in 2021 do not jive with those from 2000 - 2013
 
 # join site and sample data
-dat <- left_join(dat,site_dat) %>%
+dat <- left_join(dat, site_dat) |>
   # retain only observations with all site data
-    filter(!is.na(LatitudeMeasure)) %>%
-    # retain only Kenai Baseline sites (contains "KBL")
-    filter(grepl("KBL", MonitoringLocationName))
-
-
+  filter(!is.na(LatitudeMeasure)) |>
+  # retain only Kenai Baseline sites (contains "KBL")
+  filter(grepl("KBL", MonitoringLocationName))
 
 ### Miscellaneous additional dataframe prep ######
 
 # specify date format
-dat %<>%
-  transform(ActivityStartDate = date(ActivityStartDate)) 
-
-#%>%
-  # remove missing observations
-#  filter(!is.na(ResultMeasureValue))
+dat <- dat |>
+  mutate(ActivityStartDate = date(ActivityStartDate))
 
 # Remove air temperature observations
-dat %<>%
-  filter(CharacteristicName != "Temperature, air") 
+dat <- dat |>
+  filter(CharacteristicName != "Temperature, air")
 
 ```
 
@@ -135,66 +137,55 @@ dat %<>%
 # confirm that each parameter has consistent units. View dataframe here, and if units are not consistent, apply temporary corrections here. Ultimately need to apply corrections to WQP upload, so code here should accommodate read in once corrections are applied.
 
 # view dataframe of unique units by parameter
-parameter_units <- dat %>%
-  select(CharacteristicName, `ResultMeasure/MeasureUnitCode`) %>%
-  distinct() %>%
-  group_by(CharacteristicName) %>%
-  mutate(unit_id = paste0("unit_", row_number())) %>%
+parameter_units <- dat |>
+  select(CharacteristicName, `ResultMeasure/MeasureUnitCode`) |>
+  distinct() |>
+  group_by(CharacteristicName) |>
+  mutate(unit_id = paste0("unit_", row_number())) |>
   pivot_wider(names_from = unit_id, values_from = `ResultMeasure/MeasureUnitCode`)
 
-
 # specific conductance
-# spring 2013 values have units of mS/cm rather than uS/cm. looking at them in context of existing data, they apear within normal range (not consistently 1000x greater). Therefore, apply manual correction for spring 2013 SpCond unit 
-dat <- dat %>%
+# spring 2013 values have units of mS/cm rather than uS/cm. looking at them in context of existing data, they apear within normal range (not consistently 1000x greater). Therefore, apply manual correction for spring 2013 SpCond unit
+dat <- dat |>
   mutate(`ResultMeasure/MeasureUnitCode` = case_when(
     CharacteristicName == "Specific conductance" & ActivityStartDate == "2013-05-07" ~ "uS/cm",
     TRUE ~ `ResultMeasure/MeasureUnitCode`))
 
-
 # bacteria - fecal coliform units should all be "cfu/100ml"
-dat <- dat %>%
+dat <- dat |>
   mutate(`ResultMeasure/MeasureUnitCode` = case_when(
     CharacteristicName == "Fecal Coliform" ~ "cfu/100ml",
     TRUE ~ `ResultMeasure/MeasureUnitCode`))
 
-
 # TOTAL METALS (Mg, Ca, Fe, others)
 # address unit consistency introduced by 2021 data. Some are reported in ug/L, and some in mg/L
-dat <- dat %>%
-  # fix unit values
-  mutate(`ResultMeasureValue` = as.numeric(`ResultMeasureValue`)) %>%
-  mutate(`ResultMeasureValue` = case_when(
-    CharacteristicName %in% c("Magnesium","Calcium","Iron") & 
-      `ResultMeasure/MeasureUnitCode` == "ug/L" ~ `ResultMeasureValue` / 1000,
-    TRUE ~ `ResultMeasureValue`
-  )) %>%
-  # convert back to character for the rest of this preparation, here?
-  
-  # fix unit names
+dat <- dat |>
+  mutate(ResultMeasureValue = suppressWarnings(as.numeric(ResultMeasureValue))) |>
+  # fix values first (while unit code still reflects the original ug/L), then fix unit names
+  mutate(ResultMeasureValue = case_when(
+    CharacteristicName %in% c("Magnesium", "Calcium", "Iron") &
+      `ResultMeasure/MeasureUnitCode` == "ug/L" ~ ResultMeasureValue / 1000,
+    TRUE ~ ResultMeasureValue
+  )) |>
   mutate(`ResultMeasure/MeasureUnitCode` = case_when(
-    CharacteristicName %in% c("Magnesium","Calcium","Iron") & 
+    CharacteristicName %in% c("Magnesium", "Calcium", "Iron") &
       `ResultMeasure/MeasureUnitCode` == "ug/L" ~ "mg/L",
     TRUE ~ `ResultMeasure/MeasureUnitCode`
-  )) 
-
-
-
+  ))
 
 # SAMPLE FRACTION
 # address characteristic form (total, dissolved, etc). how many unique forms per parameter?
 
-parameter_fraction <- dat %>%
-  select(CharacteristicName, ResultSampleFractionText) %>%
-  distinct() %>%
-  group_by(CharacteristicName) %>%
-  mutate(unit_id = paste0("unit_", row_number())) %>%
+parameter_fraction <- dat |>
+  select(CharacteristicName, ResultSampleFractionText) |>
+  distinct() |>
+  group_by(CharacteristicName) |>
+  mutate(unit_id = paste0("unit_", row_number())) |>
   pivot_wider(names_from = unit_id, values_from = ResultSampleFractionText)
-
-
 
 # CHARACTERISTIC NAME CORRECTIONS
 # Nitrogen
-dat <- dat %>%
+dat <- dat |>
   mutate(CharacteristicName = str_replace_all(
     CharacteristicName,
     c(
@@ -203,59 +194,52 @@ dat <- dat %>%
     )
   ))
 
-
-
 # SITE NAME CORRECTIONS
 # Create and export table of site names
-site_tbl <- dat %>%
-  group_by(MonitoringLocationName,LatitudeMeasure,LongitudeMeasure) %>%
+site_tbl <- dat |>
+  group_by(MonitoringLocationName, LatitudeMeasure, LongitudeMeasure) |>
   summarise(min_date = min(ActivityStartDate),
-            max_date = max(ActivityStartDate)) %>%
+            max_date = max(ActivityStartDate)) |>
   rename("latitude" = "LatitudeMeasure",
          "longitude" = "LongitudeMeasure")
 
 # export csv of site names as received from EPA WQX
-write.csv(site_tbl,"other/output/field_qa_qc_data/2000_2021_sitenames.csv", row.names = F)
+write.csv(site_tbl, "other/output/field_qa_qc_data/2000_2021_sitenames.csv", row.names = F)
 
-# read back in the manually edited table with info on maintsem/trib and river mile
-site_tbl <- read_csv("other/input/baseline_sites.csv") %>%
-  remove_empty() %>%
-  select(-latitude,-longitude)
+# read back in the manually edited table with info on mainstem/trib and river mile
+site_tbl <- read_csv("other/input/baseline_sites.csv") |>
+  remove_empty() |>
+  select(-latitude, -longitude)
 
-
-# 2/15/2023: having some trouble with this join for unknown reasons. 
+# 2/15/2023: having some trouble with this join for unknown reasons.
 # So, instead, we can extract trib/mainstem info and river mile from the existing MonitoringLocationName column (KBL_t_00.0 = kenai baseline tributary mile 0)
 
-dat %<>%
-  separate_wider_delim(MonitoringLocationName, delim = "_", names = c("project","trib_mainstem","river_mile"), cols_remove = F)
+dat <- dat |>
+  separate_wider_delim(MonitoringLocationName, delim = "_", names = c("project", "trib_mainstem", "river_mile"), cols_remove = F)
 
 # transition column names to "easier" formats
-dat %<>% clean_names()
+dat <- dat |> clean_names()
 
-
-# export a csv with current column names, to provide the column format names for a seperate, manually curated outlier .xlsx file located in the same directory
-write.csv(dat,"other/input/outliers/baseline_outliers.csv")
-
-
+# export a csv with current column names, to provide the column format names for a separate, manually curated outlier .xlsx file located in the same directory
+write.csv(dat, "other/input/outliers/baseline_outliers.csv")
 
 # Create column of tributary names (e.g. Beaver Creek) to associate with tributary river miles
-# read in tribuary names
-trib_names <- read.csv("other/input/baseline_sites.csv") %>%
-  select(MonitoringLocationName, tributary_name, tributary_mainstem) %>%
-  filter(tributary_mainstem == "tributary") %>%
-  clean_names() %>%
+# read in tributary names
+trib_names <- read.csv("other/input/baseline_sites.csv") |>
+  select(MonitoringLocationName, tributary_name, tributary_mainstem) |>
+  filter(tributary_mainstem == "tributary") |>
+  clean_names() |>
   select(-tributary_mainstem)
 
 # join trib names to overall table
-dat %<>% left_join(trib_names, by = "monitoring_location_name")
+dat <- dat |> left_join(trib_names, by = "monitoring_location_name")
 
 # create general "site name" column. use tributary name if available, and river mile if not
-dat %<>%
-  transform(river_mile = as.character(as.numeric(river_mile))) %>%
+dat <- dat |>
+  mutate(river_mile = as.character(as.numeric(river_mile))) |>
   mutate(site_name = case_when(
     !is.na(tributary_name) ~ tributary_name,
     is.na(tributary_name) ~ river_mile))
-
 
 #### SEASONS BOUNDARY ####
 
@@ -264,37 +248,30 @@ dat %<>%
 # boundary date selected is June 4 (julian day 155)
 boundary_date <- 155
 
-dat %<>%
-  mutate(julian_day = yday(activity_start_date)) %>%
+dat <- dat |>
+  mutate(julian_day = yday(activity_start_date)) |>
   mutate(season = case_when(
-    julian_day > 155 ~ "Summer",
-    julian_day < 155 ~ "Spring"
+    julian_day > boundary_date ~ "Summer",
+    julian_day < boundary_date ~ "Spring"
   ))
-
 
 # OUTLIERS
 
-# exclude outliers with an inner_join function
+# exclude outliers with an anti_join
 # see manually identified outliers at "other/input/outliers/baseline_outliers.xlsx"
 
-outliers <- read.xlsx("other/input/outliers/baseline_outliers.xlsx") %>%
-  select(activity_identifier,characteristic_name)
-dat <- anti_join(dat,outliers)
-
-
-
+outliers <- read.xlsx("other/input/outliers/baseline_outliers.xlsx") |>
+  select(activity_identifier, characteristic_name)
+dat <- anti_join(dat, outliers)
 
 # EXPORT PREPROCESSED DATA TO LOCAL PROJECT DIRECTORY, FOR PLOTS
 
-# write finalized data that is output form all the steps above, to be used in next steps in the scripts that follow
+# write finalized data that is output from all the steps above, to be used in next steps in the scripts that follow
 
 # this export format represents the most granular presentation, nothing has been aggregated yet. The "reg_limits.qmd" script aggregates volatiles, for example
-write.csv(dat,"other/output/analysis_format/baseline_export_format.csv",row.names = F)
+write.csv(dat, "other/output/analysis_format/baseline_export_format.csv", row.names = F)
 
-
-
-# ensure final result includes "ResultStatusIdentifer." Keep rejects in table download, but not displayed in plots
-
+# TODO: ensure final result includes "ResultStatusIdentifier". Keep rejects in table download, but don't display them in plots
 
 ```
 

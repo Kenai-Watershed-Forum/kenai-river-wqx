@@ -16,16 +16,16 @@ The project is a long-term cooperative monitoring initiative led by KWF, with fu
 
 Monitoring Program
 
--   **22 sampling sites** on the Kenai River mainstem and major tributaries
--   **Biannual sampling** (spring and summer) since 2000
--   **Partner laboratories:** SGS North America, Analytica, ALS Environmental, Soldotna Wastewater Treatment Plant, Taurianen Engineering
--   **Data submitted** to the [EPA Water Quality Exchange (WQX)](https://www.epa.gov/waterdata/water-quality-data-wqx) and publicly available through the [EPA Water Quality Portal](https://www.waterqualitydata.us/) (organization: "Kenai Watershed Forum")
--   **Public-facing data viewer:** [How's My Waterway](https://mywaterway.epa.gov/) — search for Kenai River (Data Sync in Progress as of March 2026)
+- **22 sampling sites** on the Kenai River mainstem and major tributaries
+- **Biannual sampling** (spring and summer) since 2000
+- **Partner laboratories:** SGS North America, Analytica, ALS Environmental, Soldotna Wastewater Treatment Plant, Taurianen Engineering
+- **Data submitted** to the [EPA Water Quality Exchange (WQX)](https://www.epa.gov/waterdata/water-quality-data-wqx) and publicly available through the [EPA Water Quality Portal](https://www.waterqualitydata.us/) (organization: "Kenai Watershed Forum")
+- **Public-facing data viewer:** [How's My Waterway](https://mywaterway.epa.gov/) — search for Kenai River (Data Sync in Progress as of March 2026)
 
 ### Parameters Monitored
 
 | Category | Parameters |
-|------------------------------------|------------------------------------|
+|----|----|
 | Dissolved Metals | Arsenic, Cadmium, Chromium, Copper, Lead, Zinc |
 | Total Metals | Calcium, Iron, Magnesium |
 | Nutrients | Nitrate + Nitrite, Phosphorus |
@@ -124,7 +124,7 @@ Large raw data files in `other/input/WQX_downloads/` are excluded from version c
 ## Related Repositories
 
 | Repository | Purpose |
-|------------------------------------|------------------------------------|
+|----|----|
 | [kenai-river-wqx](https://github.com/Kenai-Watershed-Forum/kenai-river-wqx) | This repo — report source and 2021 QA/QC pipeline |
 | [kenai-river-wqx-qaqc](https://github.com/Kenai-Watershed-Forum/kenai-river-wqx-qaqc) | Annual QA/QC processing for data years other than 2021 |
 
@@ -146,10 +146,10 @@ This is an active, long-running monitoring project. Contributions and issue repo
 
 Please open a [GitHub Issue](https://github.com/Kenai-Watershed-Forum/kenai-river-wqx/issues) to report:
 
--   Errors or inconsistencies in reported water quality values
--   Broken code or failed renders
--   Incorrect regulatory threshold values
--   Suggestions for improving the QA/QC pipeline or report
+- Errors or inconsistencies in reported water quality values
+- Broken code or failed renders
+- Incorrect regulatory threshold values
+- Suggestions for improving the QA/QC pipeline or report
 
 When opening an issue, please include: the affected file or report section, a description of the problem, and (if applicable) the relevant parameter, site, or year.
 
@@ -162,9 +162,9 @@ When opening an issue, please include: the affected file or report section, a de
 
 ### Important notes for contributors
 
--   **QA/QC flag decisions** (accepting or rejecting individual results) are the responsibility of KWF staff scientists. If you believe a flagging decision is incorrect, open an issue rather than changing `other/input/wqx_templates/wqx_qaqc/` files directly.
--   **Raw input data** in `other/input/` must not be modified. Corrections are applied in code (see `appendix_a.qmd`).
--   For questions about the project's scientific methods or regulatory context, refer to the QAPP in `other/agent_context/`.
+- **QA/QC flag decisions** (accepting or rejecting individual results) are the responsibility of KWF staff scientists. If you believe a flagging decision is incorrect, open an issue rather than changing `other/input/wqx_templates/wqx_qaqc/` files directly.
+- **Raw input data** in `other/input/` must not be modified. Corrections are applied in code (see `appendix_a.qmd`).
+- For questions about the project's scientific methods or regulatory context, refer to the QAPP in `other/agent_context/`.
 
 ------------------------------------------------------------------------
 

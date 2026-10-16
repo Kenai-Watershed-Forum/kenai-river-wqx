@@ -10,7 +10,7 @@ format:
     code-summary: "Show the code"
 ---
 
-# Appendix: Sample Event Timing
+# Appendix: Sample Event Timing {#appendix_sample_timing}
 
 ## Introduction
 

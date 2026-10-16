@@ -52,9 +52,9 @@ All project files and source code are hosted in a public GitHub repository at <h
 
 <br>
 
-## Artificial Intelligence Note
+## Artificial Intelligence Disclosure
 
-Some refinement aspects of the codebase that generates this report were refined using ChatGPT (v5.3) and Posit Assistant (Claude Opus v4.6).
+Some refinement aspects of the codebase that generates this report were refined using ChatGPT (v5.3) and Posit Assistant (Claude Opus v4.6 or Sonnet v5.0).
 :::
 
 ::: {.content-visible when-format="docx"}

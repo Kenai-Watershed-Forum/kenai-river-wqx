@@ -52,3 +52,13 @@ Before we proceed with the work of using the materials at <https://github.com/Ke
 - this repo (<https://github.com/Kenai-Watershed-Forum/kenai-river-wqx>) is currently accessing data from a csv downloaded from the epa wqp. long-term, i wish for it to be set up to automatically download and access data directly from the epa wqp; with the option to download and utilize a local copy of that data for development purposes (e.g. local only, gitignored)
 
 - assess these notes and help plan how to proceed. do not guess, ask questions/interview or reference materials when appropriate, proceed in stepwise fashion with approval from the user
+
+10/16/2026
+
+I want to work on the task of updating the data_sourcing.qmd chapter. i want sourcing data for this book directly from EPA, and keep a local copy of it that is gitignored inside this repo. a refreshof the data should occur each time new data in the epa database is updated. once this is implemented, the text in the data_sourcing.qmd chapter should reflect this procedure.\
+\
+assess this request help plan for implementation. ask questions and interview me before proceeding as necessary. do not guess if you are unsure, ask or reference external sources to ensure compliance
+
+additional notes
+
+note 1: The guerron-orejuela 2016 report especially has a lot of trend analyses (space or time) for some parameters. they are included in the
