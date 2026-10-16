@@ -1,0 +1,83 @@
+```{=html}
+<!-- _trend_chunk.Rmd
+     Opt-in trend section for parameter chapters. Knit from
+     templates/_parameter_chunk.Rmd when the calling chapter sets
+     `trend_analysis <- TRUE`. Uses `characteristic` and (optionally)
+     `sample_fraction` from the calling chunk. Helpers: functions/trend_plots.R -->
+```
+
+```{r echo=FALSE, warning=FALSE, message=FALSE}
+source("functions/trend_plots.R")
+trend_dat <- load_trend_data(
+  characteristic,
+  if (exists("sample_fraction", inherits = FALSE)) sample_fraction else character(0)
+)
+trend_years <- range(lubridate::year(trend_dat$date))
+trend_tbl <- trend_stats(trend_dat)
+n_tests <- sum(!is.na(trend_tbl$p_value))
+n_signif <- sum(trend_tbl$direction %in% c("increasing", "decreasing"), na.rm = TRUE)
+```
+
+## Trends over time and space
+
+A trend analysis was conducted using all data collected during the time period between `r trend_years[1]` and `r trend_years[2]`. Non-detects (hollow points, drawn at their detection limit) are excluded from trend calculations and statistics. Because detection limits changed over time, excluding non-detects can bias apparent trends upward when many results are below the limit.
+
+### Trend tests by site
+
+The trend statistics summarized in the table below are based on Mann-Kendall tests for monotonic trend over time, run separately for each site and season with at least `r TREND_MIN_DETECTS` detected values (`r n_tests` tests). Because many tests were run, p-values are adjusted for the false discovery rate (Benjamini-Hochberg). The Sen slope is the median change per year, in the units of the parameter. After adjustment, `r n_signif` of `r n_tests` site and season combinations show a statistically significant trend (adjusted p \< 0.05).
+
+As an example, the plot below shows the time series for one mainstem and one tributary site, illustrating the kind of pattern that underlies each row of the statistical table:
+
+```{r echo=FALSE, warning=FALSE, message=FALSE}
+# Example sites: one mainstem and one tributary, each panel = one site x season
+example_subset <- trend_dat |>
+  filter((site_label == "RM 1.5" & site_type == "Mainstem") |
+         (site_label == "Russian River" & site_type == "Tributary")) |>
+  mutate(site_label = factor(site_label, levels = c("RM 1.5", "Russian River")),
+         status = if_else(nd, "non-detect (at detection limit)", "detected"),
+         tip = paste0(site_label, ", ", season, "<br>", format(date), "<br>",
+                      signif(value, 3), " ", unit, " (", status, ")"))
+
+if (nrow(example_subset) > 0) {
+  example_unit <- unique(example_subset$unit)[1]
+
+  # LOESS fit per site x season panel, on log10 scale, detected values only
+  example_smooths <- example_subset |>
+    filter(!nd) |>
+    group_by(site_label, season) |>
+    filter(n() >= TREND_MIN_DETECTS) |>
+    group_modify(function(x, key) {
+      t <- as.numeric(x$date)
+      fit <- loess(log10(value) ~ t, data = tibble(value = x$value, t = t),
+                   span = 1, degree = 1)
+      grid <- seq(min(t), max(t), length.out = 60)
+      tibble(date = as.Date(grid), fitted = 10^predict(fit, data.frame(t = grid)))
+    }) |>
+    ungroup()
+
+  ggplot(example_subset, aes(date, value)) +
+    geom_point(data = ~ filter(.x, !nd), aes(text = tip),
+               shape = 16, alpha = 0.8, size = 2, color = "#1b9e77") +
+    geom_point(data = ~ filter(.x, nd), aes(text = tip),
+               shape = 1, size = 2.2, color = "#1b9e77") +
+    geom_line(data = example_smooths, aes(y = fitted),
+              linewidth = 0.9, color = "#d95f02") +
+    scale_y_log10() +
+    facet_grid(season ~ site_label) +
+    labs(x = NULL, y = paste0(characteristic, " (", example_unit, ", log scale)")) +
+    theme_bw(base_size = 15) -> example_gg
+
+  plotly::ggplotly(example_gg, tooltip = "text", height = 650)
+}
+```
+
+```{r echo=FALSE, warning=FALSE, message=FALSE}
+trend_tbl |>
+  transmute(
+    `Site type` = site_type, Site = site_label, Season = season,
+    `Detected (n)` = n_detected, `Non-detect (n)` = n_nondetect, Years = years,
+    `Kendall tau` = round(tau, 2), `Sen slope per year` = signif(sen_slope_per_year, 2),
+    `Adjusted p` = signif(p_adjusted, 2), Result = coalesce(direction, "too few detected values")
+  ) |>
+  knitr::kable()
+```

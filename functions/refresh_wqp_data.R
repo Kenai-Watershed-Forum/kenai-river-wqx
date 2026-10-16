@@ -33,18 +33,41 @@ station <- dataRetrieval::whatWQPsites(
   organization = "KENAI_WQX"
 )
 
+# ── Detection limits ─────────────────────────────────────────────────────────
+# The narrowResult profile only links to detection limits via a URL. The
+# fullPhysChem profile carries the numeric limit, which the trend plots use to
+# draw non-detects at their detection limit. Only the join key and limit
+# columns are kept (the full profile is ~140 columns wide).
+cat("Fetching detection limits (readWQPdata, dataProfile = 'fullPhysChem')...
+")
+detection_limits <- dataRetrieval::readWQPdata(
+  organization = "KENAI_WQX",
+  dataProfile  = "fullPhysChem"
+) |>
+  select(
+    ResultIdentifier,
+    DetectionQuantitationLimitTypeName,
+    DetectionQuantitationLimitMeasureValue,
+    DetectionQuantitationLimitMeasureUnitCode
+  ) |>
+  # Keep results that actually report a limit
+  filter(!is.na(DetectionQuantitationLimitMeasureValue))
+
 # ── Write cache files ────────────────────────────────────────────────────────
-narrowresult_path <- file.path(cache_dir, "narrowresult.csv")
-station_path      <- file.path(cache_dir, "station.csv")
+narrowresult_path      <- file.path(cache_dir, "narrowresult.csv")
+station_path           <- file.path(cache_dir, "station.csv")
+detection_limits_path  <- file.path(cache_dir, "detection_limits.csv")
 
 write_csv(narrowresult, narrowresult_path)
 write_csv(station, station_path)
+write_csv(detection_limits, detection_limits_path)
 
 # ── Write refresh metadata (surfaced in data_sourcing.qmd narrative) ────────
 refresh_metadata <- tibble(
   refreshed_at         = Sys.time(),
   narrowresult_n_rows  = nrow(narrowresult),
   station_n_rows       = nrow(station),
+  detection_limits_n_rows = nrow(detection_limits),
   narrowresult_min_date = suppressWarnings(min(narrowresult$ActivityStartDate, na.rm = TRUE)),
   narrowresult_max_date = suppressWarnings(max(narrowresult$ActivityStartDate, na.rm = TRUE))
 )

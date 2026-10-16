@@ -37,3 +37,13 @@ if (exists("no_threshold_note", inherits = FALSE) && !is.null(no_threshold_note)
   show_threshold_table(characteristic)
 }
 ```
+
+```{r echo=FALSE, warning=FALSE, message=FALSE, results='asis'}
+# Opt-in trend section: a chapter sets `trend_analysis <- TRUE` before knitting
+# this template (see parameters/zinc.qmd).
+if (exists("trend_analysis", inherits = FALSE) && isTRUE(trend_analysis)) {
+  res_trend <- knitr::knit_child("templates/_trend_chunk.Rmd", envir = environment(), quiet = TRUE)
+  cat(res_trend, sep = "
+")
+}
+```

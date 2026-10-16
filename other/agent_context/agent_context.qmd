@@ -61,4 +61,6 @@ assess this request help plan for implementation. ask questions and interview me
 
 additional notes
 
-note 1: The guerron-orejuela 2016 report especially has a lot of trend analyses (space or time) for some parameters. they are included in the
+note 1: The guerron-orejuela 2016 report especially has a lot of trend analyses (space or time) for some parameters, by site/season (i think just the ones identified of concern, eg zinc). they are included in the chapters of each parameter. i want to assess what it would look like to implement this in this quarto book. i would like the option to implement this for each parameter chapter, though I may not choose to do so for all of them. also i think some of the plots could be partially combined, eg to show the different seasons in two seperate facets of the same plot. or maybe even a plot that shows trendlines for all summer tributary sites, another one for summer main stem sites, another one for spring tributary sites, and another for summer tributary sites. each facet should indicate the n= quantity of observations. guerron-orejeula fit a polynomial line to each plot; i am unsure if we shoul proceed that way or some other way.
+
+assess this request help plan for implementation. ask questions and interview me before proceeding as necessary. do not guess if you are unsure, ask or reference external sources to ensure compliance
