@@ -1,14 +1,14 @@
 # Water Quality Assessment of the Kenai River Watershed, 2000–2025
 
-**Kenai Watershed Forum (KWF) — Baseline Water Quality Monitoring Project**
+**Kenai Watershed Forum (KWF): Baseline Water Quality Monitoring Project**
 
-[![Online Report](https://img.shields.io/badge/Online%20Report-kenai--watershed--forum.github.io-blue)](https://kenai-watershed-forum.github.io/kenai-river-wqx-report-v2/)
+[![Online Report](https://img.shields.io/badge/Online%20Report-kenai--watershed--forum.github.io-blue)](https://kenai-watershed-forum.github.io/kenai-river-wqx/)
 
 ------------------------------------------------------------------------
 
 ## Overview
 
-This repository contains source code and data for a comprehensive water quality assessment of the Kenai River watershed in south-central Alaska, covering biannual (spring and summer) sampling from 2000 through 2025. The report is produced as a [Quarto book](https://quarto.org/docs/books/) that renders to both an interactive HTML website and a downloadable Word document.
+This repository contains source code and data for a water quality assessment of the Kenai River watershed in south-central Alaska, covering biannual (spring and summer) sampling from 2000 through 2025. The report is produced as a [Quarto book](https://quarto.org/docs/books/) that renders to both an interactive HTML website and a downloadable Word document.
 
 The project is a long-term cooperative monitoring initiative led by KWF, with funding from a coalition of local agencies. It is designed to be updated annually as new data become available.
 
@@ -20,7 +20,7 @@ Monitoring Program
 - **Biannual sampling** (spring and summer) since 2000
 - **Partner laboratories:** SGS North America, Analytica, ALS Environmental, Soldotna Wastewater Treatment Plant, Taurianen Engineering
 - **Data submitted** to the [EPA Water Quality Exchange (WQX)](https://www.epa.gov/waterdata/water-quality-data-wqx) and publicly available through the [EPA Water Quality Portal](https://www.waterqualitydata.us/) (organization: "Kenai Watershed Forum")
-- **Public-facing data viewer:** [How's My Waterway](https://mywaterway.epa.gov/) — search for Kenai River (Data Sync in Progress as of March 2026)
+- **Public-facing data viewer:** [How's My Waterway](https://mywaterway.epa.gov/) (search for Kenai River). Corrected 2021 data was submitted to CDX in October 2026 and is awaiting WQP indexing.
 
 ### Parameters Monitored
 
@@ -37,27 +37,34 @@ Monitoring Program
 
 ## Repository Structure
 
-```         
+```
 kenai-river-wqx/
-├── _quarto.yml                  # Quarto book configuration
-├── index.qmd                    # Preface / introduction
-├── intro.qmd, methods.qmd, ...  # Report narrative chapters
+├── _quarto.yml                  # Quarto book configuration (HTML and DOCX profiles)
+├── index.qmd                    # Preface
+├── chapters/                    # Narrative and methods chapters
+│   ├── data_sourcing.qmd        # Reads the local WQP cache, builds analysis datasets
+│   ├── data_qa_qc.qmd, reg_limits.qmd, methods.qmd, ...
+│   ├── cdx_upload.qmd           # EPA CDX/WQX Web upload walkthrough
+│   └── appendix_a.qmd, appendix_b.qmd
 ├── parameters/                  # One .qmd chapter per water quality parameter
-├── appendix_a.qmd               # 2021 QA/QC pipeline (SGS + ALS lab data → EPA CDX)
-├── appendix_b.qmd               # Supplementary appendix
+├── templates/
+│   ├── _parameter_chunk.Rmd     # Shared template knitted by every parameter chapter
+│   └── _trend_chunk.Rmd         # Optional trend analysis section (opt-in)
 ├── functions/
-│   ├── static_boxplot_function.R  # Reusable boxplot function (interactive + static)
-│   └── threshold_table.R          # Regulatory threshold display tables
+│   ├── refresh_wqp_data.R       # Manual script: refresh the local WQP cache
+│   ├── static_boxplot_function.R, threshold_table.R, trend_plots.R, ...
 └── other/
-    ├── agent_context/             # Governance docs (QAPP, MOU, funding proposal)
+    ├── agent_context/           # Governance docs, AI assistant context and session log
+    ├── documents/               # Reference documents (text-extracted copies in md/)
     ├── input/
-    │   ├── 2021_wqx_data/         # Raw lab data (SGS, ALS, SWWTP, Taurianen)
-    │   ├── wqx_templates/         # WQX reference files and lookup tables
-    │   ├── regulatory_limits/     # Hardness-dependent metal thresholds
-    │   └── baseline_sites.csv     # Site metadata (22 sites)
+    │   ├── WQX_downloads/wqp_live/  # Gitignored WQP cache (see "Data Sourcing")
+    │   ├── 2021_wqx_data/, 2025_data/  # Raw lab data as received
+    │   ├── wqx_templates/       # WQX reference files and lookup tables
+    │   ├── regulatory_limits/   # Regulatory thresholds (master_reg_limits.xlsx)
+    │   └── baseline_sites.csv   # Site metadata
     └── output/
-        ├── wqx_formatted/         # CDX-ready upload files (results, project, station CSVs)
-        └── analysis_format/       # Processed data for report figures and tables
+        ├── wqx_formatted/       # CDX-ready upload files
+        └── analysis_format/     # Processed data for report figures and tables
 ```
 
 > **Note:** Raw data files in `other/input/` are kept exactly as received from laboratories. All transformations are applied in code.
@@ -66,28 +73,38 @@ kenai-river-wqx/
 
 ## Data Pipeline
 
-```         
-Raw lab EDDs (SGS, ALS)
-        │
-        ▼
-  appendix_a.qmd
-  ├── Ingest & normalize (units, site names, method codes)
-  ├── Join WQX lookup tables (lat/long, fractions, detection conditions)
-  ├── QA/QC checks (holding times, RPDs, matrix spikes, completeness)
-  ├── Apply flags (Result Status ID: Accepted / Rejected)
-  └── Export CDX submission files
-        │
-        ▼
-  EPA WQX / CDX Upload
-        │
-        ▼
-  EPA Water Quality Portal → downloaded by report on render
-        │
-        ▼
-  Parameter chapters (visualizations, regulatory comparisons, tables)
+The pipeline spans two repositories. Annual QA/QC and CDX preparation happen in the QA/QC repo (this repo holds the 2021 pipeline in `chapters/appendix_a.qmd`); the report reads only from the public Water Quality Portal.
+
+```
+Raw lab EDDs --> QA/QC, WQX formatting --> EPA CDX / WQX Web upload
+                                                   |
+                                                   v
+                                    EPA Water Quality Portal (WQP)
+                                                   |
+                          functions/refresh_wqp_data.R  (manual)
+                                                   |
+                                                   v
+                       other/input/WQX_downloads/wqp_live/  (local cache)
+                                                   |
+                                                   v
+                 chapters/data_sourcing.qmd --> parameter chapters
 ```
 
-Annual EPA CDX submissions require three files uploaded together: 1. `results_activities.csv` — QA/QC'd lab results 2. `project.csv` — project metadata 3. `station.csv` — monitoring location metadata
+Annual CDX submissions require three files: `results_activities.csv` (QA/QC'd lab results), `project.csv`, and `station.csv`.
+
+### Data Sourcing
+
+Rendering never calls the WQP API. `chapters/data_sourcing.qmd` reads a local, gitignored cache (`narrowresult.csv`, `station.csv`, `detection_limits.csv`, `refresh_metadata.csv`) in `other/input/WQX_downloads/wqp_live/`. To refresh it, run:
+
+``` r
+source("functions/refresh_wqp_data.R")
+```
+
+Refresh whenever new data is expected on WQP (organization `KENAI_WQX`, retrieved with `dataRetrieval`). If the cache is missing, the render stops with instructions. After a refresh, downstream outputs (`baseline_export_format.csv`, `baseline_analysis_format.csv`, etc.) regenerate and may show large diffs; this is expected.
+
+### Trend Analyses (opt-in, pilot)
+
+A parameter chapter can include a "Trends over time and space" section by setting `trend_analysis <- TRUE` before knitting `templates/_parameter_chunk.Rmd`. It reports per-site, per-season Mann-Kendall tests with Sen slopes and an interactive example figure; non-detects are excluded. Helpers are in `functions/trend_plots.R`. Currently only `parameters/zinc.qmd` is opted in, and the statistical approach is still under review.
 
 ------------------------------------------------------------------------
 
@@ -115,9 +132,9 @@ quarto publish gh-pages
 
 This pushes the rendered site to a dedicated `gh-pages` branch, which is what GitHub Pages serves from. This keeps `main`'s history free of large rendered-HTML commits.
 
-**Requirements:** - R (≥ 4.x) with packages: `tidyverse`, `readxl`, `writexl`, `openxlsx`, `DT`, `plotly`, `janitor`, `lubridate`, `dataRetrieval`, `TADA`, `xfun` - Quarto (≥ 1.4)
+**Requirements:** Quarto (>= 1.4) and R (>= 4.x) with the packages used by the chapters, including `tidyverse`, `readxl`, `writexl`, `openxlsx`, `DT`, `plotly`, `janitor`, `lubridate`, `dataRetrieval`, `TADA`, `xfun`, and `leaflet`. Trend analyses additionally use the packages loaded in `functions/trend_plots.R`.
 
-Large raw data files in `other/input/WQX_downloads/` are excluded from version control (`.gitignore`). These are downloaded via the `dataRetrieval` package on first render using `data_sourcing.qmd`.
+Before the first render, create the WQP cache (see "Data Sourcing" above). Large files in `other/input/WQX_downloads/` are excluded from version control.
 
 ------------------------------------------------------------------------
 
@@ -125,16 +142,19 @@ Large raw data files in `other/input/WQX_downloads/` are excluded from version c
 
 | Repository | Purpose |
 |----|----|
-| [kenai-river-wqx](https://github.com/Kenai-Watershed-Forum/kenai-river-wqx) | This repo — report source and 2021 QA/QC pipeline |
-| [kenai-river-wqx-qaqc](https://github.com/Kenai-Watershed-Forum/kenai-river-wqx-qaqc) | Annual QA/QC processing for data years other than 2021 |
+| [kenai-river-wqx](https://github.com/Kenai-Watershed-Forum/kenai-river-wqx) | This repo: report source and 2021 QA/QC pipeline |
+| [kenai-river-wqx-qaqc](https://github.com/Kenai-Watershed-Forum/kenai-river-wqx-qaqc) | Annual QA/QC processing and CDX preparation for other data years (a per-year-repo template is planned to replace it) |
 
 ------------------------------------------------------------------------
 
 ## Project History
 
-Comprehensive reports have previously been completed for: [2007 report](https://www.kenaiwatershed.org/kenai-river-baseline-water-quality-monitoring/) and McCard (2007) - [2016 report](https://www.kenaiwatershed.org/kenai-river-baseline-water-quality-monitoring/) — Guerron-Orejuela (2016)
+Earlier reports on this monitoring program:
 
-This repository covers the update through 2025 and establishes a reproducible, annually-extensible pipeline for future reports.
+- [2007 report](https://www.kenaiwatershed.org/kenai-river-baseline-water-quality-monitoring/) (McCard, 2007)
+- [2016 report](https://www.kenaiwatershed.org/kenai-river-baseline-water-quality-monitoring/) (Guerron-Orejuela, 2016)
+
+This repository covers the update through 2025 and is set up to be extended each year.
 
 ------------------------------------------------------------------------
 
@@ -163,7 +183,7 @@ When opening an issue, please include: the affected file or report section, a de
 ### Important notes for contributors
 
 - **QA/QC flag decisions** (accepting or rejecting individual results) are the responsibility of KWF staff scientists. If you believe a flagging decision is incorrect, open an issue rather than changing `other/input/wqx_templates/wqx_qaqc/` files directly.
-- **Raw input data** in `other/input/` must not be modified. Corrections are applied in code (see `appendix_a.qmd`).
+- **Raw input data** in `other/input/` must not be modified. Corrections are applied in code (see `chapters/appendix_a.qmd`).
 - For questions about the project's scientific methods or regulatory context, refer to the QAPP in `other/agent_context/`.
 
 ------------------------------------------------------------------------

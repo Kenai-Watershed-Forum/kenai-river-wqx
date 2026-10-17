@@ -26,50 +26,72 @@ A trend analysis was conducted using all data collected during the time period b
 
 The trend statistics summarized in the table below are based on Mann-Kendall tests for monotonic trend over time, run separately for each site and season with at least `r TREND_MIN_DETECTS` detected values (`r n_tests` tests). Because many tests were run, p-values are adjusted for the false discovery rate (Benjamini-Hochberg). The Sen slope is the median change per year, in the units of the parameter. After adjustment, `r n_signif` of `r n_tests` site and season combinations show a statistically significant trend (adjusted p \< 0.05).
 
-As an example, the plot below shows the time series for one mainstem and one tributary site, illustrating the kind of pattern that underlies each row of the statistical table:
+As an example, the figure below shows the data behind one row of the table: one site and season. The title gives that row's test results. The same data are shown twice, first on a log10 y-axis and then on a linear y-axis. The orange line is a LOESS (locally weighted) smoother fit on the plotted scale, shown only to illustrate the pattern; it is not the Sen slope.
 
 ```{r echo=FALSE, warning=FALSE, message=FALSE}
-# Example sites: one mainstem and one tributary, each panel = one site x season
+# Example row of the table (site x season) to illustrate
+example_site <- "RM 1.5"
+example_season <- "Summer"
+
 example_subset <- trend_dat |>
-  filter((site_label == "RM 1.5" & site_type == "Mainstem") |
-         (site_label == "Russian River" & site_type == "Tributary")) |>
-  mutate(site_label = factor(site_label, levels = c("RM 1.5", "Russian River")),
-         status = if_else(nd, "non-detect (at detection limit)", "detected"),
+  filter(site_label == example_site, season == example_season) |>
+  mutate(status = if_else(nd, "non-detect (at detection limit)", "detected"),
          tip = paste0(site_label, ", ", season, "<br>", format(date), "<br>",
                       signif(value, 3), " ", unit, " (", status, ")"))
+example_row <- trend_tbl |>
+  filter(site_label == example_site, season == example_season)
+example_unit <- unique(example_subset$unit)[1]
 
-if (nrow(example_subset) > 0) {
-  example_unit <- unique(example_subset$unit)[1]
+example_title <- sprintf(
+  "%s, %s (n = %d detected): Kendall tau = %.2f, Sen slope = %s %s/yr, p = %.2g, adjusted p = %.2g",
+  example_site, example_season, example_row$n_detected, example_row$tau,
+  format(signif(example_row$sen_slope_per_year, 2)), example_unit,
+  example_row$p_value, example_row$p_adjusted)
 
-  # LOESS fit per site x season panel, on log10 scale, detected values only
-  example_smooths <- example_subset |>
-    filter(!nd) |>
-    group_by(site_label, season) |>
-    filter(n() >= TREND_MIN_DETECTS) |>
-    group_modify(function(x, key) {
-      t <- as.numeric(x$date)
-      fit <- loess(log10(value) ~ t, data = tibble(value = x$value, t = t),
-                   span = 1, degree = 1)
-      grid <- seq(min(t), max(t), length.out = 60)
-      tibble(date = as.Date(grid), fitted = 10^predict(fit, data.frame(t = grid)))
-    }) |>
-    ungroup()
+example_plot <- function(log_scale) {
+  det <- filter(example_subset, !nd)
+  t <- as.numeric(det$date)
+  y <- if (log_scale) log10(det$value) else det$value
+  fit <- loess(y ~ t, data = tibble(y = y, t = t), span = 1, degree = 1)
+  grid <- seq(min(t), max(t), length.out = 60)
+  pred <- predict(fit, data.frame(t = grid))
+  smooth <- tibble(date = as.Date(grid), fitted = if (log_scale) 10^pred else pred)
 
-  ggplot(example_subset, aes(date, value)) +
+  g <- ggplot(example_subset, aes(date, value)) +
     geom_point(data = ~ filter(.x, !nd), aes(text = tip),
-               shape = 16, alpha = 0.8, size = 2, color = "#1b9e77") +
+               shape = 16, alpha = 0.8, size = 2.5, color = "#1b9e77") +
     geom_point(data = ~ filter(.x, nd), aes(text = tip),
-               shape = 1, size = 2.2, color = "#1b9e77") +
-    geom_line(data = example_smooths, aes(y = fitted),
-              linewidth = 0.9, color = "#d95f02") +
-    scale_y_log10() +
-    facet_grid(season ~ site_label) +
-    labs(x = NULL, y = paste0(characteristic, " (", example_unit, ", log scale)")) +
-    theme_bw(base_size = 15) -> example_gg
-
-  plotly::ggplotly(example_gg, tooltip = "text", height = 650)
+               shape = 1, size = 2.7, color = "#1b9e77") +
+    geom_line(data = smooth, aes(y = fitted), linewidth = 0.9, color = "#d95f02") +
+    labs(x = NULL, title = example_title,
+         y = paste0(characteristic, " (", example_unit,
+                    if (log_scale) ", log scale)" else ")")) +
+    theme_bw(base_size = 14) +
+    theme(plot.title = element_text(size = 11))
+  if (log_scale) g <- g + scale_y_log10()
+  plotly::ggplotly(g, tooltip = "text", height = 450)
 }
 ```
+
+Log scale:
+
+```{r echo=FALSE, warning=FALSE, message=FALSE}
+example_plot(log_scale = TRUE)
+```
+
+Linear scale:
+
+```{r echo=FALSE, warning=FALSE, message=FALSE}
+example_plot(log_scale = FALSE)
+```
+
+The statistics in the figure title and in the table are defined as follows:
+
+- **Kendall tau**: a rank correlation between sample date and concentration, ranging from -1 to +1. Positive values mean concentrations tend to be higher in later years, negative values lower, and values near 0 mean no consistent direction. Only the ordering of values matters, not their magnitude.
+- **Sen slope per year**: the median of the slopes between every pair of detected results (change in concentration divided by years elapsed), in the units of the parameter per year. It estimates the typical rate of change and is not strongly affected by individual extreme values.
+- **p-value**: the probability of a tau at least this far from 0 if there were no trend. It comes from the Mann-Kendall test. A small value indicates a monotonic trend is unlikely to be due to chance alone for that one site and season.
+- **Adjusted p**: the p-value after Benjamini-Hochberg adjustment across all tests in the table, to account for running many tests.
+- **Detected (n) and Non-detect (n)**: the number of results above and below the detection limit. Only detected results are used in the tests and fits.
 
 ```{r echo=FALSE, warning=FALSE, message=FALSE}
 trend_tbl |>
@@ -79,5 +101,6 @@ trend_tbl |>
     `Kendall tau` = round(tau, 2), `Sen slope per year` = signif(sen_slope_per_year, 2),
     `Adjusted p` = signif(p_adjusted, 2), Result = coalesce(direction, "too few detected values")
   ) |>
-  knitr::kable()
+  knitr::kable(caption = paste0("Mann-Kendall trend test results for ", tolower(characteristic),
+                                " by site and season, ", trend_years[1], " to ", trend_years[2], "."))
 ```
