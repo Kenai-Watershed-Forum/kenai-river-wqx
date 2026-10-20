@@ -94,7 +94,9 @@ export_dat %<>%
 export_dat %<>%
   mutate(
     `Project ID` = 10000007,
-    `Monitoring Location ID` = MonitoringLocationIdentifier,
+    # WQX adds the org prefix itself on import; keeping it creates duplicate
+    # "KENAI_WQX-KENAI_WQX-..." stations
+    `Monitoring Location ID` = sub("^KENAI_WQX-", "", MonitoringLocationIdentifier),
     `Monitoring Location Name` = MonitoringLocationName,
     `Activity Media Name` = activity_media_name,
     `Activity Media Subdivision Name` = activity_media_subdivision_name,
@@ -201,6 +203,8 @@ write.csv(project_upload, "other/output/wqx_formatted/project.csv", row.names = 
 # and retain only the columns required by the CDX import configuration.
 station_upload <- read.csv("other/input/WQX_downloads/station/station.csv") |>
   dplyr::filter(grepl("KBL", MonitoringLocationName)) |>
+  # Strip the org prefix (WQX re-adds it on import); see Monitoring Location ID above
+  dplyr::mutate(MonitoringLocationIdentifier = sub("^KENAI_WQX-", "", MonitoringLocationIdentifier)) |>
   dplyr::select(
     MonitoringLocationIdentifier,
     MonitoringLocationName,

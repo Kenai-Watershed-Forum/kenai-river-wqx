@@ -65,7 +65,7 @@ The station file registers monitoring location metadata (coordinates, location d
 
 1.  In WQX Web, navigate to **Import & Submit**.
 2.  Select import type: **Activity** (results are nested under activities in WQX).
-3.  Select the KWF results/activities import configuration.
+3.  Select the KWF results/activities import configuration, `KWF_Results_Baseline_Template_v2` (see @sec-config).
 4.  Browse to and select `other/output/wqx_formatted/results_activities.csv`.
 5.  Submit and wait for **Completed** status. This is the largest file and may take several minutes.
 
@@ -73,6 +73,60 @@ The station file registers monitoring location metadata (coordinates, location d
 
 1.  Allow 24–48 hours for data to propagate, then search for KWF data in [How's My Waterway](https://mywaterway.epa.gov/) or the [Water Quality Portal](https://www.waterqualitydata.us/).
 2.  Confirm that results are visible and that values, units, and site names look correct.
+
+------------------------------------------------------------------------
+
+## Results Import Configuration in WQX Web {#sec-config}
+
+The results file is imported with a saved configuration, **`KWF_Results_Baseline_Template_v2` (Uid 9481)**, rebuilt in September and October 2026 as a copy of the older configuration Uid 8515. It has 53 columns that must match, in order, the columns that `functions/appendix_a_scripts/generate_cdx_export.R` writes. If that script's column order or column set changes, the configuration must change with it. The finished configuration has not yet been downloaded into the repo for version control.
+
+### How a configuration works
+
+Each column in the file is mapped to one WQX element, marked **Ignore Column**, or replaced by a constant **Generated Value** that has no file column at all. WQX Web checks the file position of every column against the configuration, so one extra or missing column shifts everything after it and produces misleading errors on many rows.
+
+### Building or editing columns
+
+1.  Open the configuration under **Import & Submit** and use the small page icon on a row to open the **Elements** dialog. The dialog is scoped to the table it was opened from: opened from **Columns**, checked elements become file-mapped columns; opened from **Generated Values**, they become constant values that consume no column letter.
+2.  New columns land in an unlettered bundle. Only the top row of the bundle shows the column-letter dropdown. Assigning it a letter inserts it at that absolute position and shifts the rest down by one; repeat until the sequence matches the file. Find rows by element name, never by current number, because the numbers move.
+3.  Save, then import a small subset (5 to 10 rows) before the full file.
+
+### The "Ignore Column" pattern
+
+Some columns exist in the export for human readability but have no WQX element, or are always blank. Keep them in the file so positions stay aligned, and map them with the **Ignore Column** button of the Elements dialog (it works with no boxes checked and inserts a placeholder row that is excluded from mapping). Columns currently ignored:
+
+| Column | Position | Reason |
+|----|----|----|
+| Monitoring Location Name | C | Station-level attribute, already supplied by `station.csv`; no results-level element |
+| Activity End Date | I | Always blank (see the rule below) |
+| Activity End Time | J | Always blank (see the rule below) |
+| Laboratory Sample ID | AU | No live WQX element |
+
+### Generated values
+
+| Element | Value |
+|----|----|
+| Organization ID | `KENAI_WQX` |
+| Activity Start Time Zone | `AKDT` |
+| Analysis Start Time Zone | `AKDT` |
+| Activity Horizontal Collection Method | `GPS-Unspecified` |
+| Activity Horizontal Reference Datum | `NAD83` |
+
+The horizontal method and datum are required whenever latitude and longitude are present. Their values were taken from the already-accepted `station.csv`, where they are identical for all 22 stations.
+
+### Rule: a mapped element needs a value on every row
+
+WQX Web requires the parent element of a Generated Value whenever that element has *any* column mapping, even if the mapped column is empty. In October 2026 the time zone Generated Value for `Activity End Time` combined with mapped but always-blank `Activity End Date` and `Activity End Time` columns produced an "Activity End Time required" error on all 830 rows. Switching those two columns to Ignore Column removed the error. If an always-blank column triggers a blanket required-value error, check for a related Generated Value and ignore the column instead of mapping it.
+
+### Typical data-level errors found at the first import
+
+These are fixed in `functions/appendix_a_scripts/format_wqx.R` and `generate_cdx_export.R`, but they show what the validator checks:
+
+-   Domain values must match WQX exactly, for example `Cold Packs (4 deg C)`, `Practical Quantitation Limit`, and container color `Amber`.
+-   Characteristic names that WQX maps through synonyms need a matching `Method Speciation` (for example `as P` for total phosphorus, `as N` for nitrate plus nitrite).
+-   A Result Unit with a blank Result Value is an error, so blank the unit on non-detects.
+-   A Detection Limit Type needs a Detection Limit Value; only populate type 2 and unit 2 when the value exists.
+-   Coordinates must use an ASCII hyphen. A Unicode hyphen (U+2010) in one site's longitude broke 29 rows.
+-   Units must use WQX capitalization (`mg/L`); this is standardized at ingestion.
 
 ------------------------------------------------------------------------
 
@@ -105,21 +159,37 @@ write_csv(delete_file, "other/output/epa_wqp_uploads/corrected_epa_wqp_uploads/r
 
 The resulting file should have a single column named `ActivityIdentifier` with one ID per row (no org prefix).
 
-### Delete UI path in WQX Web (confirmed working 3/31/2026)
+### Delete UI path in WQX Web (confirmed working 3/31/2026; menu labels rechecked 10/20/2026)
 
 1.  Log in to CDX and navigate to WQX Web.
-2.  Go to **Import & Submit** → **Import a batch of IDs for records to delete from WQX** → **Import a file of Activity IDs to be deleted**.
-3.  Set **Type of File** to `CSV (Comma delimited)`.
-4.  Leave **"Ignore First Row of Import File?"** checked - the file has a header row that should be skipped.
-5.  Confirm that **Organization ID** is auto-populated as `KENAI_WQX` from your login.
-6.  Browse to and select the delete CSV file.
-7.  Submit and monitor until completed.
+2.  Go to **Import & Submit** and open the **Import File** page. Under **To Delete Data in WQX (One Column: Primary ID)**, choose the import type that matches what you are deleting:
+    -   Import a File of Project IDs to be deleted
+    -   Import a File of Monitoring Location IDs to be deleted
+    -   Import a File of Activity IDs to be deleted
+    -   Import a File of Activity Group IDs to be deleted
+    -   Import a File of Index IDs to be deleted
+3.  To delete results, choose **Import a File of Activity IDs to be deleted**. To delete stations, choose **Import a File of Monitoring Location IDs to be deleted**.
+4.  Set **Type of File** to `CSV (Comma delimited)`.
+5.  Leave **"Ignore First Row of Import File?"** checked: the file has a header row that should be skipped.
+6.  Confirm that **Organization ID** is auto-populated as `KENAI_WQX` from your login.
+7.  Browse to and select the delete CSV file.
+8.  Submit and monitor until completed.
 
-> **UI note:** The WQX Web interface labels this import type as **"Activity Group IDs to Delete"**, which is potentially confusing - it correctly deletes individual Activity records (not Activity Groups, which are a separate WQX concept). This label is accurate as of March 2026.
+> **Order matters:** delete Activities before the Monitoring Locations they belong to. WQX may refuse to delete a station that still has results.
+
+> **IDs must be in WQX-stored form:** WQP shows each ID with the `KENAI_WQX-` org prefix added to what WQX stores. For Activity IDs and ordinary stations, the stored form is the WQP ID with the prefix removed. A station that was uploaded with the prefix already in its ID (see @sec-prefix) is stored as, for example, `KENAI_WQX-10000002` and appears on WQP as `KENAI_WQX-KENAI_WQX-10000002`: remove only one prefix. Before importing a station delete file, confirm that none of its IDs match a station you want to keep.
+
+> **UI note:** In March 2026 the Activity delete import was labelled "Activity Group IDs to Delete" in WQX Web, which was confusing. As of October 2026 the menu lists "Activity IDs" and "Activity Group IDs" as separate options; use the Activity IDs option to delete individual Activity records. Activity Groups are a separate WQX concept.
 
 ### Verifying the delete
 
 After the import completes, download a fresh results file from the Water Quality Portal for organization `KENAI_WQX` and the relevant date range. Confirm zero records are returned before proceeding with the re-upload.
+
+------------------------------------------------------------------------
+
+## Never Include the Org Prefix in Any ID Column {#sec-prefix}
+
+WQX Web prepends `KENAI_WQX-` to IDs on import. IDs copied from WQP downloads already carry the prefix, so they must be stripped in **every** ID column of an upload file: `Activity ID`, `Monitoring Location ID` (results file), and `MonitoringLocationIdentifier` (station file). On 2026-10-14 the 2021 files were uploaded with the prefix still in the two location columns, which created 22 duplicate stations named like `KENAI_WQX-KENAI_WQX-10000002` that held all 830 results. Cleanup is documented in `other/output/epa_wqp_uploads/2026-10-20_doubled_station_cleanup/README.md`. The prefix is now stripped in `functions/appendix_a_scripts/generate_cdx_export.R`.
 
 ------------------------------------------------------------------------
 
@@ -177,6 +247,9 @@ Corrections addressed: Ca/Mg/Fe unit errors (summer 2021 SGS EDD reported dissol
 | Delete import fails: "Domain Value Invalid" for all rows | Activity IDs include the `KENAI_WQX-` org prefix | Strip the prefix; WQX resolves IDs against the logged-in org |
 | Import fails: "invalid monitoring location" | Station not yet registered | Upload `station.csv` before `results_activities.csv` |
 | Records submitted but not visible in WQP | Propagation delay, or status is "Accepted" not "Completed" | Wait 24–48 hours; recheck submission status |
+| Results appear on stations named `KENAI_WQX-KENAI_WQX-...` | Location IDs in the upload files included the org prefix | Strip the prefix from all ID columns (@sec-prefix); delete the misplaced results and stations, then re-upload |
+| Same required-value error on every row (e.g. "Activity End Time required") | An always-blank column is mapped to an element that a Generated Value depends on | Set the column to Ignore Column (@sec-config) |
+| Many unrelated errors after one column | File and configuration columns are out of step | Compare file header to the configuration column order, position by position |
 | Re-upload leaves stale records | Activity IDs changed between versions | Use full delete approach; do not rely on overwrite alone |
 
 ------------------------------------------------------------------------

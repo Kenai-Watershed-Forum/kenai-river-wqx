@@ -26,12 +26,20 @@ A trend analysis was conducted using all data collected during the time period b
 
 The trend statistics summarized in the table below are based on Mann-Kendall tests for monotonic trend over time, run separately for each site and season with at least `r TREND_MIN_DETECTS` detected values (`r n_tests` tests). Because many tests were run, p-values are adjusted for the false discovery rate (Benjamini-Hochberg). The Sen slope is the median change per year, in the units of the parameter. After adjustment, `r n_signif` of `r n_tests` site and season combinations show a statistically significant trend (adjusted p \< 0.05).
 
-As an example, the figure below shows the data behind one row of the table: one site and season. The title gives that row's test results. The same data are shown twice, first on a log10 y-axis and then on a linear y-axis. The orange line is a LOESS (locally weighted) smoother fit on the plotted scale, shown only to illustrate the pattern; it is not the Sen slope.
+As an example, the figure below shows the data behind one row of the table: one site and season. The title gives that row's test results. The y-axis is log10 scaled. The orange line is a LOESS (locally weighted) smoother fit on the log scale, shown only to illustrate the pattern; it is not the Sen slope.
 
 ```{r echo=FALSE, warning=FALSE, message=FALSE}
 # Example row of the table (site x season) to illustrate
-example_site <- "RM 1.5"
-example_season <- "Summer"
+# Default: the site x season with the most detected results (at least 9),
+# so the example is always well supported. A chapter can override by setting
+# `example_site` and `example_season` before knitting this template.
+example_pick <- trend_tbl |>
+  filter(n_detected > 8) |>
+  arrange(desc(n_detected), site_label, season) |>
+  slice(1)
+if (nrow(example_pick) == 0) stop("No site x season has more than 8 detected results for ", characteristic)
+if (!exists("example_site", inherits = FALSE)) example_site <- example_pick$site_label
+if (!exists("example_season", inherits = FALSE)) example_season <- as.character(example_pick$season)
 
 example_subset <- trend_dat |>
   filter(site_label == example_site, season == example_season) |>
@@ -43,7 +51,7 @@ example_row <- trend_tbl |>
 example_unit <- unique(example_subset$unit)[1]
 
 example_title <- sprintf(
-  "%s, %s (n = %d detected): Kendall tau = %.2f, Sen slope = %s %s/yr, p = %.2g, adjusted p = %.2g",
+  "<b>%s, %s</b><br><sup>n = %d detected; Kendall tau = %.2f, Sen slope = %s %s/yr, p = %.2g, adjusted p = %.2g</sup>",
   example_site, example_season, example_row$n_detected, example_row$tau,
   format(signif(example_row$sen_slope_per_year, 2)), example_unit,
   example_row$p_value, example_row$p_adjusted)
@@ -63,26 +71,20 @@ example_plot <- function(log_scale) {
     geom_point(data = ~ filter(.x, nd), aes(text = tip),
                shape = 1, size = 2.7, color = "#1b9e77") +
     geom_line(data = smooth, aes(y = fitted), linewidth = 0.9, color = "#d95f02") +
-    labs(x = NULL, title = example_title,
+    labs(x = NULL,
          y = paste0(characteristic, " (", example_unit,
                     if (log_scale) ", log scale)" else ")")) +
-    theme_bw(base_size = 14) +
-    theme(plot.title = element_text(size = 11))
+    theme_bw(base_size = 14)
   if (log_scale) g <- g + scale_y_log10()
-  plotly::ggplotly(g, tooltip = "text", height = 450)
+  plotly::ggplotly(g, tooltip = "text", height = 450) |>
+    plotly::layout(
+      title = list(text = example_title, x = 0, xanchor = "left", font = list(size = 14)),
+      margin = list(t = 80))
 }
 ```
 
-Log scale:
-
 ```{r echo=FALSE, warning=FALSE, message=FALSE}
 example_plot(log_scale = TRUE)
-```
-
-Linear scale:
-
-```{r echo=FALSE, warning=FALSE, message=FALSE}
-example_plot(log_scale = FALSE)
 ```
 
 The statistics in the figure title and in the table are defined as follows:
@@ -94,13 +96,29 @@ The statistics in the figure title and in the table are defined as follows:
 - **Detected (n) and Non-detect (n)**: the number of results above and below the detection limit. Only detected results are used in the tests and fits.
 
 ```{r echo=FALSE, warning=FALSE, message=FALSE}
-trend_tbl |>
+trend_display <- trend_tbl |>
   transmute(
     `Site type` = site_type, Site = site_label, Season = season,
     `Detected (n)` = n_detected, `Non-detect (n)` = n_nondetect, Years = years,
     `Kendall tau` = round(tau, 2), `Sen slope per year` = signif(sen_slope_per_year, 2),
     `Adjusted p` = signif(p_adjusted, 2), Result = coalesce(direction, "too few detected values")
-  ) |>
-  knitr::kable(caption = paste0("Mann-Kendall trend test results for ", tolower(characteristic),
-                                " by site and season, ", trend_years[1], " to ", trend_years[2], "."))
+  )
+trend_caption <- paste0("Mann-Kendall trend test results for ", tolower(characteristic),
+                        " by site and season, ", trend_years[1], " to ", trend_years[2], ".")
+
+if (knitr::is_html_output()) {
+  htmltools::tagList(
+    htmltools::tags$style("table.dataTable thead th { white-space: normal; vertical-align: bottom; font-size: 0.85em; }
+                           table.dataTable tbody td { font-size: 0.85em; }"),
+  trend_display |>
+    mutate(across(c(`Site type`, Site, Season, Result), factor)) |>
+    DT::datatable(caption = trend_caption, rownames = FALSE, filter = "top",
+                  # "display" class forces no-wrap; use classes that allow wrapping
+                  class = "stripe hover compact", width = "100%",
+                  options = list(pageLength = 10, lengthMenu = c(10, 25, 50, 100),
+                                 autoWidth = FALSE, scrollX = TRUE))
+  )
+} else {
+  knitr::kable(trend_display, caption = trend_caption)
+}
 ```

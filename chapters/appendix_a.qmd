@@ -1490,13 +1490,13 @@ z <- export_dat %>%
   distinct()
 data.frame(unique(z$result_unit))
 
-# apply correction to make units consistent. May be different solution here for other years
-
-export_dat[export_dat == "mg/l"] <- 'mg/L'
+# Units are standardized at ingestion (e.g. ingest_tss.R); fail loudly if a lowercase variant reappears
+unit_cols <- c("result_unit", "result_detection_limit_unit_1", "result_detection_limit_unit_2")
+stopifnot(!any(unlist(export_dat[unit_cols]) == "mg/l", na.rm = TRUE))
 
 ```
 
-We observe that equivalent units, "mg/L" and "mg/l", have slightly different notation among parameters. We will correct this at this step to make terms consistent.
+Equivalent units "mg/L" and "mg/l" previously appeared among parameters (total suspended solids was ingested as "mg/l"). Units are now standardized to "mg/L" at ingestion, and the chunk above stops the render if a lowercase variant reappears.
 
 <br>
 

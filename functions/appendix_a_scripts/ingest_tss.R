@@ -51,7 +51,8 @@ swwtp_tss %<>%
   # replace "O" with zeros in location column (common typo)
   mutate(sample_location = str_replace(sample_location, "RM_O", "RM_0")) %>%
   # add units
-  mutate(units = "mg/l") %>%
+  # "mg/L" matches the WQX domain value and the other ingest scripts
+  mutate(units = "mg/L") %>%
   rename(result = s_s_mg_l) %>%
   transform(result = as.numeric(result)) %>%
 
