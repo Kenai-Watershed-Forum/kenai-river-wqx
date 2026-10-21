@@ -28,6 +28,8 @@ zn_year_max <- max(lubridate::year(as.Date(zn_data$activity_start_date)), na.rm 
 
 A trend analysis was conducted using all data collected during the time period between years 2000 and `r zn_year_max`.
 
+NOTE: This section is in development as of 10/21/2026. We are examining the most appropriate statistical approach to observed trends across time for a giver site/parameter. See Appendix X for additional detail.
+
 ```{r echo=FALSE, warning=FALSE, message=FALSE, results='asis'}
 
 # need to set sample fraction filter for this and other metals in some years post 2021

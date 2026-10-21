@@ -1,0 +1,72 @@
+---
+execute:
+  echo: false
+---
+
+# Analysis Notes {.unnumbered}
+
+This appendix documents and justifies statistical choices made throughout the analysis including methodology, assumptions, and sensitivity.
+
+**(NOTE: This section is in development as of 10/21/2026)**
+
+## Data Summary
+
+As part of the selection process for statistical tests, we prepared all data from existing project years (2000 - present) and prepared a basic summary. The original data and summary may be downloaded using the links below:
+
+- [Download All Project Data 2000 – Present](../assets/wqp_live.zip)
+
+```{r}
+#Prepare data summary from all project data 2000 - present
+
+# want:
+# - for each site/season, parameter, total number of observations, usable and not (i.e. below or above detecyion limit)
+
+```
+
+
+- Download Data Summary 2000 - Present
+
+## Trend Analysis Methodology
+
+### Rationale for Mann-Kendall Test and Sen Slope
+
+**(current approach as of 10/21/2026)**
+
+For each parameter chapter that includes trend analysis, we use a Mann-Kendall test to detect monotonic trends over time at each monitoring site and season. This approach is robust to:
+
+- Non-normal distributions common in water quality data.
+- Extreme values or outliers (the test ranks, not uses values directly).
+- Unequal spacing in time.
+- Seasonality and temporal clustering.
+
+The Sen slope estimates the median rate of change (e.g., mg/L per year) and is similarly robust to outliers.
+
+### Handling Non-Detects in Trend Tests
+
+Results reported as non-detects (below detection limits, hollow points in plots) are excluded from Mann-Kendall and Sen slope calculations. This choice reflects:
+
+- **Reason:** Detection limits change over time and across methods. Including non-detects at their reported limits can bias apparent trends upward when many results are below the limit in early years.
+- **Trade-off:** Excluding non-detects removes information and may reduce power to detect real trends, especially for parameters or locations with high non-detect rates.
+- **Note on Mann-Kendall and censoring:** The Mann-Kendall test itself is robust to censored data. However, for estimation of trend magnitude and confidence intervals (rather than tests alone), alternative methods such as the USGS Adjustable Tobit-like Slope (ATS) or other censored-regression approaches may provide less-biased slope estimates when non-detect rates are high.
+
+### Multiple Comparisons Adjustment
+
+When multiple trend tests are run (one per site-and-season combination), p-values are adjusted using the Benjamini-Hochberg false discovery rate control. This accounts for the inflation of false positives when running many tests.
+
+- **Adjusted p shown:** The table reports the adjusted p-value (after BH), which is compared to the conventional 0.05 threshold.
+- **Unadjusted p available in figure title:** For reference, the unadjusted p is also shown in the example figure above the table.
+- **Note on power:** At typical sample sizes for our sites and seasons (n = 8–20 detected results), statistical power to detect a real trend of is low. Many apparent "non-significant" results could reflect low power, not absence of a trend.
+
+### Example Site and Season Selection
+
+Each parameter chapter that includes trends shows a single example figure (site and season). The example is chosen automatically as the combination with the most detected results, subject to a minimum of 9 detected values. This choice:
+
+- Ensures the visual example is well-supported by data.
+- Makes the example comparable across parameters.
+- Allows transparency: readers can look at the full table to see which combinations have the fewest observations and most uncertainty.
+
+A chapter author can override the automatic choice by setting `example_site` and `example_season` in the R code before knitting the trend section.
+
+## References
+
+Helsel, D. R., R. M. Hirsch, K. R. Ryberg, S. A. Archfield, and E. J. Gilroy (2020). Statistical methods in water resources. U.S. Geological Survey Techniques and Methods, Book 4, Chap. A3. https://doi.org/10.3133/tm4A3. \[Supersedes the 2002 version.\]

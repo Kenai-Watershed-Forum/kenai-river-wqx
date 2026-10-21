@@ -16,13 +16,13 @@ format:
 
 Sample event timing for spring and summer events must be chosen with care each year. Sample date traditionally occurs on Tuesdays, and dates must be chosen with the following considerations:
 
--   Some sample types (e.g. fecal coliform) have limited holding periods; e.g., the maximum amount of time that can pass between when a sample is collected and when it must be delivered to the lab. Fecal coliform's holding time is six hours, for example.
+- Some sample types (e.g. fecal coliform) have limited holding periods; e.g., the maximum amount of time that can pass between when a sample is collected and when it must be delivered to the lab. Fecal coliform's holding time is six hours, for example.
 
--   Water quality in both main stem and tributary sites of the lower Kenai River have the potential to be influenced by the tidal pulse. To minimize this influence, we intend to time sampling events with low tide such that potential saltwater influence is minimized. Throughout all analyses in this report, water hardness / salinity is taken into consideration where appropriate.
+- Water quality in both main stem and tributary sites of the lower Kenai River have the potential to be influenced by the tidal pulse. To minimize this influence, we intend to time sampling events with low tide such that potential saltwater influence is minimized. Throughout all analyses in this report, water hardness / salinity is taken into consideration where appropriate.
 
--   Boat access is the preferred access method for some sites. However, water levels can sometimes be too low to use prop engines. The timing of both daily and seasonal water levels affects all project logistics choices.
+- Boat access is the preferred access method for some sites. However, water levels can sometimes be too low to use prop engines. The timing of both daily and seasonal water levels affects all project logistics choices.
 
--   Sampling dates can not be chosen too early in the spring due to ice-out logistics, and the date in the summer can not be too late so as to remain comparable to the existing dataset.
+- Sampling dates can not be chosen too early in the spring due to ice-out logistics, and the date in the summer can not be too late so as to remain comparable to the existing dataset.
 
 The above stipulations can never all be perfectly accommodated, so some compromise of all the above is typically the aim.
 

@@ -60,13 +60,27 @@ Regenerated downstream outputs (`baseline_export_format.csv`, `2000_2021_sitenam
 
 ------------------------------------------------------------------------
 
-## Trend Analyses in Parameter Chapters (opt-in, pilot in progress, uncommitted as of 2026-10-16)
+## Trend Analyses in Parameter Chapters (opt-in, ZN pilot complete and committed as of 2026-10-21)
 
-A chapter opts in by setting `trend_analysis <- TRUE` before knitting `templates/_parameter_chunk.Rmd`, which then knits `templates/_trend_chunk.Rmd`. Helpers are in `functions/trend_plots.R` (`load_trend_data()`, `trend_stats()`; `trend_plot_time()`/`trend_plot_space()` are retained but no longer used by the template). Only `parameters/zinc.qmd` is opted in so far.
+A chapter opts in by setting `trend_analysis <- TRUE` before knitting `templates/_parameter_chunk.Rmd`, which then knits `templates/_trend_chunk.Rmd`. Helpers are in `functions/trend_plots.R` (`load_trend_data()`, `trend_stats()`). Only `parameters/zinc.qmd` is opted in so far.
 
-**Current output** ("Trends over time and space" section): a dynamic one-paragraph intro with the data year range (computed from the data, not hardcoded), the "Trend tests by site" paragraph and table (Mann-Kendall per site x season, Sen slope, BH-adjusted p), and one interactive example figure (`ggplotly`, single site x season, log10 y-axis, LOESS on the log scale). The example site/season is chosen automatically per parameter as the combination with the most detected results (requires n > 8, errors otherwise); a chapter can override by setting `example_site` and `example_season` before knitting the template. The figure title is two rows (bold site and season, then a smaller line of n, tau, Sen slope, p, adjusted p), set via `plotly::layout()`. The results table is a `DT::datatable` (sortable, column filters, 10 rows per page, wrapping headers via CSS, `scrollX`), with a static `kable` fallback for non-HTML (DOCX) output. These 2026-10-20 template edits have not yet been render-tested. The user rejected combined multi-site time-series plots (watershed and sampling design too heterogeneous) and asked that **no interpretive text be written yet**. Non-detects are excluded from fits and tests. `zinc.qmd` still has a redundant `zn_year_max` sentence that duplicates the template's year-range text (not yet removed).
+**Template improvements (2026-10-21, committed):** 
+- **Single-site example figure:** Replaces the 4-panel quadrant with one interactive plot (log10 scale, single site x season). The example is selected automatically as the combination with the most detected values (n > 8), or can be manually overridden.
+- **Figure title:** Two rows via `plotly::layout()`—bold site and season on row 1, statistics (n, Kendall tau, Sen slope, p-values) on row 2 (smaller font).
+- **Results table:** Now a `DT::datatable` with sortable columns, global search, per-column filters, 10 rows/page by default. Headers wrap; font size reduced (0.85em) to fit. Falls back to static `kable` for DOCX output.
+- **Reference:** Updated to Helsel et al. (2020) TM 4-A3 (supersedes 2002). Clarified that Mann-Kendall tolerates censored data robustly; alternative methods (ATS, etc.) are for slope estimation when non-detect rates are high.
 
-**Open methodological decision (user is settling one approach for all chapters):** whether to keep Benjamini-Hochberg across a parameter's tests. Findings from 2026-10-16: for zinc, 1 of 42 tests is nominally significant (Beaver Creek spring, p = 0.023) versus about 2.1 expected by chance; 0 after BH or Holm. Power is very low (median within-site scatter 0.51 log10 units; Mann-Kendall power of about 8-15% even for 5-10%/yr trends at n = 8-12), so "0 of N significant" is not evidence of no trend. Proposed standard (awaiting user decision): report unadjusted p plus Sen slope with CI (units and %/yr on log scale), BH q as a secondary column, and nominal hits versus expected by chance. Other unresolved issues before rolling out: censored methods for non-detects (`NADA2::cenken`/ATS) for high-ND parameters, detection-limit and method changes, flow and hardness confounding, and gaps once 2014-2025 data reach WQP.
+**Methodological position (finalized 2026-10-21):**
+- Keep Benjamini-Hochberg FDR adjustment across all tests within a parameter. Report both unadjusted p (in figure) and adjusted p (in table). 
+- Exclude non-detects from Mann-Kendall and Sen slope fits, accepting the trade-off of reduced power when ND rates are high. Mann-Kendall itself is robust to censoring; exclusion is a simplification.
+- No interpretive text in the trend section; table and figure speak for themselves.
+- Example site/season automatic selection ensures reproducibility across parameters.
+
+------------------------------------------------------------------------
+
+## Analysis Notes Chapter (new as of 2026-10-21)
+
+New appendix `chapters/analysis_notes.qmd` documents and justifies statistical choices (trend analysis methodology, non-detect handling, multiple comparisons, example site selection). Also includes a **"Data Access" section** with a download link to `wqp_live.zip`—an automatically-regenerated zip of all four CSV files in `other/input/WQX_downloads/wqp_live/`. Zip is created by `functions/create_wqp_live_zip.R` via a pre-render hook in `_quarto.yml`, ensuring the downloadable data is always current with the latest WQP cache. The zip is stored in `docs/assets/wqp_live.zip` (gitignored), linked from the rendered HTML as `../assets/wqp_live.zip`.
 
 ------------------------------------------------------------------------
 
