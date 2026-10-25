@@ -74,6 +74,18 @@ The station file registers monitoring location metadata (coordinates, location d
 1.  Allow 24–48 hours for data to propagate, then search for KWF data in [How's My Waterway](https://mywaterway.epa.gov/) or the [Water Quality Portal](https://www.waterqualitydata.us/).
 2.  Confirm that results are visible and that values, units, and site names look correct.
 
+### Rule: New vs. existing data option {#sec-new-existing}
+
+Each import screen asks whether the file contains new data, existing data, or both. Choose by whether the records already exist in WQX, not by file type:
+
+| File | Option | Notes |
+|----|----|----|
+| `project.csv` | Existing data only | The project is already in WQX; the import updates it. |
+| `station.csv` | Existing data only | Applies while no new stations are being added. If any station ID is not yet in WQX, use "new and/or existing" for that file. |
+| `results_activities.csv` | New data only | Use when the Activity IDs are not in WQX (e.g., a new year, or after a delete has cleared on WQP). If they are in WQX, see @sec-overwrite. |
+
+Existing-data imports overwrite stored values with the file's values. Keep "Let me review my dataset in the staging area before submitting" selected. For `station.csv`, confirm the staging counts show the expected number of existing records and 0 new; a nonzero new count means the IDs did not match (see @sec-prefix).
+
 ------------------------------------------------------------------------
 
 ## Results Import Configuration in WQX Web {#sec-config}
@@ -249,6 +261,7 @@ Corrections addressed: Ca/Mg/Fe unit errors (summer 2021 SGS EDD reported dissol
 | Records submitted but not visible in WQP | Propagation delay, or status is "Accepted" not "Completed" | Wait 24–48 hours; recheck submission status |
 | Results appear on stations named `KENAI_WQX-KENAI_WQX-...` | Location IDs in the upload files included the org prefix | Strip the prefix from all ID columns (@sec-prefix); delete the misplaced results and stations, then re-upload |
 | Same required-value error on every row (e.g. "Activity End Time required") | An always-blank column is mapped to an element that a Generated Value depends on | Set the column to Ignore Column (@sec-config) |
+| Results import halts at Row 2: "More columns than expected. Import Configuration does not match the import file" | Wrong import configuration selected (the older `KWF_Results_Baseline_Template`, Uid 8515, instead of `_v2`, Uid 9481) | Re-run the import with `KWF_Results_Baseline_Template_v2`; the failed dataset holds no records |
 | Many unrelated errors after one column | File and configuration columns are out of step | Compare file header to the configuration column order, position by position |
 | Re-upload leaves stale records | Activity IDs changed between versions | Use full delete approach; do not rely on overwrite alone |
 
