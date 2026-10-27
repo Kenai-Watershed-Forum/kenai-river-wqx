@@ -23,8 +23,7 @@ As part of the selection process for statistical tests, we prepared all data fro
 
 ```
 
-
-- Download Data Summary 2000 - Present
+- Download Data Summary 2000 - Present (link TK)
 
 ## Trend Analysis Methodology
 
@@ -70,3 +69,5 @@ A chapter author can override the automatic choice by setting `example_site` and
 ## References
 
 Helsel, D. R., R. M. Hirsch, K. R. Ryberg, S. A. Archfield, and E. J. Gilroy (2020). Statistical methods in water resources. U.S. Geological Survey Techniques and Methods, Book 4, Chap. A3. https://doi.org/10.3133/tm4A3. \[Supersedes the 2002 version.\]
+
+Meals D.W., Jean Spooner, Steven A. Dressing, and Jon B. Harcum. 2011. Statistical analysis for monotonic trends, Tech Notes 6, November 2011. Developed for U.S. Environmental Protection Agency by Tetra Tech, Inc., Fairfax, VA, 23 p. Available online at <https://www.epa.gov/sites/default/files/2016-05/documents/tech_notes_6_dec2013_trend.pdf>
