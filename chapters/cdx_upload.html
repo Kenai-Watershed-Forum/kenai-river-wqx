@@ -114,7 +114,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/appendix_a.html">Appendices</a></li><li class="breadcrumb-item"><a href="../chapters/cdx_upload.html"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title">EPA CDX Upload and Data Management Procedures</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/analysis_notes.html">Appendices</a></li><li class="breadcrumb-item"><a href="../chapters/cdx_upload.html"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title">EPA CDX Upload and Data Management Procedures</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -379,6 +379,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="../chapters/analysis_notes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Analysis Notes</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="../chapters/appendix_a.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Appendix: Data Review and Upload</span></span></a>
   </div>
@@ -424,6 +430,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#sec-upload-project" id="toc-sec-upload-project" class="nav-link" data-scroll-target="#sec-upload-project"><span class="header-section-number">C.1.3</span> Step 3: Upload the Project file</a></li>
   <li><a href="#step-4-upload-the-results-and-activities-file" id="toc-step-4-upload-the-results-and-activities-file" class="nav-link" data-scroll-target="#step-4-upload-the-results-and-activities-file"><span class="header-section-number">C.1.4</span> Step 4: Upload the Results and Activities file</a></li>
   <li><a href="#step-5-verify-the-upload" id="toc-step-5-verify-the-upload" class="nav-link" data-scroll-target="#step-5-verify-the-upload"><span class="header-section-number">C.1.5</span> Step 5: Verify the upload</a></li>
+  <li><a href="#sec-new-existing" id="toc-sec-new-existing" class="nav-link" data-scroll-target="#sec-new-existing"><span class="header-section-number">C.1.6</span> Rule: New vs.&nbsp;existing data option</a></li>
   </ul></li>
   <li><a href="#sec-config" id="toc-sec-config" class="nav-link" data-scroll-target="#sec-config"><span class="header-section-number">C.2</span> Results Import Configuration in WQX Web</a>
   <ul class="collapse">
@@ -453,7 +460,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/appendix_a.html">Appendices</a></li><li class="breadcrumb-item"><a href="../chapters/cdx_upload.html"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title">EPA CDX Upload and Data Management Procedures</span></a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/analysis_notes.html">Appendices</a></li><li class="breadcrumb-item"><a href="../chapters/cdx_upload.html"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title">EPA CDX Upload and Data Management Procedures</span></a></li></ol></nav>
 <div class="quarto-title">
 <h1 class="title">Appendix B — EPA CDX Upload and Data Management Procedures</h1>
 </div>
@@ -474,9 +481,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <section id="cdx-upload" class="level1" data-number="C">
 <h1 data-number="C"><span class="header-section-number">C</span> EPA CDX Upload and Data Management Procedures</h1>
-<p>This chapter documents the step-by-step procedures for submitting Kenai River baseline water quality data to the EPA Central Data Exchange (CDX) / Water Quality Exchange (WQX), and for removing or correcting previously submitted data.</p>
+<p>This chapter documents the annual step-by-step procedures for submitting Kenai River baseline water quality data to the EPA Central Data Exchange (CDX) / Water Quality Exchange (WQX), and for removing or correcting previously submitted data.</p>
 <blockquote class="blockquote">
-<p><strong>Note:</strong> This chapter was developed and tested during the 2021 data submission (completed March 31, 2026). Steps reflect what was actually confirmed to work — not inferred or assumed. Where a step has not been personally verified, it is noted.</p>
+<p><strong>Note:</strong> This chapter was developed and tested during the 2021 data submission (completed March 31, 2026). Where a step has not been personally verified, it is noted.</p>
 </blockquote>
 <p><strong>CDX login URL:</strong> <a href="https://cdx.epa.gov/" class="uri">https://cdx.epa.gov/</a></p>
 <p><strong>KWF Organization ID in EPA WQX:</strong> <code>KENAI_WQX</code></p>
@@ -518,7 +525,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h3 data-number="C.1.1" class="anchored" data-anchor-id="step-1-log-in-to-cdx"><span class="header-section-number">C.1.1</span> Step 1: Log in to CDX</h3>
 <ol type="1">
 <li>Navigate to <a href="https://cdx.epa.gov/" class="uri">https://cdx.epa.gov/</a>.</li>
-<li>Log in with your CDX username and password.</li>
+<li>Log in with your CDX username and password. Create an account if this is your first time using it.</li>
 <li>From the <strong>My CDX</strong> dashboard, locate <strong>WQX Web</strong> under “My Programs” and click <strong>Go to WQX Web</strong>.</li>
 </ol>
 </section>
@@ -528,7 +535,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <ol type="1">
 <li>In WQX Web, navigate to <strong>Import &amp; Submit</strong>.</li>
 <li>Select import type: <strong>Monitoring Location</strong>.</li>
-<li>Select the KWF station import configuration (or create one — see the <a href="https://www.epa.gov/waterdata/water-quality-exchange-web-wqx-web-user-guide">WQX Web User Guide</a>).</li>
+<li>Select the KWF station import configuration (or create one - see the <a href="https://www.epa.gov/waterdata/water-quality-exchange-web-wqx-web-user-guide">WQX Web User Guide</a>).</li>
 <li>Browse to and select <code>other/output/wqx_formatted/station.csv</code>.</li>
 <li>Submit and wait for <strong>Completed</strong> status.</li>
 </ol>
@@ -560,6 +567,42 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>Allow 24–48 hours for data to propagate, then search for KWF data in <a href="https://mywaterway.epa.gov/">How’s My Waterway</a> or the <a href="https://www.waterqualitydata.us/">Water Quality Portal</a>.</li>
 <li>Confirm that results are visible and that values, units, and site names look correct.</li>
 </ol>
+</section>
+<section id="sec-new-existing" class="level3" data-number="C.1.6">
+<h3 data-number="C.1.6" class="anchored" data-anchor-id="sec-new-existing"><span class="header-section-number">C.1.6</span> Rule: New vs.&nbsp;existing data option</h3>
+<p>Each import screen asks whether the file contains new data, existing data, or both. Choose by whether the records already exist in WQX, not by file type:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>File</th>
+<th>Option</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>project.csv</code></td>
+<td>Existing data only</td>
+<td>The project is already in WQX; the import updates it.</td>
+</tr>
+<tr class="even">
+<td><code>station.csv</code></td>
+<td>Existing data only</td>
+<td>Applies while no new stations are being added. If any station ID is not yet in WQX, use “new and/or existing” for that file.</td>
+</tr>
+<tr class="odd">
+<td><code>results_activities.csv</code></td>
+<td>New data only</td>
+<td>Use when the Activity IDs are not in WQX (e.g., a new year, or after a delete has cleared on WQP). If they are in WQX, see <a href="#sec-overwrite" class="quarto-xref"><span>Section C.5</span></a>.</td>
+</tr>
+</tbody>
+</table>
+<p>Existing-data imports overwrite stored values with the file’s values. Keep “Let me review my dataset in the staging area before submitting” selected. For <code>station.csv</code>, confirm the staging counts show the expected number of existing records and 0 new; a nonzero new count means the IDs did not match (see <a href="#sec-prefix" class="quarto-xref"><span>Section C.4</span></a>).</p>
 <hr>
 </section>
 </section>
@@ -672,13 +715,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="sec-delete" class="level2" data-number="C.3">
 <h2 data-number="C.3" class="anchored" data-anchor-id="sec-delete"><span class="header-section-number">C.3</span> Deleting Previously Submitted Data</h2>
-<p>Deletion is necessary when Activity IDs change between submissions (e.g., due to corrected analyte naming conventions). Re-uploading alone only overwrites records with exactly matching Activity IDs — records with changed IDs remain as orphans in WQX. See <a href="#sec-overwrite" class="quarto-xref"><span>Section C.5</span></a> for when re-upload without deletion is sufficient.</p>
+<p>Deletion is necessary when Activity IDs change between submissions (e.g., due to corrected analyte naming conventions). Re-uploading alone only overwrites records with exactly matching Activity IDs - records with changed IDs remain as orphans in WQX. See <a href="#sec-overwrite" class="quarto-xref"><span>Section C.5</span></a> for when re-upload without deletion is sufficient.</p>
 <blockquote class="blockquote">
 <p><strong>Important:</strong> Deletion in WQX is permanent. Always confirm the scope before proceeding and keep local copies of all submission files.</p>
 </blockquote>
 <section id="generating-a-delete-file" class="level3" data-number="C.3.1">
 <h3 data-number="C.3.1" class="anchored" data-anchor-id="generating-a-delete-file"><span class="header-section-number">C.3.1</span> Generating a delete file</h3>
-<p>The delete file is a single-column CSV listing the Activity IDs to remove. Activity IDs must be provided <strong>without</strong> the organization prefix — WQX resolves them against the organization associated with the logged-in account.</p>
+<p>The delete file is a single-column CSV listing the Activity IDs to remove. Activity IDs must be provided <strong>without</strong> the organization prefix - WQX resolves them against the organization associated with the logged-in account.</p>
 <p>Activity IDs as downloaded from the Water Quality Portal include the org prefix (e.g., <code>KENAI_WQX-KBL_t_30.0-2021-07-27-P</code>). Strip the prefix before using them in a delete file:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -757,7 +800,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="sec-structure" class="level2" data-number="C.6">
 <h2 data-number="C.6" class="anchored" data-anchor-id="sec-structure"><span class="header-section-number">C.6</span> WQX Data Structure Note</h2>
 <p>As of March 2026, KWF’s WQX data is organized at the <strong>Activity level</strong>: each Activity record contains one result. EPA WQX support (Kevin Christian, wqx@epa.gov) recommends organizing data at the <strong>Results level</strong> instead, where each Activity represents one sampling event (unique location + date) and multiple Results are nested under it.</p>
-<p>The current structure is not invalid, but performance may degrade as the total record count grows. Restructuring involves using the <strong>Review</strong> function in WQX Web to re-define existing records. This is a lower-priority task best addressed in the <code>kenai-river-wqx-qaqc</code> repo and incorporated into future annual submission pipelines.</p>
+<p>The current structure is not invalid, but performance may degrade as the total record count grows. Restructuring involves using the <strong>Review</strong> function in WQX Web to re-define existing records. This is a lower-priority task best addressed at a later time and incorporated into future annual submission pipelines.</p>
 <hr>
 </section>
 <section id="removing-the-existing-2021-kwf-submission-reference-completed-3312026" class="level2" data-number="C.7">
@@ -813,11 +856,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td>Set the column to Ignore Column (<a href="#sec-config" class="quarto-xref"><span>Section C.2</span></a>)</td>
 </tr>
 <tr class="even">
+<td>Results import halts at Row 2: “More columns than expected. Import Configuration does not match the import file”</td>
+<td>Wrong import configuration selected (the older <code>KWF_Results_Baseline_Template</code>, Uid 8515, instead of <code>_v2</code>, Uid 9481)</td>
+<td>Re-run the import with <code>KWF_Results_Baseline_Template_v2</code>; the failed dataset holds no records</td>
+</tr>
+<tr class="odd">
 <td>Many unrelated errors after one column</td>
 <td>File and configuration columns are out of step</td>
 <td>Compare file header to the configuration column order, position by position</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td>Re-upload leaves stale records</td>
 <td>Activity IDs changed between versions</td>
 <td>Use full delete approach; do not rely on overwrite alone</td>
