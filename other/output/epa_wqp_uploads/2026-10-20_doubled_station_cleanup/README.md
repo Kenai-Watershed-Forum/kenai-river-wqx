@@ -13,7 +13,7 @@ However, the 2021 results are stored under the wrong stations:
 - Those 22 doubled stations hold all 830 2021 results. The 22 original stations (`KENAI_WQX-100000xx`) have no 2021 data.
 - Effect: the 2021 data is disconnected from each site's time series (2000-2013 and later years) and from any join on `MonitoringLocationIdentifier`.
 
-This is the same rule already documented for Activity IDs in `chapters/cdx_upload.qmd`: never include the `KENAI_WQX-` prefix in any ID column. Activity IDs were already bare, so they were not affected.
+This is the same rule already documented for Activity IDs in `cdx_upload.qmd` in the kenai-river-wqx-qaqc repo: never include the `KENAI_WQX-` prefix in any ID column. Activity IDs were already bare, so they were not affected.
 
 Root cause: `functions/appendix_a_scripts/generate_cdx_export.R` copied WQP's `MonitoringLocationIdentifier` unchanged. That script has been fixed (prefix stripped in both files) and the upload files regenerated; only the ID columns changed (830 cells in `results_activities.csv`, 22 in `station.csv`).
 
@@ -32,7 +32,7 @@ The delete file was built from the WQP live cache (`other/input/WQX_downloads/wq
 
 Deletion in WQX is permanent. Keep local copies of all submission files. Nothing has been uploaded as of this writing.
 
-1. **Delete the 830 results.** WQX Web: Import & Submit, Import a batch of IDs for records to delete from WQX, Import a file of Activity IDs to be deleted (labelled "Activity Group IDs to Delete" in the UI). Use `resultphyschem_DELETE_doubled_stations_2021.csv`. Procedure details: `chapters/cdx_upload.qmd`, section "Deleting Previously Submitted Data".
+1. **Delete the 830 results.** WQX Web: Import & Submit, Import a batch of IDs for records to delete from WQX, Import a file of Activity IDs to be deleted (labelled "Activity Group IDs to Delete" in the UI). Use `resultphyschem_DELETE_doubled_stations_2021.csv`. Procedure details: `cdx_upload.qmd` in the kenai-river-wqx-qaqc repo, section "Deleting Previously Submitted Data".
 2. **Verify** on WQP (rerun `functions/refresh_wqp_data.R`): 0 rows for 2021 on the doubled stations.
 3. **Delete the 22 doubled stations.** WQX Web has an import type for this: Import & Submit, then the "To Delete Data in WQX (One Column: Primary ID)" list, then "Import a File of Monitoring Location IDs to be deleted" (confirmed present 2026-10-20). Do this only after step 1, since WQX may refuse to delete stations that still have results. **Caution:** the file must list the IDs as WQX stores them, which is the WQP ID minus one prefix (for example `KENAI_WQX-10000002`, not `10000002`). A bare `10000002` would target the 22 original, correct stations. Check the file before importing. If deletion is refused, inactivate the stations on the Station screen and record that here.
 4. **Re-upload** the corrected `station.csv`, then `results_activities.csv` (bare IDs), from `other/output/wqx_formatted/`. Submit to CDX.

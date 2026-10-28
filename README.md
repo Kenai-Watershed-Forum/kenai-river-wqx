@@ -44,7 +44,6 @@ kenai-river-wqx/
 ├── chapters/                    # Narrative and methods chapters
 │   ├── data_sourcing.qmd        # Reads the local WQP cache, builds analysis datasets
 │   ├── data_qa_qc.qmd, reg_limits.qmd, methods.qmd, ...
-│   ├── cdx_upload.qmd           # EPA CDX/WQX Web upload walkthrough
 │   └── appendix_a.qmd, appendix_b.qmd
 ├── parameters/                  # One .qmd chapter per water quality parameter
 ├── templates/

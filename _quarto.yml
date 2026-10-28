@@ -60,7 +60,6 @@ book:
   appendices:
     - chapters/analysis_notes.qmd
     - chapters/appendix_a.qmd
-    - chapters/cdx_upload.qmd
     - chapters/appendix_b.qmd
     - chapters/finance_history.qmd
     
