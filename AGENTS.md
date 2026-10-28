@@ -21,16 +21,13 @@ qaqc repo submits data to EPA WQX → EPA publishes to WQP → report repo reads
 
 | File | Load when... |
 |----|----|
-| `other/agent_context/context_files/conventions.md` | Working on WQX formatting, CDX export, data ingestion, sample fraction rules, or the qaqc-repo pipeline architecture |
-| `other/agent_context/context_files/data_architecture.md` | Navigating data storage layout, regulatory threshold structure, or R package choices |
-| `other/agent_context/context_files/report_structure.md` | Working on the Quarto book, parameter chapters, or adding new pages |
-| `other/agent_context/context_files/parameters_and_links.md` | You need the full parameter list, governance document index, or external links |
-| `other/agent_context/context_files/lessons.md` | Session start — small file, cheap to check for standing gotchas |
 | `other/agent_context/agent_context.qmd` | The user tells you to read it, or references new instructions they've added there. User-authored; do not edit unless explicitly asked |
 | `other/agent_context/session_log.md` | You need history on a completed task, a resolved issue, or a past session's detail (recent entries, from 2026-07-13) |
 | `other/agent_context/session_log_archive.md` | You need history predating 2026-07-13 (original appendix_a.qmd audit, pipeline architecture rationale, CDX delete workflow reference, HMW architecture detail) |
 | `other/documents/sample_fraction_correction_handoff.md` | CDX fraction correction handoff notes for the qaqc repo |
-| `other/documents/md/` | Reading any governance/reference document (QAPP, CALM, 18 AAC 70, etc.) — see `parameters_and_links.md` for the full table |
+| `other/documents/md/` | Reading any governance/reference document (QAPP, CALM, 18 AAC 70, etc.) (no index file exists; list the folder) |
+
+**Companion `context_files/` do not exist (confirmed 2026-10-28).** The 2026-05-18 split of AGENTS.md announced `other/agent_context/context_files/{conventions,data_architecture,report_structure,project_overview,known_issues,lessons}.md`, but they were never committed and are not on either PC; the split commit deleted about 250 lines of content from `AGENTS.md`. The pre-split text is recoverable with `git show 0e4319c^:AGENTS.md` (286 lines; some of it is stale). The only surviving lesson (from `tasks/lessons.md`): before using `edit` on any file, grep the repo for the `old_string` to confirm it matches exactly one file.
 
 `other/agent_context/archive/` holds superseded one-off notes (old interview transcripts, scratch to-do files) kept for reference only — do not treat as current.
 
@@ -125,7 +122,7 @@ See `other/agent_context/session_log.md` for full context on any task.
 | 9 | Low | Make `appendix_a.qmd` year-neutral (single `year` variable at top) | **Complete** |
 | 10 | Low | Extract ingestion logic to `.R` scripts (do with Task 9) | **Complete** |
 | 11 | Low | Restructure WQX data Activity → Results level (future years, qaqc repo) | Pending |
-| 18 | HIGH | Create `templates/pipeline_template.qmd` in qaqc repo — canonical single-QMD pipeline. See `context_files/conventions.md`. | **Superseded** — qaqc repo already has `project_year/{2014-2025}.qmd`; `2025.qmd` is largely complete. See Architecture Change In Progress note above. |
+| 18 | HIGH | Create `templates/pipeline_template.qmd` in qaqc repo — canonical single-QMD pipeline. | **Superseded** — qaqc repo already has `project_year/{2014-2025}.qmd`; `2025.qmd` is largely complete. See Architecture Change In Progress note above. |
 | 19 | Medium | Build `2023.qmd` in qaqc repo from template; adapt Part A for 2023 EDD quirks. See `session_log_archive.md` for 2023-specific notes. | **In progress in qaqc repo** — `2023.qmd` skeleton rebuilt to 2025 template, chunks `eval: false`, not yet ported |
 | 12 | Low | Address historical CDX corrections (e.g., spring 2013 specific conductance) in qaqc repo | Pending |
 | 13 | Low | Move `wqx_corrections.qmd` to qaqc repo | Pending |
@@ -169,10 +166,10 @@ Primary downstream consumer: **ADEC**, which draws from EPA CDX every two years 
 - **Characteristic name inconsistency:** Nitrate+Nitrite appears under 3+ names across KWF years. Full audit needed (Task 1b).
 - **Sample fraction inconsistency (RESOLVED):** dissolved metals correctly `"Dissolved"` locally (verified 2026-09-28) and reflected in the `results_activities.csv` imported to WQX Web 2026-10-14.
 - **Non-numeric detection limit in WQP:** result 56514557 has a limit stored as "O.18" (letter O). `functions/trend_plots.R` coerces it to NA, so that non-detect is dropped from trend analyses. Correct at the source (see Task 1b).
-- Full list including Turbidity, hydrocarbon, ALS duplicate, TSS, and spring-2013 specific-conductance issues: `context_files/known_issues.md`.
+- Full list including Turbidity, hydrocarbon, ALS duplicate, TSS, and spring-2013 specific-conductance issues: not written down in one place; see `session_log.md` and `session_log_archive.md`.
 
 ------------------------------------------------------------------------
 
 ## Governance Documents
 
-Original PDFs are in `other/agent_context/`; text-extracted `.md` versions (preferred for AI ingestion) are in `other/documents/md/`. Full document index: `context_files/parameters_and_links.md`.
+Original PDFs are in `other/agent_context/`; text-extracted `.md` versions (preferred for AI ingestion) are in `other/documents/md/`. The pre-split index lives in git history (see the note under Companion Files).
