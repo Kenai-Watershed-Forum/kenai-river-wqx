@@ -9,6 +9,8 @@ This repo is one of two that together form the full data pipeline for Kenai Rive
 
 qaqc repo submits data to EPA WQX → EPA publishes to WQP → report repo reads from WQP and displays it. Changes in either repo are relevant to both.
 
+**Roles (clarified 2026-10-28):** this repo stays a standalone book on long-term trends and observations; `chapters/appendix_a.qmd` is a worked example of taking one annual dataset through QA/QC. The qaqc repo is a single-year template that repeats that process in code for any project year and produces a draft report like the 2025 one. It keeps its own copies of the ingest and format code (this repo's are in `functions/appendix_a_scripts/`); the two currently diverge and which is the source of truth is undecided. The qaqc repo's design record is `other/agent_context/plans/2026-10-28-qaqc-repo-as-parameterized-template.md` there.
+
 **`other/agent_context/session_log.md`** is auto-synced to the qaqc repo via GitHub Actions on every push to main that touches it. Each repo maintains its own `AGENTS.md` (not synced); only `session_log.md` is shared. **Edit `session_log.md` only from this repo (`kenai-river-wqx`).**
 
 **File ownership:** `AGENTS.md` (this file) is maintained by Posit Assistant and rewritten as the project evolves; the user does not edit it directly. `other/agent_context/agent_context.qmd` is the reverse: user-authored standing instructions for Posit Assistant, read only when the user points to it (not every session). Do not edit `agent_context.qmd` unless the user explicitly asks.
