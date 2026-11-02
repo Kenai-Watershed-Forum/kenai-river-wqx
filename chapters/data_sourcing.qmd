@@ -184,15 +184,27 @@ parameter_fraction <- dat |>
   pivot_wider(names_from = unit_id, values_from = ResultSampleFractionText)
 
 # CHARACTERISTIC NAME CORRECTIONS
-# Nitrogen
+# Names as returned by WQP are mapped to the names used throughout the book with an
+# external, manually curated table (exact match on wqp_name). Add a row to the table
+# to reconcile a new name variant; do not add recodes here.
+# The original WQP name is kept in CharacteristicName_wqp (characteristic_name_wqp after
+# clean_names()), and exclude_from_btex_sum is read by reg_limits.qmd.
+name_map <- read_csv("other/input/characteristic_name_matching_table.csv", show_col_types = FALSE) |>
+  select(wqp_name, canonical_name, exclude_from_btex_sum)
+
+stopifnot(
+  "duplicate wqp_name in characteristic_name_matching_table.csv" = !anyDuplicated(name_map$wqp_name),
+  "missing canonical_name in characteristic_name_matching_table.csv" = !anyNA(name_map$canonical_name)
+)
+
 dat <- dat |>
-  mutate(CharacteristicName = str_replace_all(
-    CharacteristicName,
-    c(
-      "Inorganic nitrogen \\(nitrate and nitrite\\) \\*\\*\\*retired\\*\\*\\*use Nitrate \\+ Nitrite" = "Nitrate + Nitrite",
-      "Inorganic nitrogen \\(nitrate and nitrite\\)" = "Nitrate + Nitrite"
-    )
-  ))
+  mutate(CharacteristicName_wqp = CharacteristicName) |>
+  left_join(name_map, by = c("CharacteristicName" = "wqp_name")) |>
+  mutate(
+    CharacteristicName = coalesce(canonical_name, CharacteristicName),
+    exclude_from_btex_sum = coalesce(exclude_from_btex_sum, FALSE)
+  ) |>
+  select(-canonical_name)
 
 # SITE NAME CORRECTIONS
 # Create and export table of site names

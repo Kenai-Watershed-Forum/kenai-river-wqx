@@ -1,0 +1,5 @@
+wqp_name,canonical_name,first_year,last_year,exclude_from_btex_sum,reason
+Inorganic nitrogen (nitrate and nitrite) ***retired***use Nitrate + Nitrite,Nitrate + Nitrite,2000,2013,FALSE,Retired WQX name for the same quantity as Nitrate + Nitrite.
+Inorganic nitrogen (nitrate and nitrite),Nitrate + Nitrite,,,FALSE,Earlier form of the retired WQX name; not present in the WQP data as of 2026-11-02.
+"Total Phosphorus, mixed forms",Phosphorus,2021,2021,FALSE,Name WQX applied to the 2021 upload (synonym mapping). Earlier years (2000-2013) are reported as Phosphorus.
+Total xylenes,Xylene,2021,2021,TRUE,"Name WQX applied to Xylenes (total) in the 2021 upload. Mapped to Xylene for consistency, but excluded from the BTEX sum when o-Xylene and m,p-Xylene exist for the same site and date, because the total is the sum of those isomers (see reg_limits.qmd)."

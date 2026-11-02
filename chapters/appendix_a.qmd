@@ -1627,6 +1627,8 @@ source("functions/appendix_a_scripts/generate_cdx_export.R")
 
 - The 2021 dataset includes 13 "Phosphorus" results from EPA Method 200.8 (Dissolved Metals by ICP/MS), in addition to 48 "Total Phosphorus" results from SM21 4500-P-E. The Method 200.8 phosphorus results are excluded from the CDX submission because this method was not part of the QAPP. Only the `Total Phosphorus` / `4500-P-E` results are uploaded. The filter is applied in the "Results and Activities" code block above.
 
+- After import, WQX Web applied its own synonym mapping to three characteristic names in the 2021 data: `Total Phosphorus` became `Total Phosphorus, mixed forms`, `Xylenes (total)` became `Total xylenes`, and `Iron, Total` became `Iron`. WQP therefore returns the 2021 results under names that differ from those used for earlier years (`Phosphorus` for 2000-2013, `Xylene` for 2004-2010). The book reconciles these names with the external table `other/input/characteristic_name_matching_table.csv`, applied in `chapters/data_sourcing.qmd`, and keeps the original WQP name in the `characteristic_name_wqp` column. `Total Phosphorus, mixed forms` is mapped to `Phosphorus`. `Total xylenes` is mapped to `Xylene` but is left out of the BTEX sum in `chapters/reg_limits.qmd` whenever o-xylene and m,p-xylene results exist for the same site and date, because the total is the sum of those two isomers and including all three would count the same xylenes twice. `Iron` needs no mapping because it is already the name used for earlier years.
+
 - Corrections to data from years other than 2021 (e.g., spring 2013 specific conductance units) are documented in AGENTS.md and will be addressed in a dedicated chapter of the kenai-river-wqx-qaqc repo, not here.
 
 \newpage

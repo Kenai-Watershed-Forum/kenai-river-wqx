@@ -311,8 +311,25 @@ xylene_isomers <- c("m,p-Xylene" = "Xylene","o-Xylene" = "Xylene")
 
 # summarise btex characteristic_name because it is long and cumbsersome
 
+# WQX renamed the 2021 "Xylenes (total)" result to "Total xylenes", which
+# data_sourcing.qmd maps to "Xylene" via other/input/characteristic_name_matching_table.csv
+# (flag exclude_from_btex_sum = TRUE). That total is the sum of the o-xylene and
+# m,p-xylene results, so summing the total together with the two isomers would count the
+# same xylenes twice. Rule: a flagged total is left out of the BTEX sum whenever both
+# isomers were reported for the same sampling event; otherwise (no isomer results) it is
+# kept so the total can still contribute. A sampling event is one site on one date
+# (22 sites, two dates per year), so events are identified by monitoring_location_name and
+# activity_start_date, not by activity_identifier (2021 Activity IDs embed the analyte).
+# The rows are only left out of the sum; they remain in the overall dataset.
+btex_input <- dat %>%
+  group_by(monitoring_location_name, activity_start_date) %>%
+  mutate(has_both_isomers = any(characteristic_name == "o-Xylene") &
+           any(characteristic_name == "m,p-Xylene")) %>%
+  ungroup() %>%
+  filter(!(exclude_from_btex_sum & has_both_isomers)) %>%
+  select(-has_both_isomers)
 # 1.) aggregate all volatiles data to sum into "`Benzene, toluene, ethyl benzene, xylenes mix"
-btex_dat <- dat %>%
+btex_dat <- btex_input %>%
   # round all values to two decimals
   mutate(result_measure_value = round(result_measure_value,2)) %>%
     # if duplicate samples exist, take their average
