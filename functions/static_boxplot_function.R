@@ -102,6 +102,12 @@ create_facet_plots <- function(data_path, reg_vals_path, characteristic, sample_
   
   reg_vals <- read.csv(reg_vals_path, stringsAsFactors = FALSE)
   
+  # Non-detect (ND) markers are limited to BTEX. ND events carry an NA value and
+  # result_detection_condition_text == "Not Detected"; they are plotted at 0 (the same
+  # value the box statistics use) as hollow points with an "ND" legend entry.
+  nd_enabled <- identical(characteristic, "Benzene, toluene, ethyl benzene, xylenes mix") &&
+    "result_detection_condition_text" %in% names(data)
+  
   # Sample Fractions
   if (is.null(sample_fraction) && exists("sample_fraction", envir = .GlobalEnv)) {
     sample_fraction <- get("sample_fraction", envir = .GlobalEnv)
@@ -147,6 +153,9 @@ create_facet_plots <- function(data_path, reg_vals_path, characteristic, sample_
       filter(characteristic_name == characteristic) %>%
       mutate(
         result_measure_value = suppressWarnings(as.numeric(result_measure_value)),
+        is_nd = nd_enabled & result_detection_condition_text %in% "Not Detected" &
+          is.na(result_measure_value),
+        result_measure_value = ifelse(is_nd, 0, result_measure_value),
         fw_acute_exceed = ifelse(is.na(fw_acute_exceed), NA, fw_acute_exceed),
         fw_chronic_exceed = ifelse(is.na(fw_chronic_exceed), NA, fw_chronic_exceed)
       ) %>%
@@ -155,7 +164,9 @@ create_facet_plots <- function(data_path, reg_vals_path, characteristic, sample_
         tooltip_text = paste0(
           "<b>", ifelse(trib_mainstem == "m", paste0("RM ", site_name), site_name), "</b><br>",
           "Date: ", activity_start_date, "<br>",
-          "Value: ", result_measure_value, " ", result_measure_measure_unit_code, "<br>",
+          ifelse(is_nd,
+                 "Value: ND (not detected; plotted at 0)<br>",
+                 paste0("Value: ", result_measure_value, " ", result_measure_measure_unit_code, "<br>")),
           "Fraction: ", ifelse(is.na(result_sample_fraction_text), "Not specified", result_sample_fraction_text), "<br>",
           "Lab: ", ifelse(is.na(laboratory_name), "Not specified", laboratory_name), "<br>",
           "Method: ", result_analytical_method_method_identifier, "<br>",
@@ -197,14 +208,19 @@ create_facet_plots <- function(data_path, reg_vals_path, characteristic, sample_
     
     min_year <- as.character(min(subset_data$year, na.rm = TRUE))
     max_year <- as.character(max(subset_data$year, na.rm = TRUE))
+    nd_data <- subset_data %>% filter(is_nd)
+    detected_data <- subset_data %>% filter(!is_nd)
     y_min <- min(subset_data$result_measure_value, na.rm = TRUE) * 0.9
     y_max <- max(subset_data$result_measure_value, na.rm = TRUE) * 1.1
+    # leave room below 0 so hollow ND markers are not clipped by the panel edge
+    if (nrow(nd_data) > 0) y_min <- -0.04 * y_max
     
     exceedance_present <- any(!is.na(subset_data$fw_acute_exceed) | !is.na(subset_data$fw_chronic_exceed))
 
     plot <- ggplot(subset_data, aes(x = .data[[x_var]], y = result_measure_value)) +
       geom_boxplot(aes(group = .data[[x_var]]), outlier.shape = NA) +
       geom_jitter(
+        data = detected_data,
         aes(
           color = if (exceedance_present) factor(case_when(
             is.na(fw_acute_exceed) & is.na(fw_chronic_exceed) ~ "None",
@@ -220,6 +236,12 @@ create_facet_plots <- function(data_path, reg_vals_path, characteristic, sample_
         ),
         width = 0.2, size = pt_size, show.legend = exceedance_present
       ) +
+      # ND events: hollow points at 0 (BTEX only; nd_data is empty otherwise)
+      {if (nrow(nd_data) > 0) geom_jitter(
+        data = nd_data,
+        aes(shape = "ND", text = tooltip_text),
+        color = "black", fill = NA, width = 0.2, height = 0, size = pt_size, stroke = 0.6
+      )} +
       # All threshold lines are passed to geom_hline regardless of whether they
       # fall within the visible y range. Out-of-range lines will not appear in
       # the plot body but their legend entries are retained intentionally, so
@@ -237,6 +259,10 @@ create_facet_plots <- function(data_path, reg_vals_path, characteristic, sample_
                                         values = c("None" = 16, "Chronic" = 16, "Acute" = 8))
     }
     
+    if (nrow(nd_data) > 0) {
+      plot <- plot + scale_shape_manual(name = NULL, values = c("ND" = 1))
+    }
+    
     # Only show legend entries for standards actually present in this parameter's
     # hline_data; labels come from std_labels (read from master_reg_limits.xlsx).
     present_standards <- unique(hline_data$linetype)
@@ -251,7 +277,9 @@ create_facet_plots <- function(data_path, reg_vals_path, characteristic, sample_
     plot <- plot + guides(
       linetype = guide_legend(order = 1, override.aes = list(color = "red", size = 1.2)),
       color    = if (exceedance_present) guide_legend(order = 2, override.aes = list(size = 4, linetype = 0)) else "none",
-      shape    = if (exceedance_present) guide_legend(order = 2, override.aes = list(size = 4, linetype = 0)) else "none"
+      shape    = if (exceedance_present) guide_legend(order = 2, override.aes = list(size = 4, linetype = 0))
+                 else if (nrow(nd_data) > 0) guide_legend(order = 2, override.aes = list(size = 4, linetype = 0))
+                 else "none"
     )
     
     plot <- plot + theme(
@@ -305,11 +333,15 @@ create_facet_plots <- function(data_path, reg_vals_path, characteristic, sample_
 #   5. Applies a border box and group-gap to the overall legend layout.
 clean_plotly_legend <- function(p) {
   exceedance_names <- c("None", "Chronic", "Acute")
+  nd_names     <- "ND"
   seen         <- character(0)
-  group_titled <- list(threshold = FALSE, exceedance = FALSE)
+  group_titled <- list(threshold = FALSE, exceedance = FALSE, nd = FALSE)
 
   for (i in seq_along(p$x$data)) {
     nm <- p$x$data[[i]]$name
+    # Layers with a constant colour (ND markers, threshold lines) are named "(NAME,colour)";
+    # reduce to NAME so the checks below treat them like other traces.
+    nm <- sub("^\\(([^,]+),(#[0-9A-Fa-f]{6}|black)\\)$", "\\1", nm)
 
     # Strip facet suffix if present: "(NAME,N)" or "(NAME,N,NA)" -> "NAME"
     base_nm <- sub("^\\((.+),\\d+(?:,NA)?\\)$", "\\1", nm, perl = TRUE)
@@ -319,13 +351,13 @@ clean_plotly_legend <- function(p) {
     # case, only continue if the name is a known standard-type code or exceedance
     # label; skip all other traces (boxplot outlines, plain jitter points, etc.).
     if (base_nm == nm) {
-      if (!(nm %in% c(names(std_labels), exceedance_names))) next
+      if (!(nm %in% c(names(std_labels), exceedance_names, nd_names))) next
     } else if (nchar(base_nm) == 0) {
       next
     }
 
     is_exceedance <- base_nm %in% exceedance_names
-    group <- if (is_exceedance) "exceedance" else "threshold"
+    group <- if (is_exceedance) "exceedance" else if (base_nm %in% nd_names) "nd" else "threshold"
 
     p$x$data[[i]]$legendgroup <- group
 
@@ -340,6 +372,8 @@ clean_plotly_legend <- function(p) {
       if (!group_titled[[group]]) {
         subtitle <- if (group == "threshold") {
           "<b>Static regulatory thresholds</b>"
+        } else if (group == "nd") {
+          "<b>Result type</b>"
         } else {
           "<b>Hardness-dependent<br>criteria</b>"
         }

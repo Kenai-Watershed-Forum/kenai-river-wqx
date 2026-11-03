@@ -188,7 +188,7 @@ parameter_fraction <- dat |>
 # external, manually curated table (exact match on wqp_name). Add a row to the table
 # to reconcile a new name variant; do not add recodes here.
 # The original WQP name is kept in CharacteristicName_wqp (characteristic_name_wqp after
-# clean_names()), and exclude_from_btex_sum is read by reg_limits.qmd.
+# clean_names()), and exclude_from_btex_sum is kept for reference (reg_limits.qmd no longer uses it).
 name_map <- read_csv("other/input/characteristic_name_matching_table.csv", show_col_types = FALSE) |>
   select(wqp_name, canonical_name, exclude_from_btex_sum)
 

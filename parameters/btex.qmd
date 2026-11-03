@@ -32,3 +32,91 @@ res <- knitr::knit_child("templates/_parameter_chunk.Rmd", envir = environment()
 cat(res, sep = "\n")
 
 ```
+
+<br>
+
+## Supplementary assessment: reported BTEX total versus the sum of individual analytes
+
+Through 2010, the laboratory reported a BTEX total ("Benzene, toluene, ethyl benzene, xylenes mix") alongside the individual analytes. The 2012 and 2021 results include individual analytes only, with no reported total. To judge whether the reported total can stand in for the sum of the individual analytes, we compared the two for every sampling event that has both. A sampling event here is one Activity ID; trip blanks are excluded.
+
+For each event we summed benzene, toluene, ethylbenzene, and the xylenes, counting non-detects as zero, and compared the sum with the reported total at two-decimal precision. The xylenes can be summed two ways, because some events report a total xylene result in addition to (or instead of) the o-xylene and m,p-xylene isomers:
+
+-   **Method A:** add every xylene result reported (total xylene, o-xylene, and m,p-xylene).
+-   **Method B:** use the total xylene result when one was reported; otherwise add o-xylene and m,p-xylene. This avoids counting the same xylenes twice.
+
+```{r echo = F, warning = F, message = F}
+library(dplyr)
+library(tidyr)
+library(knitr)
+
+btex_mix_name <- "Benzene, toluene, ethyl benzene, xylenes mix"
+
+btex_cmp_in <- read.csv("other/output/analysis_format/baseline_export_format.csv") |>
+  filter(result_sample_fraction_text == "Volatile",
+         !grepl("Blank$", activity_identifier)) |>
+  mutate(year = as.integer(substr(activity_start_date, 1, 4)),
+         value = suppressWarnings(as.numeric(result_measure_value)))
+
+btex_events <- btex_cmp_in |>
+  filter(characteristic_name %in% c(btex_mix_name, "Benzene", "Toluene", "Ethylbenzene",
+                                    "o-Xylene", "m,p-Xylene", "Xylene")) |>
+  group_by(year, activity_identifier) |>
+  summarise(
+    site = first(monitoring_location_name),
+    date = first(activity_start_date),
+    has_mix = any(characteristic_name == btex_mix_name),
+    has_ind = any(characteristic_name != btex_mix_name),
+    has_total_xylene = any(characteristic_name == "Xylene"),
+    has_o = any(characteristic_name == "o-Xylene"),
+    has_mp = any(characteristic_name == "m,p-Xylene"),
+    reported_total = sum(value[characteristic_name == btex_mix_name], na.rm = TRUE),
+    reported_total_nd = has_mix && all(is.na(value[characteristic_name == btex_mix_name])),
+    benz = sum(value[characteristic_name %in% c("Benzene", "Toluene", "Ethylbenzene")], na.rm = TRUE),
+    xyl_total = sum(value[characteristic_name == "Xylene"], na.rm = TRUE),
+    xyl_iso = sum(value[characteristic_name %in% c("o-Xylene", "m,p-Xylene")], na.rm = TRUE),
+    ind_detected = any(!is.na(value[characteristic_name != btex_mix_name])),
+    .groups = "drop") |>
+  mutate(
+    sum_a = benz + xyl_total + xyl_iso,
+    sum_b = benz + if_else(has_total_xylene, xyl_total, xyl_iso),
+    xylene_reporting = case_when(
+      has_total_xylene ~ "Total xylene reported",
+      has_o & has_mp ~ "o- and m,p-xylene reported",
+      has_o ~ "o-xylene only",
+      TRUE ~ "Other"),
+    agree_a = round(reported_total - sum_a, 2) == 0,
+    agree_b = round(reported_total - sum_b, 2) == 0)
+
+# events with a reported total and individual analytes
+btex_paired <- btex_events |> filter(has_mix, has_ind)
+
+# events where the total and every individual analyte are non-detects agree trivially
+btex_paired_nd <- btex_paired |> filter(reported_total_nd & !ind_detected)
+btex_compared <- btex_paired |> filter(!(reported_total_nd & !ind_detected))
+
+btex_no_total <- btex_events |> filter(!has_mix, has_ind) |> count(year)
+```
+
+Of the `r nrow(btex_paired)` events with both a reported total and individual analytes, `r nrow(btex_paired_nd)` have only non-detects and are not counted below. Of the remaining `r nrow(btex_compared)` events, the reported total equals the sum of individual analytes in `r sum(btex_compared$agree_a)` under Method A and `r sum(btex_compared$agree_b)` under Method B. Events with individual analytes but no reported total: `r paste0(btex_no_total$n, " in ", btex_no_total$year, collapse = ", ")`.
+
+```{r echo = F}
+btex_compared |>
+  group_by(`Xylene reporting` = xylene_reporting) |>
+  summarise(Events = n(),
+            `Agree, Method A` = sum(agree_a),
+            `Agree, Method B` = sum(agree_b)) |>
+  kable(caption = "Events where the reported BTEX total equals the sum of individual analytes (ug/L), by how xylenes were reported.")
+```
+
+```{r echo = F}
+btex_compared |>
+  filter(!agree_a | !agree_b) |>
+  transmute(Year = year, Site = site, Date = date,
+            `Reported total` = reported_total,
+            `Method A sum` = round(sum_a, 2),
+            `Method B sum` = round(sum_b, 2),
+            `Xylene reporting` = xylene_reporting) |>
+  kable(caption = "Events where the reported total differs from the individual-analyte sum under at least one method.")
+```
+
+Based on this comparison, the laboratory-reported total is used wherever one exists. The 2012 and 2021 events have individual analytes but no reported total (counts given above).

@@ -294,84 +294,29 @@ For each sampling event with available hydrocarbons data, we calculated the sum 
 
 To prepare our existing data to be assessed against this standard, we addressed the following issues:
 
--   In some cases, BTEX data is quantified as a total mixture (sum of all benzene, toluene, ethylbenzene, and the xylene isomers). In other cases, the individual substances are instead quantified separately.
+-   In some years BTEX is reported as a laboratory total (the sum of benzene, toluene, ethylbenzene, and the xylenes). In other years only the individual substances are reported, and in some years both are reported.
 
--   In yet other cases, both the values of individual components of BTEX and the total mixture values are reported separately.
+-   To create a consistent parameter, each sampling event (one site on one date) has a single BTEX value. Where the laboratory reported a total, we used it. Otherwise we summed benzene, toluene, ethylbenzene, and xylenes. Xylenes are the reported total xylene or, if that was not reported, the sum of the o-xylene and m,p-xylene results, so no xylene is counted twice. Duplicate samples from the same event were averaged. Non-detects were counted as 0 when a sum included at least one detected result.
 
--   To create a consistent parameter, we summed the total quantities of benzene, toluene, ethylbenzene, and xylene by unique sampling event (unique location/time) when it had not already been reported as such.
+-   If every result contributing to an event was a non-detect, the event is shown as ND (not detected). Reporting limits for these results are not available in the Water Quality Portal data.
 
--   In some cases, multiple isomers of the same hydrocarbon are quantified (e.g. o-xylene vs m,p-xylene). In these cases, we summed the total quantity of the substance for all isomers.
+-   Trip blanks are not part of the BTEX values assessed here. The 2021 trip blank results are reported in Appendix A.
 
 ```{r echo = F}
 
-# Goal here: replace old volatiles data in the overall dataframe with the aggregagated btex data we discussed above. 
+# Aggregation logic and its tests: functions/btex_aggregate.R, tests/test_btex_aggregate.R.
+# Field-sample events only; trip-blank rows (Activity ID ending in "-Blank") are left out.
+# btex_aggregate() uses the Total xylene result in preference to the isomers, so the
+# exclude_from_btex_sum flag from the characteristic name matching table is no longer needed here.
+source("functions/btex_aggregate.R")
 
-# specify isomers to be aggregaed into single compound
-xylene_isomers <- c("m,p-Xylene" = "Xylene","o-Xylene" = "Xylene")
+btex_rows <- btex_aggregate(dat) %>%
+  select(-btex_basis, -is_trip_blank)
 
-# summarise btex characteristic_name because it is long and cumbsersome
-
-# WQX renamed the 2021 "Xylenes (total)" result to "Total xylenes", which
-# data_sourcing.qmd maps to "Xylene" via other/input/characteristic_name_matching_table.csv
-# (flag exclude_from_btex_sum = TRUE). That total is the sum of the o-xylene and
-# m,p-xylene results, so summing the total together with the two isomers would count the
-# same xylenes twice. Rule: a flagged total is left out of the BTEX sum whenever both
-# isomers were reported for the same sampling event; otherwise (no isomer results) it is
-# kept so the total can still contribute. A sampling event is one site on one date
-# (22 sites, two dates per year), so events are identified by monitoring_location_name and
-# activity_start_date, not by activity_identifier (2021 Activity IDs embed the analyte).
-# The rows are only left out of the sum; they remain in the overall dataset.
-btex_input <- dat %>%
-  group_by(monitoring_location_name, activity_start_date) %>%
-  mutate(has_both_isomers = any(characteristic_name == "o-Xylene") &
-           any(characteristic_name == "m,p-Xylene")) %>%
-  ungroup() %>%
-  filter(!(exclude_from_btex_sum & has_both_isomers)) %>%
-  select(-has_both_isomers)
-# 1.) aggregate all volatiles data to sum into "`Benzene, toluene, ethyl benzene, xylenes mix"
-btex_dat <- btex_input %>%
-  # round all values to two decimals
-  mutate(result_measure_value = round(result_measure_value,2)) %>%
-    # if duplicate samples exist, take their average
-  group_by(activity_identifier,characteristic_name) %>%
-  summarise(result_measure_value = mean(result_measure_value)) %>%
-   # restructure dataframe
-  pivot_wider(names_from = "characteristic_name", values_from = "result_measure_value") %>%
-  mutate(btex_sum = sum(Benzene,Ethylbenzene,Toluene,Xylene,`o-Xylene`,`m,p-Xylene`, na.rm = T)) %>%
-  # does the reported sum match the calculated sum?
-  mutate(match = case_when(
-    as.character(`Benzene, toluene, ethyl benzene, xylenes mix`) == as.character(btex_sum) ~ "Y",
-    TRUE ~ "N")) %>%
-  # for instances where no provided sum of volatiles exists, use the calculated value
-  mutate(`Benzene, toluene, ethyl benzene, xylenes mix` = case_when(
-    is.na(`Benzene, toluene, ethyl benzene, xylenes mix`) ~ sum(Benzene,Ethylbenzene,Toluene,Xylene,`o-Xylene`,`m,p-Xylene`, na.rm = T),
-    TRUE ~ `Benzene, toluene, ethyl benzene, xylenes mix`
-  )) %>%
-  select(activity_identifier,`Benzene, toluene, ethyl benzene, xylenes mix`) %>%
-  rename(MEAN_result_measure_value = `Benzene, toluene, ethyl benzene, xylenes mix`) %>%
-  mutate(characteristic_name = "Benzene, toluene, ethyl benzene, xylenes mix")
-
-
-# 2.) extract a seperate dataframe of only volatiles from overall dataset
-all_volatiles <- dat %>%
-  filter(result_sample_fraction_text == "Volatile")
-
-# 3.) Use this extracted dataset to match up with the aggregated dataset of volatiles only
-mean_volatiles <- left_join(all_volatiles,btex_dat, by = c("activity_identifier","characteristic_name")) %>%
-  # keep only the values from step 1
-  filter(!is.na(MEAN_result_measure_value)) %>%
-  select(-result_measure_value) %>%
-  rename(result_measure_value = MEAN_result_measure_value)
-
-# 4.) Use complete aggregated volatiles dataset to replace other volatiles info in overall dataset
+# replace all volatiles rows in the overall dataset with the aggregated BTEX rows
 dat <- dat %>%
   filter(is.na(result_sample_fraction_text) | result_sample_fraction_text != "Volatile") %>%
-  # bind aggregated volatiles values back to verall dataset
-  bind_rows(mean_volatiles)
-  
-# types of issues we addressed in preparing BTEX data
-# - value exists only for total btex sum column (we left these as is)
-# - no provided sum value exists, only calculated (we used the calculated value)
+  bind_rows(btex_rows)
 
 # hydrocarbons data should now be prepared in a format it can be plotted and assessed
 ```

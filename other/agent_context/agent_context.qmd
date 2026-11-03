@@ -64,3 +64,33 @@ additional notes
 note 1: The guerron-orejuela 2016 report especially has a lot of trend analyses (space or time) for some parameters, by site/season (i think just the ones identified of concern, eg zinc). they are included in the chapters of each parameter. i want to assess what it would look like to implement this in this quarto book. i would like the option to implement this for each parameter chapter, though I may not choose to do so for all of them. also i think some of the plots could be partially combined, eg to show the different seasons in two seperate facets of the same plot. or maybe even a plot that shows trendlines for all summer tributary sites, another one for summer main stem sites, another one for spring tributary sites, and another for summer tributary sites. each facet should indicate the n= quantity of observations. guerron-orejeula fit a polynomial line to each plot; i am unsure if we shoul proceed that way or some other way.
 
 assess this request help plan for implementation. ask questions and interview me before proceeding as necessary. do not guess if you are unsure, ask or reference external sources to ensure compliance
+
+11/2/2026
+
+Addressing current issues:
+
+BTEX rows: the data is on WQP, but the chapter never plots it
+
+- trip blanks results should be reported in the qa/qc appendix a section, and not plotted in the btex chapter
+
+- we need to make a plan to ensure the btex data can be compared year to year and then align the naming conventions such it can all be plottend analyzed as part of the same dataset
+
+Fecal coliform
+
+- in the downloadable data csv within the fecal coliform chapter, ensure that rejected data is included for download, though not plotted in the visualizations
+
+Nitrate + nitrite
+
+- in the downloadable data csv within the fecal coliform chapter, ensure that rejected data is included for download, though not plotted in the visualizations
+
+Hardness-based thresholds
+
+- Confirmed that the data you describe are missing. this was not a sampling design gap, but rather a miscommunition with the lab
+
+Sample fraction
+
+- We want to ensure that all data names are synchronized in such a way that results can be compared year to year, when feasible. "Filtered, field" and "Dissolved" both refer to the dissolved fraction of the sample. all dissolved metals samples were filtrered in the field prior to summer 2022 (unsure on that timing??). after that transition, all dissolved metals samples were filtered in the lab
+
+Static narrative
+
+- Dont worry about static narrative content until we have all data from 2000 - 2025 available

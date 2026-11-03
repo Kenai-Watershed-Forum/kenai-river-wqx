@@ -1516,6 +1516,21 @@ On the summer 2021 SGS chain of custody documents, BTEX trip blanks are specifie
 
 In this case, all hydrocarbon results in the Trip Blank are reported as below detection limit, suggesting there is not a need to flag summer 2021 hydrocarbon results.
 
+The table below lists the 2021 trip blank results in the CDX export, one row per analyte. Trip blank results are not used in the BTEX values plotted in the BTEX chapter. Results from other years are not shown here.
+
+```{r q42-trip-blanks, echo = FALSE}
+read.csv(flagged_export_path) %>%
+  filter(grepl("Trip Blank", activity_type), result_sample_fraction == "Volatile") %>%
+  group_by(characteristic_name, result_qualifier, result_detection_limit_value_1, result_detection_limit_unit_1) %>%
+  summarise(n_sites = n_distinct(activity_id), .groups = "drop") %>%
+  rename(Analyte = characteristic_name,
+         Qualifier = result_qualifier,
+         `Detection limit` = result_detection_limit_value_1,
+         `Limit unit` = result_detection_limit_unit_1,
+         `Trip blank results` = n_sites) %>%
+  knitr::kable()
+```
+
 <br>
 
 ### Uploading 2021 data to the EPA Water Quality Exchange (EPA WQX)
@@ -1627,7 +1642,13 @@ source("functions/appendix_a_scripts/generate_cdx_export.R")
 
 - The 2021 dataset includes 13 "Phosphorus" results from EPA Method 200.8 (Dissolved Metals by ICP/MS), in addition to 48 "Total Phosphorus" results from SM21 4500-P-E. The Method 200.8 phosphorus results are excluded from the CDX submission because this method was not part of the QAPP. Only the `Total Phosphorus` / `4500-P-E` results are uploaded. The filter is applied in the "Results and Activities" code block above.
 
-- After import, WQX Web applied its own synonym mapping to three characteristic names in the 2021 data: `Total Phosphorus` became `Total Phosphorus, mixed forms`, `Xylenes (total)` became `Total xylenes`, and `Iron, Total` became `Iron`. WQP therefore returns the 2021 results under names that differ from those used for earlier years (`Phosphorus` for 2000-2013, `Xylene` for 2004-2010). The book reconciles these names with the external table `other/input/characteristic_name_matching_table.csv`, applied in `chapters/data_sourcing.qmd`, and keeps the original WQP name in the `characteristic_name_wqp` column. `Total Phosphorus, mixed forms` is mapped to `Phosphorus`. `Total xylenes` is mapped to `Xylene` but is left out of the BTEX sum in `chapters/reg_limits.qmd` whenever o-xylene and m,p-xylene results exist for the same site and date, because the total is the sum of those two isomers and including all three would count the same xylenes twice. `Iron` needs no mapping because it is already the name used for earlier years.
+- After import, WQX Web applied its own synonym mapping to three characteristic names in the 2021 data: `Total Phosphorus` became `Total Phosphorus, mixed forms`, `Xylenes (total)` became `Total xylenes`, and `Iron, Total` became `Iron`. WQP therefore returns the 2021 results under names that differ from those used for earlier years (`Phosphorus` for 2000-2013, `Xylene` for 2004-2010). The book reconciles these names with the external table `other/input/characteristic_name_matching_table.csv`, applied in `chapters/data_sourcing.qmd`, and keeps the original WQP name in the `characteristic_name_wqp` column. `Total Phosphorus, mixed forms` is mapped to `Phosphorus`. `Total xylenes` is mapped to `Xylene`. In `chapters/reg_limits.qmd` the BTEX value for each event uses the laboratory-reported total where one exists; otherwise it sums benzene, toluene, ethylbenzene and xylenes, using the total xylene result in preference to the o-xylene and m,p-xylene isomers so that no xylene is counted twice. `Iron` needs no mapping because it is already the name used for earlier years.
+
+- Total calcium and magnesium results are missing for nine spring 2021 site events (KBL_m_40.0, KBL_m_43.0, KBL_m_50.0, KBL_m_70.0, KBL_m_82.0, KBL_t_36.0, KBL_t_44.0, KBL_t_74.0, and KBL_t_79.5, all on 2021-05-11). The cause was a miscommunication with the laboratory, not the sampling design. Hardness cannot be calculated for these site events, so the hardness-dependent thresholds for dissolved metals (cadmium, chromium, copper, lead, and zinc) are not available for them. Their metals results appear in the figures and tables without a threshold comparison.
+
+
+
+- Dissolved metals results carry the sample fraction `Dissolved` on WQP. `Filtered, field` is a WQX sample fraction value that describes the same dissolved fraction, so the book treats the two as equivalent when comparing years; the chapter filters for arsenic, cadmium, chromium, copper, lead, and zinc accept either name. All 2021 dissolved metals samples were filtered in the field. KWF's change to laboratory filtration began in summer 2022 (see the note on the dissolved metals RPD discussion above), and the date of that change should be confirmed against the QAPP revisions before data from later years are added.
 
 - Corrections to data from years other than 2021 (e.g., spring 2013 specific conductance units) are documented in AGENTS.md and will be addressed in a dedicated chapter of the kenai-river-wqx-qaqc repo, not here.
 
