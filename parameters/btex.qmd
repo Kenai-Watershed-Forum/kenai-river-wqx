@@ -41,8 +41,8 @@ Through 2010, the laboratory reported a BTEX total ("Benzene, toluene, ethyl ben
 
 For each event we summed benzene, toluene, ethylbenzene, and the xylenes, counting non-detects as zero, and compared the sum with the reported total at two-decimal precision. The xylenes can be summed two ways, because some events report a total xylene result in addition to (or instead of) the o-xylene and m,p-xylene isomers:
 
--   **Method A:** add every xylene result reported (total xylene, o-xylene, and m,p-xylene).
--   **Method B:** use the total xylene result when one was reported; otherwise add o-xylene and m,p-xylene. This avoids counting the same xylenes twice.
+- **Method A:** add every xylene result reported (total xylene, o-xylene, and m,p-xylene).
+- **Method B:** use the total xylene result when one was reported; otherwise add o-xylene and m,p-xylene. This avoids counting the same xylenes twice.
 
 ```{r echo = F, warning = F, message = F}
 library(dplyr)

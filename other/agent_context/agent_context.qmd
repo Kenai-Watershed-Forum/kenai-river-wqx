@@ -94,3 +94,13 @@ Sample fraction
 Static narrative
 
 - Dont worry about static narrative content until we have all data from 2000 - 2025 available
+
+11/6/2026
+
+I want to pick up where i left off. Recall, my overarching goals are as follows:
+
+- This repo will serve as a report which intakes data directly from the EPA WQX, and integrates it in to the figures and tables throughout each chapter
+
+- The appendix a will serve as a detailed example of the qa/qc process for year 2021 data
+
+- For all other sampling events that are missing between 2013 - 2025, I am working to develop a seperate template repo at <https://github.com/Kenai-Watershed-Forum/kenai-river-wqx-qaqc>. the intent of that repo is to serve as a template that i can copy and address data one year at a time, and submit it to the epa cdx
